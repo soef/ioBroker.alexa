@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "https": "^1.0.0",
-    "soef": "^0.4.4"
+    "soef": "^0.4.11"
   },
   "devDependencies": {
     "mocha": "^2.3.4",
