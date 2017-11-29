@@ -1,4 +1,4 @@
-![Logo](admin/js2fs.png)
+![Logo](admin/alexa.png)
 
 ### ioBroker.alexa
 

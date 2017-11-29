@@ -1,8 +1,4 @@
-﻿/* jshint -W097 */
-// jshint strict:false
-/*jslint node: true */
-/*jslint esversion: 6 */
-
+﻿
 "use strict";
 
 const
@@ -15,7 +11,7 @@ let alexa;
 let adapter = soef.Adapter(
     main,
     onStateChange,
-    onObjectChange,
+    //onObjectChange,
     onUnload,
     'alexa'
 );
@@ -42,27 +38,11 @@ function onStateChange(id, state) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function onObjectChange(id, object) {
-}
-
-
+// function onObjectChange(id, object) {
+// }
 
 function normalizeConfig(config) {
 }
-
-// Alexa.prototype.createBluetoothDevices = function (callback) {
-//     this.getBluetooth((err, res) => {
-//         if (err || !res || !res.bluetoothStates) return callback && callback (err);
-//         for (let i=0; i<res.bluetoothStates; i++)  {
-//             let bt = res.bluetoothStates[i];
-//             if (this.serialNumbers[bt.deviceSerialNumber]) {
-//                 this.serialNumbers[bt.deviceSerialNumber] = bt;
-//             }
-//         }
-//         callback && callback(null);
-//     })
-//
-// };
 
 const
     commands = {
@@ -106,14 +86,12 @@ Alexa.prototype.createDevices = function (callback) {
             dev.set ('TuneIn', "");
         }
     });
-    //this.createBluetoothDevices();
     devices.update();
 };
 
 
 
 function main() {
-
 
     normalizeConfig(adapter.config);
 
@@ -127,7 +105,6 @@ function main() {
 
             adapter.subscribeStates('*');
             adapter.subscribeForeignObjects('script.js.*');
-        })
-
-    //});
+        }
+    )
 }
