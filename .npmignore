@@ -1,0 +1,8 @@
+Gruntfile.js
+tasks
+node_modules
+.idea
+.git
+/node_modules
+test
+ba

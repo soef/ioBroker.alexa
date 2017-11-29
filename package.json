@@ -1,0 +1,50 @@
+{
+  "name": "iobroker.alexa",
+  "version": "0.0.1",
+  "description": "Remote control for Alexa (Amazon Echo)",
+  "author": {
+    "name": "soef",
+    "email": "soef@gmx.net"
+  },
+  "contributors": [
+    {
+      "name": "soef",
+      "email": "soef@gmx.net"
+    }
+  ],
+  "homepage": "https://github.com/soef/iobroker.alexa",
+  "license": "MIT",
+  "keywords": [
+    "sync",
+    "iobroker file",
+    "JetBrains",
+    "webstorm",
+    "file",
+    "debug",
+    "editor",
+    "ide"
+  ],
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/soef/iobroker.alexa"
+  },
+  "dependencies": {
+    "https": "^1.0.0",
+    "soef": "^0.4.4"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4",
+    "chai": "^3.4.1"
+  },
+  "main": "alexa.js",
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha"
+  },
+  "bugs": {
+    "url": "https://github.com/soef/iobroker.alexa/issues"
+  },
+  "readmeFilename": "README.md"
+}
