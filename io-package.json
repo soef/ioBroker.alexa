@@ -1,11 +1,15 @@
 {
   "common": {
     "name": "alexa",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "title": "Remote control for Alexa (Amazon Echo)",
     "desc": "Remote control for Alexa (Amazon Echo)",
     "platform": "Javascript/Node.js",
     "news": {
+      "0.0.2": {
+        "en": "working on...",
+        "de": "Weiterentwicklung..."
+      },
       "0.0.1": {
         "en": "initial commit",
         "de": "Erstmalig Veröffentlichung"
