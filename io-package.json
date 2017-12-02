@@ -6,6 +6,10 @@
     "desc": "Remote control for Alexa (Amazon Echo)",
     "platform": "Javascript/Node.js",
     "news": {
+      "0.0.14": {
+        "en": "package.json of alexa-remote fixed",
+        "de": "Fehler in package.json von alexa-remote behoben"
+      },
       "0.0.12": {
         "en": "working on...",
         "de": "Weiterentwicklung..."
