@@ -1,11 +1,15 @@
 {
   "common": {
     "name": "alexa",
-    "version": "0.0.12",
+    "version": "0.0.15",
     "title": "Remote control for Alexa (Amazon Echo)",
     "desc": "Remote control for Alexa (Amazon Echo)",
     "platform": "Javascript/Node.js",
     "news": {
+      "0.0.15": {
+        "en": "detecting csrf in cookie changed",
+        "de": "Ermitteln der csrf geändert"
+      },
       "0.0.14": {
         "en": "package.json of alexa-remote fixed",
         "de": "Fehler in package.json von alexa-remote behoben"
