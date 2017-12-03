@@ -8,7 +8,7 @@ const
 let alexa;
 const
     SMART_HOME_DEVICES = 'smart-home-devices',
-    DOT_DEVICES = 'dot-devices'
+    ECHO_DEVICES = 'echo-devices'
 ;
 
 
@@ -17,11 +17,19 @@ let adapter = soef.Adapter(
     onStateChange,
     onObjectChange,
     onUnload,
+    onUpdate,
     'alexa'
 );
 
 function onUnload(callback) {
     callback && callback();
+}
+
+function onUpdate(prevVersion ,aktVersion, callback) {
+    if (prevVersion < 19) {
+        return removeAllObjects(adapter, callback);
+    }
+    callback();
 }
 
 function onStateChange(id, state) {
@@ -42,7 +50,7 @@ function onStateChange(id, state) {
 
 function onObjectChange(id, object) {
     let ar = id.split('.');
-    if (ar[2] === DOT_DEVICES) {
+    if (ar[2] === ECHO_DEVICES) {
         let device = alexa.serialNumbers[ar[3]];
         if (object && object.common && object.common.name) {
             device.rename (object.common.name);
@@ -79,11 +87,12 @@ Alexa.prototype.updateStates = function (callback) {
 
     (function doIt() {
         if (i >= self.devices.length) {
-            devices.update(callback);
-            return;
+            return devices.update( () => {
+                self.updateHistory(callback);
+            });
         }
         let device = self.devices[i++];
-        dev.setDeviceEx(DOT_DEVICES + '\\.'+device.serialNumber, device.accountName);
+        dev.setDeviceEx(ECHO_DEVICES + '\\.'+device.serialNumber, device.accountName);
         dev.set ('', device.online ? 'Online' : 'Offline');
         dev.setName(device.accountName);
 
@@ -136,16 +145,48 @@ Alexa.prototype.createSmarthomeStates = function (callback) {
 
 };
 
+Alexa.prototype.updateHistory = function (callback) {
+    this.getHistory( { size: 3, filter: true }, function (err, res) {
+        if (err || !res) return callback && callback();
+        let dev = new devices.CDevice('history');
+        dev.force = true;
+        let i = res.length - 1;
+
+        (function doIt() {
+            if (i < 0) return callback && callback();
+
+            let o = res[i--];
+            let last = dev.get ('creationTime');
+            if (last && last.val >= o.data.creationTimestamp) return doIt();
+
+            dev.set ('name', o.name);
+            dev.set ('creationTime', o.data.creationTimestamp);
+            dev.set ('serialNumber', o.serialNumber);
+            dev.set ('summary', o.description.summary);
+            //dev.set ('json', { name: o.name, serialNumber: o.serialNumber, summary: o.description.summary});
+            devices.update (doIt);
+        })()
+    })
+};
+
+
 Alexa.prototype.createStates = function (callback) {
+
+    let dev = new devices.CDevice(ECHO_DEVICES, 'Echo devices');
+
+    function devset(name, obj, func) {
+        let st = dev.oset(name, obj);
+        if (st) st.func = func;
+    }
 
     Object.keys (this.serialNumbers).forEach ((n) => {
         let device = this.serialNumbers[n];
-        let dev = new devices.CDevice('');
-        dev.setDeviceEx(DOT_DEVICES + '\\.'+device.serialNumber, device._name);
-        function devset(name, obj, func) {
-            let st = dev.oset(name, obj);
-            if (st) st.func = func;
-        }
+        //let dev = new devices.CDevice('');
+        dev.setDeviceEx(ECHO_DEVICES + '\\.'+device.serialNumber, device._name);
+        // function devset(name, obj, func) {
+        //     let st = dev.oset(name, obj);
+        //     if (st) st.func = func;
+        // }
 
         dev.set('', device.online ? 'Online' : 'offline');
         dev.set('.requestResult', { val: '', common: { name: 'Request Result', write: false }});
@@ -180,19 +221,6 @@ Alexa.prototype.createStates = function (callback) {
         devset('doNotDisturb', false, device.setDoNotDisturb);
 
         if (device.capabilities.includes('TUNE_IN')) {
-            //devset('TuneIn', "");
-            // if (st) st.func = function (query, device, id) {
-            //     if (!device) return;
-            //     alexa.tuneinSearch(query, function(err, res) {
-            //         setRequestResult(err, res);
-            //          if (err || !res || !Array.isArray(res.browseList)) return;
-            //          let station = res.browseList[0];
-            //          device.setTunein(station.id, station.contentType);
-            //          devices.root.setAndUpdate(id, { val: station.name, ack: true });
-            //     })
-            //
-            // }
-
             devset('TuneIn', "", function (query) {
                 let id = dev.getFullId('TuneIn');
                 alexa.tuneinSearch(query, function(err, res) {
@@ -208,6 +236,18 @@ Alexa.prototype.createStates = function (callback) {
             })
         }
     });
+
+    dev.setDevice('history', { common: { name: 'Last detected commands and devices'}});
+    devset('#trigger', { val: false, common: { role: 'button', name: 'Trigger/Rescan', desc: 'Set to true, to start a request'}}, function(val) {
+         this.updateHistory();
+    }.bind(this));
+    dev.set('name', { val: '', common: { write: false, name: 'Echo Device name', desc: 'Device name of the last detected command'}});
+    //dev.createNew('creationTime', alexa.now());
+    dev.set('creationTime', alexa.now());
+    dev.set('serialNumber', { val: '', common: { write: false}});
+    //dev.set('json', { val: {}, common: { write: false}});
+    dev.set('summary', { val: '', common: { write: false}});
+
     devices.update();
     this.updateStates(callback);
 };
