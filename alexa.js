@@ -8,9 +8,20 @@ const
 let alexa;
 const
     SMART_HOME_DEVICES = 'smart-home-devices',
-    ECHO_DEVICES = 'echo-devices'
-;
+    ECHO_DEVICES = 'echo-devices',
 
+    commands = {
+        play: { val: false, common: { role: 'button'}},
+        pause:{ val: false, common: { role: 'button'}},
+        next: { val: false, common: { role: 'button'}},
+        previous: { val: false, common: { role: 'button'}},
+        forward: { val: false, common: { role: 'button'}},
+        rewind: { val: false, common: { role: 'button'}},
+        volume: { val: 0, common: { role: 'volume'}},
+        shuffle: { val: false, common: { role: 'button'}},
+        repeat: { val: false, common: {role: 'button'}},
+    }
+;
 
 let adapter = soef.Adapter(
     main,
@@ -26,7 +37,7 @@ function onUnload(callback) {
 }
 
 function onUpdate(prevVersion ,aktVersion, callback) {
-    if (prevVersion < 19) {
+    if (prevVersion < 23) {
         return removeAllObjects(adapter, callback);
     }
     callback();
@@ -34,18 +45,18 @@ function onUpdate(prevVersion ,aktVersion, callback) {
 
 function onStateChange(id, state) {
     let ar, [a, inst, dummy, deviceId, channel, subChannel] = ar = id.split('.');
-
     let func = devices.get(id.substr(8)).func;
-    //let device = alexa.serialNumbers[deviceId];
 
-    switch(channel) {
-        case 'Bluetooth':
-            if (typeof func === 'function') func(ar[6] === 'connect');
-            break;
-        default:
-            if (typeof func === 'function') func(state.val);
-            break;
-    }
+    if (typeof func === 'function') func(state.val);
+
+    // switch(channel) {
+    //     case 'Bluetooth':
+    //         if (typeof func === 'function') func(ar[6] === 'connect');
+    //         break;
+    //     default:
+    //         if (typeof func === 'function') func(state.val);
+    //         break;
+    // }
 }
 
 function onObjectChange(id, object) {
@@ -55,25 +66,14 @@ function onObjectChange(id, object) {
         if (object && object.common && object.common.name) {
             device.rename (object.common.name);
         }
+        return;
+    }
+    if (ar[2] === SMART_HOME_DEVICES) {
     }
 }
 
 function normalizeConfig(config) {
 }
-
-const
-    commands = {
-        play: { val: false, common: { role: 'button'}},
-        pause:{ val: false, common: { role: 'button'}},
-        next: { val: false, common: { role: 'button'}},
-        previous: { val: false, common: { role: 'button'}},
-        forward: { val: false, common: { role: 'button'}},
-        rewind: { val: false, common: { role: 'button'}},
-        volume: { val: 0, common: { role: 'volume'}},
-        shuffle: { val: false, common: { role: 'button'}},
-        repeat: { val: false, common: {role: 'button'}},
-    };
-
 
 function setRequestResult(err, res) {
     if (!err) return;
@@ -111,21 +111,38 @@ Alexa.prototype.updateStates = function (callback) {
     })();
 };
 
-
+Alexa.prototype.delayedCreateSmarthomeStates = function (delay, callback) {
+    setTimeout(this.createSmarthomeStates.bind(this, callback), delay);
+};
 
 Alexa.prototype.createSmarthomeStates = function (callback) {
-    this.getSmarthomeDevices(function(err, res) {
+    this.getSmarthomeDevices((err, res) => {
         if (err || !res) return callback(err);
-        let dev = new devices.CDevice(SMART_HOME_DEVICES, 'Smart Home Devices');
+        let dev = new devices.CDevice(SMART_HOME_DEVICES, { type: 'device', common: { name: 'Smart Home Devices', role: 'device' }});
 
-        let all = res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails;
+        dev.setf('deleteAll', { val: false, common: { role: 'button'}}, (val) => {
+            this.deleteAllSmarthomeDevices((err, res) => {
+                adapter.deleteDevice(SMART_HOME_DEVICES, () => {
+                    this.delayedCreateSmarthomeStates(1000);
+                });
+            });
+        });
+        dev.setf('discoverDevices', { val: false, common: { name: 'Let Alexa search for devices', role: 'button'}}, (val) => {
+            this.discoverSmarthomeDevice((err, res) => {
+                this.delayedCreateSmarthomeStates();
+            });
+        });
+
+        let all = soef.getProp (res, 'locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails') || [];
         let k = Object.keys(all);
         for (let i of k) {
             for (let n of Object.keys(all[i].applianceDetails.applianceDetails)) {
                 let skill = all[i].applianceDetails.applianceDetails[n];
                 dev.setChannel(skill.entityId, {
+                    type: 'channel',
                     common: {
-                        name: skill.modelName
+                        name: skill.modelName,
+                        role: 'channel'
                     },
                     native: {
                         friendlyDescription: skill.friendlyDescription,
@@ -135,14 +152,16 @@ Alexa.prototype.createSmarthomeStates = function (callback) {
                         manufacturerName: skill.manufacturerName,
                     }
                 });
-                dev.set('', skill.isEnabled);
+                dev.set('', { val: skill.isEnabled, type: 'channel' });
                 dev.set('isEnabled', skill.isEnabled);
+                dev.setf('delete', { val: false, common: { role: 'button'}}, function (id, val) {
+                    this.deleteSmarthomeDevice(n);
+                    adapter.deleteChannel(SMART_HOME_DEVICES, id);
+                }.bind(this, skill.entityId));
             }
         }
         devices.update(callback);
-
     })
-
 };
 
 Alexa.prototype.updateHistory = function (callback) {
@@ -174,19 +193,15 @@ Alexa.prototype.createStates = function (callback) {
 
     let dev = new devices.CDevice(ECHO_DEVICES, 'Echo devices');
 
-    function devset(name, obj, func) {
-        let st = dev.oset(name, obj);
-        if (st) st.func = func;
-    }
+    let devset = dev.setf.bind(dev);
+    // function devset(name, obj, func) {
+    //     let st = dev.oset(name, obj);
+    //     if (st) st.func = func;
+    // }
 
     Object.keys (this.serialNumbers).forEach ((n) => {
         let device = this.serialNumbers[n];
-        //let dev = new devices.CDevice('');
         dev.setDeviceEx(ECHO_DEVICES + '\\.'+device.serialNumber, device._name);
-        // function devset(name, obj, func) {
-        //     let st = dev.oset(name, obj);
-        //     if (st) st.func = func;
-        // }
 
         dev.set('', device.online ? 'Online' : 'offline');
         dev.set('.requestResult', { val: '', common: { name: 'Request Result', write: false }});
@@ -197,8 +212,10 @@ Alexa.prototype.createStates = function (callback) {
         if (device.bluetoothState) {
             device.bluetoothState.pairedDeviceList.forEach((bt) => {
                 dev.setChannel('Bluetooth.' + bt.address, bt.friendlyName);
-                devset('connect', { val: false, common: { role: 'button'}}, bt.connect);
-                devset('disconnect', { val: false, common: { role: 'button'}}, bt.connect);
+                devset('connected', false, bt.connect);
+                devset('unpaire', { val: false, common: { role: 'button' }}, bt.unpaire);
+                //devset('connect', { val: false, common: { role: 'button'}}, bt.connect);
+                //devset('disconnect', { val: false, common: { role: 'button'}}, bt.connect);
             });
         }
 
@@ -271,6 +288,12 @@ Alexa.prototype.test = function (callback) {
 
 
 function main() {
+
+    devices.CDevice.prototype.setf = function (name, obj, func) {
+        let st = this.oset(name, obj);
+        if (st) st.func = func;
+        return st;
+    };
 
     normalizeConfig(adapter.config);
 
