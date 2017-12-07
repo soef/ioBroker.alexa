@@ -100,11 +100,61 @@
         "cookie": {
             "de": "Cookie",
             "en": "Cookie"
+        },
+        "Password": {
+            "de": "Passwort",
+            "en": "Password"
+        },
+        "Email": {
+            "de": "Benutzer/Email",
+            "en": "User/Email"
+        },
+        "auth": {
+            "de": "Anmeldung",
+            "en": "Login"
+        },
+        "cookieAlt": {
+            "de": "Manuelle Eingabe des Cookie. Email & Passwort werden dann nicht benötigt",
+            "en": "Manual input of the cookie. Email & password will then not be required"
         }
     };
 
     var active = false;
     var g_onChange;
+
+
+    function encrypt(str) {
+        if (!str) str = "";
+        try {
+            var key = 159;
+            var pos = 0;
+            var ostr = '';
+            while (pos < str.length) {
+                ostr = ostr + String.fromCharCode(str.charCodeAt(pos) ^ key);
+                pos += 1;
+            }
+            return ostr;
+        } catch (ex) {
+            return '';
+        }
+    }
+
+    function decrypt(str) {
+        if (!str) str = "";
+        try {
+            var key = 159;
+            var pos = 0;
+            var ostr = '';
+            while (pos < str.length) {
+                ostr = ostr + String.fromCharCode(key ^ str.charCodeAt(pos));
+                pos += 1;
+            }
+            return ostr;
+        } catch (ex) {
+            return '';
+        }
+    }
+
 
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
@@ -116,12 +166,10 @@
         });
 
         if (!settings) return;
-        if (settings.rootDir === undefined) settings.rootDir = '';
-        if (settings.useGlobalScriptAsPrefix === undefined) settings.useGlobalScriptAsPrefix = true;
-        if (settings.restartScript === undefined) settings.restartScript = true;
-        if (settings.disableWrite === undefined) settings.disableWrite = false;
-        if (settings.ioBrokerRootdir === undefined) settings.ioBrokerRootdir = '';
-        if (settings.basicSync === undefined) settings.basicSync = false;
+        if (settings.email === undefined) settings.email = '';
+        if (settings.password === undefined) settings.password = '';
+        if (settings.cookie === undefined) settings.cookie = '';
+        if (settings.baseUrl === undefined) settings.baseUrl = '';
 
 
 
@@ -130,8 +178,9 @@
 
         for (var key in settings) {
             // example: select elements with id=key and class=value and insert value
-            if ($('#' + key + '.value').attr('type') == 'checkbox') {
-                $('#' + key + '.value').prop('checked', settings[key]).change(function() {
+            $key = $('#' + key + '.value');
+            if ($key.attr('type') === 'checkbox') {
+                $key.prop('checked', settings[key]).change(function() {
                     if ($('#auth').prop('checked')) {
                         $('#secure').prop('checked', true);
                     }
@@ -139,7 +188,8 @@
                     showHideSettings();
                 });
             } else {
-                $('#' + key + '.value').val(settings[key]).change(function() {
+                var val = $key.attr('crypt') ? decrypt(settings[key]) : settings[key];
+                $key.val(val).change(function() {
                     onChange();
                 }).keyup(function() {
                     onChange();
@@ -170,7 +220,8 @@
                     obj[$this.attr ('id')] = ~~$this.val ();
                     break;
                 default:
-                    obj[$this.attr ('id')] = $this.val ();
+                    var val = $this.attr('crypt') ? encrypt($this.val ()) : $this.val ();
+                    obj[$this.attr ('id')] = val;
             }
         });
         changed = true;
@@ -259,24 +310,17 @@
     <!--<h1 class="translate">Interval</h1>-->
     <div id="settings">
         <table>
-            <!--<h1 class="translate">path</h1>-->
-            <!--<tr><td class="translate">rootDir</td><td class="admin-icon"></td><td width=5></td><td><input type="text" id="rootDir" class="value" size=50></td></tr>-->
+            <h1 class="translate">auth</h1>
+            <tr><td><label style="white-space: nowrap;" for="email" class="translate">Email</label></td><td class="admin-icon" data-link="false"></td><td><input size=50 crypt="1"  id="email" value="true" class="value"></td><td></td></tr>
+            <tr><td><label style="white-space: nowrap;" for="password" class="translate">Password</label></td><td class="admin-icon" data-link="false"></td><td><input size=50 crypt="1" type="password" id="password" value="true" class="value"></td><td></td></tr>
+        </table>
+        <table>
+            <h1 class="translate">cookieAlt</h1>
             <tr><td style="vertical-align: top;" ><label for="cookie" class="translate">cookie</label></td><td class="admin-icon" data-link="false"></td><td style="white-space: nowrap"><a>cookie starts with </a><a style="color: #00C;">x-amzn-dat</a><a> and ends with </a><a style="color: #00C;">="  </a><a href="https://www.gehrig.info/alexa/Alexa.html" target="_blank">look here</a></td><td></td></tr>
             <tr><td></td><td class="admin-icon" data-link="false"></td><td><textarea cols="100" rows="10" type="text" id="cookie" class="value" size=100></textarea></td><td></td></tr>
             <!--<tr><td><label for="cookie" class="translate">cookie</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" id="cookie" class="value" size=100></td><td></td></tr>-->
             <tr><td><label style="white-space: nowrap;" for="baseUrl" class="translate">baseUrl</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=80 class="value" id="baseUrl"/></td><td></td></tr>
-
         </table>
-        <!--<table>-->
-        <!--<h1 class="translate">options</h1>-->
-        <!--<tr><td class="translate">useGlobalScriptAsPrefix</td><td width=5></td><td><input type="checkbox" id="useGlobalScriptAsPrefix" class="value" size=20></td></tr>-->
-        <!--<tr><td class="translate">restartScript</td><td width=5></td><td><input type="checkbox" id="restartScript" class="value" size=20></td></tr>-->
-        <!--<tr><td class="translate">disableWrite</td><td width=5></td><td><input type="checkbox" id="disableWrite" class="value" size=20></td></tr>-->
-        <!--</table>-->
-        <!--<table>-->
-        <!--<h1 class="translate">log</h1>-->
-        <!--<tr><td class="translate">ioBrokerRootdir</td><td width=5></td><td><input type="text" id="ioBrokerRootdir" class="value" size=50></td></tr>-->
-        <!--</table>-->
     </div>
 
 </div>

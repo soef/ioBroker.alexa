@@ -1,11 +1,15 @@
 {
   "common": {
     "name": "alexa",
-    "version": "0.0.23",
+    "version": "0.0.28",
     "title": "Remote control for Alexa (Amazon Echo)",
     "desc": "Remote control for Alexa (Amazon Echo)",
     "platform": "Javascript/Node.js",
     "news": {
+      "0.0.28": {
+        "en": "generating cookie by user/password",
+        "de": "Cookie wird nun mit User/Passwort erstellt"
+      },
       "0.0.15": {
         "en": "detecting csrf in cookie changed",
         "de": "Ermitteln der csrf geändert"
