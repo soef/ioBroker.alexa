@@ -213,6 +213,7 @@ Alexa.prototype.updateHistory = function (callback) {
 
 Alexa.prototype.createStates = function (callback) {
 
+    let self = this;
     //let dev = new devices.CDevice(ECHO_DEVICES, { type: 'group', common: { name: 'Echo devices', type: 'group'}});
     let dev = new devices.CDevice(ECHO_DEVICES, { type: 'device', common: { name: 'Echo devices', type: 'device'}});
     //let dev = new devices.CDevice('');
@@ -312,7 +313,8 @@ Alexa.prototype.createStates = function (callback) {
         dev.set('summary', { val: '', common: { write: false}});
 
         devices.update(() => {
-            this.updateStates(callback);
+            //this.updateStates(callback);
+            self.updateStates(callback);
         });
     });
 
@@ -358,7 +360,12 @@ function main() {
 
     alexa = new Alexa();
     alexa.init(options,
-        function () {
+        function (err) {
+
+            if (err == 'no csrf found') {
+                adapter.log.error('no csrf found. Check configuration of email/password or cookie');
+                return;
+            }
 
             if (options.cookie !== adapter.config.cookie) {
                 soef.changeAdapterConfig (adapter, config => {
@@ -380,5 +387,3 @@ function main() {
         }
     )
 }
-
-
