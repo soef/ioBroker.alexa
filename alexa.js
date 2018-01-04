@@ -44,7 +44,7 @@ function onUpdate(prevVersion ,aktVersion, callback) {
 }
 
 function onStateChange(id, state) {
-    let ar, [a, inst, dummy, deviceId, channel, subChannel] = ar = id.split('.');
+    //let ar, [a, inst, dummy, deviceId, channel, subChannel] = ar = id.split('.');
     let func = devices.get(id.substr(8)).func;
 
     if (typeof func === 'function') func(state.val);
