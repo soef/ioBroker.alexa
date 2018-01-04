@@ -1,6 +1,6 @@
 {
   "name": "iobroker.alexa",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "description": "Remote control for Alexa (Amazon Echo)",
   "author": {
     "name": "soef",

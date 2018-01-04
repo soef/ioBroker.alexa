@@ -1,11 +1,15 @@
 {
   "common": {
     "name": "alexa",
-    "version": "0.0.32",
+    "version": "0.0.33",
     "title": "Alexa (Amazon Echo) Adapter",
     "desc": "Remote control for Alexa (Amazon Echo)",
     "platform": "Javascript/Node.js",
     "news": {
+      "0.0.33": {
+        "en": "node 4.x test removed",
+        "de": "node 4.x Test entfernt"
+      },
       "0.0.32": {
         "en": "fix node 4.x problem",
         "de": "node 4.x Problem behoben"
