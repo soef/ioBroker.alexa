@@ -23,6 +23,8 @@ const
     }
 ;
 
+let refreshTimer = new soef.Timer();
+
 let adapter = soef.Adapter(
     main,
     onStateChange,
@@ -48,6 +50,12 @@ function onStateChange(id, state) {
     let func = devices.get(id.substr(8)).func;
 
     if (typeof func === 'function') func(state.val);
+
+
+    refreshTimer.set(() => {
+        alexa.updateStates()
+    },1000)
+
 
     // switch(channel) {
     //     case 'Bluetooth':
@@ -103,8 +111,8 @@ function setRequestResult(err, res) {
     devices.root.setAndUpdate('requestResult', err);
 }
 
-
 Alexa.prototype.updateStates = function (callback) {
+    if (!this.devices || !this.devices.length) return callback();
     let self = this, i = 0;
     let dev = new devices.CDevice ('', '');
 
@@ -214,19 +222,10 @@ Alexa.prototype.updateHistory = function (callback) {
 Alexa.prototype.createStates = function (callback) {
 
     let self = this;
-    //let dev = new devices.CDevice(ECHO_DEVICES, { type: 'group', common: { name: 'Echo devices', type: 'group'}});
     let dev = new devices.CDevice(ECHO_DEVICES, { type: 'device', common: { name: 'Echo devices', type: 'device'}});
-    //let dev = new devices.CDevice('');
-
     let devset = dev.setf.bind(dev);
-    // function devset(name, obj, func) {
-    //     let st = dev.oset(name, obj);
-    //     if (st) st.func = func;
-    // }
-
     let key = soef.ns.add(ECHO_DEVICES);
     adapter.objects.getObjectView('system', 'device', {startkey: key + '.', endkey: key + '.\u9999'}, (err, res) => {
-    //adapter.objects.getObjectList({ startkey: key + '.', endkey: key + '.\u9999'}, (err, obj) => {
         let re = new RegExp (adapter.namespace + '\.' + ECHO_DEVICES + '.\[^\.]+$');
         let existingIds = [];
         for (let o of res.rows) {
@@ -306,14 +305,14 @@ Alexa.prototype.createStates = function (callback) {
             this.updateHistory();
         }.bind(this));
         dev.set('name', { val: '', common: { write: false, name: 'Echo Device name', desc: 'Device name of the last detected command'}});
-        //dev.createNew('creationTime', alexa.now());
-        dev.set('creationTime', alexa.now());
+        let now = new Date(); now = now.getTime() - now.getTimezoneOffset();
+        //dev.set('creationTime', alexa.now());
+        dev.set('creationTime', now);
         dev.set('serialNumber', { val: '', common: { write: false}});
         //dev.set('json', { val: {}, common: { write: false}});
         dev.set('summary', { val: '', common: { write: false}});
 
         devices.update(() => {
-            //this.updateStates(callback);
             self.updateStates(callback);
         });
     });
