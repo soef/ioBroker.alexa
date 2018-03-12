@@ -4,7 +4,7 @@
 
 <!-- -->
 [![NPM version](https://img.shields.io/npm/v/iobroker.alexa.svg)](https://www.npmjs.com/package/iobroker.alexa)
-[![Tests](https://img.shields.io/travis/soef/iobroker.alexa/master.svg)](https://travis-ci.org/soef/iobroker.alexa)
+[![Build Status](https://travis-ci.org/soef/ioBroker.alexa.svg?branch=master)](https://travis-ci.org/soef/ioBroker.alexa)
 [![Build status](https://ci.appveyor.com/api/projects/status/c92hrxu79mvs1qxo?svg=true)](https://ci.appveyor.com/project/soef/iobroker-alexa)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/soef/iobroker.alexa/blob/master/LICENSE)
 <!-- -->

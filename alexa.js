@@ -361,7 +361,7 @@ function main() {
     alexa.init(options,
         function (err) {
 
-            if (err == 'no csrf found') {
+            if (err === 'no csrf found') {
                 adapter.log.error('no csrf found. Check configuration of email/password or cookie');
                 return;
             }
@@ -372,10 +372,10 @@ function main() {
                 });
             }
 
-            if (0) alexa.test(function (err, res) {
-                    res = res;
-                }
-            );
+            // if (0) alexa.test(function (err, res) {
+            //         //res = res;
+            //     }
+            // );
 
             alexa.createStates(function () {
                 alexa.createSmarthomeStates(function () {
