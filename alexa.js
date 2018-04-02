@@ -112,7 +112,7 @@ function setRequestResult(err, res) {
 }
 
 Alexa.prototype.updateStates = function (callback) {
-    if (!this.devices || !this.devices.length) return callback();
+    if (!this.devices || !this.devices.length) return callback && callback();
     let self = this, i = 0;
     let dev = new devices.CDevice ('', '');
 
