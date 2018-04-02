@@ -1,11 +1,15 @@
 {
   "common": {
     "name": "alexa",
-    "version": "0.0.35",
+    "version": "0.0.36",
     "title": "Alexa (Amazon Echo) Adapter",
     "desc": "Remote control for Alexa (Amazon Echo)",
     "platform": "Javascript/Node.js",
     "news": {
+      "0.0.36": {
+        "en": "update exception fixed",
+        "de": "Schutzverletzung bei Datenpunkt-Update behoben"
+      },
       "0.0.35": {
         "en": "Test URL in readme fixed",
         "de": "Test URL in readme angepasst"
