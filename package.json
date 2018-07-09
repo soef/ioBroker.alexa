@@ -32,7 +32,7 @@
     "url": "https://github.com/soef/iobroker.alexa"
   },
   "dependencies": {
-    "alexa-remote": "^0.0.24",
+    "alexa-remote": "Apollon77/alexa-remote",
     "https": "^1.0.0",
     "soef": "^0.4.15"
   },

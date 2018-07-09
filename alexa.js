@@ -1,4 +1,9 @@
-﻿"use strict";
+/* jshint -W097 */
+/* jshint -W030 */
+/* jshint strict: false */
+/* jslint node: true */
+/* jslint esversion: 6 */
+"use strict";
 
 const
     soef = require('soef'),
@@ -53,8 +58,8 @@ function onStateChange(id, state) {
 
 
     refreshTimer.set(() => {
-        alexa.updateStates()
-    },1000)
+        alexa.updateStates();
+    }, 1000);
 
 
     // switch(channel) {
@@ -138,7 +143,7 @@ Alexa.prototype.updateStates = function (callback) {
             dev.setChannel('States');
             if (res.playerInfo.state !== null) dev.set('state', { val: res.playerInfo.state, ack: true });
             if (device) doIt();
-        })
+        });
     })();
 };
 
@@ -192,7 +197,7 @@ Alexa.prototype.createSmarthomeStates = function (callback) {
             }
         }
         devices.update(callback);
-    })
+    });
 };
 
 Alexa.prototype.updateHistory = function (callback) {
@@ -215,8 +220,8 @@ Alexa.prototype.updateHistory = function (callback) {
             dev.set ('summary', o.description.summary);
             //dev.set ('json', { name: o.name, serialNumber: o.serialNumber, summary: o.description.summary});
             devices.update (doIt);
-        })()
-    })
+        })();
+    });
 };
 
 Alexa.prototype.createStates = function (callback) {
@@ -291,8 +296,8 @@ Alexa.prototype.createStates = function (callback) {
                             devices.root.setAndUpdate (id, {val: station.name, ack: true});
                         } catch (e) {
                         }
-                    })
-                })
+                    });
+                });
             }
         });
 
@@ -354,14 +359,15 @@ function main() {
         password: adapter.config.password,
         email: adapter.config.email,
         bluetooth: true,
-        notifications: true
+        notifications: true,
+        logger: adapter.log.debug
     };
 
     alexa = new Alexa();
     alexa.init(options,
         function (err) {
 
-            if (err === 'no csrf found') {
+            if (err.message === 'no csrf found') {
                 adapter.log.error('no csrf found. Check configuration of email/password or cookie');
                 return;
             }
@@ -384,5 +390,5 @@ function main() {
                 });
             });
         }
-    )
+    );
 }
