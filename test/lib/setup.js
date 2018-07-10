@@ -11,6 +11,7 @@ pkg.main = pkg.main || 'main.js';
 
 var adapterName = path.normalize(rootDir).replace(/\\/g, '/').split('/');
 adapterName = adapterName[adapterName.length - 2];
+var adapterStarted = false;
 
 function getAppName() {
     var parts = __dirname.replace(/\\/g, '/').split('/');
@@ -35,7 +36,12 @@ function copyFileSync(source, target) {
         }
     }
 
-    fs.writeFileSync(targetFile, fs.readFileSync(source));
+    try {
+        fs.writeFileSync(targetFile, fs.readFileSync(source));
+    }
+    catch (err) {
+        console.log("file copy error: " +source +" -> " + targetFile + " (error ignored)");
+    }
 }
 
 function copyFolderRecursiveSync(source, target, ignore) {
@@ -60,6 +66,7 @@ function copyFolderRecursiveSync(source, target, ignore) {
             }
 
             var curSource = path.join(source, file);
+            var curTarget = path.join(targetFolder, file);
             if (fs.lstatSync(curSource).isDirectory()) {
                 // ignore grunt files
                 if (file.indexOf('grunt') !== -1) return;
@@ -67,7 +74,7 @@ function copyFolderRecursiveSync(source, target, ignore) {
                 if (file === 'mocha') return;
                 copyFolderRecursiveSync(curSource, targetFolder, ignore);
             } else {
-                copyFileSync(curSource, targetFolder);
+                copyFileSync(curSource, curTarget);
             }
         });
     }
@@ -445,23 +452,45 @@ function setupController(cb) {
             restoreOriginalFiles();
             copyAdapterToController();
         }
-        if (cb) cb();
+        // read system.config object
+        var dataDir = rootDir + 'tmp/' + appName + '-data/';
+
+        var objs;
+        try {
+            objs = fs.readFileSync(dataDir + 'objects.json');
+            objs = JSON.parse(objs);
+        }
+        catch (e) {
+            console.log('ERROR reading/parsing system configuration. Ignore');
+            objs = {'system.config': {}};
+        }
+        if (!objs || !objs['system.config']) {
+            objs = {'system.config': {}};
+        }
+
+        if (cb) cb(objs['system.config']);
     });
 }
 
 function startAdapter(objects, states, callback) {
+    if (adapterStarted) {
+        console.log('Adapter already started ...');
+        if (callback) callback(objects, states);
+        return;
+    }
+    adapterStarted = true;
     console.log('startAdapter...');
     if (fs.existsSync(rootDir + 'tmp/node_modules/' + pkg.name + '/' + pkg.main)) {
         try {
             if (debug) {
                 // start controller
-                pid = child_process.exec('node node_modules/' + pkg.name + '/' + pkg.main + ' --console debug', {
+                pid = child_process.exec('node node_modules/' + pkg.name + '/' + pkg.main + ' --console silly', {
                     cwd: rootDir + 'tmp',
                     stdio: [0, 1, 2]
                 });
             } else {
                 // start controller
-                pid = child_process.fork('node_modules/' + pkg.name + '/' + pkg.main, ['--console', 'debug'], {
+                pid = child_process.fork('node_modules/' + pkg.name + '/' + pkg.main, ['--console', 'silly'], {
                     cwd:   rootDir + 'tmp',
                     stdio: [0, 1, 2, 'ipc']
                 });
@@ -477,6 +506,8 @@ function startAdapter(objects, states, callback) {
 
 function startController(isStartAdapter, onObjectChange, onStateChange, callback) {
     if (typeof isStartAdapter === 'function') {
+        callback = onStateChange;
+        onStateChange = onObjectChange;
         onObjectChange = isStartAdapter;
         isStartAdapter = true;
     }
@@ -490,6 +521,7 @@ function startController(isStartAdapter, onObjectChange, onStateChange, callback
         console.error('Controller is already started!');
     } else {
         console.log('startController...');
+        adapterStarted = false;
         var isObjectConnected;
         var isStatesConnected;
 
@@ -505,6 +537,9 @@ function startController(isStartAdapter, onObjectChange, onStateChange, callback
                 "connectTimeout": 2000
             },
             logger: {
+                silly: function (msg) {
+                    console.log(msg);
+                },
                 debug: function (msg) {
                     console.log(msg);
                 },
@@ -525,7 +560,10 @@ function startController(isStartAdapter, onObjectChange, onStateChange, callback
                     if (isStartAdapter) {
                         startAdapter(objects, states, callback);
                     } else {
-                        if (callback) callback(objects, states);
+                        if (callback) {
+                            callback(objects, states);
+                            callback = null;
+                        }
                     }
                 }
             },
@@ -545,9 +583,14 @@ function startController(isStartAdapter, onObjectChange, onStateChange, callback
                 }
             },
             logger: {
+                silly: function (msg) {
+                    console.log(msg);
+                },
                 debug: function (msg) {
+                    console.log(msg);
                 },
                 info: function (msg) {
+                    console.log(msg);
                 },
                 warn: function (msg) {
                     console.log(msg);
@@ -560,7 +603,14 @@ function startController(isStartAdapter, onObjectChange, onStateChange, callback
                 isStatesConnected = true;
                 if (isObjectConnected) {
                     console.log('startController: started!!');
-                    startAdapter(objects, states, callback);
+                    if (isStartAdapter) {
+                        startAdapter(objects, states, callback);
+                    } else {
+                        if (callback) {
+                            callback(objects, states);
+                            callback = null;
+                        }
+                    }
                 }
             },
             change: onStateChange
@@ -577,6 +627,7 @@ function stopAdapter(cb) {
             }, 0);
         }
     } else {
+        adapterStarted = false;
         pid.on('exit', function (code, signal) {
             if (pid) {
                 console.log('child process terminated due to receipt of signal ' + signal);
@@ -673,4 +724,5 @@ if (typeof module !== undefined && module.parent) {
     module.exports.installAdapter   = installAdapter;
     module.exports.appName          = appName;
     module.exports.adapterName      = adapterName;
+    module.exports.adapterStarted   = adapterStarted;
 }
