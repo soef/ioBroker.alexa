@@ -67,14 +67,16 @@
     "extIcon": "https://raw.githubusercontent.com/soef/iobroker.alexa/master/admin/alexa.png",
     "readme": "https://github.com/soef/iobroker.alexa/blob/master/README.md",
     "loglevel": "info",
-    "type": "script",
+    "type": "iot-systems",
     "enabled": true,
     "messagebox": true
   },
   "native": {
     "cookie": "",
     "baseUrl": "",
-    "csrf": ""
+    "csrf": "",
+    "email": "",
+    "password": ""
   },
   "objects": [
   ]
