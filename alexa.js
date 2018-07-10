@@ -44,9 +44,9 @@ function onUnload(callback) {
 }
 
 function onUpdate(prevVersion ,aktVersion, callback) {
-    if (prevVersion < 25) {
+    /*if (prevVersion < 25) {
         return removeAllObjects(adapter, callback);
-    }
+    }*/
     callback();
 }
 
@@ -366,16 +366,24 @@ function main() {
     alexa = new Alexa();
     alexa.init(options,
         function (err) {
-
-            if (err.message === 'no csrf found') {
-                adapter.log.error('no csrf found. Check configuration of email/password or cookie');
-                return;
+            if (err) {
+                if (err.message === 'no csrf found') {
+                    adapter.log.error('Error: no csrf found. Check configuration of email/password or cookie');
+                    return;
+                }
+                else {
+                    adapter.log.error('Error: ' + err.message); // TODO!!
+                    // Captcha needed
+                    return;
+                }
             }
 
             if (options.cookie !== adapter.config.cookie) {
+                adapter.log.info('Update cookie in adapter configuration ... restarting ...');
                 soef.changeAdapterConfig (adapter, config => {
                      config.cookie = options.cookie;
                 });
+                return;
             }
 
             // if (0) alexa.test(function (err, res) {
@@ -389,6 +397,16 @@ function main() {
                     adapter.subscribeObjects ('*');
                 });
             });
+        },
+        function(cookie) {
+            if (cookie !== adapter.config.cookie) {
+                adapter.log.info('Update cookie in adapter configuration ... restarting in 30 seconds ...');
+                setTimeout(() => {
+                    soef.changeAdapterConfig (adapter, config => {
+                         config.cookie = cookie;
+                    });
+                }, 30000);
+            }
         }
     );
 }
