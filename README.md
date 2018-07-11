@@ -21,6 +21,10 @@ npm install iobroker.alexa
 
 ## Changelog
 
+### 0.1.x
+* (Apollon77) 0.1.2: Library fixes and uodates
+* (Apollon77) 0.1.1: Library fixes and uodates
+
 ### 0.1.0 (2018-07-10)
 * (Apollon77) get Adapter working again, especially getting cookie and optimize refresh
 
