@@ -16,15 +16,15 @@ const
     ECHO_DEVICES = 'echo-devices',
 
     commands = {
-        play: { val: false, common: { role: 'button'}},
-        pause:{ val: false, common: { role: 'button'}},
-        next: { val: false, common: { role: 'button'}},
-        previous: { val: false, common: { role: 'button'}},
-        forward: { val: false, common: { role: 'button'}},
-        rewind: { val: false, common: { role: 'button'}},
-        volume: { val: 0, common: { role: 'volume'}},
-        shuffle: { val: false, common: { role: 'button'}},
-        repeat: { val: false, common: {role: 'button'}},
+        play: { val: false, common: { role: 'button.play'}},
+        pause:{ val: false, common: { role: 'button.pause'}},
+        next: { val: false, common: { role: 'button.next'}},
+        previous: { val: false, common: { role: 'button.prev'}},
+        forward: { val: false, common: { role: 'button.forward'}},
+        rewind: { val: false, common: { role: 'button.reverse'}},
+        volume: { val: 0, common: { role: 'level.volume', min: 0, max: 100}},
+        shuffle: { val: false, common: { role: 'media.mode.shuffle'}},
+        repeat: { val: false, common: { role: 'media.mode.repeat'}},
     }
 ;
 
@@ -188,8 +188,8 @@ Alexa.prototype.createSmarthomeStates = function (callback) {
                         manufacturerName: skill.manufacturerName,
                     }
                 });
-                dev.set('', { val: skill.isEnabled, type: 'channel' });
-                dev.set('isEnabled', skill.isEnabled);
+                //dev.set('', { val: skill.isEnabled, type: 'channel' });
+                dev.set('isEnabled', { val: skill.isEnabled, common: { role: 'indicator', write: false}});
                 dev.setf('delete', { val: false, common: { role: 'button'}}, function (id, val) {
                     this.deleteSmarthomeDevice(n);
                     adapter.deleteChannel(SMART_HOME_DEVICES, id);
@@ -250,16 +250,16 @@ Alexa.prototype.createStates = function (callback) {
             // dev.setDeviceEx (ECHO_DEVICES + '\\.' + device.serialNumber, { type: 'device', common: { name: device._name}});
 
             //dev.set ('', { val: device.online ? 'Online' : 'offline', type: 'device' });
-            dev.set ('.requestResult', {val: '', common: {name: 'Request Result', write: false}});
+            dev.set ('.requestResult', {val: '', common: {name: 'Request Result', write: false, role: 'text'}}); // TODO ???
             dev.set ('delete', {val: false, common: {name: 'Delete (Log out of this device)', role: 'button'}});
 
             dev.setChannel ('States');
-            dev.set ('capabilities', device.capabilities.join (','));
+            dev.set ('capabilities', {val: device.capabilities.join (','), common: {role: 'text', write: false}});
 
             if (device.bluetoothState) {
                 device.bluetoothState.pairedDeviceList.forEach ((bt) => {
                     dev.setChannel ('Bluetooth.' + bt.address, bt.friendlyName);
-                    devset ('connected', false, bt.connect);
+                    devset ('connected', {val: bt.connected, common: {role: 'switch'}}, bt.connect);
                     devset ('unpaire', {val: false, common: {role: 'button'}}, bt.unpaire);
                     //devset('connect', { val: false, common: { role: 'button'}}, bt.connect);
                     //devset('disconnect', { val: false, common: { role: 'button'}}, bt.connect);
@@ -273,7 +273,7 @@ Alexa.prototype.createStates = function (callback) {
                         let ar = noti.originalTime.split (':');
                         ar.length = 2;
                         let s = ar.join (':');
-                        devset (s, {val: noti.status === 'ON', common: {name: `Type=${noti.type}`}}, noti.set);
+                        devset (s, {val: noti.status === 'ON', common: {type: 'mixed', role: 'state', name: `Type=${noti.type}`}}, noti.set);
                     }
                 }
             }
@@ -282,10 +282,10 @@ Alexa.prototype.createStates = function (callback) {
             for (let n in commands) {
                 devset (n, JSON.parse (JSON.stringify (commands[n])), alexa.sendCommand.bind (alexa, device, n));
             }
-            devset ('doNotDisturb', false, device.setDoNotDisturb);
+            devset ('doNotDisturb', {val: false, common: {role: 'switch'}}, device.setDoNotDisturb);
 
             if (device.capabilities.includes ('TUNE_IN')) {
-                devset ('TuneIn', "", function (query) {
+                devset ('TuneIn', {val: '', common: {role: 'text'}}, function (query) {
                     let id = dev.getFullId ('TuneIn');
                     alexa.tuneinSearch (query, function (err, res) {
                         setRequestResult (err, res);
@@ -309,13 +309,13 @@ Alexa.prototype.createStates = function (callback) {
         devset('#trigger', { val: false, common: { role: 'button', name: 'Trigger/Rescan', desc: 'Set to true, to start a request'}}, function(val) {
             this.updateHistory();
         }.bind(this));
-        dev.set('name', { val: '', common: { write: false, name: 'Echo Device name', desc: 'Device name of the last detected command'}});
+        dev.set('name', { val: '', common: { role: 'text', write: false, name: 'Echo Device name', desc: 'Device name of the last detected command'}});
         let now = new Date(); now = now.getTime() - now.getTimezoneOffset();
         //dev.set('creationTime', alexa.now());
-        dev.set('creationTime', now);
-        dev.set('serialNumber', { val: '', common: { write: false}});
+        dev.set('creationTime', { val: now, common: { role: 'value.time'}});
+        dev.set('serialNumber', { val: '', common: { role: 'text', write: false}});
         //dev.set('json', { val: {}, common: { write: false}});
-        dev.set('summary', { val: '', common: { write: false}});
+        dev.set('summary', { val: '', common: { role: 'text', write: false}});
 
         devices.update(() => {
             self.updateStates(callback);
