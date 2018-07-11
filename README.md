@@ -33,20 +33,20 @@ In the adapter namespace (e.g. alexa.0) some channels are created
 | - | - |
 | Commands.Bluetooth.MAC.connected | Shows current connection status and allow connection (set to true) or disconnection (set to false) |
 | Commands.Bluetooth.MAC.unpair | Button to unpair this device |
-| Commands.TuneIn | text field to put in a Station name (or Station ID?) to play this station on this device |
+| Commands.TuneIn | text field to put in a Station name to play this station on this device |
 | Commands.doNotDisturb | Switch to set the Do-Not-Disturb mode for this device |
-| Commands.forward | Button to trigger player "forward" command |
+| Commands.forward | Button to trigger player "forward" command (30s) |
 | Commands.next | Button to trigger player "next" command |
 | Commands.pause | Button to trigger player "pause" command |
 | Commands.play | Button to trigger player "play" command |
 | Commands.previous | Button to trigger player "previous" command |
-| Commands.rewind | Button to trigger player "v" command |
+| Commands.rewind | Button to trigger player "rewind" command (30s) |
 | Commands.shuffle | Switch to enable or disable Shuffle mode for player |
-| Commands.repeat | Switch to enable or disable Repeat mode for player (Works this??) |
+| Commands.repeat | Switch to enable or disable Repeat mode for player |
 | Commands.volume | 0..100 number value to set volume of the device to |
 | Notifications.hh:ss | shows true/false if this notification slot is active or not, also allows to switch on/off (set true/false) or change time (set new time as value) |
 | States.capabilities | shows the device capabilities as reported by Amazon |
-| States.state | ??? Object missing |
+| States.state | Player status --> move!! |
 | delete | Button to log out of this device on Amazon side |
 
 #### alexa.0.history
@@ -66,12 +66,14 @@ In the adapter namespace (e.g. alexa.0) some channels are created
 | UniqueId.delete | Button to delete this smart home device |
 | UniqueId.isEnabled | indicator if the smart home device is enabled |
 | deleteAll | Button to delete all smart home devices in Amazon |
-| discoverDevices | Button to trigger discovring devices |
+| discoverDevices | Button to trigger discovering devices |
 
 ## Missing features
 * also update bluetooth status in intervals AND on connect/disconnect/unpair?
 * how to update initial status for volume, shuffle or repeat and doNotDisturb?! Or unneeded?
-
+* also allow station-IDs in the TuneIn field
+* add fields to show playing-info like JS version
+* self deactivation if cookie/csrf invalid
 
 ## Installation
 Execute the following command in the iobroker root directory (e.g. in /opt/iobroker)
@@ -82,6 +84,7 @@ npm install iobroker.alexa
 ## Changelog
 
 ### 0.1.x
+* (Apollon77) 0.1.4: State changes are logged and only considered when ack=false!
 * (Apollon77) 0.1.3: Corrected all roles, delete objects and start again!
 * (Apollon77) 0.1.3: bluetooth connection status filled correctly initially
 * (Apollon77) 0.1.2: Library fixes and updates

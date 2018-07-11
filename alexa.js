@@ -51,6 +51,9 @@ function onUpdate(prevVersion ,aktVersion, callback) {
 }
 
 function onStateChange(id, state) {
+
+    adapter.log.debug('State changed ' + id + ': ' + JSON.stringify(state));
+    if (!state || state.ack) return;
     //let ar, [a, inst, dummy, deviceId, channel, subChannel] = ar = id.split('.');
     let func = devices.get(id.substr(8)).func;
 

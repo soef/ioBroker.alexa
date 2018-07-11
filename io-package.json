@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "title": "Alexa (Amazon Echo) Adapter",
     "desc": "Remote control for Alexa (Amazon Echo)",
     "platform": "Javascript/Node.js",
