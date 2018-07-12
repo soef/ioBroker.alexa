@@ -19,83 +19,13 @@
 
     // Dictionary (systemDictionary is global variable from adapter-settings.js)
     systemDictionary = {
-        "Javascript to Files(s) settings": {
-            "de": "Javascript to File(s) Einstellungen",
-            "en": "Javascript to File(s) settings",
-        },
         "Settings": {
             "de": "Einstellungen",
             "ru": "Settings"
         },
-        "on save adapter restarts with new config immediately": {
-            "de": "Beim Speichern der Einstellungen wird der Adapter automatisch neu gestartet.",
-            "ru": "Сразу после сохранения настроек драйвер перезапуститься с новыми значениями"
-        },
-        "name": {
-            "de": "Bezeichnung",
-            "en": "Name"
-        },
-        "ip": {
-            "de": "IP",
-            "en": "IP"
-        },
-        "enabled": {
-            "de": "Aktiviert",
-            "en": "Active"
-        },
-        "type": {
-            "de": "Typ",
-            "en": "Type"
-        },
-        "port": {
-            "de": "Port",
-            "en": "Port"
-        },
-        "User": {"en": "User", "de": "Benutzer", "ru": "Тест 2"},
-        "Password": { "en": "Password", "de": "Passswort", "ru": "Тест 2" },
-        "path": {
-            "de": "Verzeichnis",
-            "en": "Directory"
-        },
-        "useGlobalScriptAsPrefix": {
-            "en": "Insert global scripts as prefix",
-            "de": "Globale Skripte voranstellen"
-        },
-        "restartScript": {
-            "en": "Restart aktive script after save",
-            "de": "Skript nach dem Speichern neustarten"
-        },
-        "disableWrite": {
-            "en": "Disable write (save)",
-            "de": "Schreiben (Speichern) unterbinden"
-        },
-        "options": {
-            "en": "Options",
-            "de": "Optionen"
-        },
-        "rootDir": {
-            "en": "Root Diretory to sync to",
-            "de": "Basisverzeichnis (Ziel für Synchronisation)"
-        },
-        "tooltip_rootDir": {
-            "en": "Destination for synchronisation",
-            "de": "Ziel für Synchronisation)"
-        },
-        "ioBrokerRootdir": {
-            "en": "ioBroker Root Directory e.g.: /opt/iobroker",
-            "de": "Root Verzeichnis von ioBroker z.B.: /opt/iobroker"
-        },
-        "log": {
-            "en": "Error log export with filter",
-            "de": "Fehlerprotokoll-Export"
-        },
-        "tooltip_basicSync": {
-            "de": "Originalverzeichnis wurd in ./$ba verschoben, neu erstellt und mit Daten aus ioBroker gefüllt",
-            "en": "The original directory will be moved to ./$ba, a new one created and filled with data from ioBroker"
-        },
         "baseUrl": {
-            "de": "Basis URL",
-            "en": "Base url"
+            "de": "Alexa Basis URL",
+            "en": "Alexa base url"
         },
         "cookie": {
             "de": "Cookie",
@@ -116,6 +46,22 @@
         "cookieAlt": {
             "de": "Manuelle Eingabe des Cookie. Email & Passwort werden dann nicht benötigt",
             "en": "Manual input of the cookie. Email & password will then not be required"
+        },
+        "amazonPage": {
+            "de": "Eigene Cookie-Amazon-URL",
+            "en": "Custom Cookie-Amazon-URL"
+        },
+        "userAgent": {
+            "de": "Eigener User-Agent",
+            "en": "Custom User-Agent"
+        },
+        "acceptLanguage": {
+            "de": "Eigene Sprachangabe-Header",
+            "en": "Custom Accept-Language Header"
+        },
+        "override": {
+            "de": "Überschreiben spezieller Parameter zur Cookie-Ermittlung und Kommunikation",
+            "en": "Override special parameter for cookie determination and communication"
         }
     };
 
@@ -170,6 +116,9 @@
         if (settings.password === undefined) settings.password = '';
         if (settings.cookie === undefined) settings.cookie = '';
         if (settings.baseUrl === undefined) settings.baseUrl = '';
+        if (settings.userAgent === undefined) settings.userAgent = '';
+        if (settings.acceptLanguage === undefined) settings.acceptLanguage = '';
+        if (settings.cookieLoginUrl === undefined) settings.cookieLoginUrl = '';
 
 
 
@@ -309,17 +258,25 @@
 
     <!--<h1 class="translate">Interval</h1>-->
     <div id="settings">
+        <h1 class="translate">auth</h1>
         <table>
-            <h1 class="translate">auth</h1>
             <tr><td><label style="white-space: nowrap;" for="email" class="translate">Email</label></td><td class="admin-icon" data-link="false"></td><td><input size=50 crypt="1"  id="email" value="true" class="value"></td><td></td></tr>
             <tr><td><label style="white-space: nowrap;" for="password" class="translate">Password</label></td><td class="admin-icon" data-link="false"></td><td><input size=50 crypt="1" type="password" id="password" value="true" class="value"></td><td></td></tr>
         </table>
+        </br>
+        <h1 class="translate">cookieAlt</h1>
         <table>
-            <h1 class="translate">cookieAlt</h1>
             <tr><td style="vertical-align: top;" ><label for="cookie" class="translate">cookie</label></td><td class="admin-icon" data-link="false"></td><td style="white-space: nowrap"><a>cookie starts with </a><a style="color: #00C;">x-amzn-dat</a><a> and ends with </a><a style="color: #00C;">="  </a><a href="https://www.gehrig.info/alexa/Alexa.html" target="_blank">look here</a></td><td></td></tr>
             <tr><td></td><td class="admin-icon" data-link="false"></td><td><textarea cols="100" rows="10" type="text" id="cookie" class="value" size=100></textarea></td><td></td></tr>
             <!--<tr><td><label for="cookie" class="translate">cookie</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" id="cookie" class="value" size=100></td><td></td></tr>-->
+        </table>
+        </br>
+        <h1 class="translate">override</h1>
+        <table>
             <tr><td><label style="white-space: nowrap;" for="baseUrl" class="translate">baseUrl</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=80 class="value" id="baseUrl"/></td><td></td></tr>
+            <tr><td><label style="white-space: nowrap;" for="userAgent" class="translate">userAgent</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=80 class="value" id="userAgent"/></td><td></td></tr>
+            <tr><td><label style="white-space: nowrap;" for="acceptLanguage" class="translate">acceptLanguage</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=10 class="value" id="acceptLanguage"/></td><td></td></tr>
+            <tr><td><label style="white-space: nowrap;" for="cookieLoginUrl" class="translate">cookieLoginUrl</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=80 class="value" id="cookieLoginUrl"/></td><td></td></tr>
         </table>
     </div>
 
@@ -327,4 +284,3 @@
 
 
 </html>
-

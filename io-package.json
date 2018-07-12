@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "title": "Alexa (Amazon Echo) Adapter",
     "desc": "Remote control for Alexa (Amazon Echo)",
     "platform": "Javascript/Node.js",
@@ -69,14 +69,18 @@
     "loglevel": "info",
     "type": "iot-systems",
     "enabled": true,
-    "messagebox": true
+    "messagebox": true,
+    "license": "MIT"
   },
   "native": {
     "cookie": "",
     "baseUrl": "",
     "csrf": "",
     "email": "",
-    "password": ""
+    "password": "",
+    "userAgent": "",
+    "acceptLanguage": "",
+    "cookieLoginUrl": ""
   },
   "objects": [
   ]

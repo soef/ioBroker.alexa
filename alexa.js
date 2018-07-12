@@ -15,7 +15,7 @@ const
     SMART_HOME_DEVICES = 'smart-home-devices',
     ECHO_DEVICES = 'echo-devices',
 
-    commands = {
+    playerControls = {
         play: { val: false, common: { role: 'button.play'}},
         pause:{ val: false, common: { role: 'button.pause'}},
         next: { val: false, common: { role: 'button.next'}},
@@ -25,7 +25,11 @@ const
         volume: { val: 0, common: { role: 'level.volume', min: 0, max: 100}},
         shuffle: { val: false, common: { role: 'media.mode.shuffle'}},
         repeat: { val: false, common: { role: 'media.mode.repeat'}},
+    },
+
+    commands = {
     }
+
 ;
 
 let refreshTimer = new soef.Timer();
@@ -59,23 +63,15 @@ function onStateChange(id, state) {
 
     if (typeof func === 'function') func(state.val);
 
-
+    if (id.indexOf('#trigger') !== -1) return;
+    
     refreshTimer.set(() => {
         alexa.updateStates();
-    }, 1000);
-
-
-    // switch(channel) {
-    //     case 'Bluetooth':
-    //         if (typeof func === 'function') func(ar[6] === 'connect');
-    //         break;
-    //     default:
-    //         if (typeof func === 'function') func(state.val);
-    //         break;
-    // }
+    }, 3000);
 }
 
 function onObjectChange(id, object) {
+    adapter.log.debug('Object changed ' + id + ': ' + JSON.stringify(object));
     let ar = id.split('.');
     if (ar[2] === ECHO_DEVICES) {
         if (object === null) {
@@ -131,20 +127,22 @@ Alexa.prototype.updateStates = function (callback) {
             });
         }
         let device = self.devices[i++];
-        dev.setDeviceEx(ECHO_DEVICES + '\\.'+device.serialNumber, { type: 'device', common: { name: device.accountName }});
-        dev.set ('', { type: 'device', val: device.online ? 'Online' : 'Offline'});
+        dev.setDeviceEx(ECHO_DEVICES + '\\.' + device.serialNumber);
+        dev.set ('online', { val: device.online, role: 'indicator.connected' });
         dev.setName(device.accountName);
 
         self.getPlayerInfo(device, function(err, res) {
             if (err || !res || !res.playerInfo) return doIt();
-            dev.setChannel('Commands');
+            dev.setDeviceEx(ECHO_DEVICES + '\\.' + device.serialNumber);
+            dev.setChannel('Player-Controls');
             if (res.playerInfo.volume) {
                 dev.set('volume', { val: ~~res.playerInfo.volume.volume, ack: true });
                 //let muted = res.playerInfo.volume.muted;
             }
             dev.set('pause', { val: res.playerInfo.state === 'PAUSED', ack: true });
-            dev.setChannel('States');
-            if (res.playerInfo.state !== null) dev.set('state', { val: res.playerInfo.state, ack: true });
+            dev.set('play', { val: res.playerInfo.state === 'PLAYING', ack: true });
+            dev.setChannel('Player-Info');
+            if (res.playerInfo.state !== null) dev.set('status', { val: res.playerInfo.state, ack: true });
             if (device) doIt();
         });
     })();
@@ -243,7 +241,7 @@ Alexa.prototype.createStates = function (callback) {
 
         Object.keys (this.serialNumbers).forEach ((n) => {
             let device = this.serialNumbers[n];
-            dev.setDeviceEx (ECHO_DEVICES + '\\.' + device.serialNumber, { type: 'device', common: {name: device._name, type: 'device' }});
+            dev.setDeviceEx (ECHO_DEVICES + '\\.' + device.serialNumber, { type: 'device', common: {name: device._name}});
             let idx = existingIds.indexOf(soef.ns.with(ECHO_DEVICES + '.' + device.serialNumber));
             if (idx !== -1) existingIds.splice(idx, 1);
 
@@ -256,8 +254,12 @@ Alexa.prototype.createStates = function (callback) {
             dev.set ('.requestResult', {val: '', common: {name: 'Request Result', write: false, role: 'text'}}); // TODO ???
             dev.set ('delete', {val: false, common: {name: 'Delete (Log out of this device)', role: 'button'}});
 
-            dev.setChannel ('States');
+            dev.setChannel ('Info');
             dev.set ('capabilities', {val: device.capabilities.join (','), common: {role: 'text', write: false}});
+
+            dev.setChannel ('Player-Info');
+            dev.set('status', { val: '', ack: true });
+            //TODO
 
             if (device.bluetoothState) {
                 device.bluetoothState.pairedDeviceList.forEach ((bt) => {
@@ -287,8 +289,16 @@ Alexa.prototype.createStates = function (callback) {
             }
             devset ('doNotDisturb', {val: false, common: {role: 'switch'}}, device.setDoNotDisturb);
 
+            dev.setChannel ('Player-Controls');
+            for (let n in playerControls) {
+                devset (n, JSON.parse (JSON.stringify (playerControls[n])), alexa.sendCommand.bind (alexa, device, n));
+            }
+
             if (device.capabilities.includes ('TUNE_IN')) {
                 devset ('TuneIn', {val: '', common: {role: 'text'}}, function (query) {
+                    let dev = new devices.CDevice ('', '');
+                    dev.setDeviceEx (ECHO_DEVICES + '\\.' + device.serialNumber);
+                    dev.setChannel ('Player-Controls');
                     let id = dev.getFullId ('TuneIn');
                     alexa.tuneinSearch (query, function (err, res) {
                         setRequestResult (err, res);
@@ -327,26 +337,6 @@ Alexa.prototype.createStates = function (callback) {
 
 };
 
-Alexa.prototype.test = function (callback) {
-    let o = {
-        //accountName: oo.accountName += '1',
-    };
-    let flags = {
-        method: 'POST',
-        //data: JSON.stringify (o),
-        headers: {
-        }
-    };
-
-    this.httpsGet ('https://alexa.amazon.de',
-        function (err, res) {
-            res = res;
-        },
-        flags
-    );
-};
-
-
 function main() {
 
     devices.CDevice.prototype.setf = function (name, obj, func) {
@@ -363,6 +353,9 @@ function main() {
         email: adapter.config.email,
         bluetooth: true,
         notifications: true,
+        userAgent: adapter.config.userAgent,
+        acceptLanguage: adapter.config.acceptLanguage,
+        amazonPage: adapter.config.cookieLoginUrl,
         logger: adapter.log.debug
     };
 
@@ -372,13 +365,19 @@ function main() {
             if (err) {
                 if (err.message === 'no csrf found') {
                     adapter.log.error('Error: no csrf found. Check configuration of email/password or cookie');
-                    return;
                 }
                 else {
                     adapter.log.error('Error: ' + err.message); // TODO!!
-                    // Captcha needed
-                    return;
                 }
+                adapter.getForeignObject("system.adapter." + adapter.namespace, function (err, obj) {
+                    if (err || !obj) return;
+                    if (!obj.common) obj.common = {};
+                    obj.common.enabled = false;
+                    adapter.setForeignObject(obj._id, obj, {}, function (err, s_obj) {
+                        adapter.log.info("Adapter disabled because of error");
+                    });
+                });
+                return;
             }
 
             if (options.cookie !== adapter.config.cookie) {
@@ -388,11 +387,6 @@ function main() {
                 });
                 return;
             }
-
-            // if (0) alexa.test(function (err, res) {
-            //         //res = res;
-            //     }
-            // );
 
             alexa.createStates(function () {
                 alexa.createSmarthomeStates(function () {
