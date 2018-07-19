@@ -23,7 +23,7 @@
             "de": "Einstellungen",
             "ru": "Settings"
         },
-        "baseUrl": {
+        "alexaServiceHost": {
             "de": "Alexa Basis URL",
             "en": "Alexa base url"
         },
@@ -59,6 +59,22 @@
             "de": "Eigene Sprachangabe-Header",
             "en": "Custom Accept-Language Header"
         },
+        "updateStateInterval": {
+            "de": "Daten-Update-Interval (Player-Info ...)",
+            "en": "Data update interval (player info ...)"
+        },
+        "updateHistoryInterval": {
+            "de": "History Update Interval",
+            "en": "History update interval"
+        },
+        "Interval": {
+            "de": "Intervalle",
+            "en": "Intervals"
+        },
+        "s (0 = disabled)": {
+            "de": "s (0 = deaktiviert)",
+            "en": "s (0 = disabled)"
+        },
         "override": {
             "de": "Überschreiben spezieller Parameter zur Cookie-Ermittlung und Kommunikation",
             "en": "Override special parameter for cookie determination and communication"
@@ -67,43 +83,27 @@
 
     var active = false;
     var g_onChange;
+    var secret;
 
-
-    function encrypt(str) {
-        if (!str) str = "";
-        try {
-            var key = 159;
-            var pos = 0;
-            var ostr = '';
-            while (pos < str.length) {
-                ostr = ostr + String.fromCharCode(str.charCodeAt(pos) ^ key);
-                pos += 1;
-            }
-            return ostr;
-        } catch (ex) {
-            return '';
+    function encrypt(key, value) {
+        var result = '';
+        for(var i = 0; i < value.length; ++i) {
+            result += String.fromCharCode(key[i % key.length].charCodeAt(0) ^ value.charCodeAt(i));
         }
+        return result;
     }
 
-    function decrypt(str) {
-        if (!str) str = "";
-        try {
-            var key = 159;
-            var pos = 0;
-            var ostr = '';
-            while (pos < str.length) {
-                ostr = ostr + String.fromCharCode(key ^ str.charCodeAt(pos));
-                pos += 1;
-            }
-            return ostr;
-        } catch (ex) {
-            return '';
+    function decrypt(key, value) {
+        var result = '';
+        for(var i = 0; i < value.length; ++i) {
+            result += String.fromCharCode(key[i % key.length].charCodeAt(0) ^ value.charCodeAt(i));
         }
+        return result;
     }
 
 
     // the function loadSettings has to exist ...
-    function load(settings, onChange) {
+    function loadHelper(settings, onChange) {
         $("#dialog-search").dialog({
             autoOpen: false,
             modal: true,
@@ -115,10 +115,12 @@
         if (settings.email === undefined) settings.email = '';
         if (settings.password === undefined) settings.password = '';
         if (settings.cookie === undefined) settings.cookie = '';
-        if (settings.baseUrl === undefined) settings.baseUrl = '';
+        if (settings.alexaServiceHost === undefined) settings.alexaServiceHost = '';
         if (settings.userAgent === undefined) settings.userAgent = '';
         if (settings.acceptLanguage === undefined) settings.acceptLanguage = '';
         if (settings.cookieLoginUrl === undefined) settings.cookieLoginUrl = '';
+        if (settings.updateStateInterval === undefined) settings.updateStateInterval = 0;
+        if (settings.updateHistoryInterval === undefined) settings.updateHistoryInterval = 0;
 
 
 
@@ -137,7 +139,7 @@
                     showHideSettings();
                 });
             } else {
-                var val = $key.attr('crypt') ? decrypt(settings[key]) : settings[key];
+                var val = $key.attr('crypt') ? decrypt(secret, settings[key]) : settings[key];
                 $key.val(val).change(function() {
                     onChange();
                 }).keyup(function() {
@@ -155,6 +157,16 @@
         onChange(false);
     }
 
+    function load(settings, onChange) {
+        socket.emit('getObject', 'system.config', function (err, obj) {
+            secret = (obj.native ? obj.native.secret : '') || 'Zgfr56gFe87jJOM';
+            loadHelper(settings, onChange);
+        });
+
+        onChange(false);
+    }
+
+
     function save(callback) {
         var obj = {};
         changed = true;
@@ -169,7 +181,7 @@
                     obj[$this.attr ('id')] = ~~$this.val ();
                     break;
                 default:
-                    var val = $this.attr('crypt') ? encrypt($this.val ()) : $this.val ();
+                    var val = $this.attr('crypt') ? encrypt(secret, $this.val ()) : $this.val ();
                     obj[$this.attr ('id')] = val;
             }
         });
@@ -264,6 +276,12 @@
             <tr><td><label style="white-space: nowrap;" for="password" class="translate">Password</label></td><td class="admin-icon" data-link="false"></td><td><input size=50 crypt="1" type="password" id="password" value="true" class="value"></td><td></td></tr>
         </table>
         </br>
+        <h1 class="translate">Intervals</h1>
+        <table>
+            <tr><td><label style="white-space: nowrap;" for="updateStateInterval" class="translate">updateStateInterval</label></td><td class="admin-icon" data-link="false"></td><td><input type="number" size=10 class="value" id="updateStateInterval"/><label style="white-space: nowrap;" for="updateStateInterval" class="translate">s (0 = disabled)</label></td><td></td></tr>
+            <tr><td><label style="white-space: nowrap;" for="updateHistoryInterval" class="translate">updateHistoryInterval</label></td><td class="admin-icon" data-link="false"></td><td><input type="number" size=80 class="value" id="updateHistoryInterval"/><label style="white-space: nowrap;" for="updateStateInterval" class="translate">s (0 = disabled)</label></td><td></td></tr>
+        </table>
+        </br>
         <h1 class="translate">cookieAlt</h1>
         <table>
             <tr><td style="vertical-align: top;" ><label for="cookie" class="translate">cookie</label></td><td class="admin-icon" data-link="false"></td><td style="white-space: nowrap"><a>cookie starts with </a><a style="color: #00C;">x-amzn-dat</a><a> and ends with </a><a style="color: #00C;">="  </a><a href="https://www.gehrig.info/alexa/Alexa.html" target="_blank">look here</a></td><td></td></tr>
@@ -273,7 +291,7 @@
         </br>
         <h1 class="translate">override</h1>
         <table>
-            <tr><td><label style="white-space: nowrap;" for="baseUrl" class="translate">baseUrl</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=80 class="value" id="baseUrl"/></td><td></td></tr>
+            <tr><td><label style="white-space: nowrap;" for="alexaServiceHost" class="translate">alexaServiceHost</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=80 class="value" id="alexaServiceHost"/></td><td></td></tr>
             <tr><td><label style="white-space: nowrap;" for="userAgent" class="translate">userAgent</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=80 class="value" id="userAgent"/></td><td></td></tr>
             <tr><td><label style="white-space: nowrap;" for="acceptLanguage" class="translate">acceptLanguage</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=10 class="value" id="acceptLanguage"/></td><td></td></tr>
             <tr><td><label style="white-space: nowrap;" for="cookieLoginUrl" class="translate">cookieLoginUrl</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=80 class="value" id="cookieLoginUrl"/></td><td></td></tr>

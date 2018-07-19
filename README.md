@@ -9,9 +9,9 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/soef/iobroker.alexa/blob/master/LICENSE)
 <!-- -->
 
-## Early code version!!
-
 This adapter allows you to remote control your Alexa (Amazon Echo) devices.
+
+Big thanks go to soef for the good version 1 of the adapter and to Hauke and ruhr70 for ideas in their scripts from ioBroker-Forum (especially the media progress updates)!
 
 ### States and their meanings:
 
@@ -122,7 +122,20 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 0.1.x
+### 0.2.x (as iobroker.alexa2)
+* (Apollon77) 0.2.0: removed "Notifications" because the only benefit for now is to show them, no interaction or change possible
+* (Apollon77) 0.2.0: adapter now allows to configure intervals for history updates and other data updates like player info
+* (Apollon77) 0.2.0: if cookie could not be determined correctly a prxy is started to allow manual login and cookie is catched in the background on success
+* (Apollon77) 0.2.0: add info datapoints for connection (connected to Alexa), cookie and csrf
+* (Apollon77) 0.2.0: rework complete logic to not use soef library anymore
+* (Apollon77) 0.2.0: Speaking free text at any timepoint is available under Commands.speak
+* (Apollon77) 0.2.0: Sequence-Commands (weather, traffic, flashbriefing, goodmorning, singasong, tellstory) are available to be triggered under "Commands"
+* (Apollon77) 0.2.0: Automation-Routines are now available to be triggered per device under "Routines"
+* (Apollon77) 0.2.0: Automatically use different user-agents for Win32, MacOS and Linux based systems
+* (Apollon77) 0.2.0: Automatically use different user-agents for Win32, MacOS and Linux based systems
+* (Apollon77) 0.2.0: Also support entering TuneIn-Station IDs ("s" plus 4-6 digits) to play that station
+
+### 0.1.x (Github only as iobroker.alexa)
 * (Apollon77) 0.1.5: Adapter disables itself on error (no cookie/no csrf in cookie/captcha needed)
 * (Apollon77) 0.1.5: Reorganized some states (delete object again please), add playerinfo section for later usage, hopefully fixed unplanned device renaming and other things
 * (Apollon77) 0.1.5: Added adapter config options to overwrite used amazon-page, user-agent and accept-language for cookie determination and

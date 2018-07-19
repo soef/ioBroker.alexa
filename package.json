@@ -1,22 +1,22 @@
 {
-  "name": "iobroker.alexa",
-  "version": "0.1.5",
+  "name": "iobroker.alexa2",
+  "version": "0.2.0",
   "description": "Remote control for Alexa (Amazon Echo)",
   "author": {
-    "name": "soef",
-    "email": "soef@gmx.net"
+    "name": "Apollon77",
+    "email": "ingo@fischer-ka.de"
   },
   "contributors": [
     {
       "name": "soef",
       "email": "soef@gmx.net"
-  },
+    },
     {
       "name": "Apollon77",
       "email": "ingo@fischer-ka.de"
     }
   ],
-  "homepage": "https://github.com/soef/iobroker.alexa",
+  "homepage": "https://github.com/Apollon77/iobroker.alexa2",
   "license": "MIT",
   "keywords": [
     "sync",
@@ -33,12 +33,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/soef/iobroker.alexa"
+    "url": "https://github.com/Apollon77/iobroker.alexa2"
   },
   "dependencies": {
-    "alexa-remote": "Apollon77/alexa-remote",
-    "https": "^1.0.0",
-    "soef": "^0.4.15"
+    "alexa-remote": "^0.2.1",
+    "https": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "^2.3.4",
@@ -49,7 +48,7 @@
     "test": "node node_modules/mocha/bin/mocha"
   },
   "bugs": {
-    "url": "https://github.com/soef/iobroker.alexa/issues"
+    "url": "https://github.com/Apollon77/iobroker.alexa2/issues"
   },
   "readmeFilename": "README.md"
 }

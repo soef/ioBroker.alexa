@@ -1,59 +1,15 @@
 {
   "common": {
-    "name": "alexa",
-    "version": "0.1.5",
-    "title": "Alexa (Amazon Echo) Adapter",
+    "name": "alexa2",
+    "version": "0.2.0",
+    "title": "Alexa (Amazon Echo)",
     "desc": "Remote control for Alexa (Amazon Echo)",
     "platform": "Javascript/Node.js",
     "news": {
-      "0.0.36": {
-        "en": "update exception fixed",
-        "de": "Schutzverletzung bei Datenpunkt-Update behoben"
-      },
-      "0.0.35": {
-        "en": "Test URL in readme fixed",
-        "de": "Test URL in readme angepasst"
-      },
-      "0.0.34": {
-        "en": "tunein search string will now be escaped",
-        "de": "tunein Suchwort wird nun escaped"
-      },
-      "0.0.33": {
-        "en": "node 4.x test removed",
-        "de": "node 4.x Test entfernt"
-      },
-      "0.0.32": {
-        "en": "fix node 4.x problem",
-        "de": "node 4.x Problem behoben"
-      },
-      "0.0.31": {
-        "en": "some bug fixes",
-        "de": "einige Fehlerbehebungen"
-      },
-      "0.0.28": {
-        "en": "generating cookie by user/password",
-        "de": "Cookie wird nun mit User/Passwort erstellt"
-      },
-      "0.0.15": {
-        "en": "detecting csrf in cookie changed",
-        "de": "Ermitteln der csrf geändert"
-      },
-      "0.0.14": {
-        "en": "package.json of alexa-remote fixed",
-        "de": "Fehler in package.json von alexa-remote behoben"
-      },
-      "0.0.12": {
-        "en": "working on...",
-        "de": "Weiterentwicklung..."
-      },
-      "0.0.2": {
-        "en": "working on...",
-        "de": "Weiterentwicklung..."
-      },
-      "0.0.1": {
-        "en": "initial commit",
-        "de": "Erstmalig Veröffentlichung"
-      }
+        "0.2.0": {
+          "en": "first release as Alexa2",
+          "de": "Erste Veröffentlichung als Alexa2"
+        }
     },
     "keywords": [
       "alexa",
@@ -64,8 +20,8 @@
     ],
     "mode": "daemon",
     "icon": "alexa.png",
-    "extIcon": "https://raw.githubusercontent.com/soef/iobroker.alexa/master/admin/alexa.png",
-    "readme": "https://github.com/soef/iobroker.alexa/blob/master/README.md",
+    "extIcon": "https://raw.githubusercontent.com/Apollon77/iobroker.alexa2/master/admin/alexa.png",
+    "readme": "https://github.com/Apollon77/iobroker.alexa2/blob/master/README.md",
     "loglevel": "info",
     "type": "iot-systems",
     "enabled": true,
@@ -74,14 +30,65 @@
   },
   "native": {
     "cookie": "",
-    "baseUrl": "",
     "csrf": "",
+    "alexaServiceHost": "",
     "email": "",
     "password": "",
     "userAgent": "",
     "acceptLanguage": "",
-    "cookieLoginUrl": ""
+    "cookieLoginUrl": "",
+    "updateStateInterval": 300,
+    "updateHistoryInterval": 300
   },
   "objects": [
+  ],
+  "instanceObjects": [
+      {
+          "_id": "info",
+          "type": "channel",
+          "common": {
+              "name": "Information"
+          },
+          "native": {}
+      },
+      {
+          "_id": "info.connection",
+          "type": "state",
+          "common": {
+              "role": "indicator.connected",
+              "name": "If communication with alexa works",
+              "type": "boolean",
+              "read": true,
+              "write": false,
+              "def": false
+          },
+          "native": {}
+      },
+      {
+          "_id": "info.cookie",
+          "type": "state",
+          "common": {
+              "role": "text",
+              "name": "Alexa Cookie",
+              "type": "string",
+              "read": true,
+              "write": false,
+              "def": ""
+          },
+          "native": {}
+      },
+      {
+          "_id": "info.csrf",
+          "type": "state",
+          "common": {
+              "role": "text",
+              "name": "Alexa CSRF",
+              "type": "string",
+              "read": true,
+              "write": false,
+              "def": ""
+          },
+          "native": {}
+      }
   ]
 }
