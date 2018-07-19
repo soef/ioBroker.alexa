@@ -16,7 +16,7 @@
       "email": "ingo@fischer-ka.de"
     }
   ],
-  "homepage": "https://github.com/Apollon77/iobroker.alexa2",
+  "homepage": "https://github.com/Apollon77/ioBroker.alexa2",
   "license": "MIT",
   "keywords": [
     "sync",
@@ -33,7 +33,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Apollon77/iobroker.alexa2"
+    "url": "https://github.com/Apollon77/ioBroker.alexa2"
   },
   "dependencies": {
     "alexa-remote2": "^0.2.2",
@@ -48,7 +48,7 @@
     "test": "node node_modules/mocha/bin/mocha"
   },
   "bugs": {
-    "url": "https://github.com/Apollon77/iobroker.alexa2/issues"
+    "url": "https://github.com/Apollon77/ioBroker.alexa2/issues"
   },
   "readmeFilename": "README.md"
 }
