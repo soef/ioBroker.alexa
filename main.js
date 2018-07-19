@@ -5,7 +5,7 @@
 /* jslint esversion: 6 */
 "use strict";
 
-const Alexa = require('alexa-remote');
+const Alexa = require('alexa-remote2');
 const path = require('path');
 const utils = require(path.join(__dirname, 'lib', 'utils')); // Get common adapter utils
 
@@ -145,7 +145,7 @@ function processObjectQueue(callback) {
     });
 }
 
-const adapter = utils.Adapter('alexa');
+const adapter = utils.Adapter('alexa2');
 
 adapter.on('unload', (callback) => {
     callback && callback();
@@ -671,7 +671,12 @@ function main() {
         acceptLanguage: adapter.config.acceptLanguage,
         amazonPage: adapter.config.cookieLoginUrl,
         alexaServiceHost: adapter.config.alexaServiceHost,
-        logger: adapter.log.debug
+        logger: adapter.log.debug,
+        setupProxy: true,          // optional: should the library setup a proxy to get cookie when automatic way did not worked? Default false!
+        proxyOwnIp: '192.168.178.42',         // required if proxy enabled: provide own IP or hostname to later access the proxy. needed to setup all rewriting and proxy stuff internally
+        proxyPort: 8111,           // optional: use this port for the proxy, default is 0 means random port is selected
+        proxyListenBind: '0.0.0.0',// optional: set this to bind the proxy to a special IP, default is '0.0.0.0'
+        proxyLogLevel: 'info'      // optional: Loglevel of Proxy, default 'warn'
     };
     adapter.config.updateHistoryInterval = parseInt(adapter.config.updateHistoryInterval, 10);
     adapter.config.updateStateInterval = parseInt(adapter.config.updateStateInterval, 10);
