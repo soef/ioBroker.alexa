@@ -2,11 +2,11 @@
   "common": {
     "name": "alexa2",
     "version": "0.2.2",
-    "title": "Alexa (Amazon Echo)",
+    "title": "Alexa2 (Amazon Echo)",
     "desc": "Remote control for Alexa (Amazon Echo)",
     "platform": "Javascript/Node.js",
     "news": {
-        "0.2.0": {
+        "0.2.1´2": {
           "en": "first release as Alexa2",
           "de": "Erste Veröffentlichung als Alexa2"
         }
