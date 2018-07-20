@@ -125,7 +125,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ### 0.2.x (as iobroker.alexa2)
 * (Apollon77) 0.2.0: removed "Notifications" because the only benefit for now is to show them, no interaction or change possible
 * (Apollon77) 0.2.0: adapter now allows to configure intervals for history updates and other data updates like player info
-* (Apollon77) 0.2.0: if cookie could not be determined correctly a prxy is started to allow manual login and cookie is catched in the background on success
+* (Apollon77) 0.2.0: if cookie could not be determined correctly a proxy is started to allow manual login and cookie is catched in the background on success
 * (Apollon77) 0.2.0: add info datapoints for connection (connected to Alexa), cookie and csrf
 * (Apollon77) 0.2.0: rework complete logic to not use soef library anymore
 * (Apollon77) 0.2.0: Speaking free text at any timepoint is available under Commands.speak
