@@ -519,9 +519,9 @@ Alexa.prototype.updateHistory = function (callback) {
                 if (last >= o.data.creationTimestamp) return doIt();
 
                 adapter.setState('history.name', o.name, true);
-                adapter.setState('history.creationTime', o.data.creationTimestamp, true);
                 adapter.setState('history.serialNumber', o.serialNumber, true);
                 adapter.setState('history.summary', o.description.summary, true);
+                adapter.setState('history.creationTime', o.data.creationTimestamp, true);
                 last = o.data.creationTimestamp;
                 doIt();
             })();
