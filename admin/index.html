@@ -40,12 +40,24 @@
             "en": "User/Email"
         },
         "auth": {
-            "de": "Anmeldung",
-            "en": "Login"
+            "de": "Login-Daten für das Amazon-Konto, wo die Echo Geräte registriert sind",
+            "en": "Login Details for Amazon Account where Echo devices are registered"
+        },
+        "auth_info": {
+            "de": "Die Login-Daten werden verschlüsselt in der lokalen ioBroker-Instanz gespeichert. Wenn die Daten nicht angegeben werden, muss man selbst das Cookie beschaffen oder über den Proxy des Adapters den Login vornehmen, sodass das Cookie dann ermittelt werden kann. Dies muss aber manuell wiederholt werden sobald der Cookie ungülktig geworden ist.",
+            "en": "The credentials will be stored encrypted in your local ioBroker instance. You can also leave them empty, but then you need to fetch the Amazon cookie by your own or use the proxy from the adapter to login and get the cookie."
         },
         "cookieAlt": {
-            "de": "Manuelle Eingabe des Cookie. Email & Passwort werden dann nicht benötigt",
-            "en": "Manual input of the cookie. Email & password will then not be required"
+            "de": "Manuelle Eingabe des Cookie",
+            "en": "Manual input of the cookie"
+        },
+        "cookieAlt_info": {
+            "de": "Der Cookie kann auch manuell ermittelt und eingetragen werden. Email & Passwort werden dann nicht benötigt",
+            "en": "The cookie can also be entered directly. Email & password are then not required"
+        },
+        "cookieAlt_info2": {
+            "de": "Siehe z.B. <a href=\"https://www.gehrig.info/alexa/Alexa.html\" target=\"_blank\">here</a> wie ein Cookie manuellerstellt werden kann, oder den Proxy-Modus des Adapters versuchen. Die Proxy-URL wird in der Fehlermeldung angezeigt.",
+            "en": "See e.g. <a href=\"https://www.gehrig.info/alexa/Alexa.html\" target=\"_blank\">here</a> how to get a cookie manually or try the proxy mode of the adapter! See Error message in log for proxy URL"
         },
         "amazonPage": {
             "de": "Eigene Cookie-Amazon-URL",
@@ -67,17 +79,49 @@
             "de": "History Update Interval",
             "en": "History update interval"
         },
-        "Interval": {
-            "de": "Intervalle",
-            "en": "Intervals"
+        "interval": {
+            "de": "Aktualisierungsintervalle",
+            "en": "Data updateIntervals"
+        },
+        "interval_info": {
+            "de": "Bestimmte Daten können automatisch aktualisiert werden. Wie oft dies passiert, wird hier in Sekunden ferstgelegt. Über den Datenunkt history.#trigger kann jederzeit manuell eine Aktualisierung angestossen werden. Die Angabe von 0 deaktiviert die automatischen Aktualisierungen.",
+            "en": "Several data can automatically be updated. You define here in seconds how often this should happen. Using the state history.#trigger you can always update the data manually. If you set 0 as interval the automatic update is disabled. "
         },
         "s (0 = disabled)": {
             "de": "s (0 = deaktiviert)",
             "en": "s (0 = disabled)"
         },
-        "override": {
+        "overwrite": {
             "de": "Überschreiben spezieller Parameter zur Cookie-Ermittlung und Kommunikation",
             "en": "Override special parameter for cookie determination and communication"
+        },
+        "overwrite_info": {
+            "de": "Standardmäßig verbindet sich der Adapter mit einem deutschen Amazon-Konto. Bei der Nutzung von anderen Amazon-Ländern müssen hier die korrekten Daten eingetragen werden. Einige Hinweise dazu sind in der Adapter-README zu finden. Auch in speziellen Fällen, wenn die automatische Cookie-Ermittlung fehlschlägt, kann es helfen die Fehler user-Agent und Accept-Language anzupassen.",
+            "en": "By default the parameters are set to connect with a german amazon account. If you are using other amazon countries you need to set the correct data here. Check in Adapter README for some details. Also in certain cases whwere the automatic cookie determindation is failing it can help to play around here especially with Accept-Language and user-agent."
+        },
+        "proxy": {
+            "de": "Proxy-Einstellungen",
+            "en": "Proxy Settings"
+        },
+        "proxy_info": {
+            "de": "Wenn die automatische Cookie-Ermittlung nicht funktioniert öffnet der Adapter einen Proxy um einen manuellen Login zu erleuben. Das Logfile nennt in dem Fall den aufzurufenden Link. Diese mit dem Browser aufrufen, bei Amazon einloggen, alle potentiell angezeigten Captachas und Zwei-Faktor-Abfragen beantworten und das Cookie wird bei Erfolg im Hintergrund automatisch erfasst.",
+            "en": "If the automatic determination of a cookie is not able the adapter opens a proxy to allow a manual login to amazon. The Logfile will tell you the URL to use then. Open this in your browser, manually login into Amazon, solve all potential Captchas or Two-Factor-Authentications and the cookie is catched in the background automatically if successfull."
+        },
+        "proxyOwnIp": {
+            "de": "Eigene IP oder für den Proxy-Link",
+            "en": "Own IP or hostname to use in proxy link"
+        },
+        "proxyPort": {
+            "de": "Proxy-Port",
+            "en": "Proxy-Port"
+        },
+        "proxyPort_info": {
+            "de": "(0 = zufälliger Port)",
+            "en": "(0 = random port)"
+        },
+        "proxyListenBind": {
+            "de": "Proxy-Beschränkung auf folgende IP (Listen Bind)",
+            "en": "Proxy Binding to certain IP"
         }
     };
 
@@ -121,8 +165,9 @@
         if (settings.cookieLoginUrl === undefined) settings.cookieLoginUrl = '';
         if (settings.updateStateInterval === undefined) settings.updateStateInterval = 0;
         if (settings.updateHistoryInterval === undefined) settings.updateHistoryInterval = 0;
-
-
+        if (settings.proxyOwnIp === undefined) settings.proxyOwnIp = '';
+        if (settings.proxyPort === undefined) settings.proxyPort = 0;
+        if (settings.proxyListenBind === undefined) settings.proxyListenBind = '';
 
         changed = true;
         g_onChange = onChange;
@@ -271,33 +316,47 @@
     <!--<h1 class="translate">Interval</h1>-->
     <div id="settings">
         <h1 class="translate">auth</h1>
+        <label style="white-space: nowrap;" class="translate">auth_info</label>
         <table>
             <tr><td><label style="white-space: nowrap;" for="email" class="translate">Email</label></td><td class="admin-icon" data-link="false"></td><td><input size=50 crypt="1"  id="email" value="true" class="value"></td><td></td></tr>
             <tr><td><label style="white-space: nowrap;" for="password" class="translate">Password</label></td><td class="admin-icon" data-link="false"></td><td><input size=50 crypt="1" type="password" id="password" value="true" class="value"></td><td></td></tr>
         </table>
         </br>
-        <h1 class="translate">Intervals</h1>
+        <h1 class="translate">intervals</h1>
+        <label style="white-space: nowrap;" class="translate">intervals_info</label>
         <table>
             <tr><td><label style="white-space: nowrap;" for="updateStateInterval" class="translate">updateStateInterval</label></td><td class="admin-icon" data-link="false"></td><td><input type="number" size=10 class="value" id="updateStateInterval"/><label style="white-space: nowrap;" for="updateStateInterval" class="translate">s (0 = disabled)</label></td><td></td></tr>
             <tr><td><label style="white-space: nowrap;" for="updateHistoryInterval" class="translate">updateHistoryInterval</label></td><td class="admin-icon" data-link="false"></td><td><input type="number" size=80 class="value" id="updateHistoryInterval"/><label style="white-space: nowrap;" for="updateStateInterval" class="translate">s (0 = disabled)</label></td><td></td></tr>
         </table>
         </br>
         <h1 class="translate">cookieAlt</h1>
+        <label style="white-space: nowrap;" class="translate">cookieAlt_info</label>
         <table>
-            <tr><td style="vertical-align: top;" ><label for="cookie" class="translate">cookie</label></td><td class="admin-icon" data-link="false"></td><td style="white-space: nowrap"><a>cookie starts with </a><a style="color: #00C;">x-amzn-dat</a><a> and ends with </a><a style="color: #00C;">="  </a><a href="https://www.gehrig.info/alexa/Alexa.html" target="_blank">look here</a></td><td></td></tr>
+            <tr>
+                <td style="vertical-align: top;" ><label for="cookie" class="translate">cookie</label></td>
+                <td class="admin-icon" data-link="false"></td>
+                <td style="white-space: nowrap" class="translate">cookieAlt_info2</td>
+                <td></td>
+            </tr>
             <tr><td></td><td class="admin-icon" data-link="false"></td><td><textarea cols="100" rows="10" type="text" id="cookie" class="value" size=100></textarea></td><td></td></tr>
-            <!--<tr><td><label for="cookie" class="translate">cookie</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" id="cookie" class="value" size=100></td><td></td></tr>-->
         </table>
         </br>
-        <h1 class="translate">override</h1>
+        <h1 class="translate">overwrite</h1>
+        <label style="white-space: nowrap;" class="translate">overwrite_info</label>
         <table>
             <tr><td><label style="white-space: nowrap;" for="alexaServiceHost" class="translate">alexaServiceHost</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=80 class="value" id="alexaServiceHost"/></td><td></td></tr>
             <tr><td><label style="white-space: nowrap;" for="userAgent" class="translate">userAgent</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=80 class="value" id="userAgent"/></td><td></td></tr>
             <tr><td><label style="white-space: nowrap;" for="acceptLanguage" class="translate">acceptLanguage</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=10 class="value" id="acceptLanguage"/></td><td></td></tr>
             <tr><td><label style="white-space: nowrap;" for="cookieLoginUrl" class="translate">cookieLoginUrl</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=80 class="value" id="cookieLoginUrl"/></td><td></td></tr>
         </table>
+        <h1 class="translate">proxy</h1>
+        <label style="white-space: nowrap;" class="translate">proxy_info</label>
+        <table>
+            <tr><td><label style="white-space: nowrap;" for="proxyOwnIp" class="translate">proxyOwnIp</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=40 class="value" id="proxyOwnIp"/></td><td></td></tr>
+            <tr><td><label style="white-space: nowrap;" for="proxyPort" class="translate">proxyPort</label></td><td class="admin-icon" data-link="false"></td><td><input type="number" size=5 class="value" id="proxyPort"/><label style="white-space: nowrap;" for="proxyPort" class="translate">proxyPort_info</label></td><td></td></tr>
+            <tr><td><label style="white-space: nowrap;" for="proxyListenBind" class="translate">proxyListenBind</label></td><td class="admin-icon" data-link="false"></td><td><input type="text" size=16 class="value" id="proxyListenBind"/></td><td></td></tr>
+        </table>
     </div>
-
 </div>
 
 

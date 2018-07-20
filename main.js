@@ -662,21 +662,21 @@ Alexa.prototype.createStates = function (callback) {
 function main() {
 
     let options = {
-        cookie: adapter.config.cookie,
-        password: adapter.config.password,
-        email: adapter.config.email,
-        bluetooth: true,
-        notifications: false,
-        userAgent: adapter.config.userAgent,
-        acceptLanguage: adapter.config.acceptLanguage,
-        amazonPage: adapter.config.cookieLoginUrl,
-        alexaServiceHost: adapter.config.alexaServiceHost,
-        logger: adapter.log.debug,
+        cookie: adapter.config.cookie, // cookie if there is already one
+        email: adapter.config.email, // Amazon email for login
+        password: adapter.config.password, // Amazon password for Login
+        bluetooth: true, // fetch uetooth devices
+        notifications: false, // fetch notifications (false because not works so far)
+        userAgent: adapter.config.userAgent, // overwrite userAgent
+        acceptLanguage: adapter.config.acceptLanguage, // overwrite acceptLanguage
+        amazonPage: adapter.config.cookieLoginUrl, // overwrite amazonPage
+        alexaServiceHost: adapter.config.alexaServiceHost, // overwrite alexa Servcie Host
+        logger: adapter.log.debug, // Logger with detailed debug only in debug
         setupProxy: true,          // optional: should the library setup a proxy to get cookie when automatic way did not worked? Default false!
-        proxyOwnIp: '192.168.178.42',         // required if proxy enabled: provide own IP or hostname to later access the proxy. needed to setup all rewriting and proxy stuff internally
-        proxyPort: 8111,           // optional: use this port for the proxy, default is 0 means random port is selected
-        proxyListenBind: '0.0.0.0',// optional: set this to bind the proxy to a special IP, default is '0.0.0.0'
-        proxyLogLevel: 'info'      // optional: Loglevel of Proxy, default 'warn'
+        proxyOwnIp: adapter.config.proxyOwnIp, // required if proxy enabled: provide own IP or hostname to later access the proxy. needed to setup all rewriting and proxy stuff internally
+        proxyPort: adapter.config.proxyPort,           // optional: use this port for the proxy, default is 0 means random port is selected
+        proxyListenBind: adapter.config.proxyListenBind,// optional: set this to bind the proxy to a special IP, default is '0.0.0.0'
+        proxyLogLevel: null      // optional: Loglevel of Proxy, default 'warn'
     };
     adapter.config.updateHistoryInterval = parseInt(adapter.config.updateHistoryInterval, 10);
     adapter.config.updateStateInterval = parseInt(adapter.config.updateStateInterval, 10);

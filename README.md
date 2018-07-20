@@ -1,12 +1,12 @@
 ![Logo](admin/alexa.png)
 
-# ioBroker.alexa
+# ioBroker.alexa2
 
 <!-- -->
-[![NPM version](https://img.shields.io/npm/v/iobroker.alexa.svg)](https://www.npmjs.com/package/iobroker.alexa)
-[![Build Status](https://travis-ci.org/soef/ioBroker.alexa.svg?branch=master)](https://travis-ci.org/soef/ioBroker.alexa)
-[![Build status](https://ci.appveyor.com/api/projects/status/c92hrxu79mvs1qxo?svg=true)](https://ci.appveyor.com/project/soef/iobroker-alexa)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/soef/iobroker.alexa/blob/master/LICENSE)
+[![NPM version](https://img.shields.io/npm/v/iobroker.alexa2.svg)](https://www.npmjs.com/package/iobroker.alexa2)
+[![Build Status](https://travis-ci.org/Apollon77/ioBroker.alexa2.svg?branch=master)](https://travis-ci.org/Apollon77/ioBroker.alexa2)
+[![Build status](https://ci.appveyor.com/api/projects/status/c92hrxu79mvs1qxo?svg=true)](https://ci.appveyor.com/project/Apollon77/iobroker-alexa)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Apollon77/iobroker.alexa2/blob/master/LICENSE)
 <!-- -->
 
 This adapter allows you to remote control your Alexa (Amazon Echo) devices.
@@ -80,8 +80,8 @@ In the adapter namespace (e.g. alexa.0) some channels are created
 Use the ioBroker "Install" options from GitHub or
 execute the following command in the iobroker root directory (e.g. in /opt/iobroker)
 ```
-npm install iobroker.alexa
-iobroker upload alexa
+npm install iobroker.alexa2
+iobroker upload alexa2
 ```
 
 Then go into ioBroker Admin and add an Alexa instance.

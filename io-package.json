@@ -37,6 +37,9 @@
     "userAgent": "",
     "acceptLanguage": "",
     "cookieLoginUrl": "",
+    "proxyOwnIp": "",
+    "proxyPort": 0,
+    "proxyListenBind": "",
     "updateStateInterval": 300,
     "updateHistoryInterval": 300
   },
