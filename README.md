@@ -122,6 +122,9 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 0.2.3 (2018-07-20)
+* (Apollon77) in Numbers with . are replaced by commas
+
 ### 0.2.2 (2018-07-20)
 * (Apollon77) Finally fix device renaming
 
