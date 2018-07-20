@@ -122,7 +122,10 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 0.2.x (as iobroker.alexa2)
+### 0.2.1 (as iobroker.alexa2)
+* (Apollon77) Small fix of history channel type and setting states initially
+
+### 0.2.0 (as iobroker.alexa2)
 * (Apollon77) 0.2.0: added many Player-Info datapoints including "progress updates " when media is playing
 * (Apollon77) 0.2.0: removed "Notifications" because the only benefit for now is to show them, no interaction or change possible
 * (Apollon77) 0.2.0: adapter now allows to configure intervals for history updates and other data updates like player info

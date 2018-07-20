@@ -121,8 +121,9 @@ function processObjectQueue(callback) {
             }
             else {
                 adapter.setObject(queueEntry.id, queueEntry.obj, () => {
-                    stateChangeTrigger[queueEntry.id] = queueEntry.stateChangeCallback;
-                    return callback && callback();
+                    handleValue(queueEntry, () => {
+                        return callback && callback();
+                    });
                 });
             }
         });
@@ -641,7 +642,7 @@ Alexa.prototype.createStates = function (callback) {
         }
     });
 
-    setOrUpdateObject('history', {common: {name: 'Last detected commands and devices'}});
+    setOrUpdateObject('history', {type: 'channel', common: {name: 'Last detected commands and devices'}});
     setOrUpdateObject('history.#trigger', {common: {role: 'button', name: 'Trigger/Rescan', desc: 'Set to true, to start a request'}}, false, function(val) {
         this.updateHistory();
     }.bind(this));
