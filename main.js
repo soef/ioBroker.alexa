@@ -165,7 +165,7 @@ adapter.on('stateChange', (id, state) => {
 adapter.on('objectChange', (id, object) => {
     adapter.log.debug('Object changed ' + id + ': ' + JSON.stringify(object));
     let ar = id.split('.');
-    if (ar[2] === 'echo-devices') {
+    if (ar[2] === 'echo-devices' && ar.length === 4) {
         if (object === null) {
             //deleted, do nothing
             return;

@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "title": "Alexa (Amazon Echo)",
     "desc": "Remote control for Alexa (Amazon Echo)",
     "platform": "Javascript/Node.js",
