@@ -7,6 +7,7 @@
 
 const Alexa = require('alexa-remote2');
 const path = require('path');
+const os = require('os');
 const utils = require(path.join(__dirname, 'lib', 'utils')); // Get common adapter utils
 
 let alexa;
@@ -523,6 +524,8 @@ Alexa.prototype.updateHistory = function (callback) {
                 adapter.setState('history.serialNumber', o.serialNumber, true);
                 adapter.setState('history.summary', o.description.summary, true);
                 adapter.setState('history.creationTime', o.data.creationTimestamp, true);
+                const jsonHistory = {name: o.name, serialNumber: o.serialNumber, summary: o.description.summary, creationTime: o.data.creationTimestamp};
+                adapter.setState('history.json', JSON.stringify(jsonHistory), true);
                 last = o.data.creationTimestamp;
                 doIt();
             })();
@@ -546,6 +549,14 @@ Alexa.prototype.createStates = function (callback) {
 
         setOrUpdateObject(devId + '.Info', {type: 'channel'});
         setOrUpdateObject(devId + '.Info.capabilities', {common: {role: 'text', write: false}}, device.capabilities.join (','));
+        setOrUpdateObject(devId + '.Info.isMultiroomDevice', {common: {type: 'boolean', role: 'indicator', write: false}}, device.isMultiroomDevice);
+        if (device.isMultiroomDevice) {
+            setOrUpdateObject(devId + '.Info.multiroomMembers', {common: {role: 'text', write: false}}, device.clusterMembers.join (','));
+        }
+        setOrUpdateObject(devId + '.Info.isMultiroomMember', {common: {type: 'boolean', role: 'indicator', write: false}}, device.isMultiroomMember);
+        if (device.isMultiroomMember) {
+            setOrUpdateObject(devId + '.Info.multiroomParents', {common: {role: 'text', write: false}}, device.parentClusters.join (','));
+        }
 
         if (device.isControllable) {
             setOrUpdateObject(devId + '.Player-Info', {type: 'channel'});
@@ -606,7 +617,7 @@ Alexa.prototype.createStates = function (callback) {
                 }.bind(alexa, device));
             }
         }
-        if (device.bluetoothState) {
+        if (device.bluetoothState && !device.isMultiroomDevice) {
             setOrUpdateObject(devId + '.Bluetooth', {type: 'device'});
             device.bluetoothState.pairedDeviceList.forEach ((bt) => {
                 setOrUpdateObject(devId + '.Bluetooth.' + bt.address, {type: 'channel', common: {name: bt.friendlyName}});
@@ -627,17 +638,19 @@ Alexa.prototype.createStates = function (callback) {
             }
         }
 
-        setOrUpdateObject(devId + '.Commands', {type: 'channel'});
-        for (let c in commands) {
-            const obj = JSON.parse (JSON.stringify (commands[c]));
-            setOrUpdateObject(devId + '.Commands.' + c, {common: obj.common}, obj.val, alexa.sendSequenceCommand.bind(alexa, device, c));
-        }
-        setOrUpdateObject(devId + '.Commands.doNotDisturb', {common: {role: 'switch'}}, false, device.setDoNotDisturb);
+        if (!device.isMultiroomDevice) {
+            setOrUpdateObject(devId + '.Commands', {type: 'channel'});
+            for (let c in commands) {
+                const obj = JSON.parse (JSON.stringify (commands[c]));
+                setOrUpdateObject(devId + '.Commands.' + c, {common: obj.common}, obj.val, alexa.sendSequenceCommand.bind(alexa, device, c));
+            }
+            setOrUpdateObject(devId + '.Commands.doNotDisturb', {common: {role: 'switch'}}, false, device.setDoNotDisturb);
 
-        if (this.routines) {
-            setOrUpdateObject(devId + '.Routines', {type: 'channel'});
-            for (let i in this.routines) {
-                setOrUpdateObject(devId + '.Routines.' + this.routines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'button', name: this.routines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind (alexa, device, this.routines[i].automationId));
+            if (this.routines) {
+                setOrUpdateObject(devId + '.Routines', {type: 'channel'});
+                for (let i in this.routines) {
+                    setOrUpdateObject(devId + '.Routines.' + this.routines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'button', name: this.routines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind (alexa, device, this.routines[i].automationId));
+                }
             }
         }
     });
@@ -652,6 +665,7 @@ Alexa.prototype.createStates = function (callback) {
     setOrUpdateObject('history.creationTime', {common: {role: 'value.time'}}, now);
     setOrUpdateObject('history.serialNumber', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('history.summary', {common: {role: 'text', write: false}}, '');
+    setOrUpdateObject('history.json', {common: {type: 'string', role: 'json', write: false}}, '');
 
     processObjectQueue(() => {
         self.updateStates(() => {
@@ -661,6 +675,21 @@ Alexa.prototype.createStates = function (callback) {
 };
 
 function main() {
+
+    if (!adapter.config.proxyOwnIp) {
+        const ifaces = os.networkInterfaces();
+        for (var eth in ifaces) {
+            if (!ifaces.hasOwnProperty(eth)) continue;
+            for (var num = 0; num < ifaces[eth].length; num++) {
+                if (ifaces[eth][num].family !== 'IPv6' && ifaces[eth][num].address !== '127.0.0.1' && ifaces[eth][num].address !== '0.0.0.0') {
+                    adapter.config.proxyOwnIp = ifaces[eth][num].address;
+                    adapter.log.info('Proxy IP not set, use first network interface (' + adapter.config.proxyOwnIp + ') instead');
+                    break;
+                }
+            }
+            if (adapter.config.proxyOwnIp) break;
+        }
+    }
 
     let options = {
         cookie: adapter.config.cookie, // cookie if there is already one
