@@ -7,8 +7,8 @@
     "platform": "Javascript/Node.js",
     "news": {
         "0.2.4": {
-          "en": "settings window materialized",
-          "de": "Einstellungsfenster im Material Design"
+          "en": "fixes, changes und settings window materialized",
+          "de": "Fehlerbehebungen, Änderungen  und Einstellungsfenster im Material Design"
         },
         "0.2.1´2": {
           "en": "first release as Alexa2",
