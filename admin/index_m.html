@@ -157,6 +157,25 @@
             return result;
         }
 
+        function ownFillSelectIPs(id, actualAddr, callback) {
+            getIPs(function (ips) {
+                var str = '';
+                for (var i = 0; i < ips.length; i++) {
+                    if (ips[i].family === 'ipv6') continue;
+                    if (ips[i].address === '0.0.0.0') continue;
+                    if (ips[i].address === '127.0.0.1') continue;
+                    str += '<option value="' + ips[i].address + '" ' + ((ips[i].address === actualAddr) ? 'selected' : '') + '>' + ips[i].name + '</option>';
+                }
+
+                $(id).html(str);
+                if (isMaterialize) {
+                    $(id).select();
+                }
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            });
+        }
 
         // the function loadSettings has to exist ...
         function loadHelper(settings, onChange) {
@@ -167,9 +186,17 @@
                 height: 300
             });
 
+            ownFillSelectIPs('#proxyOwnIp', settings.proxyOwnIp, false, true, function () {
+                $('#proxyOwnIp').select();
+            });
+
+            fillSelectIPs('#proxyListenBind', settings.proxyListenBind, false, true, function () {
+                $('#proxyListenBind').select();
+            });
+
             if (!settings) return;
             if (settings.email === undefined) settings.email = '';
-                if (settings.password === undefined) settings.password = '';
+            if (settings.password === undefined) settings.password = '';
             if (settings.cookie === undefined) settings.cookie = '';
             if (settings.alexaServiceHost === undefined) settings.alexaServiceHost = '';
             if (settings.userAgent === undefined) settings.userAgent = '';
@@ -216,7 +243,7 @@
 
         function load(settings, onChange) {
             socket.emit('getObject', 'system.config', function (err, obj) {
-                   secret = (obj.native ? obj.native.secret : '') || 'Zgfr56gFe87jJOM';
+                secret = (obj.native ? obj.native.secret : '') || 'Zgfr56gFe87jJOM';
                 loadHelper(settings, onChange);
             });
 
@@ -250,7 +277,7 @@
     <style>
         h1 {
             font-size: 10px;
-            color: #505050; 
+            color: #505050;
             font-weight: bold;
             width: 100%;
             padding: 6px 5px 5px 5px;
@@ -286,23 +313,23 @@
                     <!-- weitere Tabs hier einfügen -->
                 </ul>
             </div>
-        
+
             <!-- Ab hier der Inhalt der Tabs -->
-            
-                
+
+
                 <!-- Tab1 Login + Intervall-->
-                <div id="tab-main" class="col s12 page">    
+                <div id="tab-main" class="col s12 page">
                     <div class="row">
                         <div class="col s12 m4 l2">
                             <img src="alexa.png" class="logo">
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col s12">
                             <p class="translate ueberschrift">auth</p>
                             <p class="translate">auth_info</p>
-                            
+
                             <div class="input-field col s12 m6">
                                 <input class="value validate" crypt="1" id="email" type="email">
                                 <label for="email" class="translate active">Email</label>
@@ -314,12 +341,12 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="row">    
+
+                    <div class="row">
                         <div class="col s12">
                             <p class="translate ueberschrift">interval</p>
                             <p class="translate">interval_info</p>
-                            
+
                             <div class="input-field col s12 m6">
                                 <input class="value validate" placeholder="300" id="updateStateInterval" value="true" type="number">s
                                 <label for="updateStateInterval" class="translate active">updateStateInterval</label>
@@ -332,22 +359,22 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div> <!-- Ende Tab1 -->
-                
+
                 <!-- Tab2 Cookie -->
-                <div id="tab-cookie" class="col s12 page">    
+                <div id="tab-cookie" class="col s12 page">
                     <div class="row">
                         <div class="col s12 m4 l2">
                             <img src="alexa.png" class="logo">
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col s12">
                             <p class="translate ueberschrift">cookieAlt</p>
                             <p class="translate">cookieAlt_info</p>
-                            
+
                             <div class="input-field col s12">
                                 <textarea id="cookie" class="value materialize-textarea"></textarea>
                                 <label for="cookie" class="translate active">cookie</label>
@@ -355,74 +382,74 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col s12">
                             <p class="translate ueberschrift">overwrite</p>
                             <p class="translate">overwrite_info</p>
-                            
+
                             <div class="input-field col s12 m6">
                                 <input id="alexaServiceHost" class="value text"></input>
                                 <label for="alexaServiceHost" class="translate">alexaServiceHost</label>
                             </div>
-                            
+
                             <div class="input-field col s12 m6">
                                 <input id="userAgent" class="value text"></input>
                                 <label for="userAgent" class="translate">userAgent</label>
                             </div>
-                            
+
                             <div class="input-field col s12 m6">
                                 <input id="acceptLanguage" class="value text"></input>
                                 <label for="acceptLanguage" class="translate">acceptLanguage</label>
                             </div>
-                            
+
                             <div class="input-field col s12 m6">
                                 <input id="cookieLoginUrl" class="value text"></input>
                                 <label for="cookieLoginUrl" class="translate">cookieLoginUrl</input>
                             </div>
-                            
+
                         </div>
                     </div>
-                    
+
                 </div> <!-- Ende Tab2 -->
-                
+
                 <!-- Tab3 Proxy -->
-                <div id="tab-proxy" class="col s12 page">    
+                <div id="tab-proxy" class="col s12 page">
                     <div class="row">
                         <div class="col s12 m4 l2">
                             <img src="alexa.png" class="logo">
                         </div>
                     </div>
                     <div class="row">
-                    
+
                         <div class="col s12">
                             <p class="translate ueberschrift">proxy</p>
                             <p class="translate">proxy_info</p>
-                            
+
                             <div class="input-field col s12">
-                                <input id="proxyOwnIp" class="value text"></input>
+                                <select id="proxyOwnIp" class="value"></select>
                                 <label for="proxyOwnIp" class="active translate">proxyOwnIp</label>
                             </div>
-                            
+
                             <div class="input-field col s12">
                                 <input id="proxyPort" placeholder="0" class="value number"></input>
                                 <label for="proxyPort" class="translate active">proxyPort</label>
                                 <span class="helper-text translate">proxyPort_info</span>
                             </div>
-                            
+
                             <div class="input-field col s12">
-                                <input id="proxyListenBind" class="value text"></input>
+                                <select id="proxyListenBind" class="value"></select>
                                 <label for="proxyListenBind" class="active translate">proxyListenBind</label>
                             </div>
-                            
+
                         </div>
-                            
+
                     </div>
                 </div> <!-- Ende Tab3 -->
-        
-            
+
+
         </div><!-- Ende row -->
-        
+
     </div><!-- Ende Adapter Container -->
 </body>
 </html>

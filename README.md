@@ -123,7 +123,12 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ## Changelog
 
 ### 0.2.4 (2018-07-22)
-* (pix) materialized settings window
+* (pix) materialize settings window
+* (Apollon77) fix comma replacements in speaks, do not speak empty text
+* (Apollon77) if Device is Multiroom, the do not reate Routines and Commands and not bluetooth
+* (Apollon77) add information about multiroom device and master (later we can use this to sort out commands that are impossible with multiroom)
+* (Apollon77) History is also stored as JSON, so it can be used to monitor one datapoint and have all infos on updateState
+* (Apollon77) Several other fixes
 
 ### 0.2.3 (2018-07-20)
 * (Apollon77) in Numbers with . are replaced by commas
