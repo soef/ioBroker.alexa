@@ -299,8 +299,10 @@ Alexa.prototype.updateStates = function (callback) {
 
                 //if (resPlayer.playerInfo.state !== null) adapter.setState(devId + '.Player-Info.status', resPlayer.playerInfo.state, true);
                 adapter.setState(devId + '.Player-Info.contentType', resMedia.contentType || '', true);	// 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
-    			adapter.setState(devId + '.Player-Info.currentState', resPlayer.playerInfo.state || '', true);	// 'PAUSED' | 'PLAYING'
-    			adapter.setState(devId + '.Player-Info.imageURL', resMedia.imageURL || '', true);
+
+                adapter.setState(devId + '.Player-Info.currentState', resPlayer.playerInfo.state === 'PLAYING', true);	// 'PAUSED' | 'PLAYING'
+
+                adapter.setState(devId + '.Player-Info.imageURL', resMedia.imageURL || '', true);
     			adapter.setState(devId + '.Player-Info.muted', !!resMedia.muted || '', true);
     			adapter.setState(devId + '.Player-Info.providerId', resMedia.providerId || '', true); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
     			adapter.setState(devId + '.Player-Info.radioStationId', resMedia.radioStationId || '', true); // 's24885' | null
@@ -334,7 +336,7 @@ Alexa.prototype.updateStates = function (callback) {
     			if (resPlayer.playerInfo !== undefined && 'miniArt' in resPlayer.playerInfo && resPlayer.playerInfo.miniArt !== null) {
     				miniArtUrl = resPlayer.playerInfo.miniArt.url;
     			}
-    			adapter.setState(devId + '.Player-Info.miniArtUrl', miniArtUrl || '', true);
+    			adapter.setState(devId + '.Player-Info.miniArtUrl', miniArtUrl || mainArtUrl || '', true);
 
     			let mediaLength = 0;
     			let mediaProgress = 0;
@@ -544,7 +546,7 @@ Alexa.prototype.createStates = function (callback) {
         let devId = 'echo-devices.' + device.serialNumber;
         setOrUpdateObject(devId, {type: 'device', common: {name: device._name}});
         //dev.setName(device.accountName); TODO
-        setOrUpdateObject(devId + '.online', {common: {role: 'indicator.connected'}}, device.online);
+        setOrUpdateObject(devId + '.online', {common: {role: 'indicator.reachable'}}, device.online);
         //setOrUpdateObject(devId + '.delete', {common: {name: 'Delete (Log out of this device)', role: 'button'}}, false); TODO
 
         setOrUpdateObject(devId + '.Info', {type: 'channel'});
@@ -563,20 +565,20 @@ Alexa.prototype.createStates = function (callback) {
             //setOrUpdateObject(devId + '.Player-Info.status', {common: {role: 'text', write: false, def: ''}});
 
             setOrUpdateObject(devId + '.Player-Info.contentType', {common: {role: 'text', write: false, def: ''}});	// 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
-			setOrUpdateObject(devId + '.Player-Info.currentState', {common: {role: 'text', write: false, def: ''}}); // 'PAUSED' | 'PLAYING'
+			setOrUpdateObject(devId + '.Player-Info.currentState', {common: {role: 'media.state', write: false, def: false}}); // 'PAUSED' | 'PLAYING'
             //TODO SONDERLOGIK!!!! createDeviceControlState
-			setOrUpdateObject(devId + '.Player-Info.imageURL', {common: {name: 'Huge image', role: 'media.cover', write: false, def: ''}});
+			setOrUpdateObject(devId + '.Player-Info.imageURL', {common: {name: 'Huge image', role: 'media.cover.big', write: false, def: ''}});
 			setOrUpdateObject(devId + '.Player-Info.muted',	{common: {type: 'boolean', role: 'media.mute', write: false, def: false}});
 			setOrUpdateObject(devId + '.Player-Info.providerId', {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
 			setOrUpdateObject(devId + '.Player-Info.radioStationId', {common: {role: 'text', write: false, def: ''}}); // 's24885' | null
 			setOrUpdateObject(devId + '.Player-Info.service', {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
-			setOrUpdateObject(devId + '.Player-Info.providerName', {common: {name: 'active provider', role: 'text', write: false, def: ''}}); // 'Amazon Music' | 'TuneIn Live-Radio'
+			setOrUpdateObject(devId + '.Player-Info.providerName', {common: {name: 'active provider', role: 'media.input', write: false, def: ''}}); // 'Amazon Music' | 'TuneIn Live-Radio'
 
 			setOrUpdateObject(devId + '.Player-Info.currentTitle', {common: {name:'current title', type:'string', role:'media.title', def: ''}});
 			setOrUpdateObject(devId + '.Player-Info.currentArtist', {common: {name:'current artist', type:'string', role:'media.artist', def: ''}});
 			setOrUpdateObject(devId + '.Player-Info.currentAlbum',	{common: {name:'current album', type:'string', role:'media.album', def: ''}});
             setOrUpdateObject(devId + '.Player-Info.mainArtUrl', {common: {name:'current main Art', type:'string', role:'media.cover', def: ''}});
-            setOrUpdateObject(devId + '.Player-Info.miniArtUrl', {common: {name:'current mini Art', type:'string', role:'media.cover', def: ''}});
+            setOrUpdateObject(devId + '.Player-Info.miniArtUrl', {common: {name:'current mini Art', type:'string', role:'media.cover.small', def: ''}});
 
 			setOrUpdateObject(devId + '.Player-Info.mediaLength', {common: {name:'active media length', type:'number', role:'media.duration', def: 0}});
 			setOrUpdateObject(devId + '.Player-Info.mediaLengthStr', {common: {name:'active media length as (HH:)MM:SS', type:'string', role:'media.duration.text', def: ''}});
@@ -657,7 +659,7 @@ Alexa.prototype.createStates = function (callback) {
 
     setOrUpdateObject('history', {type: 'channel', common: {name: 'Last detected commands and devices'}});
     setOrUpdateObject('history.#trigger', {common: {role: 'button', name: 'Trigger/Rescan', desc: 'Set to true, to start a request'}}, false,
-            (val) => this.updateHistory());
+            val => this.updateHistory());
     setOrUpdateObject('history.name', {common: {role: 'text', write: false, name: 'Echo Device name', desc: 'Device name of the last detected command'}}, '');
     let now = new Date();
     now = now.getTime() - now.getTimezoneOffset();
@@ -712,37 +714,41 @@ function main() {
     let initDone = false;
 
     alexa = new Alexa();
-    alexa.init(options,
-        function (err) {
-            if (err) {
-                if (err.message === 'no csrf found') {
-                    adapter.log.error('Error: no csrf found. Check configuration of email/password or cookie');
+    alexa.init(options, err => {
+        if (err) {
+            if (err.message === 'no csrf found') {
+                adapter.log.error('Error: no csrf found. Check configuration of email/password or cookie');
+            } else {
+                let lines = err.message.split('You can try to get the cookie');
+                if (lines[1]) {
+                    lines[1] = 'You can try to get the cookie' + lines[1];
                 } else {
-                    adapter.log.error('Error: ' + err.message);
+                    lines = err.message.split('\n');
                 }
-                adapter.setState('info.connection', false, true);
-                return;
+                lines.forEach(line => adapter.log.error('Error: ' + line));
             }
-
-            adapter.setState('info.connection', true, true);
-            adapter.setState('info.cookie', alexa.cookie, true);
-            adapter.setState('info.csrf', alexa.csrf, true);
-
-            if (alexa.cookie !== adapter.config.cookie) {
-                adapter.log.info('Update cookie in adapter configuration ... restarting ...');
-                adapter.extendForeignObject("system.adapter." + adapter.namespace, {native: {cookie: alexa.cookie, csrf: alexa.csrf}});
-                return;
-            }
-
-            alexa.createStates(() => {
-                alexa.createSmarthomeStates(() => {
-                    if (!initDone) {
-                        adapter.subscribeStates ('*');
-                        adapter.subscribeObjects ('*');
-                        initDone = true;
-                    }
-                });
-            });
+            adapter.setState('info.connection', false, true);
+            return;
         }
-    );
+
+        adapter.setState('info.connection', true, true);
+        adapter.setState('info.cookie', alexa.cookie, true);
+        adapter.setState('info.csrf', alexa.csrf, true);
+
+        if (alexa.cookie !== adapter.config.cookie) {
+            adapter.log.info('Update cookie in adapter configuration ... restarting ...');
+            adapter.extendForeignObject("system.adapter." + adapter.namespace, {native: {cookie: alexa.cookie, csrf: alexa.csrf}});
+            return;
+        }
+
+        alexa.createStates(() => {
+            alexa.createSmarthomeStates(() => {
+                if (!initDone) {
+                    adapter.subscribeStates ('*');
+                    adapter.subscribeObjects ('*');
+                    initDone = true;
+                }
+            });
+        });
+    });
 }
