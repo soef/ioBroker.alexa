@@ -657,7 +657,7 @@ Alexa.prototype.createStates = function (callback) {
 
     setOrUpdateObject('history', {type: 'channel', common: {name: 'Last detected commands and devices'}});
     setOrUpdateObject('history.#trigger', {common: {role: 'button', name: 'Trigger/Rescan', desc: 'Set to true, to start a request'}}, false,
-            val => this.updateHistory());
+            (val) => this.updateHistory());
     setOrUpdateObject('history.name', {common: {role: 'text', write: false, name: 'Echo Device name', desc: 'Device name of the last detected command'}}, '');
     let now = new Date();
     now = now.getTime() - now.getTimezoneOffset();
