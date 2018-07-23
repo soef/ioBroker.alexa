@@ -336,7 +336,7 @@ Alexa.prototype.updateStates = function (callback) {
     			if (resPlayer.playerInfo !== undefined && 'miniArt' in resPlayer.playerInfo && resPlayer.playerInfo.miniArt !== null) {
     				miniArtUrl = resPlayer.playerInfo.miniArt.url;
     			}
-    			adapter.setState(devId + '.Player-Info.miniArtUrl', miniArtUrl || '', true);
+    			adapter.setState(devId + '.Player-Info.miniArtUrl', miniArtUrl || mainArtUrl || '', true);
 
     			let mediaLength = 0;
     			let mediaProgress = 0;
@@ -578,6 +578,7 @@ Alexa.prototype.createStates = function (callback) {
 			setOrUpdateObject(devId + '.Player-Info.currentArtist', {common: {name:'current artist', type:'string', role:'media.artist', def: ''}});
 			setOrUpdateObject(devId + '.Player-Info.currentAlbum',	{common: {name:'current album', type:'string', role:'media.album', def: ''}});
             setOrUpdateObject(devId + '.Player-Info.mainArtUrl', {common: {name:'current main Art', type:'string', role:'media.cover', def: ''}});
+            setOrUpdateObject(devId + '.Player-Info.miniArtUrl', {common: {name:'current mini Art', type:'string', role:'media.cover.small', def: ''}});
 
 			setOrUpdateObject(devId + '.Player-Info.mediaLength', {common: {name:'active media length', type:'number', role:'media.duration', def: 0}});
 			setOrUpdateObject(devId + '.Player-Info.mediaLengthStr', {common: {name:'active media length as (HH:)MM:SS', type:'string', role:'media.duration.text', def: ''}});
