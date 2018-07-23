@@ -1,0 +1,28 @@
+User/E-mail
+Wachtwoord
+instellingen
+Aangepaste acceptatie-taalkop
+Alexa-inloggegevens
+Alexa-basis-URL
+Aanmeldgegevens voor Amazon-account waarop Echo-apparaten zijn geregistreerd
+De inloggegevens worden gecodeerd opgeslagen in uw lokale instantie ioBroker. Je kunt ze ook leeg laten, maar dan moet je de Amazon-cookie zelf ophalen of de proxy van de adapter gebruiken om in te loggen en de cookie te krijgen.
+Koekje
+Handmatige invoer van de cookie
+De cookie kan ook rechtstreeks worden ingevoerd. E-mail en wachtwoord zijn dan niet vereist
+Zie b.v. <a href="https://www.gehrig.info/alexa/Alexa.html" target="_blank">hier</a> hoe u een cookie handmatig kunt krijgen of probeer de proxy-modus van de adapter! Zie Foutbericht in logboek voor proxy-URL
+Aangepaste Cookie-Amazon-URL
+GegevensupdateIntervals
+Verschillende gegevens kunnen automatisch worden bijgewerkt. Je definieert hier in seconden hoe vaak dit moet gebeuren. Door de # trigger te gebruiken, kunt u de gegevens altijd handmatig bijwerken. Als u 0 instelt als interval, is de automatische update uitgeschakeld.
+Speciale parameter voor cookie-bepaling en communicatie overschrijven
+Standaard zijn de parameters ingesteld om verbinding te maken met een Duits Amazon-account. Als u andere Amazon-landen gebruikt, moet u hier de juiste gegevens instellen. Raadpleeg de README van de adapter voor meer informatie. Ook in bepaalde gevallen waar de automatische cookie-bepaling faalt, kan het helpen om hier te spelen, vooral met Accept-Language en user-agent.
+wachtwoord
+Proxy instellingen
+Proxy-binding aan bepaalde IP
+Eigen IP of hostnaam om te gebruiken in proxy-koppeling
+Proxy-Port
+(0 = willekeurige poort)
+Als de automatische vaststelling van een cookie niet mogelijk is, opent de adapter een proxy om handmatig inloggen bij Amazon mogelijk te maken. Het logbestand geeft u de URL die u vervolgens moet gebruiken. Open dit in uw browser, log handmatig in bij Amazon, los alle mogelijke Captchas of Two-Factor-Authenticaties op en de cookie wordt automatisch in de achtergrond gevangen als het succesvol is.
+s (0 = uitgeschakeld)
+Historisch update-interval
+Gegevensbijwerkingsinterval (spelerinformatie ...)
+Aangepaste user-agent

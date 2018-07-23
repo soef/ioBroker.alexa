@@ -1,0 +1,28 @@
+Benutzer/Email
+Passwort
+Einstellungen
+Eigene Sprachangabe-Header
+Alexa Login Daten
+Alexa Basis URL
+Login-Daten für das Amazon-Konto, wo die Echo Geräte registriert sind
+Die Login-Daten werden verschlüsselt in der lokalen ioBroker-Instanz gespeichert. Wenn die Daten nicht angegeben werden, muss man selbst das Cookie beschaffen oder über den Proxy des Adapters den Login vornehmen, sodass das Cookie dann ermittelt werden kann. Dies muss aber manuell wiederholt werden sobald der Cookie ungültig geworden ist.
+Cookie
+Manuelle Eingabe des Cookie
+Der Cookie kann auch manuell ermittelt und eingetragen werden. Email & Passwort werden dann nicht benötigt
+Siehe z.B. <a href="https://www.gehrig.info/alexa/Alexa.html" target="_blank">here</a> wie ein Cookie manuellerstellt werden kann, oder den Proxy-Modus des Adapters versuchen. Die Proxy-URL wird in der Fehlermeldung angezeigt.
+Eigene Cookie-Amazon-URL
+Aktualisierungsintervalle
+Bestimmte Daten können automatisch aktualisiert werden. Wie oft dies passiert, wird hier in Sekunden ferstgelegt. Über den Datenunkt history.#trigger kann jederzeit manuell eine Aktualisierung angestossen werden. Die Angabe von 0 deaktiviert die automatischen Aktualisierungen.
+Überschreiben spezieller Parameter zur Cookie-Ermittlung und Kommunikation
+Standardmäßig verbindet sich der Adapter mit einem deutschen Amazon-Konto. Bei der Nutzung von anderen Amazon-Ländern müssen hier die korrekten Daten eingetragen werden. Einige Hinweise dazu sind in der Adapter-README zu finden. Auch in speziellen Fällen, wenn die automatische Cookie-Ermittlung fehlschlägt, kann es helfen die Fehler user-Agent und Accept-Language anzupassen.
+Passwort
+Proxy-Einstellungen
+Proxy-Beschränkung auf folgende IP (Listen Bind)
+Eigene IP oder für den Proxy-Link
+Proxy-Port
+(0 = zufälliger Port)
+Wenn die automatische Cookie-Ermittlung nicht funktioniert öffnet der Adapter einen Proxy um einen manuellen Login zu erleuben. Das Logfile nennt in dem Fall den aufzurufenden Link. Diese mit dem Browser aufrufen, bei Amazon einloggen, alle potentiell angezeigten Captachas und Zwei-Faktor-Abfragen beantworten und das Cookie wird bei Erfolg im Hintergrund automatisch erfasst.
+s (0 = deaktiviert)
+History Update Interval
+Daten-Update-Interval (Player-Info ...)
+Eigener User-Agent

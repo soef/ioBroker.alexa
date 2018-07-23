@@ -181,7 +181,7 @@ adapter.on('objectChange', (id, object) => {
     }
 });
 
-adapter.on('ready', function (obj) {
+adapter.on('ready', () => {
     adapter.getForeignObject('system.config', (err, obj) => {
         if (obj && obj.native && obj.native.secret) {
             //noinspection JSUnresolvedVariable
@@ -225,7 +225,7 @@ function setRequestResult(err, res) {
 /**
  * Konvertiert eine Sekundenzahl in einen String im Format (HH:)MM:SS
  *
- * @param integer sek
+ * @param {number} sec seconds
  * @return string
  */
 function sec2HMS(sec) {
@@ -279,9 +279,9 @@ Alexa.prototype.updateStates = function (callback) {
         let device = self.devices[i++];
         if (!device.isControllable) return doIt();
 
-        self.getPlayerInfo(device , function(err, resPlayer) {
+        self.getPlayerInfo(device , (err, resPlayer) => {
             if (err || !resPlayer || !resPlayer.playerInfo) return doIt();
-            self.getMedia(device, function(err, resMedia) {
+            self.getMedia(device, (err, resMedia) => {
                 if (err || !resMedia) return doIt();
                 let devId = 'echo-devices.' + device.serialNumber;
                 if (lastPlayerState[device.serialNumber] && lastPlayerState[device.serialNumber].timeout) {
@@ -369,7 +369,7 @@ Alexa.prototype.updateStates = function (callback) {
  * ruft sich nach 2 Sekunden erneut selbst auf, wenn "currentState" noch auf "PLAYING" steht.
  * ist "mediaProgress" größer als "mediaLength", so ist der Song zu Ende und "updateDevice" wird aufgerufen.
  *
- * @param string deviceDpName
+ * @param {string} serialNumber serial number
  */
 function updateMediaProgress(serialNumber) {
     if (!lastPlayerState[serialNumber] || !lastPlayerState[serialNumber].resPlayer) return;
@@ -387,7 +387,7 @@ function updateMediaProgress(serialNumber) {
 	let mediaProgress = parseInt(resPlayer.playerInfo.progress.mediaProgress, 10);
 	let mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength, 10);
 
-	if (currentState == 'PLAYING') {
+	if (currentState === 'PLAYING') {
         let timeframe = ~~((Date.now() - lastTimestamp) / 1000); // calculae time since last data
 		let mediaProgressNew = mediaProgress + timeframe; // add this to the progress
 
@@ -491,7 +491,7 @@ Alexa.prototype.updateHistory = function (callback) {
         clearTimeout(updateHistoryTimer);
         updateHistoryTimer = null;
     }
-    this.getHistory({size: 3, filter: true}, function (err, res) {
+    this.getHistory({size: 3, filter: true}, (err, res) => {
         if (err || !res) {
             if (adapter.config.updateHistoryInterval > 0) {
                 scheduleHistoryUpdate();
@@ -602,10 +602,8 @@ Alexa.prototype.createStates = function (callback) {
                         device.setTunein(query, 'station', (err, ret) => {
                             if (!err) adapter.setState(devId + '.Player-Controls.TuneIn', query, true);
                         });
-                        return;
-                    }
-                    else {
-                        this.tuneinSearch(query, function (err, res) {
+                    } else {
+                        this.tuneinSearch(query, (err, res) => {
                             setRequestResult(err, res);
                             if (err || !res || !Array.isArray (res.browseList)) return;
                             let station = res.browseList[0];
@@ -649,16 +647,17 @@ Alexa.prototype.createStates = function (callback) {
             if (this.routines) {
                 setOrUpdateObject(devId + '.Routines', {type: 'channel'});
                 for (let i in this.routines) {
-                    setOrUpdateObject(devId + '.Routines.' + this.routines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'button', name: this.routines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind (alexa, device, this.routines[i].automationId));
+                    if (this.routines.hasOwnProperty(i)) {
+                        setOrUpdateObject(devId + '.Routines.' + this.routines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'button', name: this.routines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind (alexa, device, this.routines[i].automationId));
+                    }
                 }
             }
         }
     });
 
     setOrUpdateObject('history', {type: 'channel', common: {name: 'Last detected commands and devices'}});
-    setOrUpdateObject('history.#trigger', {common: {role: 'button', name: 'Trigger/Rescan', desc: 'Set to true, to start a request'}}, false, function(val) {
-        this.updateHistory();
-    }.bind(this));
+    setOrUpdateObject('history.#trigger', {common: {role: 'button', name: 'Trigger/Rescan', desc: 'Set to true, to start a request'}}, false,
+            val => this.updateHistory());
     setOrUpdateObject('history.name', {common: {role: 'text', write: false, name: 'Echo Device name', desc: 'Device name of the last detected command'}}, '');
     let now = new Date();
     now = now.getTime() - now.getTimezoneOffset();
@@ -675,12 +674,11 @@ Alexa.prototype.createStates = function (callback) {
 };
 
 function main() {
-
     if (!adapter.config.proxyOwnIp) {
         const ifaces = os.networkInterfaces();
-        for (var eth in ifaces) {
+        for (const eth in ifaces) {
             if (!ifaces.hasOwnProperty(eth)) continue;
-            for (var num = 0; num < ifaces[eth].length; num++) {
+            for (let num = 0; num < ifaces[eth].length; num++) {
                 if (ifaces[eth][num].family !== 'IPv6' && ifaces[eth][num].address !== '127.0.0.1' && ifaces[eth][num].address !== '0.0.0.0') {
                     adapter.config.proxyOwnIp = ifaces[eth][num].address;
                     adapter.log.info('Proxy IP not set, use first network interface (' + adapter.config.proxyOwnIp + ') instead');
@@ -719,8 +717,7 @@ function main() {
             if (err) {
                 if (err.message === 'no csrf found') {
                     adapter.log.error('Error: no csrf found. Check configuration of email/password or cookie');
-                }
-                else {
+                } else {
                     adapter.log.error('Error: ' + err.message);
                 }
                 adapter.setState('info.connection', false, true);
@@ -737,8 +734,8 @@ function main() {
                 return;
             }
 
-            alexa.createStates(function () {
-                alexa.createSmarthomeStates(function () {
+            alexa.createStates(() => {
+                alexa.createSmarthomeStates(() => {
                     if (!initDone) {
                         adapter.subscribeStates ('*');
                         adapter.subscribeObjects ('*');

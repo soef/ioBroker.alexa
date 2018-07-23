@@ -1,5 +1,4 @@
 ![Logo](admin/alexa.png)
-
 # ioBroker.alexa2
 
 <!-- -->
