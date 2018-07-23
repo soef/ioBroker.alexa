@@ -544,7 +544,7 @@ Alexa.prototype.createStates = function (callback) {
         let devId = 'echo-devices.' + device.serialNumber;
         setOrUpdateObject(devId, {type: 'device', common: {name: device._name}});
         //dev.setName(device.accountName); TODO
-        setOrUpdateObject(devId + '.online', {common: {role: 'indicator.connected'}}, device.online);
+        setOrUpdateObject(devId + '.online', {common: {role: 'indicator.reachable'}}, device.online);
         //setOrUpdateObject(devId + '.delete', {common: {name: 'Delete (Log out of this device)', role: 'button'}}, false); TODO
 
         setOrUpdateObject(devId + '.Info', {type: 'channel'});
@@ -712,37 +712,41 @@ function main() {
     let initDone = false;
 
     alexa = new Alexa();
-    alexa.init(options,
-        function (err) {
-            if (err) {
-                if (err.message === 'no csrf found') {
-                    adapter.log.error('Error: no csrf found. Check configuration of email/password or cookie');
+    alexa.init(options, err => {
+        if (err) {
+            if (err.message === 'no csrf found') {
+                adapter.log.error('Error: no csrf found. Check configuration of email/password or cookie');
+            } else {
+                let lines = err.message.split('You can try to get the cookie');
+                if (lines[1]) {
+                    lines[1] = 'You can try to get the cookie' + lines[1];
                 } else {
-                    adapter.log.error('Error: ' + err.message);
+                    lines = err.message.split('\n');
                 }
-                adapter.setState('info.connection', false, true);
-                return;
+                lines.forEach(line => adapter.log.error('Error: ' + line));
             }
-
-            adapter.setState('info.connection', true, true);
-            adapter.setState('info.cookie', alexa.cookie, true);
-            adapter.setState('info.csrf', alexa.csrf, true);
-
-            if (alexa.cookie !== adapter.config.cookie) {
-                adapter.log.info('Update cookie in adapter configuration ... restarting ...');
-                adapter.extendForeignObject("system.adapter." + adapter.namespace, {native: {cookie: alexa.cookie, csrf: alexa.csrf}});
-                return;
-            }
-
-            alexa.createStates(() => {
-                alexa.createSmarthomeStates(() => {
-                    if (!initDone) {
-                        adapter.subscribeStates ('*');
-                        adapter.subscribeObjects ('*');
-                        initDone = true;
-                    }
-                });
-            });
+            adapter.setState('info.connection', false, true);
+            return;
         }
-    );
+
+        adapter.setState('info.connection', true, true);
+        adapter.setState('info.cookie', alexa.cookie, true);
+        adapter.setState('info.csrf', alexa.csrf, true);
+
+        if (alexa.cookie !== adapter.config.cookie) {
+            adapter.log.info('Update cookie in adapter configuration ... restarting ...');
+            adapter.extendForeignObject("system.adapter." + adapter.namespace, {native: {cookie: alexa.cookie, csrf: alexa.csrf}});
+            return;
+        }
+
+        alexa.createStates(() => {
+            alexa.createSmarthomeStates(() => {
+                if (!initDone) {
+                    adapter.subscribeStates ('*');
+                    adapter.subscribeObjects ('*');
+                    initDone = true;
+                }
+            });
+        });
+    });
 }
