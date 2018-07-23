@@ -15,6 +15,9 @@
             .adapter-body {
                 overflow: hidden !important;
             }
+            .proxy-info {
+                margin-bottom: 25px;
+            }
         </style>
 
         <!-- you have to define 2 functions in the global scope: -->
@@ -58,7 +61,6 @@
 
         // the function loadSettings has to exist ...
         function loadHelper(settings, onChange) {
-
             ownFillSelectIPs('#proxyOwnIp', settings.proxyOwnIp, false, true, function () {
                 $('#proxyOwnIp').select();
             });
@@ -108,6 +110,8 @@
                 $('#language').val(settings.language).trigger('change');
             }
 
+            M.updateTextFields();
+            $('select').select();
             onChange(false);
         }
 
@@ -200,12 +204,12 @@
 
                             <div class="input-field col s12 m6">
                                 <input class="value validate" data-crypt="1" id="email" type="email"/>
-                                <label for="email" class="translate active">Email</label>
+                                <label for="email" class="translate">Email</label>
                                 <span class="helper-text" data-error="invalid Email" data-success="valid Email"></span>
                             </div>
                             <div class="input-field col s12 m6">
                                 <input class="value" data-crypt="1" type="password" id="password"/>
-                                <label for="password" class="translate active">password</label>
+                                <label for="password" class="translate">password</label>
                             </div>
                         </div>
                     </div>
@@ -216,14 +220,14 @@
                             <p class="translate">interval_info</p>
 
                             <div class="input-field col s12 m6">
-                                <input class="value validate" placeholder="300" id="updateStateInterval" value="true" type="number">s
-                                <label for="updateStateInterval" class="translate active">updateStateInterval</label>
-                                <span class="helper-text translate">(0 = disabled)</span>
+                                <input class="value validate" placeholder="300" id="updateStateInterval" type="number" min="0" max="1440">
+                                <label for="updateStateInterval" class="translate">updateStateInterval</label>
+                                <span class="helper-text translate">s (0 = disabled)</span>
                             </div>
                             <div class="input-field col s12 m6">
-                                <input class="value validate" placeholder="300" id="updateHistoryInterval" value="true" type="number">s
-                                <label for="updateHistoryInterval" class="translate active">updateHistoryInterval</label>
-                                <span class="helper-text translate">(0 = disabled)</span>
+                                <input class="value validate" placeholder="300" id="updateHistoryInterval" type="number" min="0" max="1440">
+                                <label for="updateHistoryInterval" class="translate">updateHistoryInterval</label>
+                                <span class="helper-text translate">s (0 = disabled)</span>
                             </div>
                         </div>
                     </div>
@@ -245,7 +249,7 @@
 
                             <div class="input-field col s12">
                                 <textarea id="cookie" class="value materialize-textarea"></textarea>
-                                <label for="cookie" class="translate active">cookie</label>
+                                <label for="cookie" class="translate">cookie</label>
                                 <span class="helper-text translate">cookieAlt_info2</span>
                             </div>
                         </div>
@@ -292,22 +296,22 @@
 
                         <div class="col s12">
                             <p class="translate title">proxy</p>
-                            <p class="translate">proxy_info</p>
+                            <p class="translate proxy-info">proxy_info</p>
 
                             <div class="input-field col s12">
                                 <select id="proxyOwnIp" class="value"></select>
-                                <label for="proxyOwnIp" class="active translate">proxyOwnIp</label>
+                                <label for="proxyOwnIp" class="translate">proxyOwnIp</label>
                             </div>
 
                             <div class="input-field col s12">
-                                <input id="proxyPort" placeholder="0" class="value number"/>
-                                <label for="proxyPort" class="translate active">proxyPort</label>
+                                <input id="proxyPort" class="value" type="number" min="0" max="65565"/>
+                                <label for="proxyPort" class="translate">proxyPort</label>
                                 <span class="helper-text translate">proxyPort_info</span>
                             </div>
 
                             <div class="input-field col s12">
                                 <select id="proxyListenBind" class="value"></select>
-                                <label for="proxyListenBind" class="active translate">proxyListenBind</label>
+                                <label for="proxyListenBind" class="translate">proxyListenBind</label>
                             </div>
 
                         </div>
