@@ -289,30 +289,30 @@ Alexa.prototype.updateStates = function (callback) {
                 }
                 lastPlayerState[device.serialNumber] = {resPlayer: resPlayer, ts: Date.now(), devId: devId, timeout: null};
                 if (resPlayer.playerInfo.volume) {
-                    adapter.setState(devId + '.Player-Controls.volume', ~~resPlayer.playerInfo.volume.volume, true);
-                    if (resMedia.shuffling !== undefined) adapter.setState(devId + '.Player-Controls.shuffle', resMedia.shuffling, true);
-                    if (resMedia.looping !== undefined) adapter.setState(devId + '.Player-Controls.repeat', resMedia.looping, true);
+                    adapter.setState(devId + '.Player.volume', ~~resPlayer.playerInfo.volume.volume, true);
+                    if (resMedia.shuffling !== undefined) adapter.setState(devId + '.Player.shuffle', resMedia.shuffling, true);
+                    if (resMedia.looping !== undefined) adapter.setState(devId + '.Player.repeat', resMedia.looping, true);
                     //let muted = res.playerInfo.volume.muted;
                 }
-                adapter.setState(devId + '.Player-Controls.pause', (resPlayer.playerInfo.state === 'PAUSED'), true);
-                adapter.setState(devId + '.Player-Controls.play', (resPlayer.playerInfo.state === 'PLAYING'), true);
+                adapter.setState(devId + '.Player.pause', (resPlayer.playerInfo.state === 'PAUSED'), true);
+                adapter.setState(devId + '.Player.play', (resPlayer.playerInfo.state === 'PLAYING'), true);
 
-                //if (resPlayer.playerInfo.state !== null) adapter.setState(devId + '.Player-Info.status', resPlayer.playerInfo.state, true);
-                adapter.setState(devId + '.Player-Info.contentType', resMedia.contentType || '', true);	// 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
+                //if (resPlayer.playerInfo.state !== null) adapter.setState(devId + '.Player.status', resPlayer.playerInfo.state, true);
+                adapter.setState(devId + '.Player.contentType', resMedia.contentType || '', true);	// 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
 
-                adapter.setState(devId + '.Player-Info.currentState', resPlayer.playerInfo.state === 'PLAYING', true);	// 'PAUSED' | 'PLAYING'
+                adapter.setState(devId + '.Player.currentState', resPlayer.playerInfo.state === 'PLAYING', true);	// 'PAUSED' | 'PLAYING'
 
-                adapter.setState(devId + '.Player-Info.imageURL', resMedia.imageURL || '', true);
-    			adapter.setState(devId + '.Player-Info.muted', !!resMedia.muted || '', true);
-    			adapter.setState(devId + '.Player-Info.providerId', resMedia.providerId || '', true); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
-    			adapter.setState(devId + '.Player-Info.radioStationId', resMedia.radioStationId || '', true); // 's24885' | null
-    			adapter.setState(devId + '.Player-Info.service', resMedia.service || '', true); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
+                adapter.setState(devId + '.Player.imageURL', resMedia.imageURL || '', true);
+    			adapter.setState(devId + '.Player.muted', !!resMedia.muted || '', true);
+    			adapter.setState(devId + '.Player.providerId', resMedia.providerId || '', true); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
+    			adapter.setState(devId + '.Player.radioStationId', resMedia.radioStationId || '', true); // 's24885' | null
+    			adapter.setState(devId + '.Player.service', resMedia.service || '', true); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
 
     			let providerName = '';
     			if (resPlayer.playerInfo !== undefined && 'provider' in resPlayer.playerInfo && resPlayer.playerInfo.provider !== null) {
     				providerName = resPlayer.playerInfo.provider.providerName;
     			}
-    			adapter.setState(devId + '.Player-Info.providerName', providerName || '',	true); // 'Amazon Music' | 'TuneIn Live-Radio'
+    			adapter.setState(devId + '.Player.providerName', providerName || '',	true); // 'Amazon Music' | 'TuneIn Live-Radio'
 
     			let title = '';
     			let artist = '';
@@ -322,21 +322,21 @@ Alexa.prototype.updateStates = function (callback) {
     				artist = resPlayer.playerInfo.infoText.subText1;
     				album = resPlayer.playerInfo.infoText.subText2;
     			}
-    			adapter.setState(devId + '.Player-Info.currentTitle', title || '', true);
-    			adapter.setState(devId + '.Player-Info.currentArtist', artist || '', true);
-    			adapter.setState(devId + '.Player-Info.currentAlbum', album || '', true);
+    			adapter.setState(devId + '.Player.currentTitle', title || '', true);
+    			adapter.setState(devId + '.Player.currentArtist', artist || '', true);
+    			adapter.setState(devId + '.Player.currentAlbum', album || '', true);
 
     			let mainArtUrl = '';
     			if (resPlayer.playerInfo !== undefined && 'mainArt' in resPlayer.playerInfo && resPlayer.playerInfo.mainArt !== null) {
     				mainArtUrl = resPlayer.playerInfo.mainArt.url;
     			}
-    			adapter.setState(devId + '.Player-Info.mainArtUrl', mainArtUrl || '', true);
+    			adapter.setState(devId + '.Player.mainArtUrl', mainArtUrl || '', true);
 
     			let miniArtUrl = '';
     			if (resPlayer.playerInfo !== undefined && 'miniArt' in resPlayer.playerInfo && resPlayer.playerInfo.miniArt !== null) {
     				miniArtUrl = resPlayer.playerInfo.miniArt.url;
     			}
-    			adapter.setState(devId + '.Player-Info.miniArtUrl', miniArtUrl || mainArtUrl || '', true);
+    			adapter.setState(devId + '.Player.miniArtUrl', miniArtUrl || mainArtUrl || '', true);
 
     			let mediaLength = 0;
     			let mediaProgress = 0;
@@ -348,11 +348,11 @@ Alexa.prototype.updateStates = function (callback) {
     					mediaProgressPercent = Math.round(((mediaProgress * 100) / mediaLength));
     				}
     			}
-    			adapter.setState(devId + '.Player-Info.mediaLength', mediaLength || '', true);
-    			adapter.setState(devId + '.Player-Info.mediaLengthStr',	sec2HMS(mediaLength) || '', true);
-    			adapter.setState(devId + '.Player-Info.mediaProgress', mediaProgress || 0, true);
-    			adapter.setState(devId + '.Player-Info.mediaProgressStr', sec2HMS(mediaProgress) || 0, true);
-    			adapter.setState(devId + '.Player-Info.mediaProgressPercent', mediaProgressPercent || 0, true);
+    			adapter.setState(devId + '.Player.mediaLength', mediaLength || '', true);
+    			adapter.setState(devId + '.Player.mediaLengthStr',	sec2HMS(mediaLength) || '', true);
+    			adapter.setState(devId + '.Player.mediaProgress', mediaProgress || 0, true);
+    			adapter.setState(devId + '.Player.mediaProgressStr', sec2HMS(mediaProgress) || 0, true);
+    			adapter.setState(devId + '.Player.mediaProgressPercent', mediaProgressPercent || 0, true);
 
                 if (resPlayer.playerInfo.state === 'PLAYING') {
                     lastPlayerState[device.serialNumber].timeout = setTimeout( () => {
@@ -404,9 +404,9 @@ function updateMediaProgress(serialNumber) {
         if (mediaLength > 0) {
 			mediaProgressPercent = Math.round((((mediaProgressNew) * 100) / mediaLength));
 		}
-		adapter.setState(devId + '.Player-Info.mediaProgressPercent', mediaProgressPercent, true);
-		adapter.setState(devId + '.Player-Info.mediaProgress', mediaProgressNew, true);
-		adapter.setState(devId + '.Player-Info.mediaProgressStr', sec2HMS(mediaProgressNew), true);
+		adapter.setState(devId + '.Player.mediaProgressPercent', mediaProgressPercent, true);
+		adapter.setState(devId + '.Player.mediaProgress', mediaProgressNew, true);
+		adapter.setState(devId + '.Player.mediaProgressStr', sec2HMS(mediaProgressNew), true);
 
         lastPlayerState[serialNumber].timeout = setTimeout( () => {
             lastPlayerState[serialNumber].timeout = null;
@@ -561,48 +561,45 @@ Alexa.prototype.createStates = function (callback) {
         }
 
         if (device.isControllable) {
-            setOrUpdateObject(devId + '.Player-Info', {type: 'channel'});
-            //setOrUpdateObject(devId + '.Player-Info.status', {common: {role: 'text', write: false, def: ''}});
+            setOrUpdateObject(devId + '.Player', {type: 'channel'});
 
-            setOrUpdateObject(devId + '.Player-Info.contentType', {common: {role: 'text', write: false, def: ''}});	// 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
-			setOrUpdateObject(devId + '.Player-Info.currentState', {common: {role: 'media.state', write: false, def: false}}); // 'PAUSED' | 'PLAYING'
-            //TODO SONDERLOGIK!!!! createDeviceControlState
-			setOrUpdateObject(devId + '.Player-Info.imageURL', {common: {name: 'Huge image', role: 'media.cover.big', write: false, def: ''}});
-			setOrUpdateObject(devId + '.Player-Info.muted',	{common: {type: 'boolean', role: 'media.mute', write: false, def: false}});
-			setOrUpdateObject(devId + '.Player-Info.providerId', {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
-			setOrUpdateObject(devId + '.Player-Info.radioStationId', {common: {role: 'text', write: false, def: ''}}); // 's24885' | null
-			setOrUpdateObject(devId + '.Player-Info.service', {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
-			setOrUpdateObject(devId + '.Player-Info.providerName', {common: {name: 'active provider', role: 'media.input', write: false, def: ''}}); // 'Amazon Music' | 'TuneIn Live-Radio'
+            setOrUpdateObject(devId + '.Player.contentType', {common: {role: 'text', write: false, def: ''}});	// 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
+			setOrUpdateObject(devId + '.Player.currentState', {common: {role: 'media.state', write: false, def: false}}); // 'PAUSED' | 'PLAYING'
+			setOrUpdateObject(devId + '.Player.imageURL', {common: {name: 'Huge image', role: 'media.cover.big', write: false, def: ''}});
+			setOrUpdateObject(devId + '.Player.muted',	{common: {type: 'boolean', role: 'media.mute', write: false, def: false}});
+			setOrUpdateObject(devId + '.Player.providerId', {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
+			setOrUpdateObject(devId + '.Player.radioStationId', {common: {role: 'text', write: false, def: ''}}); // 's24885' | null
+			setOrUpdateObject(devId + '.Player.service', {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
+			setOrUpdateObject(devId + '.Player.providerName', {common: {name: 'active provider', role: 'media.input', write: false, def: ''}}); // 'Amazon Music' | 'TuneIn Live-Radio'
 
-			setOrUpdateObject(devId + '.Player-Info.currentTitle', {common: {name:'current title', type:'string', role:'media.title', def: ''}});
-			setOrUpdateObject(devId + '.Player-Info.currentArtist', {common: {name:'current artist', type:'string', role:'media.artist', def: ''}});
-			setOrUpdateObject(devId + '.Player-Info.currentAlbum',	{common: {name:'current album', type:'string', role:'media.album', def: ''}});
-            setOrUpdateObject(devId + '.Player-Info.mainArtUrl', {common: {name:'current main Art', type:'string', role:'media.cover', def: ''}});
-            setOrUpdateObject(devId + '.Player-Info.miniArtUrl', {common: {name:'current mini Art', type:'string', role:'media.cover.small', def: ''}});
+			setOrUpdateObject(devId + '.Player.currentTitle', {common: {name:'current title', type:'string', role:'media.title', def: ''}});
+			setOrUpdateObject(devId + '.Player.currentArtist', {common: {name:'current artist', type:'string', role:'media.artist', def: ''}});
+			setOrUpdateObject(devId + '.Player.currentAlbum',	{common: {name:'current album', type:'string', role:'media.album', def: ''}});
+            setOrUpdateObject(devId + '.Player.mainArtUrl', {common: {name:'current main Art', type:'string', role:'media.cover', def: ''}});
+            setOrUpdateObject(devId + '.Player.miniArtUrl', {common: {name:'current mini Art', type:'string', role:'media.cover.small', def: ''}});
 
-			setOrUpdateObject(devId + '.Player-Info.mediaLength', {common: {name:'active media length', type:'number', role:'media.duration', def: 0}});
-			setOrUpdateObject(devId + '.Player-Info.mediaLengthStr', {common: {name:'active media length as (HH:)MM:SS', type:'string', role:'media.duration.text', def: ''}});
-			setOrUpdateObject(devId + '.Player-Info.mediaProgress',	 {common: {name:'active media progress', type:'number', role:'media.elapsed', def: 0}});
-			setOrUpdateObject(devId + '.Player-Info.mediaProgressStr', {common: {name:'active media progress as (HH:)MM:SS', type:'string', role:'media.elapsed.text', def: ''}});
-			setOrUpdateObject(devId + '.Player-Info.mediaProgressPercent', {common: {name:'active media progress as percent', type:'number', role:'media.elapsed.percent', def: 0}});
+			setOrUpdateObject(devId + '.Player.mediaLength', {common: {name:'active media length', type:'number', role:'media.duration', def: 0}});
+			setOrUpdateObject(devId + '.Player.mediaLengthStr', {common: {name:'active media length as (HH:)MM:SS', type:'string', role:'media.duration.text', def: ''}});
+			setOrUpdateObject(devId + '.Player.mediaProgress',	 {common: {name:'active media progress', type:'number', role:'media.elapsed', def: 0}});
+			setOrUpdateObject(devId + '.Player.mediaProgressStr', {common: {name:'active media progress as (HH:)MM:SS', type:'string', role:'media.elapsed.text', def: ''}});
+			setOrUpdateObject(devId + '.Player.mediaProgressPercent', {common: {name:'active media progress as percent', type:'number', role:'media.elapsed.percent', def: 0}});
 
-            setOrUpdateObject(devId + '.Player-Controls', {type: 'channel'});
             for (let c in playerControls) {
                 const obj = JSON.parse (JSON.stringify (playerControls[c]));
-                setOrUpdateObject(devId + '.Player-Controls.' + c, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, c));
+                setOrUpdateObject(devId + '.Player.' + c, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, c));
             }
             if (device.hasMusicPlayer) {
                 for (let c in musicControls) {
                     const obj = JSON.parse (JSON.stringify (musicControls[c]));
-                    setOrUpdateObject(devId + '.Player-Controls.' + c, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, c));
+                    setOrUpdateObject(devId + '.Player.' + c, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, c));
                 }
             }
 
             if (device.capabilities.includes ('TUNE_IN')) {
-                setOrUpdateObject(devId + '.Player-Controls.TuneIn', {common: {role: 'text'}}, '', function (device, query) {
+                setOrUpdateObject(devId + '.Player.TuneIn', {common: {role: 'text'}}, '', function (device, query) {
                     if (query.match(/^s[0-9]{4,6}$/)) {
                         device.setTunein(query, 'station', (err, ret) => {
-                            if (!err) adapter.setState(devId + '.Player-Controls.TuneIn', query, true);
+                            if (!err) adapter.setState(devId + '.Player.TuneIn', query, true);
                         });
                     } else {
                         this.tuneinSearch(query, (err, res) => {
@@ -610,7 +607,7 @@ Alexa.prototype.createStates = function (callback) {
                             if (err || !res || !Array.isArray (res.browseList)) return;
                             let station = res.browseList[0];
                             device.setTunein(station.id, station.contentType, (err, ret) => {
-                                if (!err) adapter.setState('echo-devices.' + device.serialNumber + '.Player-Controls.TuneIn', station.name, true);
+                                if (!err) adapter.setState('echo-devices.' + device.serialNumber + '.Player.TuneIn', station.name, true);
                             });
                         });
                     }

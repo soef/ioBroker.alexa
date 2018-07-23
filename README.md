@@ -121,6 +121,10 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 0.3.0 (2018-07-23)
+* (Bluefox) Admin3 fixes and slight changes to roles and code
+* (Apollon77) Combine Player-Control and Player-Info into channel Player to support better detection and material support
+
 ### 0.2.4 (2018-07-22)
 * (pix) materialize settings window
 * (Apollon77) WOn IP is set automatically with IP from first network interface
