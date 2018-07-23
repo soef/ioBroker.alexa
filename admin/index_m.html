@@ -215,12 +215,12 @@
                         <p class="translate">interval_info</p>
 
                         <div class="input-field col s12 m6">
-                            <input class="value validate" placeholder="300" id="updateStateInterval" value="true" type="number">
+                            <input class="value validate" placeholder="300" id="updateStateInterval" type="number" min="0" max="1440">
                             <label for="updateStateInterval" class="translate">updateStateInterval</label>
                             <span class="helper-text translate">s (0 = disabled)</span>
                         </div>
                         <div class="input-field col s12 m6">
-                            <input class="value validate" placeholder="300" id="updateHistoryInterval" value="true" type="number">
+                            <input class="value validate" placeholder="300" id="updateHistoryInterval" type="number" min="0" max="1440">
                             <label for="updateHistoryInterval" class="translate">updateHistoryInterval</label>
                             <span class="helper-text translate">s (0 = disabled)</span>
                         </div>
@@ -299,7 +299,7 @@
                         </div>
 
                         <div class="input-field col s12">
-                            <input id="proxyPort" placeholder="0" class="value number"/>
+                            <input id="proxyPort" class="value" type="number" min="0" max="65565"/>
                             <label for="proxyPort" class="translate">proxyPort</label>
                             <span class="helper-text translate">proxyPort_info</span>
                         </div>
