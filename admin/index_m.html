@@ -9,8 +9,7 @@
         <script type="text/javascript" src="../../js/translate.js"></script>
         <script type="text/javascript" src="../../lib/js/materialize.js"></script>
         <script type="text/javascript" src="../../js/adapter-settings.js"></script>
-        <!--<script type="text/javascript" src="words.js"></script>-->
-
+        <script type="text/javascript" src="words.js"></script>>
 
         <style>
             .adapter-body {
@@ -21,124 +20,6 @@
         <!-- you have to define 2 functions in the global scope: -->
         <script type="text/javascript">
 
-        // Dictionary (systemDictionary is global variable from adapter-settings.js)
-        systemDictionary = {
-            "Settings": {
-                "de": "Einstellungen",
-                "ru": "Settings"
-            },
-            "alexaServiceHost": {
-                "de": "Alexa Basis URL",
-                "en": "Alexa base url"
-            },
-            "alexaLogin": {
-                "de": "Alexa Login Daten",
-                "en": "Alexa login data"
-            },
-            "password": {
-                "de": "Passwort",
-                "en": "password"
-            },
-            "cookie": {
-                "de": "Cookie",
-                "en": "Cookie"
-            },
-            "Password": {
-                "de": "Passwort",
-                "en": "Password"
-            },
-            "Email": {
-                "de": "Benutzer/Email",
-                "en": "User/Email"
-           },
-            "auth": {
-                "de": "Login-Daten für das Amazon-Konto, wo die Echo Geräte registriert sind",
-                "en": "Login Details for Amazon Account where Echo devices are registered"
-            },
-            "auth_info": {
-                "de": "Die Login-Daten werden verschlüsselt in der lokalen ioBroker-Instanz gespeichert. Wenn die Daten nicht angegeben werden, muss man selbst das Cookie beschaffen oder über den Proxy des Adapters den Login vornehmen, sodass das Cookie dann ermittelt werden kann. Dies muss aber manuell wiederholt werden sobald der Cookie ungültig geworden ist.",
-                "en": "The credentials will be stored encrypted in your local ioBroker instance. You can also leave them empty, but then you need to fetch the Amazon cookie by your own or use the proxy from the adapter to login and get the cookie."
-            },
-            "cookieAlt": {
-                "de": "Manuelle Eingabe des Cookie",
-                "en": "Manual input of the cookie"
-            },
-            "cookieAlt_info": {
-                "de": "Der Cookie kann auch manuell ermittelt und eingetragen werden. Email & Passwort werden dann nicht benötigt",
-                "en": "The cookie can also be entered directly. Email & password are then not required"
-            },
-            "cookieAlt_info2": {
-                "de": "Siehe z.B. <a href=\"https://www.gehrig.info/alexa/Alexa.html\" target=\"_blank\">here</a> wie ein Cookie manuellerstellt werden kann, oder den Proxy-Modus des Adapters versuchen. Die Proxy-URL wird in der Fehlermeldung angezeigt.",
-                "en": "See e.g. <a href=\"https://www.gehrig.info/alexa/Alexa.html\" target=\"_blank\">here</a> how to get a cookie manually or try the proxy mode of the adapter! See Error message in log for proxy URL"
-            },
-            "cookieLoginUrl": {
-                "de": "Eigene Cookie-Amazon-URL",
-                "en": "Custom Cookie-Amazon-URL"
-            },
-            "userAgent": {
-                "de": "Eigener User-Agent",
-                "en": "Custom User-Agent"
-            },
-            "acceptLanguage": {
-                "de": "Eigene Sprachangabe-Header",
-                "en": "Custom Accept-Language Header"
-            },
-            "updateStateInterval": {
-                "de": "Daten-Update-Interval (Player-Info ...)",
-                "en": "Data update interval (player info ...)"
-            },
-            "updateHistoryInterval": {
-                "de": "History Update Interval",
-                "en": "History update interval"
-            },
-            "interval": {
-                "de": "Aktualisierungsintervalle",
-                "en": "Data updateIntervals"
-            },
-            "interval_info": {
-                "de": "Bestimmte Daten können automatisch aktualisiert werden. Wie oft dies passiert, wird hier in Sekunden ferstgelegt. Über den Datenunkt history.#trigger kann jederzeit manuell eine Aktualisierung angestossen werden. Die Angabe von 0 deaktiviert die automatischen Aktualisierungen.",
-                "en": "Several data can automatically be updated. You define here in seconds how often this should happen. Using the state history.#trigger you can always update the data manually. If you set 0 as interval the automatic update is disabled. "
-            },
-            "s (0 = disabled)": {
-                "de": "s (0 = deaktiviert)",
-                "en": "s (0 = disabled)"
-            },
-            "overwrite": {
-                "de": "Überschreiben spezieller Parameter zur Cookie-Ermittlung und Kommunikation",
-                "en": "Override special parameter for cookie determination and communication"
-            },
-            "overwrite_info": {
-                "de": "Standardmäßig verbindet sich der Adapter mit einem deutschen Amazon-Konto. Bei der Nutzung von anderen Amazon-Ländern müssen hier die korrekten Daten eingetragen werden. Einige Hinweise dazu sind in der Adapter-README zu finden. Auch in speziellen Fällen, wenn die automatische Cookie-Ermittlung fehlschlägt, kann es helfen die Fehler user-Agent und Accept-Language anzupassen.",
-                "en": "By default the parameters are set to connect with a german amazon account. If you are using other amazon countries you need to set the correct data here. Check in Adapter README for some details. Also in certain cases whwere the automatic cookie determindation is failing it can help to play around here especially with Accept-Language and user-agent."
-            },
-            "proxy": {
-                "de": "Proxy-Einstellungen",
-                "en": "Proxy Settings"
-            },
-            "proxy_info": {
-                "de": "Wenn die automatische Cookie-Ermittlung nicht funktioniert öffnet der Adapter einen Proxy um einen manuellen Login zu erleuben. Das Logfile nennt in dem Fall den aufzurufenden Link. Diese mit dem Browser aufrufen, bei Amazon einloggen, alle potentiell angezeigten Captachas und Zwei-Faktor-Abfragen beantworten und das Cookie wird bei Erfolg im Hintergrund automatisch erfasst.",
-                "en": "If the automatic determination of a cookie is not able the adapter opens a proxy to allow a manual login to amazon. The Logfile will tell you the URL to use then. Open this in your browser, manually login into Amazon, solve all potential Captchas or Two-Factor-Authentications and the cookie is catched in the background automatically if successfull."
-            },
-            "proxyOwnIp": {
-                "de": "Eigene IP oder für den Proxy-Link",
-                "en": "Own IP or hostname to use in proxy link"
-            },
-            "proxyPort": {
-                "de": "Proxy-Port",
-                "en": "Proxy-Port"
-            },
-            "proxyPort_info": {
-                "de": "(0 = zufälliger Port)",
-                "en": "(0 = random port)"
-            },
-            "proxyListenBind": {
-                "de": "Proxy-Beschränkung auf folgende IP (Listen Bind)",
-                "en": "Proxy Binding to certain IP"
-            }
-        };
-
-        var active = false;
-        var g_onChange;
         var secret;
 
         function encrypt(key, value) {
@@ -168,9 +49,7 @@
                 }
 
                 $(id).html(str);
-                if (isMaterialize) {
-                    $(id).select();
-                }
+                $(id).select();
                 if (typeof callback === 'function') {
                     callback();
                 }
@@ -202,14 +81,12 @@
             if (settings.proxyPort === undefined) settings.proxyPort = 0;
             if (settings.proxyListenBind === undefined) settings.proxyListenBind = '';
 
-            changed = true;
-            g_onChange = onChange;
-
             for (var key in settings) {
-                // example: select elements with id=key and class=value and insert value
-                $key = $('#' + key + '.value');
+                if (!settings.hasOwnProperty(key)) continue;
+
+                var $key = $('#' + key + '.value');
                 if ($key.attr('type') === 'checkbox') {
-                    $key.prop('checked', settings[key]).change(function() {
+                    $key.prop('checked', settings[key]).on('change', function() {
                         if ($('#auth').prop('checked')) {
                             $('#secure').prop('checked', true);
                         }
@@ -217,10 +94,10 @@
                         showHideSettings();
                     });
                 } else {
-                    var val = $key.attr('crypt') ? decrypt(secret, settings[key]) : settings[key];
-                    $key.val(val).change(function() {
+                    var val = $key.data('crypt') ? decrypt(secret, settings[key]) : settings[key];
+                    $key.val(val).on('change', function() {
                         onChange();
-                    }).keyup(function() {
+                    }).on('keyup', function() {
                         onChange();
                     });
                 }
@@ -231,7 +108,6 @@
                 $('#language').val(settings.language).trigger('change');
             }
 
-            changed = true;
             onChange(false);
         }
 
@@ -246,7 +122,6 @@
 
         function save(callback) {
             var obj = {};
-            changed = true;
             $('.value').each(function () {
                 var $this = $(this);
                 switch($this.attr('type')) {
@@ -260,13 +135,12 @@
                     default:
                         var val = $this.attr('crypt') ? encrypt(secret, $this.val ()) : $this.val ();
                         obj[$this.attr ('id')] = val;
+                        break;
                 }
             });
-            changed = true;
             callback(obj);
         }
     </script>
-
 
     <style>
         h1 {
@@ -279,7 +153,7 @@
             /*background-image: linear-gradient(to right, #e0e0e0, rgba(224,224,224,0.0));*/
             /*background-image: linear-gradient(to right, #e0e0e0, #e8e8e8 50%, #e0e0e0);*/
         }
-        .ueberschrift {
+        .title {
             /*text-decoration: underline;*/
             font-weight: bold;
         }
@@ -321,16 +195,16 @@
 
                     <div class="row">
                         <div class="col s12">
-                            <p class="translate ueberschrift">auth</p>
+                            <p class="translate title">auth</p>
                             <p class="translate">auth_info</p>
 
                             <div class="input-field col s12 m6">
-                                <input class="value validate" crypt="1" id="email" type="email">
+                                <input class="value validate" data-crypt="1" id="email" type="email"/>
                                 <label for="email" class="translate active">Email</label>
                                 <span class="helper-text" data-error="invalid Email" data-success="valid Email"></span>
                             </div>
                             <div class="input-field col s12 m6">
-                                <input class="value" crypt="1" type="password" id="password">
+                                <input class="value" data-crypt="1" type="password" id="password"/>
                                 <label for="password" class="translate active">password</label>
                             </div>
                         </div>
@@ -338,7 +212,7 @@
 
                     <div class="row">
                         <div class="col s12">
-                            <p class="translate ueberschrift">interval</p>
+                            <p class="translate title">interval</p>
                             <p class="translate">interval_info</p>
 
                             <div class="input-field col s12 m6">
@@ -366,7 +240,7 @@
 
                     <div class="row">
                         <div class="col s12">
-                            <p class="translate ueberschrift">cookieAlt</p>
+                            <p class="translate title">cookieAlt</p>
                             <p class="translate">cookieAlt_info</p>
 
                             <div class="input-field col s12">
@@ -379,27 +253,27 @@
 
                     <div class="row">
                         <div class="col s12">
-                            <p class="translate ueberschrift">overwrite</p>
+                            <p class="translate title">overwrite</p>
                             <p class="translate">overwrite_info</p>
 
                             <div class="input-field col s12 m6">
-                                <input id="alexaServiceHost" class="value text"></input>
+                                <input id="alexaServiceHost" class="value" type="text"/>
                                 <label for="alexaServiceHost" class="translate">alexaServiceHost</label>
                             </div>
 
                             <div class="input-field col s12 m6">
-                                <input id="userAgent" class="value text"></input>
+                                <input id="userAgent" class="value" type="text"/>
                                 <label for="userAgent" class="translate">userAgent</label>
                             </div>
 
                             <div class="input-field col s12 m6">
-                                <input id="acceptLanguage" class="value text"></input>
+                                <input id="acceptLanguage" class="value" type="text"/>
                                 <label for="acceptLanguage" class="translate">acceptLanguage</label>
                             </div>
 
                             <div class="input-field col s12 m6">
-                                <input id="cookieLoginUrl" class="value text"></input>
-                                <label for="cookieLoginUrl" class="translate">cookieLoginUrl</input>
+                                <input id="cookieLoginUrl" class="value" type="text"/>
+                                <label for="cookieLoginUrl" class="translate">cookieLoginUrl</label>
                             </div>
 
                         </div>
@@ -417,7 +291,7 @@
                     <div class="row">
 
                         <div class="col s12">
-                            <p class="translate ueberschrift">proxy</p>
+                            <p class="translate title">proxy</p>
                             <p class="translate">proxy_info</p>
 
                             <div class="input-field col s12">
@@ -426,7 +300,7 @@
                             </div>
 
                             <div class="input-field col s12">
-                                <input id="proxyPort" placeholder="0" class="value number"></input>
+                                <input id="proxyPort" placeholder="0" class="value number"/>
                                 <label for="proxyPort" class="translate active">proxyPort</label>
                                 <span class="helper-text translate">proxyPort_info</span>
                             </div>

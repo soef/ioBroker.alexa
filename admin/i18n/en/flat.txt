@@ -1,0 +1,28 @@
+User/Email
+Password
+Settings
+Custom Accept-Language Header
+Alexa login data
+Alexa base url
+Login Details for Amazon Account where Echo devices are registered
+The credentials will be stored encrypted in your local ioBroker instance. You can also leave them empty, but then you need to fetch the Amazon cookie by your own or use the proxy from the adapter to login and get the cookie.
+Cookie
+Manual input of the cookie
+The cookie can also be entered directly. Email & password are then not required
+See e.g. <a href="https://www.gehrig.info/alexa/Alexa.html" target="_blank">here</a> how to get a cookie manually or try the proxy mode of the adapter! See Error message in log for proxy URL
+Custom Cookie-Amazon-URL
+Data updateIntervals
+Several data can automatically be updated. You define here in seconds how often this should happen. Using the state history.#trigger you can always update the data manually. If you set 0 as interval the automatic update is disabled. 
+Override special parameter for cookie determination and communication
+By default the parameters are set to connect with a german amazon account. If you are using other amazon countries you need to set the correct data here. Check in Adapter README for some details. Also in certain cases whwere the automatic cookie determindation is failing it can help to play around here especially with Accept-Language and user-agent.
+password
+Proxy Settings
+Proxy Binding to certain IP
+Own IP or hostname to use in proxy link
+Proxy-Port
+(0 = random port)
+If the automatic determination of a cookie is not able the adapter opens a proxy to allow a manual login to amazon. The Logfile will tell you the URL to use then. Open this in your browser, manually login into Amazon, solve all potential Captchas or Two-Factor-Authentications and the cookie is catched in the background automatically if successfull.
+s (0 = disabled)
+History update interval
+Data update interval (player info ...)
+Custom User-Agent
