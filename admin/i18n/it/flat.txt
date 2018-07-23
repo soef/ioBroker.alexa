@@ -6,12 +6,12 @@ Dati di login di Alexa
 Alexa base url
 Dettagli di accesso per l'account Amazon in cui sono registrati i dispositivi Echo
 Le credenziali verranno archiviate crittografate nell'istanza ioBroker locale. Puoi anche lasciarli vuoti, ma poi devi recuperare il cookie Amazon da solo o utilizzare il proxy dall'adattatore per accedere e ottenere il cookie.
-biscotto
+Cookie
 Inserimento manuale del cookie
 Il cookie può anche essere inserito direttamente. Email e password non sono quindi necessarie
 Vedi per es. <a href="https://www.gehrig.info/alexa/Alexa.html" target="_blank">qui</a> come ottenere manualmente un cookie o provare la modalità proxy dell'adattatore! Vedere Messaggio di errore nel registro per l'URL del proxy
 Cookie personalizzato-Amazon-URL
-Data updateIntervals
+Intervalli di aggiornamento dei dati
 Diversi dati possono essere aggiornati automaticamente. Definisci qui in secondi quanto spesso ciò dovrebbe accadere. Utilizzando la cronologia dello stato. # Trigger puoi sempre aggiornare i dati manualmente. Se si imposta 0 come intervallo, l'aggiornamento automatico è disabilitato.
 Sostituisci i parametri speciali per la determinazione e la comunicazione dei cookie
 Di default i parametri sono impostati per connettersi con un account tedesco di Amazon. Se stai utilizzando altri paesi di Amazon, devi impostare qui i dati corretti. Controllare in Adapter README per alcuni dettagli. Inoltre, in alcuni casi in cui la determinazione automatica dei cookie non funziona, può aiutare a giocare qui, specialmente con Accept-Language e user-agent.
@@ -24,5 +24,5 @@ Porta proxy
 Se la determinazione automatica di un cookie non è possibile, l'adattatore apre un proxy per consentire l'accesso manuale ad Amazon. Il file di registro ti indicherà l'URL da utilizzare in quel momento. Apri questo nel tuo browser, accedi manualmente ad Amazon, risolvi tutti i potenziali Captcha o Autenticazione a due fattori e il cookie viene automaticamente catturato in background in caso di successo.
 s (0 = disabilitato)
 Intervallo di aggiornamento della cronologia
-Intervallo di aggiornamento dei dati (informazioni sul giocatore ...)
-Agente utente personalizzato
+Intervallo di aggiornamento dei dati (Player-Info ...)
+User-Agent personalizzato

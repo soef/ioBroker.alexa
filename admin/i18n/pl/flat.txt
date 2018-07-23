@@ -6,12 +6,12 @@ Dane logowania Alexa
 Adres bazowy Alexa
 Dane logowania do konta Amazon, w którym zarejestrowane są urządzenia Echo
 Dane uwierzytelniające będą przechowywane w postaci zaszyfrowanej w lokalnej instancji ioBroker. Możesz również pozostawić je puste, ale musisz pobrać plik cookie Amazon samodzielnie lub użyć proxy z adaptera, aby się zalogować i uzyskać plik cookie.
-Ciastko
+Cookie
 Ręczne wprowadzanie pliku cookie
 Plik cookie można również wprowadzić bezpośrednio. Email i hasło nie są wtedy wymagane
 Zobacz np. <a href="https://www.gehrig.info/alexa/Alexa.html" target="_blank">tutaj</a>, jak uzyskać ciasteczko ręcznie lub wypróbować tryb proxy adaptera! Zobacz komunikat o błędzie w dzienniku dla adresu URL proxy
 Niestandardowy plik cookie-Amazon-URL
-Data updateIntervals
+Interwały aktualizacji danych
 Kilka danych może być automatycznie aktualizowanych. Tutaj określasz w sekundach, jak często powinno to mieć miejsce. Korzystając z historii stanów. # Trigger zawsze możesz zaktualizować dane ręcznie. Jeśli ustawisz 0 jako interwał, aktualizacja automatyczna zostanie wyłączona.
 Zastąp specjalny parametr do określania i komunikacji plików cookie
 Domyślnie parametry są ustawione na połączenie z niemieckim kontem Amazon. Jeśli korzystasz z innych krajów amazon, musisz ustawić poprawne dane tutaj. Sprawdź w pliku README na temat niektórych szczegółów. Również w niektórych przypadkach, gdy automatyczne określanie ciasteczek zawodzi, może pomóc w zabawie, szczególnie w Accept-Language i user-agent.
@@ -24,5 +24,5 @@ Port proxy
 Jeśli automatyczne określenie pliku cookie nie jest możliwe, adapter otwiera proxy, aby umożliwić ręczne logowanie do Amazon. Logfile wskaże ci adres URL, którego będziesz używał. Otwórz to w przeglądarce, ręcznie zaloguj się do Amazon, rozwiąż wszystkie potencjalne Captchas lub uwierzytelnienia dwuetapowe, a ciasteczko zostanie automatycznie przechwycone w tle, jeśli się powiedzie.
 s (0 = wyłączone)
 Interwał aktualizacji historii
-Interwał aktualizacji danych (informacje o graczu ...)
-Niestandardowy użytkownik-agent
+Interwał aktualizacji danych (Player-Info ...)
+Niestandardowy User-Agent
