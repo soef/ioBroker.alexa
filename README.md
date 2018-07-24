@@ -76,10 +76,11 @@ In the adapter namespace (e.g. alexa.0) some channels are created
 * self deactivation if cookie/csrf invalid
 
 ## Installation
-Use the ioBroker "Install" options from GitHub or
+Use the ioBroker "Install" options from GitHub or from the latest repository
 execute the following command in the iobroker root directory (e.g. in /opt/iobroker)
 ```
 npm install iobroker.alexa2
+npm add alexa2
 iobroker upload alexa2
 ```
 
@@ -121,9 +122,15 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 0.3.0 (2018-07-23)
+### 0.3.0 (2018-07-24)
 * (Bluefox) Admin3 fixes and slight changes to roles and code
+* (Apollon77) Reworked state names (hopefully last time!)
 * (Apollon77) Combine Player-Control and Player-Info into channel Player to support better detection and material support
+* (Apollon77) Added further information in Infos states per echo device
+* (Apollon77) Try to detect the type of the device different and decide if commands are available or not (till capabilities are known better)
+* (Apollon77) New "Music-Provider" states depending on available music providers with possibility to enter a text to play something (same as you would speak it)
+* (Apollon77) Volume is send different now, so that it also works when Device player get's inactive
+
 
 ### 0.2.4 (2018-07-22)
 * (pix) materialize settings window
