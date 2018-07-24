@@ -36,7 +36,7 @@
     "url": "https://github.com/Apollon77/ioBroker.alexa2"
   },
   "dependencies": {
-    "alexa-remote2": "^0.2.4",
+    "alexa-remote2": "^0.2.5",
     "https": "^1.0.0"
   },
   "devDependencies": {
