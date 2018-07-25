@@ -1,11 +1,15 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "title": "Alexa2 (Amazon Echo)",
     "desc": "Remote control for Alexa (Amazon Echo)",
     "platform": "Javascript/Node.js",
     "news": {
+        "0.3.2": {
+          "en": "fixes, changes und settings window materialized fixes",
+          "de": "Fehlerbehebungen, Änderungen und Einstellungsfenster im Material Design Fehler behoben"
+        },
         "0.2.4": {
           "en": "fixes, changes und settings window materialized",
           "de": "Fehlerbehebungen, Änderungen  und Einstellungsfenster im Material Design"

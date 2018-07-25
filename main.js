@@ -40,7 +40,9 @@ const knownDeviceType = {
     'A15ERDAKK5HQQG':   {name: 'Sonos', commandSupport: false}, //? AUDIO_PLAYER,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AMAZON_MUSIC,TUNE_IN,PANDORA,REMINDERS,I_HEART_RADIO,CHANGE_NAME,VOLUME_SETTING,PEONY
     'A1DL2DVDQVK3Q':	{name: 'Apps', commandSupport: false}, // (PEONY,VOLUME_SETTING)
     'A1NL4BVLQ4L3N3':	{name: 'Echo Show', commandSupport: true},
+    'A2825NDLA7WDZV':   {name: 'Apps', commandSupport: false}, // PEONY,VOLUME_SETTING
     'A2E0SNTXJVT7WK':   {name: 'Fire TV V1', commandSupport: false},
+    'A2GFL5ZMWNE0PX':   {name: 'Fire TV', commandSupport: true}, // SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,VOLUME_SETTING,SUPPORTS_SOFTWARE_VERSION,CHANGE_NAME,ACTIVE_AFTER_FRO,ARTHUR_TARGET,FLASH_BRIEFING
     'A2IVLV5VM2W81':    {name: 'Apps', commandSupport: false},
     'A2LWARUGJLBYEW':   {name: 'Fire TV Stick V2', commandSupport: false},
     'A2M35JJZWCQOMZ':   {name: 'Echo Plus', commandSupport: true},
@@ -48,11 +50,12 @@ const knownDeviceType = {
     'A2TF17PFR55MTB':   {name: 'Apps', commandSupport: false}, // VOLUME_SETTING
     'A3C9PE6TNYLTCH':   {name: 'Multiroom', commandSupport: false}, // AUDIO_PLAYER,AMAZON_MUSIC,KINDLE_BOOKS,TUNE_IN,AUDIBLE,PANDORA,I_HEART_RADIO,SALMON,VOLUME_SETTING
     'A3H674413M2EKB':   {name: 'echosim.io', commandSupport: false},
+    'A3R9S4ZZECZ6YL':   {name: 'Fire Tab', commandSupport: false}, // ASX_TIME_ZONE,PEONY,VOLUME_SETTING,SUPPORTS_SOFTWARE_VERSION
     'A3S5BH2HU6VAYF':   {name: 'Echo Dot 2.Gen', commandSupport: true},
     'A7WXQPH584YP':     {name: 'Echo 2.Gen', commandSupport: true},
     'AB72C64C86AW2':    {name: 'Echo', commandSupport: true},
     'ADVBD696BHNV5':    {name: 'Fire TV Stick V1', commandSupport: false},
-    'AILBSA2LNTOYL':    {name: 'reverb App', commandSupport: false},
+    'AILBSA2LNTOYL':    {name: 'reverb App', commandSupport: false}
 };
 
 let updateStateTimer;
@@ -563,6 +566,7 @@ Alexa.prototype.iterateMultiroom = function (device, commandCallback, doneCallba
         return commandCallback(device, doneCallback);
     }
     if (!counter) counter = 0;
+    console.log(counter);
     if (counter >= device.clusterMembers) {
         return doneCallback && doneCallback();
     }
@@ -640,17 +644,13 @@ Alexa.prototype.createStates = function (callback) {
             if (device.capabilities.includes ('VOLUME_SETTING')) {
                 setOrUpdateObject(devId + '.Player.volume', {common: {role: 'level.volume', min: 0, max: 100}}, 0, function (device, value) {
                     if (device.isMultiroomDevice) {
-                        //this.sendCommand(device, 'volume', value);
-                        this.iterateMultiroom(device, (iteratorDevice, nextCallback) => this.sendSequenceCommand(iteratorDevice, 'volume', value, nextCallback));
-                    }
-                    /*if (lastPlayerState[device.serialNumber] && (lastPlayerState[device.serialNumber].resMedia.volume || lastPlayerState[device.serialNumber].resPlayer.playerInfo.volume.volume)) {
                         this.sendCommand(device, 'volume', value, (err, res) => {
                             // on unavailability {"message":"No routes found","userFacingMessage":null}
                             if (res.message && res.message === 'No routes found') {
-                                this.sendSequenceCommand(device, 'volume', value);
+                                this.iterateMultiroom(device, (iteratorDevice, nextCallback) => this.sendSequenceCommand(iteratorDevice, 'volume', value, nextCallback));
                             }
                         });
-                    }*/
+                    }
                     else {
                         this.sendSequenceCommand(device, 'volume', value);
                     }

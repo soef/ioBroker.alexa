@@ -122,7 +122,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 0.3.1 (2018-07-25) unfinished!
+### 0.3.2 (2018-07-25)
 * (Apollon77) Fix volume settings for multiroom devices (please report other devices where it is not working)
 * (Apollon77) Add serial number and name to Info
 
