@@ -122,6 +122,10 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 0.3.1 (2018-07-25) unfinished!
+* (Apollon77) Fix volume settings for multiroom devices (please report other devices where it is not working)
+* (Apollon77) Add serial number and name to Info
+
 ### 0.3.0 (2018-07-24)
 * (Bluefox) Admin3 fixes and slight changes to roles and code
 * (Apollon77) Reworked state names (hopefully last time!)
