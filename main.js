@@ -13,43 +13,46 @@ const utils = require(path.join(__dirname, 'lib', 'utils')); // Get common adapt
 let alexa;
 
 const playerControls = {
-    controlPlay: { command: 'play', val: false, common: { role: 'button.play'}},
-    controlPause: { command: 'pause', val: false, common: { role: 'button.pause'}}
+    controlPlay: { command: 'play', val: false, common: { type: 'boolean', read: false, write: true, role: 'button.play'}},
+    controlPause:{ command: 'pause', val: false, common: { type: 'boolean', read: false, write: true, role: 'button.pause'}}
 };
 const musicControls = {
-    controlNext: { command: 'next', val: false, common: { role: 'button.next'}},
-    controlPrevious: { command: 'previous', val: false, common: { role: 'button.prev'}},
-    controlForward: { command: 'forward', val: false, common: { role: 'button.forward'}},
-    controlRewind: { command: 'rewind', val: false, common: { role: 'button.reverse'}},
-    controlShuffle: { command: 'shuffle', val: false, common: { role: 'media.mode.shuffle'}},
-    controlRepeat: { command: 'repeat', val: false, common: { role: 'media.mode.repeat'}}
+    controlNext: { command: 'next', val: false, common: { type: 'boolean', read: false, write: true, role: 'button.next'}},
+    controlPrevious: { command: 'previous', val: false, common: { type: 'boolean', read: false, write: true, role: 'button.prev'}},
+    controlForward: { command: 'forward', val: false, common: { type: 'boolean', read: false, write: true, role: 'button.forward'}},
+    controlRewind: { command: 'rewind', val: false, common: { type: 'boolean', read: false, write: true, role: 'button.reverse'}},
+    controlShuffle: { command: 'shuffle', val: false, common: { type: 'boolean', read: false, write: true, role: 'media.mode.shuffle'}},
+    controlRepeat: { command: 'repeat', val: false, common: { type: 'boolean', read: false, write: true, role: 'media.mode.repeat'}},
 };
 
 const commands = {
-    weather: { val: false, common: { role: 'button'}},
-    traffic: { val: false, common: { role: 'button'}},
-    flashbriefing: { val: false, common: { role: 'button'}},
-    goodmorning: { val: false, common: { role: 'button'}},
-    singasong: { val: false, common: { role: 'button'}},
-    tellstory: { val: false, common: { role: 'button'}},
+    weather: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    traffic: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    flashbriefing: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    goodmorning: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    singasong: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    tellstory: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     speak: { val: '', common: { role: 'media.tts'}}
 };
 
 const knownDeviceType = {
-    'A3S5BH2HU6VAYF':   {name: 'Echo Dot 2.Gen', commandSupport: true},
-    'AB72C64C86AW2':    {name: 'Echo', commandSupport: true},
-    'A7WXQPH584YP':     {name: 'Echo 2.Gen', commandSupport: true},
-	'A10A33FOX2NUBK':   {name: 'Echo Spot', commandSupport: true},
-	'A1NL4BVLQ4L3N3':	{name: 'Echo Show', commandSupport: true},
-    'A15ERDAKK5HQQG':   {name: 'Sonos', commandSupport: false},
+    'A10A33FOX2NUBK':   {name: 'Echo Spot', commandSupport: true},
+    'A15ERDAKK5HQQG':   {name: 'Sonos', commandSupport: false}, //? AUDIO_PLAYER,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AMAZON_MUSIC,TUNE_IN,PANDORA,REMINDERS,I_HEART_RADIO,CHANGE_NAME,VOLUME_SETTING,PEONY
+    'A1DL2DVDQVK3Q':	{name: 'Apps', commandSupport: false}, // (PEONY,VOLUME_SETTING)
+    'A1NL4BVLQ4L3N3':	{name: 'Echo Show', commandSupport: true},
     'A2E0SNTXJVT7WK':   {name: 'Fire TV V1', commandSupport: false},
-    'ADVBD696BHNV5':    {name: 'Fire TV Stick V1', commandSupport: false},
+    'A2IVLV5VM2W81':    {name: 'Apps', commandSupport: false},
     'A2LWARUGJLBYEW':   {name: 'Fire TV Stick V2', commandSupport: false},
-    'A2T0P32DY3F7VB':   {name: 'echosim.io', commandSupport: false},
-    'A3H674413M2EKB':   {name: 'echosim.io', commandSupport: false},
-    'AILBSA2LNTOYL':    {name: 'reverb App', commandSupport: false},
     'A2M35JJZWCQOMZ':   {name: 'Echo Plus', commandSupport: true},
-    'A2IVLV5VM2W81':    {name: 'iPhone App', commandSupport: true}
+    'A2T0P32DY3F7VB':   {name: 'echosim.io', commandSupport: false},
+    'A2TF17PFR55MTB':   {name: 'Apps', commandSupport: false}, // VOLUME_SETTING
+    'A3C9PE6TNYLTCH':   {name: 'Multiroom', commandSupport: false}, // AUDIO_PLAYER,AMAZON_MUSIC,KINDLE_BOOKS,TUNE_IN,AUDIBLE,PANDORA,I_HEART_RADIO,SALMON,VOLUME_SETTING
+    'A3H674413M2EKB':   {name: 'echosim.io', commandSupport: false},
+    'A3S5BH2HU6VAYF':   {name: 'Echo Dot 2.Gen', commandSupport: true},
+    'A7WXQPH584YP':     {name: 'Echo 2.Gen', commandSupport: true},
+    'AB72C64C86AW2':    {name: 'Echo', commandSupport: true},
+    'ADVBD696BHNV5':    {name: 'Fire TV Stick V1', commandSupport: false},
+    'AILBSA2LNTOYL':    {name: 'reverb App', commandSupport: false},
 };
 
 let updateStateTimer;
@@ -445,14 +448,14 @@ Alexa.prototype.createSmarthomeStates = function (callback) {
         if (err || !res) return callback(err);
         setOrUpdateObject('Smart-Home-Devices', {type: 'device', common: {name: 'Smart Home Devices'}});
 
-        setOrUpdateObject('Smart-Home-Devices.deleteAll', {common: {role: 'button'}}, false, (val) => {
+        setOrUpdateObject('Smart-Home-Devices.deleteAll', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, (val) => {
             this.deleteAllSmarthomeDevices((err, res) => {
                 adapter.deleteDevice('Smart-Home-Devices', () => {
                     this.delayedCreateSmarthomeStates(1000);
                 });
             });
         });
-        setOrUpdateObject('Smart-Home-Devices.discoverDevices', {common: {name: 'Let Alexa search for devices', role: 'button'}}, false, (val) => {
+        setOrUpdateObject('Smart-Home-Devices.discoverDevices', {common: {name: 'Let Alexa search for devices', type: 'boolean', read: false, write: true, role: 'button'}}, false, (val) => {
             this.discoverSmarthomeDevice((err, res) => {
                 this.delayedCreateSmarthomeStates(0);
             });
@@ -487,7 +490,7 @@ Alexa.prototype.createSmarthomeStates = function (callback) {
                     }
                 });
                 setOrUpdateObject('Smart-Home-Devices.' + skill.entityId + '.isEnabled', {common: {role: 'indicator', write: false}}, skill.isEnabled);
-                setOrUpdateObject('Smart-Home-Devices.' + skill.entityId + '.delete', {common: {role: 'button'}}, false, function (entityId, val) {
+                setOrUpdateObject('Smart-Home-Devices.' + skill.entityId + '.delete', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, function (entityId, val) {
                     this.deleteSmarthomeDevice(n);
                     adapter.deleteChannel('Smart-Home-Devices', entityId);
                 }.bind(this, skill.entityId));
@@ -555,6 +558,21 @@ Alexa.prototype.updateHistory = function (callback) {
     });
 };
 
+Alexa.prototype.iterateMultiroom = function (device, commandCallback, doneCallback, counter) {
+    if (!device.isMultiroomDevice) {
+        return commandCallback(device, doneCallback);
+    }
+    if (!counter) counter = 0;
+    if (counter >= device.clusterMembers) {
+        return doneCallback && doneCallback();
+    }
+    const currDevice = this.find(device.clusterMembers[counter]);
+    if (!currDevice) {
+        return this.iterateMultiroom(device, commandCallback, doneCallback, ++counter);
+    }
+    return commandCallback(currDevice, () => this.iterateMultiroom(device, commandCallback, doneCallback, ++counter));
+};
+
 Alexa.prototype.createStates = function (callback) {
 
     let self = this;
@@ -586,7 +604,8 @@ Alexa.prototype.createStates = function (callback) {
             adapter.log.warn('Unknown Device type ' + device.deviceType + ' (' + device.capabilities.join (',') + ') - please report to developer!');
         }
         setOrUpdateObject(devId + '.Info.deviceTypeString',	{common: {name:'deviceType string', type:'string', role:'text'}}, deviceTypeDetails.name);
-        //setOrUpdateObject(devId + '.Info.language', {common: {name:'language', type:'string', role:'text'}}, device.language || '');
+        setOrUpdateObject(devId + '.Info.serialNumber',	{common: {name:'serialNumber', type:'string', role:'text'}}, device.serialNumber);
+        setOrUpdateObject(devId + '.Info.name',	{common: {name:'name', type:'string', role:'text'}}, device._name);
 
 
         if (device.isControllable) {
@@ -617,19 +636,26 @@ Alexa.prototype.createStates = function (callback) {
                 const obj = JSON.parse (JSON.stringify (playerControls[c]));
                 setOrUpdateObject(devId + '.Player.' + c, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
             }
-            setOrUpdateObject(devId + '.Player.volume', {common: {role: 'level.volume', min: 0, max: 100}}, 0, function (device, value) {
-                /*if (lastPlayerState[device.serialNumber] && (lastPlayerState[device.serialNumber].resMedia.volume || lastPlayerState[device.serialNumber].resPlayer.playerInfo.volume.volume)) {
-                    this.sendCommand(device, 'volume', value, (err, res) => {
-                        // on unavailability {"message":"No routes found","userFacingMessage":null}
-                        if (res.message && res.message === 'No routes found') {
-                            this.sendSequenceCommand(device, 'volume', value);
-                        }
-                    });
-                }
-                else {*/
-                    this.sendSequenceCommand(device, 'volume', value);
-                /*}*/
-            }.bind(alexa, device));
+
+            if (device.capabilities.includes ('VOLUME_SETTING')) {
+                setOrUpdateObject(devId + '.Player.volume', {common: {role: 'level.volume', min: 0, max: 100}}, 0, function (device, value) {
+                    if (device.isMultiroomDevice) {
+                        //this.sendCommand(device, 'volume', value);
+                        this.iterateMultiroom(device, (iteratorDevice, nextCallback) => this.sendSequenceCommand(iteratorDevice, 'volume', value, nextCallback));
+                    }
+                    /*if (lastPlayerState[device.serialNumber] && (lastPlayerState[device.serialNumber].resMedia.volume || lastPlayerState[device.serialNumber].resPlayer.playerInfo.volume.volume)) {
+                        this.sendCommand(device, 'volume', value, (err, res) => {
+                            // on unavailability {"message":"No routes found","userFacingMessage":null}
+                            if (res.message && res.message === 'No routes found') {
+                                this.sendSequenceCommand(device, 'volume', value);
+                            }
+                        });
+                    }*/
+                    else {
+                        this.sendSequenceCommand(device, 'volume', value);
+                    }
+                }.bind(alexa, device));
+            }
 
             if (device.hasMusicPlayer) {
                 for (let c in musicControls) {
@@ -679,7 +705,7 @@ Alexa.prototype.createStates = function (callback) {
             device.bluetoothState.pairedDeviceList.forEach ((bt) => {
                 setOrUpdateObject(devId + '.Bluetooth.' + bt.address, {type: 'channel', common: {name: bt.friendlyName}});
                 setOrUpdateObject(devId + '.Bluetooth.' + bt.address + '.connected', {common: {role: 'switch'}}, bt.connected, bt.connect);
-                setOrUpdateObject(devId + '.Bluetooth.' + bt.address + '.unpaire', {common: {role: 'button'}}, false, bt.unpaire);
+                setOrUpdateObject(devId + '.Bluetooth.' + bt.address + '.unpaire', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, bt.unpaire);
             });
         }
 
@@ -707,7 +733,7 @@ Alexa.prototype.createStates = function (callback) {
                 setOrUpdateObject(devId + '.Routines', {type: 'channel'});
                 for (let i in this.routines) {
                     if (this.routines.hasOwnProperty(i)) {
-                        setOrUpdateObject(devId + '.Routines.' + this.routines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'button', name: this.routines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind (alexa, device, this.routines[i].automationId));
+                        setOrUpdateObject(devId + '.Routines.' + this.routines[i].friendlyAutomationId, {common: { type: 'boolean', read: false, role: 'button', name: this.routines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind (alexa, device, this.routines[i].automationId));
                     }
                 }
             }
@@ -715,7 +741,7 @@ Alexa.prototype.createStates = function (callback) {
     });
 
     setOrUpdateObject('History', {type: 'channel', common: {name: 'Last detected commands and devices'}});
-    setOrUpdateObject('History.#trigger', {common: {role: 'button', name: 'Trigger/Rescan', desc: 'Set to true, to start a request'}}, false,
+    setOrUpdateObject('History.#trigger', {common: { type: 'boolean', read: false, write: true, role: 'button', name: 'Trigger/Rescan', desc: 'Set to true, to start a request'}}, false,
             val => this.updateHistory());
     setOrUpdateObject('History.name', {common: {role: 'text', write: false, name: 'Echo Device name', desc: 'Device name of the last detected command'}}, '');
     let now = new Date();
