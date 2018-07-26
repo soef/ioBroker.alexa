@@ -46,6 +46,7 @@ const knownDeviceType = {
     'A2IVLV5VM2W81':    {name: 'Apps', commandSupport: false},
     'A2LWARUGJLBYEW':   {name: 'Fire TV Stick V2', commandSupport: false},
     'A2M35JJZWCQOMZ':   {name: 'Echo Plus', commandSupport: true},
+    'A2OSP3UA4VC85F':   {name: 'Sonos', commandSupport: true}, // DEREGISTER_DEVICE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,CHANGE_NAME,KINDLE_BOOKS,AUDIO_PLAYER,TIMERS_AND_ALARMS,VOLUME_SETTING,PEONY,AMAZON_MUSIC,REMINDERS,SLEEP,I_HEART_RADIO,AUDIBLE,GOLDFISH,TUNE_IN,DREAM_TRAINING,PERSISTENT_CONNECTION
     'A2T0P32DY3F7VB':   {name: 'echosim.io', commandSupport: false},
     'A2TF17PFR55MTB':   {name: 'Apps', commandSupport: false}, // VOLUME_SETTING
     'A3C9PE6TNYLTCH':   {name: 'Multiroom', commandSupport: false}, // AUDIO_PLAYER,AMAZON_MUSIC,KINDLE_BOOKS,TUNE_IN,AUDIBLE,PANDORA,I_HEART_RADIO,SALMON,VOLUME_SETTING
@@ -642,7 +643,7 @@ Alexa.prototype.createStates = function (callback) {
             }
 
             if (device.capabilities.includes ('VOLUME_SETTING')) {
-                setOrUpdateObject(devId + '.Player.volume', {common: {role: 'level.volume', min: 0, max: 100}}, 0, function (device, value) {
+                setOrUpdateObject(devId + '.Player.volume', {common: {role: 'level.volume', min: 0, max: 100}}, 0, (value) => {
                     if (device.isMultiroomDevice) {
                         this.sendCommand(device, 'volume', value, (err, res) => {
                             // on unavailability {"message":"No routes found","userFacingMessage":null}
@@ -654,7 +655,7 @@ Alexa.prototype.createStates = function (callback) {
                     else {
                         this.sendSequenceCommand(device, 'volume', value);
                     }
-                }.bind(alexa, device));
+                });
             }
 
             if (device.hasMusicPlayer) {
@@ -666,12 +667,12 @@ Alexa.prototype.createStates = function (callback) {
                 for (let p in this.musicProviders) {
                     if (this.musicProviders[p].availability !== 'AVAILABLE') continue;
                     if (!this.musicProviders[p].supportedOperations.includes('Alexa.Music.PlaySearchPhrase')) continue;
-                    setOrUpdateObject(devId + '.Music-Provider.' + this.musicProviders[p].displayName, {common: {name:'Phrase to play with ' + this.musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', function (device, value) {
+                    setOrUpdateObject(devId + '.Music-Provider.' + this.musicProviders[p].displayName, {common: {name:'Phrase to play with ' + this.musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', (value) => {
                         if (value === '') return;
                         this.playMusicProvider(device, this.musicProviders[p].id, value, (err, res) => {
                             scheduleStatesUpdate(5000);
                         });
-                    }.bind(alexa, device));
+                    });
                 }
             }
 
@@ -721,14 +722,16 @@ Alexa.prototype.createStates = function (callback) {
             }
         }
 
-        if (!device.isMultiroomDevice && deviceTypeDetails.commandSupport) {
+        if (deviceTypeDetails.commandSupport) {
             setOrUpdateObject(devId + '.Commands', {type: 'channel'});
             for (let c in commands) {
                 const obj = JSON.parse (JSON.stringify (commands[c]));
-                setOrUpdateObject(devId + '.Commands.' + c, {common: obj.common}, obj.val, alexa.sendSequenceCommand.bind(alexa, device, c));
+                setOrUpdateObject(devId + '.Commands.' + c, {common: obj.common}, obj.val, (value) => this.iterateMultiroom(device, (iteratorDevice, nextCallback) => this.sendSequenceCommand(iteratorDevice, c, value, nextCallback)));
             }
             setOrUpdateObject(devId + '.Commands.doNotDisturb', {common: {role: 'switch'}}, false, device.setDoNotDisturb);
+        }
 
+        if (!device.isMultiroomDevice && deviceTypeDetails.commandSupport) {
             if (this.routines) {
                 setOrUpdateObject(devId + '.Routines', {type: 'channel'});
                 for (let i in this.routines) {
