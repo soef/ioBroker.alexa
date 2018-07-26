@@ -669,6 +669,9 @@ Alexa.prototype.createStates = function (callback) {
                     if (!this.musicProviders[p].supportedOperations.includes('Alexa.Music.PlaySearchPhrase')) continue;
                     setOrUpdateObject(devId + '.Music-Provider.' + this.musicProviders[p].displayName, {common: {name:'Phrase to play with ' + this.musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', (value) => {
                         if (value === '') return;
+                        if (device.isMultiroomDevice && device.clusterMembers.length) {
+                            device = this.find(device.clusterMembers[0]);
+                        }
                         this.playMusicProvider(device, this.musicProviders[p].id, value, (err, res) => {
                             scheduleStatesUpdate(5000);
                         });
