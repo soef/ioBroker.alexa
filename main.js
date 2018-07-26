@@ -670,7 +670,7 @@ Alexa.prototype.createStates = function (callback) {
                     setOrUpdateObject(devId + '.Music-Provider.' + this.musicProviders[p].displayName, {common: {name:'Phrase to play with ' + this.musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', (value) => {
                         if (value === '') return;
                         if (device.isMultiroomDevice && device.clusterMembers.length) {
-                            value += ' auf ' + device._name;
+                            value += ' auf multiroom music';
                             device = this.find(device.clusterMembers[0]);
                         }
                         this.playMusicProvider(device, this.musicProviders[p].id, value, (err, res) => {
