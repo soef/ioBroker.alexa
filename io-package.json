@@ -1,106 +1,115 @@
 {
-  "common": {
-    "name": "alexa2",
-    "version": "0.3.3",
-    "title": "Alexa2 (Amazon Echo)",
-    "desc": "Remote control for Alexa (Amazon Echo)",
-    "platform": "Javascript/Node.js",
-    "news": {
-        "0.3.2": {
-          "en": "fixes, changes und settings window materialized fixes",
-          "de": "Fehlerbehebungen, Änderungen und Einstellungsfenster im Material Design Fehler behoben"
+    "common": {
+        "name": "alexa2",
+        "version": "0.3.4",
+        "title": "Alexa2 (Amazon Echo)",
+        "desc": "Remote control for Alexa (Amazon Echo)",
+        "platform": "Javascript/Node.js",
+        "news": {
+            "0.3.4": {
+                "en": "fixes for routines and multi room commands and music-providers",
+                "de": "Fixes für Routinen und Multiroom-Befehle und Musik-Provider",
+                "ru": "исправления для подпрограмм и команд с несколькими комнатами и музыкальных провайдеров",
+                "pt": "correções para rotinas e comandos de sala múltipla e provedores de música",
+                "nl": "fixes voor routines en multi-room-commando's en muziek-providers",
+                "fr": "correctifs pour les routines et les commandes multi-pièces et les fournisseurs de musique",
+                "it": "correzioni per routine e comandi multi-room e fornitori di musica",
+                "es": "arreglos para rutinas y comandos multi room y proveedores de música",
+                "pl": "poprawki dla rutyn i poleceń multi-room oraz dostawców muzyki"
+            },
+            "0.3.2": {
+                "en": "fixes, changes und settings window materialized fixes",
+                "de": "Fehlerbehebungen, Änderungen und Einstellungsfenster im Material Design Fehler behoben"
+            },
+            "0.2.4": {
+                "en": "fixes, changes und settings window materialized",
+                "de": "Fehlerbehebungen, Änderungen  und Einstellungsfenster im Material Design"
+            },
+            "0.2.1´2": {
+                "en": "first release as Alexa2",
+                "de": "Erste Veröffentlichung als Alexa2"
+            }
         },
-        "0.2.4": {
-          "en": "fixes, changes und settings window materialized",
-          "de": "Fehlerbehebungen, Änderungen  und Einstellungsfenster im Material Design"
-        },
-        "0.2.1´2": {
-          "en": "first release as Alexa2",
-          "de": "Erste Veröffentlichung als Alexa2"
-        }
+        "keywords": [
+            "alexa",
+            "amazon",
+            "amazon echo",
+            "echo dot",
+            "echo show"
+        ],
+        "mode": "daemon",
+        "icon": "alexa.png",
+        "materialize": true,
+        "extIcon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
+        "readme": "https://github.com/Apollon77/ioBroker.alexa2/blob/master/README.md",
+        "loglevel": "info",
+        "type": "iot-systems",
+        "enabled": true,
+        "messagebox": true,
+        "license": "MIT"
     },
-    "keywords": [
-      "alexa",
-      "amazon",
-      "amazon echo",
-      "echo dot",
-      "echo show"
-    ],
-    "mode": "daemon",
-    "icon": "alexa.png",
-    "materialize": true,
-    "extIcon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
-    "readme": "https://github.com/Apollon77/ioBroker.alexa2/blob/master/README.md",
-    "loglevel": "info",
-    "type": "iot-systems",
-    "enabled": true,
-    "messagebox": true,
-    "license": "MIT"
-  },
-  "native": {
-    "cookie": "",
-    "csrf": "",
-    "alexaServiceHost": "",
-    "email": "",
-    "password": "",
-    "userAgent": "",
-    "acceptLanguage": "",
-    "cookieLoginUrl": "",
-    "proxyOwnIp": "",
-    "proxyPort": 0,
-    "proxyListenBind": "",
-    "updateStateInterval": 300,
-    "updateHistoryInterval": 300
-  },
-  "objects": [
-  ],
-  "instanceObjects": [
-      {
-          "_id": "info",
-          "type": "channel",
-          "common": {
-              "name": "Information"
-          },
-          "native": {}
-      },
-      {
-          "_id": "info.connection",
-          "type": "state",
-          "common": {
-              "role": "indicator.connected",
-              "name": "If communication with alexa works",
-              "type": "boolean",
-              "read": true,
-              "write": false,
-              "def": false
-          },
-          "native": {}
-      },
-      {
-          "_id": "info.cookie",
-          "type": "state",
-          "common": {
-              "role": "text",
-              "name": "Alexa Cookie",
-              "type": "string",
-              "read": true,
-              "write": false,
-              "def": ""
-          },
-          "native": {}
-      },
-      {
-          "_id": "info.csrf",
-          "type": "state",
-          "common": {
-              "role": "text",
-              "name": "Alexa CSRF",
-              "type": "string",
-              "read": true,
-              "write": false,
-              "def": ""
-          },
-          "native": {}
-      }
-  ]
+    "native": {
+        "cookie": "",
+        "csrf": "",
+        "alexaServiceHost": "",
+        "email": "",
+        "password": "",
+        "userAgent": "",
+        "acceptLanguage": "",
+        "cookieLoginUrl": "",
+        "proxyOwnIp": "",
+        "proxyPort": 0,
+        "proxyListenBind": "",
+        "updateStateInterval": 300,
+        "updateHistoryInterval": 300
+    },
+    "objects": [],
+    "instanceObjects": [{
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "If communication with alexa works",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.cookie",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Alexa Cookie",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.csrf",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Alexa CSRF",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        }
+    ]
 }

@@ -606,7 +606,8 @@ Alexa.prototype.createStates = function (callback) {
         let deviceTypeDetails = knownDeviceType[device.deviceType];
         if (!deviceTypeDetails) {
             deviceTypeDetails =  {name: 'Unknown', commandSupport: false};
-            adapter.log.warn('Unknown Device type ' + device.deviceType + ' (' + device.capabilities.join (',') + ') - please report to developer!');
+            adapter.log.warn('Disabling some commands for device because of unknown type. Report to developer as GitHub issue with details for device. Please grab full next line pot. from logfile on disk if cutted');
+            adapter.log.warn('    Device-type:' + device.deviceType + ' (' + device.capabilities.join (',') + ')');
         }
         setOrUpdateObject(devId + '.Info.deviceTypeString',	{common: {name:'deviceType string', type:'string', role:'text'}}, deviceTypeDetails.name);
         setOrUpdateObject(devId + '.Info.serialNumber',	{common: {name:'serialNumber', type:'string', role:'text'}}, device.serialNumber);

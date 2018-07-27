@@ -123,9 +123,10 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ## Changelog
 
 
-### 0.3.3 (2018-07-26) UNFINISHED!
-* (Apollon77) Only 20 Routines were queried, now up to 2000 
+### 0.3.4 (2018-07-27)
+* (Apollon77) Only 20 Routines were queried, now up to 2000
 * (Apollon77) Also allow commands including speak for multiroom, BUT it is triggered per device, so NO synchronous audio output!!
+* (Apollon77) Thanks to Matten-Matten also Music-provers can be started on multiroom devices
 
 ### 0.3.2 (2018-07-25)
 * (Apollon77) Fix volume settings for multiroom devices (please report other devices where it is not working)
