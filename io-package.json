@@ -1,11 +1,22 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "0.3.6",
+        "version": "0.3.7",
         "title": "Alexa2 (Amazon Echo)",
         "desc": "Remote control for Alexa (Amazon Echo)",
         "platform": "Javascript/Node.js",
         "news": {
+            "0.3.7": {
+                "en": "fixes problems for multi room again",
+                "de": "behebt Probleme für mehrere Räume",
+                "ru": "исправляет проблемы для многокомнатной комнаты снова",
+                "pt": "corrige problemas para multi sala novamente",
+                "nl": "lost problemen voor multi-kamer opnieuw op",
+                "fr": "résout des problèmes pour plusieurs pièces",
+                "it": "risolve di nuovo i problemi per la multi stanza",
+                "es": "arregla problemas para multihabitación de nuevo",
+                "pl": "naprawia problemy z multi roomem"
+            },
             "0.3.4": {
                 "en": "fixes for routines and multi room commands and music-providers",
                 "de": "Fixes für Routinen und Multiroom-Befehle und Musik-Provider",
