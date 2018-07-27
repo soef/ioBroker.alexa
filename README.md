@@ -122,9 +122,10 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 0.3.7 (2018-07-27)
+### 0.3.8 (2018-07-27)
 * (Apollon77) Several Multiroom-fixes
 * (Apollon77) fixed shuffle/repeat
+* (Apollon77) fixed status for play, pause, shuffle and repeat
 
 ### 0.3.4 (2018-07-27)
 * (Apollon77) Only 20 Routines were queried, now up to 2000

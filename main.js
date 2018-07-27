@@ -325,14 +325,14 @@ Alexa.prototype.updateStates = function (callback) {
                 if (resMedia.volume) {
                     adapter.setState(devId + '.Player.volume', ~~resMedia.volume, true);
                 }
-                else if (resPlayer.playerInfo.volume) {
+                else if (resPlayer.playerInfo && resPlayer.playerInfo.volume && resPlayer.playerInfo.volume) {
                     adapter.setState(devId + '.Player.volume', ~~resPlayer.playerInfo.volume.volume, true);
                 }
-                if (resMedia.shuffling !== undefined) adapter.setState(devId + '.Player.shuffle', resMedia.shuffling, true);
-                if (resMedia.looping !== undefined) adapter.setState(devId + '.Player.repeat', resMedia.looping, true);
+                if (resMedia.shuffling !== undefined) adapter.setState(devId + '.Player.controlShuffle', resMedia.shuffling, true);
+                if (resMedia.looping !== undefined) adapter.setState(devId + '.Player.controlRepeat', resMedia.looping, true);
                 //let muted = res.playerInfo.volume.muted;
-                adapter.setState(devId + '.Player.pause', (resPlayer.playerInfo.state === 'PAUSED'), true);
-                adapter.setState(devId + '.Player.play', (resPlayer.playerInfo.state === 'PLAYING'), true);
+                adapter.setState(devId + '.Player.controlPause', (resPlayer.playerInfo.state === 'PAUSED'), true);
+                adapter.setState(devId + '.Player.controlPlay', (resPlayer.playerInfo.state === 'PLAYING'), true);
 
                 //if (resPlayer.playerInfo.state !== null) adapter.setState(devId + '.Player.status', resPlayer.playerInfo.state, true);
                 adapter.setState(devId + '.Player.contentType', resMedia.contentType || '', true);	// 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'

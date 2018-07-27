@@ -1,12 +1,12 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "0.3.7",
+        "version": "0.3.8",
         "title": "Alexa2 (Amazon Echo)",
         "desc": "Remote control for Alexa (Amazon Echo)",
         "platform": "Javascript/Node.js",
         "news": {
-            "0.3.7": {
+            "0.3.8": {
                 "en": "fixes problems for multi room again",
                 "de": "behebt Probleme für mehrere Räume",
                 "ru": "исправляет проблемы для многокомнатной комнаты снова",
