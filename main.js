@@ -654,7 +654,7 @@ Alexa.prototype.createStates = function (callback) {
             }
 
             if (device.capabilities.includes ('VOLUME_SETTING')) {
-                setOrUpdateObject(devId + '.Player.volume', {common: {role: 'level.volume', min: 0, max: 100}}, 0, (value) => {
+                setOrUpdateObject(devId + '.Player.volume', {common: {role: 'level.volume', min: 0, max: 100}}, 0, function (device, value) {
                     if (device.isMultiroomDevice) {
                         this.sendCommand(device, 'volume', value, (err, res) => {
                             // on unavailability {"message":"No routes found","userFacingMessage":null}
@@ -666,7 +666,7 @@ Alexa.prototype.createStates = function (callback) {
                     else {
                         this.sendSequenceCommand(device, 'volume', value);
                     }
-                });
+                }.bind(alexa, device));
             }
 
             if (device.hasMusicPlayer) {
@@ -678,16 +678,16 @@ Alexa.prototype.createStates = function (callback) {
                 for (let p in this.musicProviders) {
                     if (this.musicProviders[p].availability !== 'AVAILABLE') continue;
                     if (!this.musicProviders[p].supportedOperations.includes('Alexa.Music.PlaySearchPhrase')) continue;
-                    setOrUpdateObject(devId + '.Music-Provider.' + this.musicProviders[p].displayName, {common: {name:'Phrase to play with ' + this.musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', (value) => {
+                    setOrUpdateObject(devId + '.Music-Provider.' + this.musicProviders[p].displayName, {common: {name:'Phrase to play with ' + this.musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', function (device, value) {
                         if (value === '') return;
                         if (device.isMultiroomDevice && device.clusterMembers.length) {
-                            value += ' auf multiroom music';
+                            value += ' auf ' + device._name + ' music';
                             device = this.find(device.clusterMembers[0]);
                         }
                         this.playMusicProvider(device, this.musicProviders[p].id, value, (err, res) => {
                             scheduleStatesUpdate(5000);
                         });
-                    });
+                    }.bind(alexa, device));
                 }
             }
 
@@ -741,7 +741,9 @@ Alexa.prototype.createStates = function (callback) {
             setOrUpdateObject(devId + '.Commands', {type: 'channel'});
             for (let c in commands) {
                 const obj = JSON.parse (JSON.stringify (commands[c]));
-                setOrUpdateObject(devId + '.Commands.' + c, {common: obj.common}, obj.val, (value) => this.iterateMultiroom(device, (iteratorDevice, nextCallback) => this.sendSequenceCommand(iteratorDevice, c, value, nextCallback)));
+                setOrUpdateObject(devId + '.Commands.' + c, {common: obj.common}, obj.val, function (device, value) {
+                    this.iterateMultiroom(device, (iteratorDevice, nextCallback) => this.sendSequenceCommand(iteratorDevice, c, value, nextCallback));
+                }.bind(alexa, device));
             }
             setOrUpdateObject(devId + '.Commands.doNotDisturb', {common: {role: 'switch'}}, false, device.setDoNotDisturb);
         }
