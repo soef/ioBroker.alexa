@@ -577,15 +577,15 @@ Alexa.prototype.iterateMultiroom = function (device, commandCallback, doneCallba
         return commandCallback(device, doneCallback);
     }
     if (!counter) counter = 0;
-    console.log(counter);
-    if (counter >= device.clusterMembers) {
+    if (counter >= device.clusterMembers.length) {
         return doneCallback && doneCallback();
     }
     const currDevice = this.find(device.clusterMembers[counter]);
+    counter++;
     if (!currDevice) {
-        return this.iterateMultiroom(device, commandCallback, doneCallback, ++counter);
+        return this.iterateMultiroom(device, commandCallback, doneCallback, counter);
     }
-    return commandCallback(currDevice, () => this.iterateMultiroom(device, commandCallback, doneCallback, ++counter));
+    return commandCallback(currDevice, () => this.iterateMultiroom(device, commandCallback, doneCallback, counter));
 };
 
 Alexa.prototype.createStates = function (callback) {
