@@ -49,7 +49,7 @@ const knownDeviceType = {
     'A2OSP3UA4VC85F':   {name: 'Sonos', commandSupport: true}, // DEREGISTER_DEVICE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,CHANGE_NAME,KINDLE_BOOKS,AUDIO_PLAYER,TIMERS_AND_ALARMS,VOLUME_SETTING,PEONY,AMAZON_MUSIC,REMINDERS,SLEEP,I_HEART_RADIO,AUDIBLE,GOLDFISH,TUNE_IN,DREAM_TRAINING,PERSISTENT_CONNECTION
     'A2T0P32DY3F7VB':   {name: 'echosim.io', commandSupport: false},
     'A2TF17PFR55MTB':   {name: 'Apps', commandSupport: false}, // VOLUME_SETTING
-    'A3C9PE6TNYLTCH':   {name: 'Multiroom', commandSupport: false}, // AUDIO_PLAYER,AMAZON_MUSIC,KINDLE_BOOKS,TUNE_IN,AUDIBLE,PANDORA,I_HEART_RADIO,SALMON,VOLUME_SETTING
+    'A3C9PE6TNYLTCH':   {name: 'Multiroom', commandSupport: true}, // AUDIO_PLAYER,AMAZON_MUSIC,KINDLE_BOOKS,TUNE_IN,AUDIBLE,PANDORA,I_HEART_RADIO,SALMON,VOLUME_SETTING
     'A3H674413M2EKB':   {name: 'echosim.io', commandSupport: false},
     'A3R9S4ZZECZ6YL':   {name: 'Fire Tab', commandSupport: false}, // ASX_TIME_ZONE,PEONY,VOLUME_SETTING,SUPPORTS_SOFTWARE_VERSION
     'A3S5BH2HU6VAYF':   {name: 'Echo Dot 2.Gen', commandSupport: true},
@@ -66,6 +66,7 @@ const stateChangeTrigger = {};
 const objectQueue = [];
 const lastPlayerState = {};
 
+const adapterObjects = {};
 function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
     let callback = null;
     if (typeof value === 'function') {
@@ -117,6 +118,7 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
         obj: obj,
         stateChangeCallback: stateChangeCallback
     });
+    adapterObjects[id] = obj;
 
     if (createNow) {
         processObjectQueue(callback);
@@ -181,7 +183,15 @@ adapter.on('stateChange', (id, state) => {
     if (!state || state.ack) return;
     id = id.substr(adapter.namespace.length + 1);
 
-    if (typeof stateChangeTrigger[id] === 'function') stateChangeTrigger[id](state.val);
+    if (typeof stateChangeTrigger[id] === 'function') {
+        if (adapterObjects[id] && adapterObjects[id].common && adapterObjects[id].common.type && adapterObjects[id].common.type !== 'mixed') {
+            if (typeof state.val !== adapterObjects[id].common.type) {
+                adapter.log.error('Datatype for ' + id + ' differs from expected, ignore state change! Please write correct datatype (' + adapterObjects[id].common.type + ')');
+                return;
+            }
+        }
+        stateChangeTrigger[id](state.val);
+    }
 
     scheduleStatesUpdate(3000);
 });
