@@ -37,6 +37,7 @@ const commands = {
 
 const knownDeviceType = {
     'A10A33FOX2NUBK':   {name: 'Echo Spot', commandSupport: true},
+    'A12GXV8XMS007S':   {name: 'FireTV', commandSupport: false}, //? CHANGE_NAME,MICROPHONE,SUPPORTS_SOFTWARE_VERSION,ARTHUR_TARGET,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,ACTIVE_AFTER_FRO,FLASH_BRIEFING,VOLUME_SETTING
     'A15ERDAKK5HQQG':   {name: 'Sonos', commandSupport: false}, //? AUDIO_PLAYER,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AMAZON_MUSIC,TUNE_IN,PANDORA,REMINDERS,I_HEART_RADIO,CHANGE_NAME,VOLUME_SETTING,PEONY
     'A1DL2DVDQVK3Q':	{name: 'Apps', commandSupport: false}, // (PEONY,VOLUME_SETTING)
     'A1NL4BVLQ4L3N3':	{name: 'Echo Show', commandSupport: true},
