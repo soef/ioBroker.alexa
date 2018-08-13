@@ -1,6 +1,6 @@
 /* jshint -W097 */
-/* jshint -W083 */
 /* jshint -W030 */
+/* jshint -W083 */
 /* jshint strict: false */
 /* jslint node: true */
 /* jslint esversion: 6 */
@@ -1243,7 +1243,12 @@ function main() {
                             adapter.subscribeStates('*');
                             adapter.subscribeObjects('*');
                             initDone = true;
-                            adapter.log.info('Check - I would delete the following states: ' + JSON.stringify(Object.keys(existingStates)));
+                            adapter.log.info('Deleting the following states: ' + JSON.stringify(Object.keys(existingStates)));
+                            const delIds = Object.keys(existingStates);
+                            for (let i = 0; i < delIds.length; i++) {
+                                adapter.delObject(delIds[i]);
+                                delete existingStates[delIds[i]];
+                            }
                         }
                     });
                 });

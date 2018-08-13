@@ -124,9 +124,9 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ### 0.4.0 (2018-08-13)
 * (Apollon77) internal Refactoring
-* (Apollon77) After initialization a list of states is logged that should be deleted. Is experimental for later automatic deletion - check with next two news entries, they should be listed. give feedback please
-* (Apollon77) sanitized music provider state names (spaces are now dashes ... you need to manually remove old states!)
-* (Apollon77) Renamed TuneIn-Direct to TuneIn-Station (even if you still can enter text to search, this works with stations too) ... you need to manually remove old states!)
+* (Apollon77) states that are not needed anymore will be removed. This will be logged for now, so please check this and give feedback!
+* (Apollon77) sanitized music provider state names (spaces are now dashes ... should be removed automatically)
+* (Apollon77) Renamed TuneIn-Direct to TuneIn-Station (even if you still can enter text to search, this works with stations too) ... should be removed automatically)
 * (Apollon77) Device and Bluetooth status is now also checked at states update
 * (Apollon77) After enabling Push-Connection the configured polling is turned off and anything is done based on real time informations from Alexa. Test it
 * (Apollon77) Enhanced History states to include the status of the action (SUCCESS, FAIL ...), infos from returned cards (if available) and info on accessed skill for this action.
