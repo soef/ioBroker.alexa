@@ -43,6 +43,7 @@ const knownDeviceType = {
     'A12GXV8XMS007S':   {name: 'FireTV', commandSupport: false, icon: 'icons/firetv.png'}, //? CHANGE_NAME,MICROPHONE,SUPPORTS_SOFTWARE_VERSION,ARTHUR_TARGET,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,ACTIVE_AFTER_FRO,FLASH_BRIEFING,VOLUME_SETTING
     'A15ERDAKK5HQQG':   {name: 'Sonos', commandSupport: false, icon: 'icons/sonos.png'}, //? AUDIO_PLAYER,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AMAZON_MUSIC,TUNE_IN,PANDORA,REMINDERS,I_HEART_RADIO,CHANGE_NAME,VOLUME_SETTING,PEONY
     'A1DL2DVDQVK3Q':	{name: 'Apps', commandSupport: false}, // (PEONY,VOLUME_SETTING)
+    'A1J16TEDOYCZTN':	{name: 'Fire tab', commandSupport: true, icon: 'icons/firetab.png'}, // (PEONY,MICROPHONE,SUPPORTS_SOFTWARE_VERSION,VOLUME_SETTING,ASX_TIME_ZONE,REMINDERS)
     'A1NL4BVLQ4L3N3':	{name: 'Echo Show', commandSupport: true, icon: 'icons/echo_show.png'},
     'A2825NDLA7WDZV':   {name: 'Apps', commandSupport: false}, // PEONY,VOLUME_SETTING
     'A2E0SNTXJVT7WK':   {name: 'Fire TV V1', commandSupport: false, icon: 'icons/firetv.png'},
@@ -1248,11 +1249,13 @@ function main() {
                             adapter.subscribeStates('*');
                             adapter.subscribeObjects('*');
                             initDone = true;
-                            adapter.log.info('Deleting the following states: ' + JSON.stringify(Object.keys(existingStates)));
                             const delIds = Object.keys(existingStates);
-                            for (let i = 0; i < delIds.length; i++) {
-                                adapter.delObject(delIds[i]);
-                                delete existingStates[delIds[i]];
+                            if (delIds.length) {
+                                adapter.log.info('Deleting the following states: ' + JSON.stringify(delIds));
+                                for (let i = 0; i < delIds.length; i++) {
+                                    adapter.delObject(delIds[i]);
+                                    delete existingStates[delIds[i]];
+                                }
                             }
                         }
                     });
