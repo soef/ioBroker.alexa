@@ -13,6 +13,7 @@ This adapter allows you to remote control your Alexa (Amazon Echo) devices.
 Big thanks go to soef for the good version 1 of the adapter and to Hauke and ruhr70 for ideas in their scripts from ioBroker-Forum (especially the media progress updates)!
 
 ### States and their meanings:
+***Important: Docs outdated!! Will be updated soon***
 
 In the adapter namespace (e.g. alexa.0) some channels are created
 
