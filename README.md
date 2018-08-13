@@ -131,6 +131,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 * (Apollon77) After enabling Push-Connection the configured polling is turned off and anything is done based on real time informations from Alexa. Test it
 * (Apollon77) Enhanced History states to include the status of the action (SUCCESS, FAIL ...), infos from returned cards (if available) and info on accessed skill for this action.
 * (Apollon77) When using Push-Connection History update is also updated automatically. An empty summary with status DISCARDED_NON_DEVICE_DIRECTED_INTENT means the activation of the echo by saying the wake word
+* (Bluefox) Add icons for some of the devices for Admin
 
 ### 0.3.8 (2018-07-27)
 * (Apollon77) Several Multiroom-fixes
