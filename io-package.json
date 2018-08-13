@@ -1,11 +1,22 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "0.3.8",
+        "version": "0.4.0",
         "title": "Alexa2 (Amazon Echo)",
         "desc": "Remote control for Alexa (Amazon Echo)",
         "platform": "Javascript/Node.js",
         "news": {
+            "0.4.0": {
+                "en": "fixes, changes, introduce push connection to update data in realtime",
+                "de": "behebt, ändert, führt eine Push-Verbindung ein, um Daten in Echtzeit zu aktualisieren",
+                "ru": "исправления, изменения, внедрение push-соединения для обновления данных в реальном времени",
+                "pt": "correções, mudanças, introduza conexão push para atualizar dados em tempo real",
+                "nl": "reparaties, wijzigingen, introduceren push-verbinding om gegevens in realtime bij te werken",
+                "fr": "corrections, modifications, introduction de la connexion push pour mettre à jour les données en temps réel",
+                "it": "correzioni, modifiche, introdurre la connessione push per aggiornare i dati in tempo reale",
+                "es": "arregla, cambia, introduce una conexión de inserción para actualizar datos en tiempo real",
+                "pl": "poprawki, zmiany, wprowadzenie połączenia push do aktualizacji danych w czasie rzeczywistym"
+            },
             "0.3.8": {
                 "en": "fixes problems for multi room again",
                 "de": "behebt Probleme für mehrere Räume",
@@ -36,7 +47,7 @@
                 "en": "fixes, changes und settings window materialized",
                 "de": "Fehlerbehebungen, Änderungen  und Einstellungsfenster im Material Design"
             },
-            "0.2.1´2": {
+            "0.2.1": {
                 "en": "first release as Alexa2",
                 "de": "Erste Veröffentlichung als Alexa2"
             }
@@ -72,7 +83,8 @@
         "proxyPort": 0,
         "proxyListenBind": "",
         "updateStateInterval": 300,
-        "updateHistoryInterval": 300
+        "updateHistoryInterval": 300,
+        "usePushConnection": false
     },
     "objects": [],
     "instanceObjects": [{

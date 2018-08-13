@@ -122,6 +122,16 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 0.4.0 (2018-08-13)
+* (Apollon77) internal Refactoring
+* (Apollon77) After initialization a list of states is logged that should be deleted. Is experimental for later automatic deletion - check with next two news entries, they should be listed. give feedback please
+* (Apollon77) sanitized music provider state names (spaces are now dashes ... you need to manually remove old states!)
+* (Apollon77) Renamed TuneIn-Direct to TuneIn-Station (even if you still can enter text to search, this works with stations too) ... you need to manually remove old states!)
+* (Apollon77) Device and Bluetooth status is now also checked at states update
+* (Apollon77) After enabling Push-Connection the configured polling is turned off and anything is done based on real time informations from Alexa. Test it
+* (Apollon77) Enhanced History states to include the status of the action (SUCCESS, FAIL ...), infos from returned cards (if available) and info on accessed skill for this action.
+* (Apollon77) When using Push-Connection History update is also updated automatically. An empty summary with status DISCARDED_NON_DEVICE_DIRECTED_INTENT means the activation of the echo by saying the wake word
+
 ### 0.3.8 (2018-07-27)
 * (Apollon77) Several Multiroom-fixes
 * (Apollon77) fixed shuffle/repeat
