@@ -1,12 +1,12 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "0.5.0",
+        "version": "0.5.1",
         "title": "Alexa2 (Amazon Echo)",
         "desc": "Remote control for Alexa (Amazon Echo)",
         "platform": "Javascript/Node.js",
         "news": {
-            "0.5.0": {
+            "0.5.1": {
                 "en": "fixes, changes, optimizations, add support for reminders and alarms",
                 "de": "behebt, ändert, optimiert, fügt Unterstützung für Erinnerungen und Alarme hinzu",
                 "ru": "исправления, изменения, оптимизации, добавить поддержку напоминаний и аварийных сигналов",

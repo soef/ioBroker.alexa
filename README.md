@@ -123,7 +123,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 0.5.0 (2018-08-15)
+### 0.5.1 (2018-08-16)
 * (Apollon77) fix an error when getting new cookie
 * (Apollon77) add new "Playlist" states for the Music providers to directly prepend "playlist" :-)
 * (Apollon77) Volumes are not updated for multiroom devices when === 0
