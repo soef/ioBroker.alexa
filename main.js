@@ -454,7 +454,7 @@ function updateMediaProgress(serialNumber) {
 
 		// Am Ende des Titels soll neu geladen werden. Ist es Radio (länge = 0) dann alle 200 sekunden
 		if (mediaProgressNew > mediaLength && (mediaLength > 0 || mediaProgressNew % 200 < 2)) {
-			schedulePlayerUpdate(2000);
+			schedulePlayerUpdate(serialNumber, 2000);
             return;
 		}
 
@@ -473,7 +473,7 @@ function updateMediaProgress(serialNumber) {
         }, 2000);
 	}
     else {
-        schedulePlayerUpdate((2 * 60 * 60 + 5) * 1000);
+        schedulePlayerUpdate(serialNumber, (2 * 60 * 60 + 5) * 1000);
     }
 }
 
@@ -741,7 +741,7 @@ function createStates(callback) {
                         device.setTunein(query, 'station', (err, ret) => {
                             if (!err) {
                                 adapter.setState(devId + '.Player.TuneIn-Station', query, true);
-                                schedulePlayerUpdate(5000);
+                                schedulePlayerUpdate(device, 5000);
                             }
                         });
                     } else {
@@ -752,7 +752,7 @@ function createStates(callback) {
                             device.setTunein(station.id, station.contentType, (err, ret) => {
                                 if (!err) {
                                     adapter.setState('Echo-Devices.' + device.serialNumber + '.Player.TuneIn-Station', station.name, true);
-                                    schedulePlayerUpdate(5000);
+                                    schedulePlayerUpdate(device, 5000);
                                 }
                             });
                         });
@@ -820,7 +820,7 @@ function playMusicProvider(device, providerId, value) {
         device = alexa.find(device.clusterMembers[0]);
     }
     alexa.playMusicProvider(device, providerId, value, (err, res) => {
-        schedulePlayerUpdate(5000);
+        schedulePlayerUpdate(device, 5000);
     });
 }
 
@@ -992,7 +992,7 @@ function createNotificationStates(serialOrName) {
                             notificationTimer[noti.id] = null;
                             adapter.log.debug(noti.type + ' triggered');
                             adapter.setState(notiId + '.triggered', true, true);
-                        }.bind(this, notiId, noti), alarmDelay);
+                        }.bind(alexa, notiId, noti), alarmDelay);
                     }
                 }
             }
