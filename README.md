@@ -123,6 +123,14 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 0.5.0 (2018-08-15)
+* (Apollon77) fix an error when getting new cookie
+* (Apollon77) add new "Playlist" states for the Music providers to directly prepend "playlist" :-)
+* (Apollon77) Volumes are not updated for multiroom devices when === 0
+* (Apollon77) Add Reminder and Alarms support. Write time and pot. text separated by comma into the "New" stat to create a new one (e.g. "10:00:00, Test-Reminder")
+* (Apollon77) Also with Push-Connection some times states are generally updated to make sure data are correct (e.g. player media info will disappear 2h after stopping the music)
+* (Apollon77) Added some more deviceTypes
+
 ### 0.4.0 (2018-08-13)
 * (Apollon77) internal Refactoring
 * (Apollon77) states that are not needed anymore will be removed. This will be logged for now, so please check this and give feedback!

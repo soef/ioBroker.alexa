@@ -1,11 +1,22 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "0.4.0",
+        "version": "0.5.0",
         "title": "Alexa2 (Amazon Echo)",
         "desc": "Remote control for Alexa (Amazon Echo)",
         "platform": "Javascript/Node.js",
         "news": {
+            "0.5.0": {
+                "en": "fixes, changes, optimizations, add support for reminders and alarms",
+                "de": "behebt, ändert, optimiert, fügt Unterstützung für Erinnerungen und Alarme hinzu",
+                "ru": "исправления, изменения, оптимизации, добавить поддержку напоминаний и аварийных сигналов",
+                "pt": "correções, alterações, otimizações, adicionar suporte para lembretes e alarmes",
+                "nl": "fixes, wijzigingen, optimalisaties, ondersteuning toevoegen voor herinneringen en alarmen",
+                "fr": "corrections, modifications, optimisations, ajout de la prise en charge des rappels et des alarmes",
+                "it": "correzioni, modifiche, ottimizzazioni, aggiungere supporto per promemoria e allarmi",
+                "es": "arreglos, cambios, optimizaciones, agregar soporte para recordatorios y alarmas",
+                "pl": "poprawki, zmiany, optymalizacje, dodawanie obsługi przypomnień i alarmów"
+            },
             "0.4.0": {
                 "en": "fixes, changes, introduce push connection to update data in realtime",
                 "de": "behebt, ändert, führt eine Push-Verbindung ein, um Daten in Echtzeit zu aktualisieren",

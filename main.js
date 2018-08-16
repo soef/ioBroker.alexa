@@ -43,6 +43,7 @@ const knownDeviceType = {
     'A12GXV8XMS007S':   {name: 'FireTV', commandSupport: false, icon: 'icons/firetv.png'}, //? CHANGE_NAME,MICROPHONE,SUPPORTS_SOFTWARE_VERSION,ARTHUR_TARGET,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,ACTIVE_AFTER_FRO,FLASH_BRIEFING,VOLUME_SETTING
     'A15ERDAKK5HQQG':   {name: 'Sonos', commandSupport: false, icon: 'icons/sonos.png'}, //? AUDIO_PLAYER,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AMAZON_MUSIC,TUNE_IN,PANDORA,REMINDERS,I_HEART_RADIO,CHANGE_NAME,VOLUME_SETTING,PEONY
     'A1DL2DVDQVK3Q':	{name: 'Apps', commandSupport: false}, // (PEONY,VOLUME_SETTING)
+    'A1H0CMF1XM0ZP4':	{name: 'Echo Dot', commandSupport: true, icon: '/icons/echo_dot.png'}, // CHANGE_NAME,AUDIO_PLAYER,AMAZON_MUSIC,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,VOLUME_SETTING,LAMBDA
     'A1J16TEDOYCZTN':	{name: 'Fire tab', commandSupport: true, icon: 'icons/firetab.png'}, // (PEONY,MICROPHONE,SUPPORTS_SOFTWARE_VERSION,VOLUME_SETTING,ASX_TIME_ZONE,REMINDERS)
     'A1NL4BVLQ4L3N3':	{name: 'Echo Show', commandSupport: true, icon: 'icons/echo_show.png'},
     'A2825NDLA7WDZV':   {name: 'Apps', commandSupport: false}, // PEONY,VOLUME_SETTING
@@ -51,10 +52,12 @@ const knownDeviceType = {
     'A2IVLV5VM2W81':    {name: 'Apps', commandSupport: false},
     'A2LWARUGJLBYEW':   {name: 'Fire TV Stick V2', commandSupport: false, icon: 'icons/firetv.png'}, // ACTIVE_AFTER_FRO,FLASH_BRIEFING,ARTHUR_TARGET,CHANGE_NAME,VOLUME_SETTING,SUPPORTS_SOFTWARE_VERSION,MICROPHONE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY
     'A2M35JJZWCQOMZ':   {name: 'Echo Plus', commandSupport: true},
+//    'A2M4YX06LWP8WI':   {name: '???', commandSupport: false}, // SUPPORTS_SOFTWARE_VERSION,VOLUME_SETTING,ASX_TIME_ZONE,MICROPHONE,PEONY
     'A2OSP3UA4VC85F':   {name: 'Sonos', commandSupport: true, icon: 'icons/sonos.png'}, // DEREGISTER_DEVICE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,CHANGE_NAME,KINDLE_BOOKS,AUDIO_PLAYER,TIMERS_AND_ALARMS,VOLUME_SETTING,PEONY,AMAZON_MUSIC,REMINDERS,SLEEP,I_HEART_RADIO,AUDIBLE,GOLDFISH,TUNE_IN,DREAM_TRAINING,PERSISTENT_CONNECTION
     'A2T0P32DY3F7VB':   {name: 'echosim.io', commandSupport: false},
     'A2TF17PFR55MTB':   {name: 'Apps', commandSupport: false}, // VOLUME_SETTING
     'A38BPK7OW001EX':   {name: 'Raspberry Alexa', commandSupport: false, icon: 'icons/raspi.png'}, // TIMERS_AND_ALARMS,AMAZON_MUSIC,VOLUME_SETTING,AUDIBLE,I_HEART_RADIO,TUNE_IN,KINDLE_BOOKS,DEREGISTER_DEVICE,AUDIO_PLAYER,SLEEP,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,PERSISTENT_CONNECTION,DREAM_TRAINING,MICROPHONE,GOLDFISH,CHANGE_NAME,PEONY
+    'A38EHHIB10L47V':	{name: 'Echo Dot', commandSupport: true, icon: '/icons/echo_dot.png'}, // ASCENDING_ALARM_VOLUME,MICROPHONE,REMINDERS,ASX_TIME_ZONE,VOLUME_SETTING,PEONY,SUPPORTS_SOFTWARE_VERSION)
     'A3C9PE6TNYLTCH':   {name: 'Multiroom', commandSupport: true}, // AUDIO_PLAYER,AMAZON_MUSIC,KINDLE_BOOKS,TUNE_IN,AUDIBLE,PANDORA,I_HEART_RADIO,SALMON,VOLUME_SETTING
     'A3H674413M2EKB':   {name: 'echosim.io', commandSupport: false},
     'A3HF4YRA2L7XGC':   {name: 'Fire TV Cube', commandSupport: true}, // FLASH_BRIEFING,TUNE_IN,PANDORA,FAR_FIELD_WAKE_WORD,DREAM_TRAINING,AMAZON_MUSIC,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AUDIBLE,SUPPORTS_SOFTWARE_VERSION,PAIR_BT_SINK,CHANGE_NAME,AUDIO_PLAYER,VOICE_TRAINING,SET_LOCALE,EARCONS,SOUND_SETTINGS,SALMON,ACTIVE_AFTER_FRO,SLEEP,I_HEART_RADIO,TIMERS_AND_ALARMS,CUSTOM_ALARM_TONE,PERSISTENT_CONNECTION,ARTHUR_TARGET,KINDLE_BOOKS,REMINDERS
@@ -69,15 +72,17 @@ const knownDeviceType = {
 
 let updateStateTimer;
 let updateHistoryTimer;
-let updatePlayerTimer = {};
+const updatePlayerTimer = {};
+const updateNotificationTimer = {};
 
 let musicProviders;
 let automationRoutines;
-let playerDevices = {};
+const playerDevices = {};
 
 const stateChangeTrigger = {};
 const objectQueue = [];
 const lastPlayerState = {};
+const notificationTimer = {};
 let wsMqttConnected = false;
 
 const existingStates = {};
@@ -148,6 +153,33 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
         processObjectQueue(callback);
     }
 }
+
+function deleteObject(id) {
+    const obj = adapterObjects[id];
+    if (obj && obj.type) {
+        if (obj.type !== 'state') {
+            Object.keys(adapterObjects).forEach((objId) => {
+                if (objId.startsWith(id + '.')) {
+                    adapter.delObject(objId, (err) => {
+                        err = err ? ' (' + err + ')' : '';
+                        adapter.log.info(adapterObjects[objId].type + ' ' +  objId + ' deleted' + err);
+                        if (!err) {
+                            delete adapterObjects[objId];
+                        }
+                    });
+                }
+            });
+
+        }
+        adapter.delObject(id, (err) => {
+            adapter.log.info(adapterObjects[id].type + ' ' +  id + ' deleted (' + err + ')');
+            if (!err) {
+                delete adapterObjects[id];
+            }
+        });
+    }
+}
+
 
 function isEquivalent(a, b) {
     //adapter.log.debug('Compare ' + JSON.stringify(a) + ' with ' +  JSON.stringify(b));
@@ -255,7 +287,7 @@ adapter.on('stateChange', (id, state) => {
         stateChangeTrigger[id](state.val);
     }
 
-    scheduleStatesUpdate(3000);
+    if (!wsMqttConnected) scheduleStatesUpdate(3000);
 });
 
 adapter.on('objectChange', (id, object) => {
@@ -344,6 +376,16 @@ function sec2HMS(sec) {
 }
 
 
+function scheduleNotificationUpdate(deviceId, delay) {
+    if (updateNotificationTimer[deviceId]) {
+        clearTimeout(updateNotificationTimer[deviceId]);
+    }
+    updateNotificationTimer[deviceId] = setTimeout(() => {
+        updateNotificationTimer[deviceId] = null;
+        updateNotificationStates(deviceId);
+    }, delay);
+}
+
 function schedulePlayerUpdate(deviceId, delay) {
     if (updatePlayerTimer[deviceId]) {
         clearTimeout(updatePlayerTimer[deviceId]);
@@ -355,11 +397,13 @@ function schedulePlayerUpdate(deviceId, delay) {
 }
 
 function scheduleStatesUpdate(delay) {
-    if (delay === undefined) delay = adapter.config.updateStateInterval * 1000;
     if (updateStateTimer) {
         clearTimeout(updateStateTimer);
     }
-    if (wsMqttConnected) return;
+    if (delay === undefined) {
+        delay = adapter.config.updateStateInterval * 1000;
+        if (wsMqttConnected) delay = 60 * 60 * 1000; // 1h
+    }
     updateStateTimer = setTimeout(() => {
         updateStateTimer = null;
         updateStates();
@@ -410,7 +454,7 @@ function updateMediaProgress(serialNumber) {
 
 		// Am Ende des Titels soll neu geladen werden. Ist es Radio (länge = 0) dann alle 200 sekunden
 		if (mediaProgressNew > mediaLength && (mediaLength > 0 || mediaProgressNew % 200 < 2)) {
-			scheduleStatesUpdate(2000);
+			schedulePlayerUpdate(2000);
             return;
 		}
 
@@ -428,6 +472,9 @@ function updateMediaProgress(serialNumber) {
             updateMediaProgress(serialNumber);
         }, 2000);
 	}
+    else {
+        schedulePlayerUpdate((2 * 60 * 60 + 5) * 1000);
+    }
 }
 
 
@@ -681,15 +728,9 @@ function createStates(callback) {
                     if (!musicProviders[p].supportedOperations.includes('Alexa.Music.PlaySearchPhrase')) continue;
                     let displayName = musicProviders[p].displayName.replace(forbiddenCharacters, '-');
 
-                    setOrUpdateObject(devId + '.Music-Provider.' + displayName, {common: {name:'Phrase to play with ' + musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', function (device, providerId, value) {
-                        if (value === '') return;
-                        if (device.isMultiroomDevice && device.clusterMembers.length) {
-                            value += ' auf ' + device._name + ' music';
-                            device = alexa.find(device.clusterMembers[0]);
-                        }
-                        alexa.playMusicProvider(device, providerId, value, (err, res) => {
-                            scheduleStatesUpdate(5000);
-                        });
+                    setOrUpdateObject(devId + '.Music-Provider.' + displayName, {common: {name:'Phrase to play with ' + musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', playMusicProvider.bind(alexa, device, musicProviders[p].id));
+                    setOrUpdateObject(devId + '.Music-Provider.' + displayName + '-Playlist', {common: {name:'Playlist to play with ' + musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', function(device, providerId, value) {
+                        playMusicProvider(device, providerId, 'playlist ' + value);
                     }.bind(alexa, device, musicProviders[p].id));
                 }
             }
@@ -700,7 +741,7 @@ function createStates(callback) {
                         device.setTunein(query, 'station', (err, ret) => {
                             if (!err) {
                                 adapter.setState(devId + '.Player.TuneIn-Station', query, true);
-                                scheduleStatesUpdate(5000);
+                                schedulePlayerUpdate(5000);
                             }
                         });
                     } else {
@@ -711,7 +752,7 @@ function createStates(callback) {
                             device.setTunein(station.id, station.contentType, (err, ret) => {
                                 if (!err) {
                                     adapter.setState('Echo-Devices.' + device.serialNumber + '.Player.TuneIn-Station', station.name, true);
-                                    scheduleStatesUpdate(5000);
+                                    schedulePlayerUpdate(5000);
                                 }
                             });
                         });
@@ -722,15 +763,7 @@ function createStates(callback) {
         createBluetoothStates(device);
 
         if (device.notifications) {
-            setOrUpdateObject(devId + '.Notifications', {type: 'channel'});
-            for (let noti of device.notifications) {
-                if (noti.originalTime) {
-                    let ar = noti.originalTime.split (':');
-                    ar.length = 2;
-                    let s = ar.join (':');
-                    setOrUpdateObject(devId + '.Notifications.' + s, {common: {type: 'mixed', role: 'state', name: `Type=${noti.type}`}}, (noti.status === 'ON'), noti.set);
-                }
-            }
+            createNotificationStates(device);
         }
 
         if (device.deviceTypeDetails.commandSupport) {
@@ -777,6 +810,17 @@ function createStates(callback) {
         updatePlayerStatus(() => {
             updateHistory(callback);
         });
+    });
+}
+
+function playMusicProvider(device, providerId, value) {
+    if (value === '') return;
+    if (device.isMultiroomDevice && device.clusterMembers.length) {
+        value += ' auf ' + device._name + ' music';
+        device = alexa.find(device.clusterMembers[0]);
+    }
+    alexa.playMusicProvider(device, providerId, value, (err, res) => {
+        schedulePlayerUpdate(5000);
     });
 }
 
@@ -878,6 +922,108 @@ function updateBluetoothStatus(serialOrName, callback) {
     });
 }
 
+function createNotificationStates(serialOrName) {
+    let device = alexa.find(serialOrName);
+    let devId = 'Echo-Devices.' + device.serialNumber;
+
+    if (device.notifications) {
+        if (device.capabilities.includes('REMINDERS')) {
+            setOrUpdateObject(devId + '.Reminder', {type: 'device'});
+            setOrUpdateObject(devId + '.Reminder.New', {common: {type: 'mixed', role: 'state', name: 'Add new Reminder'}}, '', function(device, value) {
+                let valueArr = value.split(',');
+                let time = valueArr.shift().trim();
+                if (parseInt(time, 10) == time) time = parseInt(time, 10);
+                const notification = alexa.createNotificationObject(device, 'Reminder', valueArr.join(',').trim(), time);
+                if (notification) {
+                    alexa.createNotification(notification, (err, res) => {
+                        scheduleNotificationUpdate(device, 2000);
+                    });
+                }
+            }.bind(alexa, device));
+        }
+        if (device.capabilities.includes('TIMERS_AND_ALARMS')) {
+            setOrUpdateObject(devId + '.Alarm', {type: 'device'});
+            setOrUpdateObject(devId + '.Alarm.New', {common: {type: 'mixed', role: 'state', name: 'Add new Alarm'}}, '', function(device, value) {
+                let valueArr = value.split(',');
+                let time = valueArr.shift().trim();
+                if (parseInt(time, 10) == time) time = parseInt(time, 10);
+                const notification = alexa.createNotificationObject(device, 'Alarm', valueArr.join(',').trim(), time);
+                if (notification) {
+                    alexa.createNotification(notification, (err, res) => {
+                        scheduleNotificationUpdate(device, 2000);
+                    });
+                }
+            }.bind(alexa, device));
+            /*setOrUpdateObject(devId + '.Timer', {type: 'device'});
+            setOrUpdateObject(devId + '.Timer.New', {common: {type: 'mixed', role: 'state', name: 'Add new Timer'}}, '', function(device, value) {
+                if (parseInt(value, 10) == value) value = parseInt(value, 10);
+                const notification = alexa.createNotificationObject(device, 'Timer', '', value);
+                if (notification) {
+                    alexa.createNotification(notification, (err, res) => {
+                        scheduleNotificationUpdate(device, 2000);
+                    });
+                }
+            }.bind(alexa, device));*/
+        }
+        for (let noti of device.notifications) {
+            if (noti.type === 'Reminder' && !device.capabilities.includes('REMINDERS')) continue;
+            if (noti.type === 'Alarm' && !device.capabilities.includes('TIMERS_AND_ALARMS')) continue;
+            if (noti.type === 'Timer') continue;
+            if (noti.originalTime) {
+                const id = noti.notificationIndex;
+                let notiId = devId + '.' + noti.type + '.' + id;
+                let time = noti.originalTime;
+                if (time.endsWith('.000')) time = time.substr(0, time.length - 4);
+                const displayTime = noti.originalTime.substr(0, noti.originalTime.length - 4);
+                setOrUpdateObject(notiId, {type: 'channel', common: {name: noti.reminderLabel || displayTime}});
+                setOrUpdateObject(notiId + '.time', {common: {type: 'mixed', role: 'state', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Time'}}, time, noti.set);
+                setOrUpdateObject(notiId + '.enabled', {common: {type: 'boolean', role: 'switch.enable', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Enabled'}}, (noti.status === 'ON'), noti.set);
+                setOrUpdateObject(notiId + '.triggered', {common: {type: 'boolean', read: true, write: false, role: 'indicator', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Triggered'}}, false, noti.set);
+                if (noti.status === 'ON' && noti.alarmTime) {
+                    if (notificationTimer[noti.id]) {
+                        clearTimeout(notificationTimer[noti.id]);
+                        notificationTimer[noti.id] = null;
+                    }
+                    const alarmTime = new Date((noti.originalDate + ' ' + noti.originalTime).replace(/-/g,"/"));
+                    const alarmDelay = alarmTime - new Date().getTime();
+                    adapter.log.debug(noti.type + ' triggered in ' + Math.floor(alarmDelay / 1000));
+                    if (alarmDelay > 0) {
+                        notificationTimer[noti.id] = setTimeout(function (notiId, noti) {
+                            notificationTimer[noti.id] = null;
+                            adapter.log.debug(noti.type + ' triggered');
+                            adapter.setState(notiId + '.triggered', true, true);
+                        }.bind(this, notiId, noti), alarmDelay);
+                    }
+                }
+            }
+        }
+    }
+}
+
+function updateNotificationStates(serialOrName, callback) {
+    if (!alexa._options.notifications) return callback && callback();
+    if (typeof serialOrName === 'function') {
+        callback = serialOrName;
+        serialOrName = null;
+    }
+    if (serialOrName) serialOrName = alexa.find(serialOrName);
+
+    alexa.initNotifications(() => {
+        Object.keys(alexa.serialNumbers).forEach ((n) => {
+            let device = alexa.find(n);
+            if (serialOrName && serialOrName !== device) return;
+
+            createNotificationStates(device);
+        });
+        if (callback) {
+            callback();
+        }
+        else {
+            processObjectQueue();
+        }
+    });
+}
+
 function updatePlayerStatus(serialOrName, callback) {
     if (typeof serialOrName === 'function') {
         callback = serialOrName;
@@ -914,11 +1060,16 @@ function updatePlayerStatus(serialOrName, callback) {
                 }
                 lastPlayerState[device.serialNumber] = {resPlayer: resPlayer, resMedia: resMedia, ts: Date.now(), devId: devId, timeout: null};
 
-                if (resMedia.volume) {
-                    adapter.setState(devId + '.Player.volume', ~~resMedia.volume, true);
-                }
-                else if (resPlayer.playerInfo && resPlayer.playerInfo.volume && resPlayer.playerInfo.volume) {
-                    adapter.setState(devId + '.Player.volume', ~~resPlayer.playerInfo.volume.volume, true);
+                if (device.capabilities.includes ('VOLUME_SETTING')) {
+                    let volume = null;
+                    if (resMedia.volume !== null) {
+                        volume = ~~resMedia.volume;
+                    }
+                    else if (resPlayer.playerInfo && resPlayer.playerInfo.volume && resPlayer.playerInfo.volume && resPlayer.playerInfo.volume.volume !== null) {
+                        volume = ~~resPlayer.playerInfo.volume.volume;
+                    }
+                    if (volume === 0 && device.isMultiroomDevice) volume = null;
+                    if (volume !== null) adapter.setState(devId + '.Player.volume', volume, true);
                 }
                 if (resMedia.shuffling !== undefined) adapter.setState(devId + '.Player.controlShuffle', resMedia.shuffling, true);
                 if (resMedia.looping !== undefined) adapter.setState(devId + '.Player.controlRepeat', resMedia.looping, true);
@@ -1071,7 +1222,7 @@ function main() {
         email: adapter.config.email, // Amazon email for login
         password: adapter.config.password, // Amazon password for Login
         bluetooth: true, // fetch uetooth devices
-        notifications: false, // fetch notifications (false because not works so far)
+        notifications: true, // fetch notifications (false because not works so far)
         userAgent: adapter.config.userAgent, // overwrite userAgent
         acceptLanguage: adapter.config.acceptLanguage, // overwrite acceptLanguage
         amazonPage: adapter.config.cookieLoginUrl, // overwrite amazonPage
@@ -1092,14 +1243,8 @@ function main() {
     alexa = new Alexa();
 
     alexa.on('ws-connect', () => {
-        if (updateStateTimer) {
-            clearTimeout(updateStateTimer);
-            updateStateTimer = null;
-        }
-        if (updateHistoryTimer) {
-            clearTimeout(updateHistoryTimer);
-            updateHistoryTimer = null;
-        }
+        scheduleHistoryUpdate(2000);
+        scheduleStatesUpdate(2000);
         wsMqttConnected = true;
         adapter.log.info('Alexa-Push-Connection established. Disable Polling');
     });
@@ -1119,7 +1264,7 @@ function main() {
     });
 
     alexa.on('ws-device-connection-change', (data) => {
-        adapter.log.info('Alexa-Push-Connection Device Connection change for ' + data.deviceSerialNumber + ' -> ' + data.connectionState);
+        adapter.log.debug('Alexa-Push-Connection Device Connection change for ' + data.deviceSerialNumber + ' -> ' + data.connectionState);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
             adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
@@ -1131,7 +1276,7 @@ function main() {
     });
 
     alexa.on('ws-bluetooth-state-change', (data) => {
-        adapter.log.info('Alexa-Push-Connection Bluetooth State change for ' + data.deviceSerialNumber + ' -> ' + data.bluetoothEvent);
+        adapter.log.debug('Alexa-Push-Connection Bluetooth State change for ' + data.deviceSerialNumber + ' -> ' + data.bluetoothEvent);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
             adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
@@ -1142,7 +1287,7 @@ function main() {
     });
 
     alexa.on('ws-audio-player-state-change', (data) => {
-        adapter.log.info('Alexa-Push-Connection Audio Player State change for ' + data.deviceSerialNumber + ' -> ' + data.audioPlayerState);
+        adapter.log.debug('Alexa-Push-Connection Audio Player State change for ' + data.deviceSerialNumber + ' -> ' + data.audioPlayerState);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
             adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
@@ -1157,7 +1302,7 @@ function main() {
     });
 
     alexa.on('ws-media-queue-change', (data) => {
-        adapter.log.info('Alexa-Push-Connection Media Queue change for ' + data.deviceSerialNumber + ' -> ' + data.changeType);
+        adapter.log.debug('Alexa-Push-Connection Media Queue change for ' + data.deviceSerialNumber + ' -> ' + data.changeType);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
             adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
@@ -1168,7 +1313,7 @@ function main() {
     });
 
     alexa.on('ws-volume-change', (data) => {
-        adapter.log.info('Alexa-Push-Connection Device Volume change for ' + data.deviceSerialNumber + ' -> ' + data.volume + '/' + data.isMuted);
+        adapter.log.debug('Alexa-Push-Connection Device Volume change for ' + data.deviceSerialNumber + ' -> ' + data.volume + '/' + data.isMuted);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
             adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
@@ -1181,7 +1326,7 @@ function main() {
     });
 
     alexa.on('ws-content-focus-change', (data) => {
-        adapter.log.info('Alexa-Push-Connection Content Focus change for ' + data.deviceSerialNumber);
+        adapter.log.debug('Alexa-Push-Connection Content Focus change for ' + data.deviceSerialNumber);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
             adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
@@ -1196,13 +1341,24 @@ function main() {
         updateHistoryStates(activity);
     });
 
-    alexa.on('ws-unknown-command', (payload) => {
-        adapter.log.info('Alexa-Push-Connection Unknown Command - send to Developer: ' + JSON.stringify(payload));
+    alexa.on('ws-unknown-command', (command, payload) => {
+        adapter.log.info('Alexa-Push-Connection Unknown Command ' + command + ' - send to Developer: ' + JSON.stringify(payload));
     });
 
     alexa.on('ws-notification-change', (data) => {
-        //adapter.log.debug('notification-change');
-        // TODO
+        adapter.log.debug('notification-change: ' + JSON.stringify(data));
+        if (data.eventType === 'DELETE') {
+            let device = alexa.find(data.deviceSerialNumber);
+            if (device && device.notifications) {
+                for (let i = 0; i < device.notifications.length; i++) {
+                    if (device.notifications[i].notificationIndex === data.notificationId) {
+                        deleteObject('Echo-Devices.' + data.deviceSerialNumber + '.' + device.notifications[i].type + '.' + data.notificationId);
+                        break;
+                    }
+                }
+            }
+        }
+        scheduleNotificationUpdate(data.deviceSerialNumber, 2000);
     });
 
     alexa.init(options, err => {
