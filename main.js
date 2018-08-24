@@ -697,6 +697,7 @@ function createSmarthomeStates(callback) {
                                     adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
                                     continue;
                                 }
+                                if (!cap.properties || !cap.properties.supported) continue;
                                 for (let capProp of cap.properties.supported) {
                                     if (!shObjects.capabilityObjects[cap.interfaceName][capProp.name]) {
                                         adapter.log.info('Smarthome-Device Capability ' + cap.interfaceName + ' for ' + capProp.name + ' unknown. Report to developer this and next log line from logfile on disk!');
