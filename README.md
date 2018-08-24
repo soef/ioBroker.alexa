@@ -123,7 +123,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 0.6.0 (2018-08-24)
+### 0.6.1 (2018-08-24)
 * (Apollon77) sometimes new alarms were not triggered in adapter
 * (Apollon77) add support to control smart devices and groups (and also add groups). Because I was only able to test a few types i added logging. please check log, try out and report back!
 * (Apollon77) When routines are executed via voice command and push connection is enabled the routine state is also triggered by "true" with ack=true when routine trigger text is matching exactly to spoken text
