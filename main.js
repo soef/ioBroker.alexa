@@ -10,6 +10,7 @@ const Alexa = require('alexa-remote2');
 const path = require('path');
 const os = require('os');
 const utils = require(path.join(__dirname, 'lib', 'utils')); // Get common adapter utils
+const shObjects = require(path.join(__dirname, 'lib', 'smarthomedevices.js'));
 
 const forbiddenCharacters = /[\]\[*,;'"`<>\\\s?]/g;
 
@@ -50,13 +51,13 @@ const knownDeviceType = {
     'A2825NDLA7WDZV':   {name: 'Apps', commandSupport: false}, // PEONY,VOLUME_SETTING
     'A2E0SNTXJVT7WK':   {name: 'Fire TV V1', commandSupport: false, icon: 'icons/firetv.png'},
     'A2GFL5ZMWNE0PX':   {name: 'Fire TV', commandSupport: true, icon: 'icons/firetv.png'}, // SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,VOLUME_SETTING,SUPPORTS_SOFTWARE_VERSION,CHANGE_NAME,ACTIVE_AFTER_FRO,ARTHUR_TARGET,FLASH_BRIEFING
-    'A2IVLV5VM2W81':    {name: 'Apps', commandSupport: false},
+    'A2IVLV5VM2W81':    {name: 'Apps', commandSupport: false}, // VOLUME_SETTING,MICROPHONE
     'A2LWARUGJLBYEW':   {name: 'Fire TV Stick V2', commandSupport: false, icon: 'icons/firetv.png'}, // ACTIVE_AFTER_FRO,FLASH_BRIEFING,ARTHUR_TARGET,CHANGE_NAME,VOLUME_SETTING,SUPPORTS_SOFTWARE_VERSION,MICROPHONE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY
     'A2M35JJZWCQOMZ':   {name: 'Echo Plus', commandSupport: true, icon: 'icons/echo.png'}, // PAIR_BT_SINK,SOUND_SETTINGS,FAR_FIELD_WAKE_WORD,CUSTOM_ALARM_TONE,MICROPHONE,VOLUME_SETTING,ACTIVE_AFTER_FRO,POPTART,REMINDERS,AMAZON_MUSIC,TUNE_IN,CHANGE_NAME,I_HEART_RADIO,DEREGISTER_FACTORY_RESET,SUPPORTS_SOFTWARE_VERSION,EARCONS,PAIR_REMOTE,PERSISTENT_CONNECTION,LEMUR_ALPHA,SALMON,DREAM_TRAINING,UPDATE_WIFI,VOICE_TRAINING,TIMERS_AND_ALARMS,ASCENDING_ALARM_VOLUME,AUDIBLE,SLEEP,AUDIO_PLAYER,PAIR_BT_SOURCE,FLASH_BRIEFING,SET_LOCALE,REQUIRES_OOBE_FOR_SETUP,DEREGISTER_DEVICE,PANDORA,GOLDFISH,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,KINDLE_BOOKS
 //    'A2M4YX06LWP8WI':   {name: '???', commandSupport: false}, // SUPPORTS_SOFTWARE_VERSION,VOLUME_SETTING,ASX_TIME_ZONE,MICROPHONE,PEONY
     'A2OSP3UA4VC85F':   {name: 'Sonos', commandSupport: true, icon: 'icons/sonos.png'}, // DEREGISTER_DEVICE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,CHANGE_NAME,KINDLE_BOOKS,AUDIO_PLAYER,TIMERS_AND_ALARMS,VOLUME_SETTING,PEONY,AMAZON_MUSIC,REMINDERS,SLEEP,I_HEART_RADIO,AUDIBLE,GOLDFISH,TUNE_IN,DREAM_TRAINING,PERSISTENT_CONNECTION
     'A2T0P32DY3F7VB':   {name: 'echosim.io', commandSupport: false},
-    'A2TF17PFR55MTB':   {name: 'Apps', commandSupport: false}, // VOLUME_SETTING
+    'A2TF17PFR55MTB':   {name: 'Apps', commandSupport: false}, // VOLUME_SETTING,MICROPHONE
     'A38BPK7OW001EX':   {name: 'Raspberry Alexa', commandSupport: false, icon: 'icons/raspi.png'}, // TIMERS_AND_ALARMS,AMAZON_MUSIC,VOLUME_SETTING,AUDIBLE,I_HEART_RADIO,TUNE_IN,KINDLE_BOOKS,DEREGISTER_DEVICE,AUDIO_PLAYER,SLEEP,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,PERSISTENT_CONNECTION,DREAM_TRAINING,MICROPHONE,GOLDFISH,CHANGE_NAME,PEONY
     'A38EHHIB10L47V':	{name: 'Echo Dot', commandSupport: true, icon: '/icons/echo_dot.png'}, // ASCENDING_ALARM_VOLUME,MICROPHONE,REMINDERS,ASX_TIME_ZONE,VOLUME_SETTING,PEONY,SUPPORTS_SOFTWARE_VERSION)
     'A3C9PE6TNYLTCH':   {name: 'Multiroom', commandSupport: true}, // AUDIO_PLAYER,AMAZON_MUSIC,KINDLE_BOOKS,TUNE_IN,AUDIBLE,PANDORA,I_HEART_RADIO,SALMON,VOLUME_SETTING
@@ -78,6 +79,7 @@ const updateNotificationTimer = {};
 
 let musicProviders;
 let automationRoutines;
+let routineTriggerUtterances;
 const playerDevices = {};
 
 const stateChangeTrigger = {};
@@ -85,6 +87,9 @@ const objectQueue = [];
 const lastPlayerState = {};
 const notificationTimer = {};
 let wsMqttConnected = false;
+let shApplianceEntityMap = {};
+let shGroupDetails = {};
+let shDeviceParamValues = {};
 
 const existingStates = {};
 const adapterObjects = {};
@@ -276,6 +281,10 @@ adapter.on('stateChange', (id, state) => {
     adapter.log.debug('State changed ' + id + ': ' + JSON.stringify(state));
     if (!state || state.ack) return;
     id = id.substr(adapter.namespace.length + 1);
+
+    if (state.from.startsWith('system.adapter.cloud') && id.endsWith('.Commands.speak')) {
+        state.val = state.val.replace(/<[^>]+>/g, '').replace('/  /g', ' ');
+    }
 
     if (typeof stateChangeTrigger[id] === 'function') {
         if (adapterObjects[id] && adapterObjects[id].common && adapterObjects[id].common.type && adapterObjects[id].common.type !== 'mixed') {
@@ -478,8 +487,133 @@ function updateMediaProgress(serialNumber) {
     }
 }
 
+function queryAllSmartHomeDevices(callback) {
+    let reqArr = [];
+    for (let applianceId in shApplianceEntityMap) {
+        if (!shApplianceEntityMap.hasOwnProperty(applianceId)) continue;
+        if (shApplianceEntityMap[applianceId].readable) {
+            reqArr.push(applianceId);
+        }
+    }
+    alexa.querySmarthomeDevices(reqArr, (err, res) => {
+        if (!err) {
+            updateSmarthomeDeviceStates(res);
+        }
+        callback && callback();
+    });
+
+}
+
+function buildSmartHomeControlParameters(entityId, objs, changedParamName, changedParamvalue) {
+    function getValueToSend(obj, value) {
+        if (value && obj.native.valueTrue) {
+            value = obj.native.valueTrue;
+        }
+        else if (!value && obj.native.valueFalse) {
+            value = obj.native.valueFalse;
+        }
+        else {
+            if (typeof value === 'number' && obj.native.factor) {
+                value *= obj.native.factor;
+            }
+            value = String(value);
+        }
+        return value;
+    }
+
+    let parameters = {};
+    for (let obj of objs) {
+        let paramName = obj.common.name;
+        if (obj.common.name === changedParamName) {
+            if (obj.native.action) {
+                parameters.action = obj.native.action;
+                if (obj.native.paramName) paramName = obj.native.paramName;
+                parameters[paramName] = getValueToSend(obj, changedParamvalue);
+            }
+            else {
+                if (changedParamvalue && obj.native.actionTrue) {
+                    parameters.action = obj.native.actionTrue;
+                }
+                else if (!changedParamvalue && obj.native.actionFalse) {
+                    parameters.action = obj.native.actionFalse;
+                }
+            }
+        }
+        else {
+            if (obj.native.paramName) paramName = obj.native.paramName;
+            parameters[paramName] = getValueToSend(obj, shDeviceParamValues['Smart-Home-Devices.' + entityId + '.' + obj.common.name]);
+        }
+    }
+    return parameters;
+}
+
+function updateSmarthomeDeviceStates(res) {
+    if (res && res.errors && res.errors.length === 1 && res.errors[0] && res.errors[0].code) {
+        if (!res.deviceStates || res.deviceStates.length === 0) {
+            adapter.setState('requestResult', res.errors[0].code, true);
+        }
+    }
+    if (res.deviceStates) {
+        for (let states of res.deviceStates) {
+            if (!states.entity || !states.entity.entityId || !shApplianceEntityMap[states.entity.entityId]) continue;
+            const deviceEntityId = shApplianceEntityMap[states.entity.entityId].entityId;
+            if (deviceEntityId && states.capabilityStates) {
+                for (let cap of states.capabilityStates) {
+                    try {
+                        cap = JSON.parse(cap);
+                    }
+                    catch (e) {
+                        adapter.log.warn(e);
+                        continue;
+                    }
+                    if (!shObjects.capabilityObjects[cap.namespace]) {
+                        adapter.log.debug('unsupported namespace "' + cap.namespace + '" for Smart-Home-Devices.' + deviceEntityId + '.' + cap.name);
+                        continue;
+                    }
+                    if (!shObjects.capabilityObjects[cap.namespace][cap.name]) {
+                        adapter.log.debug('unsupported name "' + cap.namespace + '.' + cap.name + '" for Smart-Home-Devices.' + deviceEntityId + '.' + cap.name);
+                        continue;
+                    }
+                    for (let obj of shObjects.capabilityObjects[cap.namespace][cap.name]) {
+
+                        if (!adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.' + obj.common.name]) {
+                            adapter.log.debug('ignoring value "' + cap.value + '" for Smart-Home-Devices.' + deviceEntityId + '.' + obj.common.name);
+                            continue;
+                        }
+                        let native = adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.' + obj.common.name].native;
+                        let value = cap.value;
+                        if (typeof value === 'object') {
+                            value = value[native.valueSubKey || 'value'];
+                        }
+                        if (native.valueTrue && native.valueTrue === value) value = true;
+                            else if (native.valueFalse && native.valueFalse === value) value = false;
+                        value = {
+                            val: value,
+                            ack: true
+                        };
+                        if (cap.timeOfSample) value.ts = new Date(cap.timeOfSample).getTime();
+                        adapter.setState('Smart-Home-Devices.' + deviceEntityId + '.' + obj.common.name, value);
+                        shDeviceParamValues['Smart-Home-Devices.' + deviceEntityId + '.' + obj.common.name] = value.val;
+                    }
+                }
+            }
+        }
+    }
+    if (res.errors) {
+        for (let states of res.errors) {
+            if (!states.entity || !states.entity.entityId || !shApplianceEntityMap[states.entity.entityId]) continue;
+            const deviceEntityId = shApplianceEntityMap[states.entity.entityId].entityId;
+            if (states.code === 'ENDPOINT_UNREACHABLE' && adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.connectivity']) {
+                adapter.setState('Smart-Home-Devices.' + deviceEntityId + '.connectivity', false, true);
+                adapter.log.debug('Set Connectivity for ' + deviceEntityId + ' to false because ' + states.code);
+            }
+        }
+    }
+}
 
 function createSmarthomeStates(callback) {
+    shApplianceEntityMap = {};
+    shGroupDetails = {};
     alexa.getSmarthomeDevices((err, res) => {
         if (err || !res) return callback(err);
         setOrUpdateObject('Smart-Home-Devices', {type: 'device', common: {name: 'Smart Home Devices'}});
@@ -497,42 +631,297 @@ function createSmarthomeStates(callback) {
             });
         });
 
-        let all = [];
-        if (
-            res &&
-            res.locationDetails &&
-            res.locationDetails.Default_Location &&
-            res.locationDetails.Default_Location.amazonBridgeDetails &&
-            res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails
-        ) {
-            all = res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails;
-        }
-        let k = Object.keys(all);
-        for (let i of k) {
-            for (let n of Object.keys(all[i].applianceDetails.applianceDetails)) {
-                let skill = all[i].applianceDetails.applianceDetails[n];
-                setOrUpdateObject('Smart-Home-Devices.' + skill.entityId, {
+        alexa.getSmarthomeBehaviours((err, res2) => {
+            let behaviours = {};
+            if (res2) {
+                res2.forEach((behaviour) => {
+                    behaviours[behaviour.id] = behaviour;
+                });
+            }
+
+            let readableCounter = 0;
+            let all = {};
+            if (
+                res &&
+                res.locationDetails &&
+                res.locationDetails.Default_Location &&
+                res.locationDetails.Default_Location.amazonBridgeDetails &&
+                res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails
+            ) {
+                all = res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails;
+            }
+            for (let i of Object.keys(all)) {
+                for (let n of Object.keys(all[i].applianceDetails.applianceDetails)) {
+                    let shDevice = all[i].applianceDetails.applianceDetails[n];
+                    let friendlyName = shDevice.friendlyName;
+                    shApplianceEntityMap[shDevice.applianceId] = {
+                        entityId: shDevice.entityId,
+                        readable: false
+                    };
+                    if (shDevice.aliases && shDevice.aliases[0] && shDevice.aliases[0].friendlyName) friendlyName = shDevice.aliases[0].friendlyName;
+                    setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId, {
+                        type: 'channel',
+                        common: {
+                            name: friendlyName,
+                            role: 'channel'
+                        },
+                        native: {
+                            friendlyDescription: shDevice.friendlyDescription,
+                            friendlyName: friendlyName,
+                            modelName: shDevice.modelName,
+                            ids:  shDevice.additionalApplianceDetails.additionalApplianceDetails.ids,
+                            object: n,
+                            manufacturerName: shDevice.manufacturerName,
+                        }
+                    });
+                    setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.#enabled', {common: {role: 'indicator', write: false}}, shDevice.isEnabled);
+                    setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.#delete', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, function (entityId, val) {
+                        alexa.deleteSmarthomeDevice(n);
+                        adapter.deleteChannel('Smart-Home-Devices', entityId);
+                    }.bind(alexa, shDevice.entityId));
+                    if (!shDevice.actions.length && shDevice.capabilities.length) {
+                        shApplianceEntityMap[shDevice.applianceId].readable = true;
+                        readableCounter++;
+                        setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.#query', {common: {type: 'boolean', read: false, write: true, role: 'button'}}, false, function (applianceId, value) {
+                            alexa.querySmarthomeDevices(applianceId, (err, res) => {
+                                if (!err) {
+                                    updateSmarthomeDeviceStates(res);
+                                }
+                            });
+                        }.bind(alexa, shDevice.applianceId));
+
+                        for (let cap of shDevice.capabilities) {
+                            if (cap.interfaceName) {
+                                if (!shObjects.capabilityObjects[cap.interfaceName]) {
+                                    adapter.log.info('Smarthome-Device Capability ' + cap.interfaceName + ' unknown. Report to developer this and next log line from logfile on disk!');
+                                    adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
+                                    continue;
+                                }
+                                for (let capProp of cap.properties.supported) {
+                                    if (!shObjects.capabilityObjects[cap.interfaceName][capProp.name]) {
+                                        adapter.log.info('Smarthome-Device Capability ' + cap.interfaceName + ' for ' + capProp.name + ' unknown. Report to developer this and next log line from logfile on disk!');
+                                        adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
+                                        continue;
+                                    }
+                                    for (let obj of shObjects.capabilityObjects[cap.interfaceName][capProp.name]) {
+                                        if (obj.experimental) {
+                                            adapter.log.info('Smarthome-Device Capability ' + cap.interfaceName + ' for ' + capProp.name + '.' + obj.common.name + ' experimentally supported. Please check and report to developer this and next log line from logfile on disk if it works!!');
+                                            adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
+                                        }
+                                        if (obj.experimental) delete obj.experimental;
+
+                                        setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.' + obj.common.name, obj, false, function (entityId, paramName, applianceId, value) {
+                                            if (!obj.common.write) return;
+                                            const parameters = buildSmartHomeControlParameters(shObjects.capabilityObjects[cap.interfaceName][capProp.name], obj, paramName, value);
+                                            if (!behaviours[entityId] || ! behaviours[entityId].supportedOperations || !behaviours[entityId].supportedOperations.includes(parameters.action)) {
+                                                adapter.log.info('Invalid action ' + parameters.action + ' provided for Capability ' + cap.interfaceName + ' for ' + obj.common.name + '. Report to developer this and next log line from logfile on disk!');
+                                                adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[entityId]));
+                                                return;
+                                            }
+                                            alexa.executeSmarthomeDeviceAction(entityId, parameters, (err, res) => {
+                                                if (!err && res && res.controlResponses && res.controlResponses[0] && res.controlResponses[0].code && res.controlResponses[0].code === 'SUCCESS') {
+                                                    setTimeout(() => alexa.querySmarthomeDevices(applianceId, (err, res) => {
+                                                        if (!err) {
+                                                            updateSmarthomeDeviceStates(res);
+                                                        }
+                                                    }), 2000);
+                                                }
+                                                else {
+                                                    updateSmarthomeDeviceStates(res);
+                                                }
+                                            });
+                                        }.bind(alexa, shDevice.entityId, obj.common.name, shDevice.applianceId));
+
+                                        if (shDevice.tags && shDevice.tags.tagNameToValueSetMap && shDevice.tags.tagNameToValueSetMap.groupIdentity) {
+                                            for (let group of shDevice.tags.tagNameToValueSetMap.groupIdentity) {
+                                                shGroupDetails[group] = shGroupDetails[group] || {
+                                                    applianceIds: {},
+                                                    entityIds: {},
+                                                    parameters: {}
+                                                };
+                                                shGroupDetails[group].applianceIds[shDevice.applianceId] = true;
+                                                shGroupDetails[group].entityIds[shDevice.entityId] = true;
+                                                shGroupDetails[group].parameters[obj.common.name] = obj;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (shDevice.actions.length && !shDevice.capabilities.length) {
+                        let readable = false;
+                        for (let action of shDevice.actions) {
+                            if (action.startsWith('get') || action.startsWith('retrieve')) {
+                                readable = true;
+                                break;
+                            }
+                        }
+                        if (readable) {
+                            shApplianceEntityMap[shDevice.applianceId].readable = true;
+                            readableCounter++;
+                            setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.#query', {common: {type: 'boolean', read: false, write: true, role: 'button'}}, false, function (applianceId, value) {
+                                alexa.querySmarthomeDevices(applianceId, (err, res) => {
+                                    if (!err) {
+                                        updateSmarthomeDeviceStates(res);
+                                    }
+                                });
+                            }.bind(alexa, shDevice.applianceId));
+                        }
+
+                        let ignoreSecondTurnOnOff = false;
+                        for (let action of shDevice.actions) {
+                            if (ignoreSecondTurnOnOff && (action === 'turnOn' || action === 'turnOff')) continue;
+                            if ((action === 'turnOn' && shDevice.actions.includes('turnOff')) || (action === 'turnOff' && shDevice.actions.includes('turnOn'))) {
+                                action = 'turnOnOff';
+                                ignoreSecondTurnOnOff = true;
+                            }
+                            if (!shObjects.actionObjects[action]) {
+                                adapter.log.info('Smarthome-Device Action ' + action + ' unknown. Report to developer this and next log line from logfile on disk!');
+                                adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
+                                continue;
+                            }
+                            for (let obj of shObjects.actionObjects[action]) {
+                                if (obj.experimental) {
+                                    adapter.log.info('Smarthome-Device Action ' + action + '.' + obj.common.name + ' experimentally supported. Please check and report to developer this and next log line from logfile on disk if it works!!');
+                                    adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
+                                }
+                                if (obj.experimental) delete obj.experimental;
+                                if (action === 'turnOn') {
+                                    obj.common.role = 'button';
+                                    obj.common.read = false;
+                                }
+                                obj.native.readable = readable;
+
+                                setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.' + obj.common.name, obj, null, function (entityId, paramName, applianceId, value) {
+                                    if (!obj.common.write) return;
+                                    let origValue = value;
+                                    const parameters = buildSmartHomeControlParameters(shDevice.entityId, shObjects.actionObjects[action], paramName, value);
+
+                                    if (!behaviours[entityId] || ! behaviours[entityId].supportedOperations || !behaviours[entityId].supportedOperations.includes(parameters.action)) {
+                                        adapter.log.info('Invalid action ' + parameters.action + ' provided for Action ' + action + '. Report to developer this and next log line from logfile on disk!');
+                                        adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[entityId]));
+                                        return;
+                                    }
+                                    alexa.executeSmarthomeDeviceAction(entityId, parameters, (err, res) => {
+                                        if (!err && res && res.controlResponses && res.controlResponses[0] && res.controlResponses[0].code && res.controlResponses[0].code === 'SUCCESS') {
+                                            if (obj.native.readable) {
+                                                setTimeout(() => alexa.querySmarthomeDevices(applianceId, (err, res) => {
+                                                    if (!err) {
+                                                        updateSmarthomeDeviceStates(res);
+                                                    }
+                                                }), 2000);
+                                            }
+                                            else {
+                                                adapter.setState('Smart-Home-Devices.' + shDevice.entityId + '.' + obj.common.name, origValue, true);
+                                            }
+                                        }
+                                        else {
+                                            updateSmarthomeDeviceStates(res);
+                                        }
+                                    });
+                                }.bind(alexa, shDevice.entityId, obj.common.name, shDevice.applianceId));
+
+                                if (shDevice.tags && shDevice.tags.tagNameToValueSetMap && shDevice.tags.tagNameToValueSetMap.groupIdentity) {
+                                    for (let group of shDevice.tags.tagNameToValueSetMap.groupIdentity) {
+                                        shGroupDetails[group] = shGroupDetails[group] || {
+                                            applianceIds: {},
+                                            entityIds: {},
+                                            parameters: {}
+                                        };
+                                        shGroupDetails[group].applianceIds[shDevice.applianceId] = true;
+                                        shGroupDetails[group].entityIds[shDevice.entityId] = true;
+                                        shGroupDetails[group].parameters[obj.common.name] = obj;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            let allGroups = {};
+            if (
+                res &&
+                res.locationDetails &&
+                res.locationDetails.Default_Location &&
+                res.locationDetails.Default_Location.applianceGroups &&
+                res.locationDetails.Default_Location.applianceGroups.applianceGroups
+            ) {
+                allGroups = res.locationDetails.Default_Location.applianceGroups.applianceGroups;
+            }
+            for (let i of Object.keys(allGroups)) {
+                /*
+                "amzn1.HomeAutomation.ApplianceGroup.A3NSX4MMJVG96V.550a4bf5-4852-4a35-81c4-b3568b222033": {
+                    "applianceGroupName": "Lichter Küche",
+                    "applianceGroupIdentifier": {
+                        "value": "amzn1.HomeAutomation.ApplianceGroup.A3NSX4MMJVG96V.550a4bf5-4852-4a35-81c4-b3568b222033"
+                    },
+                    "spaceTypes": [],
+                    "children": [],
+                    "alexaEndpoints": [],
+                    "defaults": []
+                }
+                */
+                const groupData = allGroups[i];
+                const friendlyName = groupData.applianceGroupName;
+                const groupParamData = shGroupDetails[groupData.applianceGroupIdentifier.value];
+                if (!groupParamData) continue;
+                const groupIdShort = i.substr(i.lastIndexOf('.') + 1);
+                setOrUpdateObject('Smart-Home-Devices.' + groupIdShort, {
                     type: 'channel',
                     common: {
-                        name: skill.modelName,
+                        name: 'Gruppe ' + friendlyName,
                         role: 'channel'
                     },
                     native: {
-                        friendlyDescription: skill.friendlyDescription,
-                        friendlyName: skill.friendlyName,
-                        ids:  skill.additionalApplianceDetails.additionalApplianceDetails.ids,
-                        object: n,
-                        manufacturerName: skill.manufacturerName,
+                        friendlyName: friendlyName,
+                        ids:  groupData.applianceGroupIdentifier.value,
+                        object: groupData
                     }
                 });
-                setOrUpdateObject('Smart-Home-Devices.' + skill.entityId + '.isEnabled', {common: {role: 'indicator', write: false}}, skill.isEnabled);
-                setOrUpdateObject('Smart-Home-Devices.' + skill.entityId + '.delete', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, function (entityId, val) {
-                    alexa.deleteSmarthomeDevice(n);
-                    adapter.deleteChannel('Smart-Home-Devices', entityId);
-                }.bind(alexa, skill.entityId));
+                setOrUpdateObject('Smart-Home-Devices.' + groupIdShort + '.#delete', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, function (entityId, val) {
+                    alexa.deleteSmarthomeGroup(entityId);
+                    adapter.deleteChannel('Smart-Home-Devices', groupIdShort);
+                }.bind(alexa, i));
+
+                for (let param in groupParamData.parameters) {
+                    if (!groupParamData.parameters.hasOwnProperty(param)) continue;
+                    let obj = groupParamData.parameters[param];
+                    setOrUpdateObject('Smart-Home-Devices.' + groupIdShort + '.' + obj.common.name, obj, null, function (entityId, paramName, applianceId, value) {
+                        if (!obj.common.write) return;
+                        const parameters = buildSmartHomeControlParameters(entityId, [obj], paramName, value);
+
+                        if (!behaviours[groupIdShort] || ! behaviours[groupIdShort].supportedOperations || !behaviours[groupIdShort].supportedOperations.includes(parameters.action)) {
+                            adapter.log.info('Invalid action ' + parameters.action + ' provided for Group-Action ' + parameters.action + '. Report to developer this and next log line from logfile on disk!');
+                            adapter.log.info(JSON.stringify(groupData) + ' / ' + JSON.stringify(behaviours[groupIdShort]));
+                            return;
+                        }
+
+                        alexa.executeSmarthomeDeviceAction(groupIdShort, parameters, 'GROUP', (err, res) => {
+                            if (!err && res && res.controlResponses && res.controlResponses[0] && res.controlResponses[0].code && res.controlResponses[0].code === 'SUCCESS') {
+                                if (obj.native.readable) {
+                                    setTimeout(() => alexa.querySmarthomeDevices(applianceId, (err, res) => {
+                                        if (!err) {
+                                            updateSmarthomeDeviceStates(res);
+                                        }
+                                    }), 2000);
+                                }
+                            }
+                            else {
+                                updateSmarthomeDeviceStates(res);
+                            }
+                        });
+                    }.bind(alexa, Object.keys(groupParamData.entityIds), obj.common.name, Object.keys(groupParamData.applianceIds)));
+
+                }
             }
-        }
-        processObjectQueue(callback);
+            if (readableCounter) {
+                setOrUpdateObject('Smart-Home-Devices.queryAll', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, (val) => {
+                    queryAllSmartHomeDevices();
+                });
+            }
+            processObjectQueue(callback);
+        });
     });
 }
 
@@ -679,7 +1068,6 @@ function createStates(callback) {
             setOrUpdateObject(devId + '.Player.contentType', {common: {role: 'text', write: false, def: ''}});	// 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
 			setOrUpdateObject(devId + '.Player.currentState', {common: {role: 'media.state', write: false, def: false}}); // 'PAUSED' | 'PLAYING'
 			setOrUpdateObject(devId + '.Player.imageURL', {common: {name: 'Huge image', role: 'media.cover.big', write: false, def: ''}});
-			setOrUpdateObject(devId + '.Player.muted',	{common: {type: 'boolean', role: 'media.mute', write: false, def: false}});
 			setOrUpdateObject(devId + '.Player.providerId', {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
 			setOrUpdateObject(devId + '.Player.radioStationId', {common: {role: 'text', write: false, def: ''}}); // 's24885' | null
 			setOrUpdateObject(devId + '.Player.service', {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
@@ -703,6 +1091,7 @@ function createStates(callback) {
             }
 
             if (device.capabilities.includes ('VOLUME_SETTING')) {
+                setOrUpdateObject(devId + '.Player.muted',	{common: {type: 'boolean', role: 'media.mute', write: false, def: false}});
                 setOrUpdateObject(devId + '.Player.volume', {common: {role: 'level.volume', min: 0, max: 100}}, 0, function (device, value) {
                     if (device.isMultiroomDevice) {
                         alexa.sendCommand(device, 'volume', value, (err, res) => {
@@ -782,9 +1171,9 @@ function createStates(callback) {
             if (automationRoutines) {
                 setOrUpdateObject(devId + '.Routines', {type: 'channel'});
                 for (let i in automationRoutines) {
-                    if (automationRoutines.hasOwnProperty(i)) {
-                        setOrUpdateObject(devId + '.Routines.' + automationRoutines[i].friendlyAutomationId, {common: { type: 'boolean', read: false, role: 'button', name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
-                    }
+                    if (!automationRoutines.hasOwnProperty(i)) continue;
+                    setOrUpdateObject(devId + '.Routines.' + automationRoutines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'button', name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
+                    routineTriggerUtterances[automationRoutines[i].utteranceWords] = devId + '.Routines.' + automationRoutines[i].friendlyAutomationId;
                 }
             }
         }
@@ -980,7 +1369,7 @@ function createNotificationStates(serialOrName) {
                 setOrUpdateObject(notiId + '.time', {common: {type: 'mixed', role: 'state', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Time'}}, time, noti.set);
                 setOrUpdateObject(notiId + '.enabled', {common: {type: 'boolean', role: 'switch.enable', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Enabled'}}, (noti.status === 'ON'), noti.set);
                 setOrUpdateObject(notiId + '.triggered', {common: {type: 'boolean', read: true, write: false, role: 'indicator', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Triggered'}}, false, noti.set);
-                if (noti.status === 'ON' && noti.alarmTime) {
+                if (noti.status === 'ON' && (noti.alarmTime || (noti.originalDate && noti.originalTime))) {
                     if (notificationTimer[noti.id]) {
                         clearTimeout(notificationTimer[noti.id]);
                         notificationTimer[noti.id] = null;
@@ -1150,6 +1539,7 @@ function updatePlayerStatus(serialOrName, callback) {
 function initRoutines(callback) {
     alexa.getAutomationRoutines((err, routines) => {
         automationRoutines = [];
+        routineTriggerUtterances = {};
         if (!err && routines) {
             for (let i = 0; i < routines.length; i++) {
                 let routine = routines[i];
@@ -1162,8 +1552,10 @@ function initRoutines(callback) {
                     continue;
                 }
                 let name = routine.name;
+                let utteranceWords = null;
                 if (!name && routine.triggers && routine.triggers[0].payload && routine.triggers[0].payload.utterance) {
                     name = routine.triggers[0].payload.utterance;
+                    utteranceWords = routine.triggers[0].payload.utterance;
                 }
                 else if (!name && routine.triggers && routine.triggers[0].payload && routine.triggers[0].payload.schedule && routine.triggers[0].payload.schedule.triggerTime) {
                     name = routine.triggers[0].payload.schedule.triggerTime;
@@ -1177,6 +1569,7 @@ function initRoutines(callback) {
                 routine.friendlyName = name;
                 let idSplit = routine.automationId.split('.');
                 routine.friendlyAutomationId = idSplit[idSplit.length - 1];
+                routine.utteranceWords = utteranceWords;
                 automationRoutines.push(routine);
             }
         }
@@ -1313,6 +1706,17 @@ function main() {
         schedulePlayerUpdate(device.serialNumber, 1000);
     });
 
+    alexa.on('ws-media-change', (data) => {
+        adapter.log.debug('Alexa-Push-Connection Media change for ' + data.deviceSerialNumber);
+        let device = alexa.find(data.deviceSerialNumber);
+        if (!device) {
+            adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+            return;
+        }
+
+        schedulePlayerUpdate(device.serialNumber, 1000);
+    });
+
     alexa.on('ws-volume-change', (data) => {
         adapter.log.debug('Alexa-Push-Connection Device Volume change for ' + data.deviceSerialNumber + ' -> ' + data.volume + '/' + data.isMuted);
         let device = alexa.find(data.deviceSerialNumber);
@@ -1322,8 +1726,10 @@ function main() {
         }
 
         let devId = 'Echo-Devices.' + device.serialNumber;
-        adapter.setState(devId + '.Player.volume', data.volume, true);
-        adapter.setState(devId + '.Player.muted', !!data.isMuted, true);
+        let muted = !!data.isMuted;
+        if (data.isMuted === null && data.volume === 0) muted = true;
+        if (!muted) adapter.setState(devId + '.Player.volume', data.volume, true);
+        adapter.setState(devId + '.Player.muted', muted, true);
     });
 
     alexa.on('ws-content-focus-change', (data) => {
@@ -1339,6 +1745,9 @@ function main() {
 
     alexa.on('ws-device-activity', (activity) => {
         adapter.log.debug('device-activity: ' + JSON.stringify(activity));
+        if (activity.description.summary.length && routineTriggerUtterances[activity.description.summary]) {
+            adapter.setState(routineTriggerUtterances[activity.description.summary], true, true);
+        }
         updateHistoryStates(activity);
     });
 
@@ -1402,19 +1811,21 @@ function main() {
             initRoutines(() => {
                 createStates(() => {
                     createSmarthomeStates(() => {
-                        if (!initDone) {
-                            adapter.subscribeStates('*');
-                            adapter.subscribeObjects('*');
-                            initDone = true;
-                            const delIds = Object.keys(existingStates);
-                            if (delIds.length) {
-                                adapter.log.info('Deleting the following states: ' + JSON.stringify(delIds));
-                                for (let i = 0; i < delIds.length; i++) {
-                                    adapter.delObject(delIds[i]);
-                                    delete existingStates[delIds[i]];
+                        queryAllSmartHomeDevices(() => {
+                            if (!initDone) {
+                                adapter.subscribeStates('*');
+                                adapter.subscribeObjects('*');
+                                initDone = true;
+                                const delIds = Object.keys(existingStates);
+                                if (delIds.length) {
+                                    adapter.log.info('Deleting the following states: ' + JSON.stringify(delIds));
+                                    for (let i = 0; i < delIds.length; i++) {
+                                        adapter.delObject(delIds[i]);
+                                        delete existingStates[delIds[i]];
+                                    }
                                 }
                             }
-                        }
+                        });
                     });
                 });
             });

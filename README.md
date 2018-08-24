@@ -123,7 +123,14 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 0.5.1 (2018-08-16)
+### 0.6.0 (2018-08-24)
+* (Apollon77) sometimes new alarms were not triggered in adapter
+* (Apollon77) add support to control smart devices and groups (and also add groups). Because I was only able to test a few types i added logging. please check log, try out and report back!
+* (Apollon77) When routines are executed via voice command and push connection is enabled the routine state is also triggered by "true" with ack=true when routine trigger text is matching exactly to spoken text
+* (Apollon77) corrected volume and mute handling in states, a volume of 0 is also seen as "muted" if muting flag is not supported by device
+* (Apollon77) when speak text is coming from cloud adapter and contains SSML tags they will be filtered out, so you can use a speak endpoint directly to output response from Smart Home skill actions
+
+### 0.5.2 (2018-08-16)
 * (Apollon77) fix an error when getting new cookie
 * (Apollon77) add new "Playlist" states for the Music providers to directly prepend "playlist" :-)
 * (Apollon77) Volumes are not updated for multiroom devices when === 0
