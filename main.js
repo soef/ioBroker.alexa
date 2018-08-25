@@ -522,6 +522,7 @@ function buildSmartHomeControlParameters(entityId, objs, changedParamName, chang
     }
 
     let parameters = {};
+    if (!Array.isArray(objs)) objs = [objs];
     for (let obj of objs) {
         let paramName = obj.common.name;
         if (obj.common.name === changedParamName) {
@@ -575,9 +576,8 @@ function updateSmarthomeDeviceStates(res) {
                         continue;
                     }
                     for (let obj of shObjects.capabilityObjects[cap.namespace][cap.name]) {
-
                         if (!adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.' + obj.common.name]) {
-                            adapter.log.debug('ignoring value "' + cap.value + '" for Smart-Home-Devices.' + deviceEntityId + '.' + obj.common.name);
+                            adapter.log.debug('ignoring value "' + cap.namespace + '.' + cap.value + '" for Smart-Home-Devices.' + deviceEntityId + '.' + obj.common.name);
                             continue;
                         }
                         let native = adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.' + obj.common.name].native;
