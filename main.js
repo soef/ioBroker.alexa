@@ -35,8 +35,7 @@ const commands = {
     flashbriefing: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     goodmorning: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     singasong: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
-    tellstory: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
-    speak: { val: '', common: { role: 'media.tts'}}
+    tellstory: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}}
 };
 
 const knownDeviceType = {
@@ -721,7 +720,7 @@ function createSmarthomeStates(callback) {
 
                                         setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.' + obj.common.name, obj, false, function (entityId, paramName, applianceId, value) {
                                             if (!obj.common.write) return;
-                                            const parameters = buildSmartHomeControlParameters(shObjects.capabilityObjects[cap.interfaceName][capProp.name], obj, paramName, value);
+                                            const parameters = buildSmartHomeControlParameters(entityId, shObjects.capabilityObjects[cap.interfaceName][capProp.name], paramName, value);
                                             if (!behaviours[entityId] || ! behaviours[entityId].supportedOperations || !behaviours[entityId].supportedOperations.includes(parameters.action)) {
                                                 adapter.log.info('Invalid action ' + parameters.action + ' provided for Capability ' + cap.interfaceName + ' for ' + obj.common.name + '. Report to developer this and next log line from logfile on disk!');
                                                 adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[entityId]));
@@ -898,7 +897,7 @@ function createSmarthomeStates(callback) {
                     let obj = groupParamData.parameters[param];
                     setOrUpdateObject('Smart-Home-Devices.' + groupIdShort + '.' + obj.common.name, obj, null, function (entityId, paramName, applianceId, value) {
                         if (!obj.common.write) return;
-                        const parameters = buildSmartHomeControlParameters(entityId, [obj], paramName, value);
+                        const parameters = buildSmartHomeControlParameters(entityId, obj, paramName, value);
 
                         if (!behaviours[groupIdShort] || ! behaviours[groupIdShort].supportedOperations || !behaviours[groupIdShort].supportedOperations.includes(parameters.action)) {
                             adapter.log.info('Invalid action ' + parameters.action + ' provided for Group-Action ' + parameters.action + '. Report to developer this and next log line from logfile on disk!');
@@ -1173,6 +1172,28 @@ function createStates(callback) {
                     iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, command, value, nextCallback));
                 }.bind(alexa, device, c));
             }
+            setOrUpdateObject(devId + '.Commands.speak', {common: { role: 'media.tts'}}, '', function (device, value) {
+                if (value.includes(';')) {
+                    let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
+                    let speakVolume = valueArr[4];
+                    value = valueArr[5];
+                    adapter.getState(devId + '.Player.volume', (err, state) => {
+                        if (err || state.val === false || state.val === null) {
+                            iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, 'speak', value, nextCallback));
+                            return;
+                        }
+                        const speakCommands = [
+                            {command: 'volume', value: speakVolume},
+                            {command: 'speak', value: value},
+                            {command: 'volume', value: state.val}
+                        ];
+                        iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, nextCallback));
+                    });
+                }
+                else {
+                    iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, 'speak', value, nextCallback));
+                }
+            }.bind(alexa, device));
             setOrUpdateObject(devId + '.Commands.doNotDisturb', {common: {role: 'switch'}}, false, device.setDoNotDisturb);
         }
 
