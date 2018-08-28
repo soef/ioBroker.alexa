@@ -125,7 +125,7 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
         }
     }
     if (obj.common && obj.common.read === undefined) {
-        obj.common.read = !(obj.common.type === 'boolean' && !!stateChangeCallback);
+        obj.common.read = true; //!(obj.common.type === 'boolean' && !!stateChangeCallback);
     }
     if (obj.common && obj.common.write === undefined) {
         obj.common.write = !!stateChangeCallback;
@@ -143,16 +143,20 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
         if (adapterObjects[id].ts) delete adapterObjects[id].ts;
         if (adapterObjects[id].acl) delete adapterObjects[id].acl;
         if (adapterObjects[id]._id) delete adapterObjects[id]._id;
+        if (obj.common.def === undefined && adapterObjects[id].common.def !== undefined) delete adapterObjects[id].common.def;
+        if (obj.common.unit === undefined && adapterObjects[id].common.unit !== undefined) delete adapterObjects[id].common.unit;
+        if (obj.common.min === undefined && adapterObjects[id].common.min !== undefined) delete adapterObjects[id].common.min;
+        if (obj.common.max === undefined && adapterObjects[id].common.max !== undefined) delete adapterObjects[id].common.max;
         value = undefined; // when exists and it is first time do not overwrite value!
     }
     if (existingStates[id]) delete(existingStates[id]);
     if (adapterObjects[id] && isEquivalent(obj, adapterObjects[id])) {
-        adapter.log.debug('Object unchanged for ' + id + ' - update only: ' + JSON.stringify(value));
+        //adapter.log.debug('Object unchanged for ' + id + ' - update only: ' + JSON.stringify(value));
         if (value !== undefined) adapter.setState(id, value, true);
         if (stateChangeCallback) stateChangeTrigger[id] = stateChangeCallback;
         return;
     }
-    adapter.log.debug('Add Object for ' + id + ': ' + JSON.stringify(adapterObjects[id]));
+    //adapter.log.debug('Add Object for ' + id + ': ' + JSON.stringify(adapterObjects[id]) + '/' + JSON.stringify(obj));
 
     objectQueue.push({
         id: id,
@@ -198,12 +202,16 @@ function deleteObject(id) {
 function isEquivalent(a, b) {
     //adapter.log.debug('Compare ' + JSON.stringify(a) + ' with ' +  JSON.stringify(b));
     // Create arrays of property names
+    if (aProps === null || aProps === undefined || bProps === null || bProps === undefined) {
+        return (aProps === bProps);
+    }
     var aProps = Object.getOwnPropertyNames(a);
     var bProps = Object.getOwnPropertyNames(b);
 
     // If number of properties is different,
     // objects are not equivalent
     if (aProps.length != bProps.length) {
+        //console.log('num props different: ' + JSON.stringify(aProps) + ' / ' + JSON.stringify(bProps));
         return false;
     }
 
@@ -211,6 +219,7 @@ function isEquivalent(a, b) {
         var propName = aProps[i];
 
         if (typeof a[propName] !== typeof b[propName]) {
+            //console.log('type props ' + propName + ' different');
             return false;
         }
         if (typeof a[propName] === 'object') {
@@ -222,6 +231,7 @@ function isEquivalent(a, b) {
             // If values of same property are not equal,
             // objects are not equivalent
             if (a[propName] !== b[propName]) {
+                //console.log('props ' + propName + ' different');
                 return false;
             }
         }
@@ -696,7 +706,7 @@ function createSmarthomeStates(callback) {
                                 friendlyDescription: shDevice.friendlyDescription,
                                 friendlyName: friendlyName,
                                 modelName: shDevice.modelName,
-                                ids:  shDevice.additionalApplianceDetails.additionalApplianceDetails.ids,
+                                additionalApplianceIds:  shDevice.additionalApplianceDetails.additionalApplianceDetails.ids || null,
                                 object: n,
                                 manufacturerName: shDevice.manufacturerName,
                             }
@@ -742,6 +752,7 @@ function createSmarthomeStates(callback) {
                                         if (!Array.isArray(shObjects.capabilityObjects[cap.interfaceName][capProp.name])) continue;
 
                                         for (let obj of shObjects.capabilityObjects[cap.interfaceName][capProp.name]) {
+                                            obj = JSON.parse(JSON.stringify(obj));
                                             if (obj.experimental) {
                                                 adapter.log.info('Smarthome-Device Capability ' + cap.interfaceName + ' for ' + capProp.name + '.' + obj.common.name + ' experimentally supported. Please check and report to developer this and next log line from logfile on disk if it works!!');
                                                 adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
@@ -821,6 +832,7 @@ function createSmarthomeStates(callback) {
                                 }
                                 if (!Array.isArray(shObjects.actionObjects[action])) continue;
                                 for (let obj of shObjects.actionObjects[action]) {
+                                    obj = JSON.parse(JSON.stringify(obj));
                                     if (obj.experimental) {
                                         adapter.log.info('Smarthome-Device Action ' + action + '.' + obj.common.name + ' experimentally supported. Please check and report to developer this and next log line from logfile on disk if it works!!');
                                         adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
@@ -926,6 +938,8 @@ function createSmarthomeStates(callback) {
                     for (let param in groupParamData.parameters) {
                         if (!groupParamData.parameters.hasOwnProperty(param)) continue;
                         let obj = groupParamData.parameters[param];
+                        if (obj.native && obj.native.hideInGroups) continue;
+                        //obj.common.read = false;
                         setOrUpdateObject('Smart-Home-Devices.' + groupIdShort + '.' + obj.common.name, obj, null, function (entityId, paramName, applianceId, value) {
                             if (!obj.common.write) return;
                             const parameters = buildSmartHomeControlParameters(entityId, obj, paramName, value);
