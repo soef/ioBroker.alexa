@@ -570,6 +570,35 @@ function buildSmartHomeControlParameters(entityId, objs, changedParamName, chang
 }
 
 function updateSmarthomeDeviceStates(res) {
+    function handleObject(deviceEntityId, cap, stateName) {
+        if (!adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.' + stateName]) {
+            adapter.log.debug('ignoring value "' + cap.namespace + '.' + cap.value + '" for Smart-Home-Devices.' + deviceEntityId + '.' + stateName);
+            return;
+        }
+        let native = adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.' + stateName].native;
+        let value = cap.value;
+        if (typeof value === 'object') {
+            value = value[native.valueSubKey || 'value'];
+        }
+        if (native.valueTrue && native.valueTrue === value) {
+            value = true;
+        }
+        else if (native.valueFalse && native.valueFalse === value) {
+            value = false;
+        }
+        else if (native.valueMap) {
+            value = native.valueMap.indexOf(value);
+            if (value === -1) return;
+        }
+        value = {
+            val: value,
+            ack: true
+        };
+        if (cap.timeOfSample) value.ts = new Date(cap.timeOfSample).getTime();
+        adapter.setState('Smart-Home-Devices.' + deviceEntityId + '.' + stateName, value);
+        shDeviceParamValues['Smart-Home-Devices.' + deviceEntityId + '.' + stateName] = value.val;
+    }
+
     if (res && res.errors && res.errors.length === 1 && res.errors[0] && res.errors[0].code) {
         if (!res.deviceStates || res.deviceStates.length === 0) {
             adapter.setState('requestResult', res.errors[0].code, true);
@@ -596,38 +625,16 @@ function updateSmarthomeDeviceStates(res) {
                         adapter.log.debug('unsupported name "' + cap.namespace + '.' + cap.name + '" for Smart-Home-Devices.' + deviceEntityId + '.' + cap.name);
                         continue;
                     }
-                    for (let obj of shObjects.capabilityObjects[cap.namespace][cap.name]) {
-                        let stateName = null;
-                        if (obj.common) stateName = obj.common.name;
-                        if (!adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.' + stateName]) {
-                            if (Array.isArray(shObjects.capabilityObjects[cap.namespace][cap.name])) { // is object array but not created
-                                adapter.log.debug('ignoring value "' + cap.namespace + '.' + cap.value + '" for Smart-Home-Devices.' + deviceEntityId + '.' + stateName);
-                                continue;
-                            }
-                            stateName = shObjects.capabilityObjects[cap.namespace][cap.name];
-                            adapter.log.debug(cap.namespace + '.' + cap.value + ': setValueFor=' + stateName);
+
+                    if (Array.isArray(shObjects.capabilityObjects[cap.namespace][cap.name])) {
+                        for (let obj of shObjects.capabilityObjects[cap.namespace][cap.name]) {
+                            handleObject(deviceEntityId, cap, obj.common.name);
                         }
-                        let native = adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.' + stateName].native;
-                        let value = cap.value;
-                        if (typeof value === 'object') {
-                            value = value[native.valueSubKey || 'value'];
-                        }
-                        if (native.valueTrue && native.valueTrue === value) {
-                            value = true;
-                        }
-                        else if (native.valueFalse && native.valueFalse === value) {
-                            value = false;
-                        }
-                        else if (native.valueMap) {
-                            value = native.valueMap.indexOf(value);
-                        }
-                        value = {
-                            val: value,
-                            ack: true
-                        };
-                        if (cap.timeOfSample) value.ts = new Date(cap.timeOfSample).getTime();
-                        adapter.setState('Smart-Home-Devices.' + deviceEntityId + '.' + stateName, value);
-                        shDeviceParamValues['Smart-Home-Devices.' + deviceEntityId + '.' + stateName] = value.val;
+                    }
+                    else {
+                        let stateName = shObjects.capabilityObjects[cap.namespace][cap.name];
+                        handleObject(deviceEntityId, cap, stateName);
+                        adapter.log.debug(cap.namespace + '.' + cap.value + ': setValueFor=' + stateName);
                     }
                 }
             }
