@@ -587,6 +587,7 @@ function updateSmarthomeDeviceStates(res) {
             value = false;
         }
         else if (native.valueMap) {
+            adapter.log.debug('Get Index for value ' + value + ' of ' + JSON.stringify(native.valueMap));
             value = native.valueMap.indexOf(value);
             if (value === -1) return;
         }
