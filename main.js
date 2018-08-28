@@ -598,7 +598,7 @@ function updateSmarthomeDeviceStates(res) {
                     }
                     for (let obj of shObjects.capabilityObjects[cap.namespace][cap.name]) {
                         let stateName = null;
-                        if (obj.common) obj.common.name;
+                        if (obj.common) stateName = obj.common.name;
                         if (!adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.' + obj.common.name]) {
                             if (Array.isArray(shObjects.capabilityObjects[cap.namespace][cap.name])) { // is object array but not created
                                 adapter.log.debug('ignoring value "' + cap.namespace + '.' + cap.value + '" for Smart-Home-Devices.' + deviceEntityId + '.' + stateName);
