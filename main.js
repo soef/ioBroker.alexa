@@ -599,7 +599,7 @@ function updateSmarthomeDeviceStates(res) {
                     for (let obj of shObjects.capabilityObjects[cap.namespace][cap.name]) {
                         let stateName = null;
                         if (obj.common) stateName = obj.common.name;
-                        if (!adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.' + obj.common.name]) {
+                        if (!adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.' + stateName]) {
                             if (Array.isArray(shObjects.capabilityObjects[cap.namespace][cap.name])) { // is object array but not created
                                 adapter.log.debug('ignoring value "' + cap.namespace + '.' + cap.value + '" for Smart-Home-Devices.' + deviceEntityId + '.' + stateName);
                                 continue;
@@ -764,8 +764,13 @@ function createSmarthomeStates(callback) {
                                                 if (!obj.common.write) return;
                                                 const parameters = buildSmartHomeControlParameters(entityId, shObjects.capabilityObjects[cap.interfaceName][capProp.name], paramName, value);
                                                 if (!behaviours[entityId] || ! behaviours[entityId].supportedOperations || !behaviours[entityId].supportedOperations.includes(parameters.action)) {
-                                                    adapter.log.info('Invalid action ' + parameters.action + ' provided for Capability ' + cap.interfaceName + ' for ' + obj.common.name + '. Report to developer this and next log line from logfile on disk!');
-                                                    adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[entityId]));
+                                                    if (!parameters.action.startsWith('turn') && !parameters.action.startsWith('scene')) {
+                                                        adapter.log.info('Invalid action ' + parameters.action + ' provided for Capability ' + cap.interfaceName + ' for ' + obj.common.name + '. Report to developer this and next log line from logfile on disk!');
+                                                        adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[entityId]));
+                                                    }
+                                                    else {
+                                                        adapter.log.info('Action ' + parameters.action + ' provided for Capability ' + cap.interfaceName + ' for ' + obj.common.name + ' is not supported, ignore');
+                                                    }
                                                     return;
                                                 }
                                                 alexa.executeSmarthomeDeviceAction(entityId, parameters, (err, res) => {
@@ -839,7 +844,10 @@ function createSmarthomeStates(callback) {
                                         adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
                                     }
                                     if (obj.experimental) delete obj.experimental;
-                                    if (action === 'turnOn') {
+                                    if (
+                                        (action === 'turnOn') ||
+                                        (action === 'sceneActivate' && behaviours[shDevice.entityId] && behaviours[shDevice.entityId].supportedOperations && !behaviours[shDevice.entityId].supportedOperations.includes('sceneDeactivate'))
+                                       ) {
                                         obj.common.role = 'button';
                                         obj.common.read = false;
                                     }
@@ -851,8 +859,13 @@ function createSmarthomeStates(callback) {
                                         const parameters = buildSmartHomeControlParameters(shDevice.entityId, shObjects.actionObjects[action], paramName, value);
 
                                         if (!behaviours[entityId] || ! behaviours[entityId].supportedOperations || !behaviours[entityId].supportedOperations.includes(parameters.action)) {
-                                            adapter.log.info('Invalid action ' + parameters.action + ' provided for Action ' + action + '. Report to developer this and next log line from logfile on disk!');
-                                            adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[entityId]));
+                                            if (!parameters.action.startsWith('turn') && !parameters.action.startsWith('scene')) {
+                                                adapter.log.info('Invalid action ' + parameters.action + ' provided for Action ' + action + '. Report to developer this and next log line from logfile on disk!');
+                                                adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[entityId]));
+                                            }
+                                            else {
+                                                adapter.log.info('Action ' + parameters.action + ' provided for Action ' + action + ' for ' + obj.common.name + ' is not supported, ignore');
+                                            }
                                             return;
                                         }
                                         alexa.executeSmarthomeDeviceAction(entityId, parameters, (err, res) => {
