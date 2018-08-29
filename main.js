@@ -575,7 +575,7 @@ function padding(num) {
     return num;
 }
 
-// expected hue range: [0, 1)
+// expected hue range: [0, 360]
 // expected saturation range: [0, 1]
 // expected lightness range: [0, 1]
 // Based on http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
@@ -583,6 +583,7 @@ function hsvToRgb(h, s, v) {
     let r;
     let g;
     let b;
+    h = h / 360;
     let i = Math.floor(h * 6);
     let f = h * 6 - i;
     let p = v * (1 - s);
