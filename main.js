@@ -692,23 +692,22 @@ function updateSmarthomeDeviceStates(res) {
                         adapter.log.debug('unsupported name "' + cap.namespace + '.' + cap.name + '" for Smart-Home-Devices.' + deviceEntityId + '.' + cap.name);
                         continue;
                     }
-                    if (Array.isArray(shObjects.capabilityObjects[cap.namespace][cap.name])) {
-                        const capValues = {};
-                        for (let obj of shObjects.capabilityObjects[cap.namespace][cap.name]) {
+                    const capValues = {};
+                    for (let obj of shObjects.capabilityObjects[cap.namespace][cap.name]) {
+                        if (typeof obj === 'string') { // Redirect!!
+                            capValues[obj] = handleObject(deviceEntityId, cap, obj);
+                            adapter.log.debug(cap.namespace + '.' + cap.value + ': setValueFor=' + obj + ' to ' + capValues[obj]);
+                        }
+                        else {
                             capValues[obj.common.name] = handleObject(deviceEntityId, cap, obj.common.name);
                         }
-                        if (cap.namespace === 'Alexa.ColorController') {
-                            if (capValues['color-hue'] !== null && capValues['color-saturation'] !== null && capValues['color-brightness'] !== null) {
-                                const colorRgb = hsvToRgb(capValues['color-hue'], capValues['color-saturation'], capValues['color-brightness']);
-                                adapter.setState('Smart-Home-Devices.' + deviceEntityId + '.colorRgb', colorRgb, true);
-                                shDeviceParamValues['Smart-Home-Devices.' + deviceEntityId + '.colorRgb'] = colorRgb;
-                            }
-                        }
                     }
-                    else {
-                        let stateName = shObjects.capabilityObjects[cap.namespace][cap.name];
-                        handleObject(deviceEntityId, cap, stateName);
-                        adapter.log.debug(cap.namespace + '.' + cap.value + ': setValueFor=' + stateName);
+                    if (cap.namespace === 'Alexa.ColorController') {
+                        if (capValues['color-hue'] !== null && capValues['color-saturation'] !== null && capValues['color-brightness'] !== null) {
+                            const colorRgb = hsvToRgb(capValues['color-hue'], capValues['color-saturation'], capValues['color-brightness']);
+                            adapter.setState('Smart-Home-Devices.' + deviceEntityId + '.colorRgb', colorRgb, true);
+                            shDeviceParamValues['Smart-Home-Devices.' + deviceEntityId + '.colorRgb'] = colorRgb;
+                        }
                     }
                 }
             }
@@ -826,9 +825,9 @@ function createSmarthomeStates(callback) {
                                             adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
                                             continue;
                                         }
-                                        if (!Array.isArray(shObjects.capabilityObjects[cap.interfaceName][capProp.name])) continue;
 
                                         for (let obj of shObjects.capabilityObjects[cap.interfaceName][capProp.name]) {
+                                            if (typeof obj === 'string') continue;
                                             obj = JSON.parse(JSON.stringify(obj));
                                             if (obj.experimental) {
                                                 adapter.log.info('Smarthome-Device Capability ' + cap.interfaceName + ' for ' + capProp.name + '.' + obj.common.name + ' experimentally supported. Please check and report to developer this and next log line from logfile on disk if it works!!');
@@ -924,8 +923,8 @@ function createSmarthomeStates(callback) {
                                     adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
                                     continue;
                                 }
-                                if (!Array.isArray(shObjects.actionObjects[action])) continue;
                                 for (let obj of shObjects.actionObjects[action]) {
+                                    if (typeof obj === 'string') continue;
                                     obj = JSON.parse(JSON.stringify(obj));
                                     if (obj.experimental) {
                                         adapter.log.info('Smarthome-Device Action ' + action + '.' + obj.common.name + ' experimentally supported. Please check and report to developer this and next log line from logfile on disk if it works!!');
