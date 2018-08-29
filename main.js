@@ -151,7 +151,7 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
     }
     if (existingStates[id]) delete(existingStates[id]);
     if (adapterObjects[id] && isEquivalent(obj, adapterObjects[id])) {
-        //adapter.log.debug('Object unchanged for ' + id + ' - update only: ' + JSON.stringify(value));
+        //adapter.log.debug('Object unchanged for ' + id + ': ' + JSON.stringify(adapterObjects[id]) + ' - update only: ' + JSON.stringify(value));
         if (value !== undefined) adapter.setState(id, value, true);
         if (stateChangeCallback) stateChangeTrigger[id] = stateChangeCallback;
         return;
@@ -202,8 +202,8 @@ function deleteObject(id) {
 function isEquivalent(a, b) {
     //adapter.log.debug('Compare ' + JSON.stringify(a) + ' with ' +  JSON.stringify(b));
     // Create arrays of property names
-    if (aProps === null || aProps === undefined || bProps === null || bProps === undefined) {
-        return (aProps === bProps);
+    if (a === null || a === undefined || b === null || b === undefined) {
+        return (a === b);
     }
     var aProps = Object.getOwnPropertyNames(a);
     var bProps = Object.getOwnPropertyNames(b);
@@ -567,6 +567,12 @@ function buildSmartHomeControlParameters(entityId, objs, changedParamName, chang
         }
     }
     return parameters;
+}
+
+function padding(num) {
+    num = num.toString(16);
+    if (num.length < 2) num = '0' + num;
+    return num;
 }
 
 // expected hue range: [0, 1)
