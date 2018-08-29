@@ -1320,6 +1320,9 @@ function createStates(callback) {
                 }.bind(alexa, device, c));
             }
             setOrUpdateObject(devId + '.Commands.speak', {common: { role: 'media.tts'}}, '', function (device, value) {
+                if (!value.includes(';') && device.speakVolume && device.speakVolume > 0) {
+                    value = device.speakVolume + ';' + value;
+                }
                 if (value.includes(';')) {
                     let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
                     let speakVolume = valueArr[4];
@@ -1340,6 +1343,19 @@ function createStates(callback) {
                 else {
                     iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, 'speak', value, nextCallback));
                 }
+            }.bind(alexa, device));
+            if (existingStates[devId + '.Commands.speak-volume']) {
+                adapter.getState(devId + '.Commands.speak-volume', function (device, err, state) {
+                    if (!err && state && state.val && state.val > 0) {
+                        device.speakVolume = state.val;
+                        adapter.log.debug('Initialize speak-Volume for ' + device.serialNumber + ': ' + state.val);
+                    }
+                }.bind(alexa, device));
+            }
+            setOrUpdateObject(devId + '.Commands.speak-volume', {common: {name: 'Volume to use for speak commands', role: 'level.volume', min: 0, max: 100}}, null, function (device, value) {
+                device.speakVolume = value;
+                adapter.log.debug('Set speak-Volume for ' + device.serialNumber + ': ' + value);
+                adapter.setState(devId + '.Commands.speak-volume', value, true);
             }.bind(alexa, device));
             setOrUpdateObject(devId + '.Commands.doNotDisturb', {common: {role: 'switch'}}, false, device.setDoNotDisturb);
         }
