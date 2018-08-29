@@ -123,6 +123,10 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 0.6.2 (2018-08-29) WORK IN PROGRESS!!
+* (Apollon77) fixes to colorhandling
+* (Apollon77) allow to deliver a volume together with aspeak command by using "80;text" and then volume is set before speak and reset afterwards. Experimental!
+
 ### 0.6.1 (2018-08-24)
 * (Apollon77) sometimes new alarms were not triggered in adapter
 * (Apollon77) add support to control smart devices and groups (and also add groups). Because I was only able to test a few types i added logging. please check log, try out and report back!
