@@ -62,5 +62,38 @@ systemDictionary = {
         "it": "Utilizzare la connessione push",
         "es": "Use la conexión push",
         "pl": "Użyj połączenia push"
+    },
+    "bespoken": { // Überschrift Tab
+        "en": "Bespoken Virtual Device",
+        "de": "Bespoken Virtuelles Gerät",
+        "ru": "Виртуальное устройство Bespoken",
+        "pt": "Dispositivo Virtual Bespoken",
+        "nl": "Bespoken virtueel apparaat",
+        "fr": "Appareil virtuel Bespoken",
+        "it": "Dispositivo virtuale Bespoken",
+        "es": "Dispositivo virtual Bespoken",
+        "pl": "Wirtualne urządzenie Bespoken"
+    },
+    "bespoken_info": {
+        "en": "The Bespoken Virtual Devices can be used to send text commands to you Amazon Account and gives limited control over your Devices - when possible using spoken words.<br/><br/>You need to create a Bespoken Account and then a Virtual Device to get a Bespoken Token as described on https://read.Bespoken.io/end-to-end/setup/ . Then you enter the token below and you will see new objects for the adapter.<br/><br/>Please note: Bespoken creates a audio file out of your text and sends this to the Alexa-APIs. So the understanding quality of Alexa is as good as this speech generation, so it may be problematic with special words.",
+        "de": "Die Bespoken Virtual Devices können verwendet werden, um Textbefehle an Ihr Amazon-Konto zu senden und gibt Ihnen eine eingeschränkte Kontrolle über Ihre Geräte - wenn möglich mit gesprochenen Wörtern. <br/> <br/> Sie müssen ein Bespoken-Konto und dann ein virtuelles Gerät erstellen Holen Sie sich ein Bespoken-Token wie unter https://read.Bespoken.io/end-to-end/setup/ beschrieben. Dann geben Sie unten das Token ein und Sie sehen neue Objekte für den Adapter. <br/> <br/> Hinweis: Bespoken erstellt aus Ihrem Text eine Audiodatei und sendet diese an die Alexa-APIs. Also ist die Verständnisqualität von Alexa so gut wie diese Sprachgenerierung, so dass es mit speziellen Wörtern problematisch sein kann.",
+        "ru": "Виртуальные устройства Bespoken можно использовать для отправки текстовых команд на вашу учетную запись Amazon и дает ограниченный контроль над вашими Устройствами - по возможности используя произносимые слова. <br/> <br/> Вам нужно создать учетную запись Bespoken, а затем виртуальное устройство для получить токен Bespoken, как описано на https://read.Bespoken.io/end-to-end/setup/. Затем вы вводите токен ниже, и вы увидите новые объекты для адаптера. <br/> <br/> Обратите внимание: Bespoken создает аудиофайл из вашего текста и отправляет его в Alexa-API. Таким образом, качество понимания Alexa так же хорошо, как и это поколение речи, поэтому это может быть проблематично со специальными словами.",
+        "pt": "Os Dispositivos Virtuais da Bespoken podem ser usados ​​para enviar comandos de texto para sua Conta da Amazon e fornecer controle limitado sobre seus Dispositivos - quando possível, usando palavras faladas. <br/> <br/> Você precisa criar uma Conta Bespoken e, em seguida, um Dispositivo Virtual para obtenha um Token Bespoken conforme descrito em https://read.Bespoken.io/end-to-end/setup/. Em seguida, você insere o token abaixo e verá novos objetos para o adaptador. <br/> <br/> Observação: Bespoken cria um arquivo de áudio com o texto e o envia para as APIs do Alexa. Portanto, a qualidade de compreensão do Alexa é tão boa quanto essa geração de fala, por isso pode ser problemático com palavras especiais.",
+        "nl": "De virtuele BESACT-apparaten kunnen worden gebruikt om tekstopdrachten naar uw Amazon-account te verzenden en geeft beperkte controle over uw apparaten - indien mogelijk met behulp van gesproken woorden. <br/> <br/> U moet eerst een Bespoken-account en vervolgens een virtueel apparaat maken een Bespoken-token krijgen zoals beschreven op https://read.Bespoken.io/end-toend/setup/. Vervolgens voert u de token hieronder in en ziet u nieuwe objecten voor de adapter. <br/> <br/> Let op: Bespoken maakt een audiobestand van uw tekst en stuurt dit naar de Alexa-API's. Dus de kenniskwaliteit van Alexa is net zo goed als deze spraakgeneratie, dus het kan problematisch zijn met speciale woorden.",
+        "fr": "Les périphériques virtuels Bespoken peuvent être utilisés pour envoyer des commandes de texte à votre compte Amazon et donner un contrôle limité sur vos périphériques - si possible en utilisant des mots prononcés. <br/> <br/> Vous devez créer un compte Bespoken puis un périphérique virtuel pour obtenir un jeton Bespoken comme décrit sur https://read.Bespoken.io/end-to-end/setup/. Ensuite, vous entrez le jeton ci-dessous et vous verrez de nouveaux objets pour l'adaptateur. <br/> <br/> Remarque: Bespoken crée un fichier audio à partir de votre texte et l'envoie aux API Alexa. Donc, la qualité de la compréhension d’Alex est aussi bonne que cette génération de discours, donc il peut être problématique avec des mots spéciaux.",
+        "it": "I dispositivi virtuali Bespoken possono essere utilizzati per inviare comandi di testo al tuo account Amazon e forniscono un controllo limitato sui tuoi dispositivi - quando possibile usando parole parlate. <br/> <br/> Devi creare un account Bespoken e poi un dispositivo virtuale per ottenere un token Bespoken come descritto su https://read.Bespoken.io/end-to-end/setup/. Quindi inserisci il token qui sotto e vedrai nuovi oggetti per l'adattatore. <br/> <br/> Nota: Bespoken crea un file audio dal tuo testo e lo invia alle API Alexa. Quindi la qualità della comprensione di Alexa è buona quanto questa generazione di parlato, quindi potrebbe essere problematica con parole speciali.",
+        "es": "Los dispositivos virtuales Bespoken se pueden utilizar para enviar comandos de texto a su cuenta de Amazon y le dan un control limitado sobre sus dispositivos, cuando sea posible utilizando palabras habladas. <br/> <br/> Usted necesita crear una cuenta de Bespoken y luego un dispositivo virtual para obtener un token Bespoken como se describe en https://read.Bespoken.io/end-to-end/setup/. A continuación, ingrese el token a continuación y verá nuevos objetos para el adaptador. <br/> <br/> Tenga en cuenta: Bespoken crea un archivo de audio de su texto y lo envía a las API de Alexa. Entonces, la calidad de comprensión de Alexa es tan buena como esta generación de habla, por lo que puede ser problemático con palabras especiales.",
+        "pl": "Urządzenia wirtualne Bespoken mogą być używane do wysyłania poleceń tekstowych do konta Amazon i dają ograniczoną kontrolę nad urządzeniami - w miarę możliwości za pomocą wypowiadanych słów. <br/> <br/> Musisz utworzyć konto Bespoken, a następnie urządzenie wirtualne do zdobądź token Bespoken zgodnie z opisem na https://read.Bespoken.io/end-to-end/setup/. Następnie wpisz poniższy token, a zobaczysz nowe obiekty dla adaptera. <br/> <br/> Uwaga: Bespoken tworzy plik audio poza tekstem i wysyła go do Alexa-API. Zatem jakość rozumienia Alexy jest tak dobra, jak ta generacja mowy, więc może być problematyczne w przypadku specjalnych słów."
+    },
+    "bespokenToken": {
+        "en": "Bespoken Validation Token",
+        "de": "Bespoken Validation Token",
+        "ru": "Bespoken Validation Token",
+        "pt": "Bespoken Validation Token",
+        "nl": "Bespoken Validation Token",
+        "fr": "Bespoken Validation Token",
+        "it": "Bespoken Validation Token",
+        "es": "Bespoken Validation Token",
+        "pl": "Bespoken Validation Token",
     }
 };

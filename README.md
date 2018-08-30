@@ -123,6 +123,10 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 0.7.0 (2018-08-30)
+* (Apollon77) Add Bespoken Virtual device support to be able to interact with Alexa infrastructure
+* (Apollon77) add new Device Types for Smarthome-integration (Contact and Motion sensors)
+
 ### 0.6.4 (2018-08-30)
 * (Apollon77) fixes to colorhandling
 * (Apollon77) allow to deliver a volume together with aspeak command by using "80;text" and then volume is set before speak and reset afterwards. Experimental!

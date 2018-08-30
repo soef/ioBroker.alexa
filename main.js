@@ -12,6 +12,9 @@ const os = require('os');
 const utils = require(path.join(__dirname, 'lib', 'utils')); // Get common adapter utils
 const shObjects = require(path.join(__dirname, 'lib', 'smarthomedevices.js'));
 
+const bespokenVdSDK = require("virtual-device-sdk");
+let bespokenDevice;
+
 const forbiddenCharacters = /[\]\[*,;'"`<>\\\s?]/g;
 
 let alexa;
@@ -1415,6 +1418,35 @@ function createStates(callback) {
     setOrUpdateObject('History.cardContent', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('History.cardJson', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('History.json', {common: {type: 'string', role: 'json', write: false}}, '');
+
+    if (adapter.config.bespokenToken && adapter.config.bespokenToken.length) {
+        adapter.config.bespokenVoiceId = adapter.config.bespokenVoiceId || 'Hans';
+        adapter.config.bespokenLocale = adapter.config.bespokenLocale || 'de-DE';
+        bespokenDevice = bespokenDevice || new bespokenVdSDK.VirtualDevice(adapter.config.bespokenToken, adapter.config.bespokenLocale, adapter.config.bespokenVoiceId);
+
+        setOrUpdateObject('Bespoken', {type: 'channel', common: {name: 'Bespoken virtual device'}});
+        setOrUpdateObject('Bespoken.status', {common: { type: 'number', read: true, write: false, role: 'value', states: {0: 'OK', 1: 'PROCESSING', 2: 'FAILURE'}, name: 'Status der Bespoken Kommunikation'}}, 0);
+        setOrUpdateObject('Bespoken.answer', {common: { type: 'string', read: true, write: false, role: 'text', name: 'Antwort'}}, '');
+        setOrUpdateObject('Bespoken.answerJson', {common: { type: 'string', read: true, write: false, role: 'json', name: 'Antwort als JSON'}}, '');
+        setOrUpdateObject('Bespoken.#sendText', {common: { type: 'string', read: false, write: true, role: 'media.tts', name: 'Sende Text'}}, '', (val) => {
+            if (val === '') return;
+            if (typeof val !== 'string') val = String(val);
+            adapter.setState('Bespoken.status', 1, true);
+            adapter.log.debug('Send "' + val + '" to Bespoken');
+            bespokenDevice.message(val, false, val.split(' ')).then((result) => {
+                adapter.log.debug('Received "' + JSON.stringify(result) + '" from Bespoken');
+                adapter.setState('Bespoken.status', 0, true);
+                let resultText = '';
+                if (result && result.transcript) resultText = result.transcript;
+                adapter.setState('Bespoken.answer', resultText, true);
+                adapter.setState('Bespoken.answerJson', JSON.stringify(result), true);
+            }).catch((e) => {
+                adapter.setState('Bespoken.status', 2, true);
+                adapter.setState('Bespoken.answerJson', JSON.stringify(e), true);
+            });
+        });
+
+    }
 
     processObjectQueue(() => {
         scheduleStatesUpdate();

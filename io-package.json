@@ -1,21 +1,21 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "0.6.4",
+        "version": "0.7.0",
         "title": "Alexa2 (Amazon Echo)",
         "desc": "Remote control for Alexa (Amazon Echo)",
         "platform": "Javascript/Node.js",
         "news": {
-            "0.6.4": {
-                "en": "fixes, optimizations and enhanced smart home devices and group management and control",
-                "de": "Fixes, Optimierungen und erweiterte Smart-Home-Geräte und Gruppenmanagement und -steuerung",
-                "ru": "исправления, оптимизации и расширенные интеллектуальные домашние устройства, а также управление и контроль групп",
-                "pt": "correções, otimizações e dispositivos domésticos inteligentes aprimorados e gerenciamento e controle de grupo",
-                "nl": "fixes, optimalisaties en verbeterde smart home-apparaten en groepsbeheer en -controle",
-                "fr": "des correctifs, des optimisations et des dispositifs améliorés pour la maison intelligente, ainsi que la gestion et le contrôle des groupes",
-                "it": "correzioni, ottimizzazioni e dispositivi smart home avanzati e gestione e controllo di gruppo",
-                "es": "arreglos, optimizaciones y dispositivos mejorados para hogares inteligentes y administración y control grupal",
-                "pl": "poprawki, optymalizacje i ulepszone inteligentne urządzenia domowe oraz zarządzanie grupą i sterowanie"
+            "0.7.0": {
+                "en": "Bespoken, fixes, optimizations and enhanced smart home devices and group management and control",
+                "de": "Bespoken, Fixes, Optimierungen und erweiterte Smart-Home-Geräte und Gruppenmanagement und -steuerung",
+                "ru": "Bespoken, исправления, оптимизации и расширенные интеллектуальные домашние устройства, а также управление и контроль групп",
+                "pt": "Bespoken, correções, otimizações e dispositivos domésticos inteligentes aprimorados e gerenciamento e controle de grupo",
+                "nl": "Bespoken, fixes, optimalisaties en verbeterde smart home-apparaten en groepsbeheer en -controle",
+                "fr": "Bespoken, des correctifs, des optimisations et des dispositifs améliorés pour la maison intelligente, ainsi que la gestion et le contrôle des groupes",
+                "it": "Bespoken, correzioni, ottimizzazioni e dispositivi smart home avanzati e gestione e controllo di gruppo",
+                "es": "Bespoken, arreglos, optimizaciones y dispositivos mejorados para hogares inteligentes y administración y control grupal",
+                "pl": "Bespoken, poprawki, optymalizacje i ulepszone inteligentne urządzenia domowe oraz zarządzanie grupą i sterowanie"
             },
             "0.5.2": {
                 "en": "fixes, changes, optimizations, add support for reminders and alarms",
@@ -106,7 +106,10 @@
         "proxyListenBind": "",
         "updateStateInterval": 300,
         "updateHistoryInterval": 300,
-        "usePushConnection": false
+        "usePushConnection": true,
+        "bespokenToken": "",
+        "bespokenVoiceId": "Hans",
+        "bespokenLocale": "de-DE"
     },
     "objects": [],
     "instanceObjects": [{
