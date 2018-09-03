@@ -1355,7 +1355,7 @@ function createStates(callback) {
                 let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
                 let speakVolume = valueArr[4] || device.speakVolume;
                 value = valueArr[5];
-                if (!valueArr[4]) value = valueArr[1] + value;
+                if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
                 adapter.getState(devId + '.Player.volume', (err, state) => {
                     let speakVolumeReset = 0;
                     if (!err && state.val !== false && state.val !== null) {
