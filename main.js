@@ -57,7 +57,7 @@ const knownDeviceType = {
     'A2IVLV5VM2W81':    {name: 'Apps', commandSupport: false}, // VOLUME_SETTING,MICROPHONE
     'A2LWARUGJLBYEW':   {name: 'Fire TV Stick V2', commandSupport: false, icon: 'icons/firetv.png'}, // ACTIVE_AFTER_FRO,FLASH_BRIEFING,ARTHUR_TARGET,CHANGE_NAME,VOLUME_SETTING,SUPPORTS_SOFTWARE_VERSION,MICROPHONE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY
     'A2M35JJZWCQOMZ':   {name: 'Echo Plus', commandSupport: true, icon: 'icons/echo.png'}, // PAIR_BT_SINK,SOUND_SETTINGS,FAR_FIELD_WAKE_WORD,CUSTOM_ALARM_TONE,MICROPHONE,VOLUME_SETTING,ACTIVE_AFTER_FRO,POPTART,REMINDERS,AMAZON_MUSIC,TUNE_IN,CHANGE_NAME,I_HEART_RADIO,DEREGISTER_FACTORY_RESET,SUPPORTS_SOFTWARE_VERSION,EARCONS,PAIR_REMOTE,PERSISTENT_CONNECTION,LEMUR_ALPHA,SALMON,DREAM_TRAINING,UPDATE_WIFI,VOICE_TRAINING,TIMERS_AND_ALARMS,ASCENDING_ALARM_VOLUME,AUDIBLE,SLEEP,AUDIO_PLAYER,PAIR_BT_SOURCE,FLASH_BRIEFING,SET_LOCALE,REQUIRES_OOBE_FOR_SETUP,DEREGISTER_DEVICE,PANDORA,GOLDFISH,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,KINDLE_BOOKS
-//    'A2M4YX06LWP8WI':   {name: '???', commandSupport: false}, // SUPPORTS_SOFTWARE_VERSION,VOLUME_SETTING,ASX_TIME_ZONE,MICROPHONE,PEONY
+    'A2M4YX06LWP8WI':   {name: 'Fire Tab', commandSupport: true, icon: 'icons/firetab.png'}, // SUPPORTS_SOFTWARE_VERSION,VOLUME_SETTING,ASX_TIME_ZONE,MICROPHONE,PEONY
     'A2OSP3UA4VC85F':   {name: 'Sonos', commandSupport: true, icon: 'icons/sonos.png'}, // DEREGISTER_DEVICE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,CHANGE_NAME,KINDLE_BOOKS,AUDIO_PLAYER,TIMERS_AND_ALARMS,VOLUME_SETTING,PEONY,AMAZON_MUSIC,REMINDERS,SLEEP,I_HEART_RADIO,AUDIBLE,GOLDFISH,TUNE_IN,DREAM_TRAINING,PERSISTENT_CONNECTION
     'A2T0P32DY3F7VB':   {name: 'echosim.io', commandSupport: false},
     'A2TF17PFR55MTB':   {name: 'Apps', commandSupport: false}, // VOLUME_SETTING,MICROPHONE
@@ -718,10 +718,11 @@ function updateSmarthomeDeviceStates(res) {
                     }
                 }
                 if (colorDataIncluded && capValues.colorRgb && !capValues.colorName) {
-                    const nearestColor = shObjects.nearestColor(capValues.colorRgb);
+                    const colorRgbSearch = hsvToRgb(capValues['color-hue'], capValues['color-saturation'], 1.0);
+                    const nearestColor = shObjects.nearestColor(colorRgbSearch);
                     let native = adapterObjects['Smart-Home-Devices.' + deviceEntityId + '.colorName'].native;
                     let value = native.valueMap.indexOf(nearestColor.name);
-                    adapter.log.debug('find nearest color for ' + capValues.colorRgb + ': index=' + value + ' / ' + JSON.stringify(nearestColor));
+                    adapter.log.debug('find nearest color for ' + colorRgbSearch + ' (' + capValues.colorRgb + '): index=' + value + ' / ' + JSON.stringify(nearestColor));
                     if (value !== -1) {
                         adapter.setState('Smart-Home-Devices.' + deviceEntityId + '.colorName', value, true);
                         shDeviceParamValues['Smart-Home-Devices.' + deviceEntityId + '.colorName'] = value;
@@ -1351,29 +1352,22 @@ function createStates(callback) {
                 }.bind(alexa, device, c));
             }
             setOrUpdateObject(devId + '.Commands.speak', {common: { role: 'media.tts'}}, '', function (device, value) {
-                if (!value.includes(';') && device.speakVolume && device.speakVolume > 0) {
-                    value = device.speakVolume + ';' + value;
-                }
-                if (value.includes(';')) {
-                    let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
-                    let speakVolume = valueArr[4];
-                    value = valueArr[5];
-                    adapter.getState(devId + '.Player.volume', (err, state) => {
-                        if (err || state.val === false || state.val === null) {
-                            iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, 'speak', value, nextCallback));
-                            return;
-                        }
-                        const speakCommands = [
-                            {command: 'volume', value: speakVolume},
-                            {command: 'speak', value: value},
-                            {command: 'volume', value: state.val}
-                        ];
-                        iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, nextCallback));
+                let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
+                let speakVolume = valueArr[4] || device.speakVolume;
+                value = valueArr[5];
+                adapter.getState(devId + '.Player.volume', (err, state) => {
+                    let speakVolumeReset = 0;
+                    if (!err && state.val !== false && state.val !== null) {
+                        speakVolumeReset = state.val;
+                    }
+                    let speakCommands = [];
+                    if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume});
+                    value.split(';').forEach((v) => {
+                        speakCommands.push({command: 'speak', value: v});
                     });
-                }
-                else {
-                    iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, 'speak', value, nextCallback));
-                }
+                    if (speakVolumeReset && speakVolumeReset > 0) speakCommands.push({command: 'volume', value: speakVolumeReset});
+                    iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, nextCallback));
+                });
             }.bind(alexa, device));
             if (existingStates[devId + '.Commands.speak-volume']) {
                 adapter.getState(devId + '.Commands.speak-volume', function (device, err, state) {
@@ -1397,7 +1391,7 @@ function createStates(callback) {
                 for (let i in automationRoutines) {
                     if (!automationRoutines.hasOwnProperty(i)) continue;
                     setOrUpdateObject(devId + '.Routines.' + automationRoutines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'button', name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
-                    routineTriggerUtterances[automationRoutines[i].utteranceWords] = devId + '.Routines.' + automationRoutines[i].friendlyAutomationId;
+                    if (automationRoutines[i].utteranceWords) routineTriggerUtterances[automationRoutines[i].utteranceWords.toLowerCase()] = devId + '.Routines.' + automationRoutines[i].friendlyAutomationId;
                 }
             }
         }
@@ -1998,8 +1992,8 @@ function main() {
 
     alexa.on('ws-device-activity', (activity) => {
         adapter.log.debug('device-activity: ' + JSON.stringify(activity));
-        if (activity.description.summary.length && routineTriggerUtterances[activity.description.summary]) {
-            adapter.setState(routineTriggerUtterances[activity.description.summary], true, true);
+        if (activity.description.summary && routineTriggerUtterances[activity.description.summary.toLowerCase()]) {
+            adapter.setState(routineTriggerUtterances[activity.description.summary.toLowerCase()], true, true);
         }
         updateHistoryStates(activity);
     });
