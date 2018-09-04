@@ -1466,7 +1466,7 @@ function createStates(callback) {
 function playMusicProvider(device, providerId, value) {
     if (value === '') return;
     if (device.isMultiroomDevice && device.clusterMembers.length) {
-        value += ' auf ' + device._name + ' music';
+        value += ' auf ' + device._name + ' ';
         device = alexa.find(device.clusterMembers[0]);
     }
     alexa.playMusicProvider(device, providerId, value, (err, res) => {
