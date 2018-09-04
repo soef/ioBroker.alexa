@@ -1359,8 +1359,10 @@ function createStates(callback) {
                 }.bind(alexa, device, c));
             }
             setOrUpdateObject(devId + '.Commands.speak', {common: { role: 'media.tts'}}, '', function (device, value) {
+                if (value === '') return;
                 iterateMultiroom(device, (iteratorDevice, nextCallback) => {
                     let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
+                    if (!valueArr) valueArr= [];
                     let speakVolume = valueArr[4] || iteratorDevice.speakVolume;
                     value = valueArr[5];
                     if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
@@ -1469,7 +1471,7 @@ function playMusicProvider(device, providerId, value) {
         value += ' auf ' + device._name + ' ';
         device = alexa.find(device.clusterMembers[0]);
     }
-    alexa.playMusicProvider(device, providerId, value, (err, res) => {
+    alexa.playMusicProvider(device, providerId, value.trim(), (err, res) => {
         schedulePlayerUpdate(device, 5000);
     });
 }
