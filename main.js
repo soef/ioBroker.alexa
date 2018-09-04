@@ -1226,15 +1226,21 @@ function iterateMultiroom(device, commandCallback, doneCallback, counter) {
     if (!device.isMultiroomDevice) {
         return commandCallback(device, doneCallback);
     }
-    if (!counter) counter = 0;
+    if (counter === undefined) {
+        adapter.log.debug('iterate START: ' + JSON.stringify(device.clusterMembers));
+        counter = 0;
+    }
     if (counter >= device.clusterMembers.length) {
+        adapter.log.debug('iterate done ' + counter + ' vs. ' + device.clusterMembers.length);
         return doneCallback && doneCallback();
     }
     const currDevice = alexa.find(device.clusterMembers[counter]);
     counter++;
     if (!currDevice) {
+        adapter.log.debug('iterate ' + counter + ': NOT FOUND');
         return iterateMultiroom(device, commandCallback, doneCallback, counter);
     }
+    adapter.log.debug('iterate ' + counter + ': ' + currDevice.serialNumber);
     return commandCallback(currDevice, () => iterateMultiroom(device, commandCallback, doneCallback, counter));
 }
 
@@ -1307,6 +1313,7 @@ function createStates(callback) {
 
                     setOrUpdateObject(devId + '.Music-Provider.' + displayName, {common: {name:'Phrase to play with ' + musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', playMusicProvider.bind(alexa, device, musicProviders[p].id));
                     setOrUpdateObject(devId + '.Music-Provider.' + displayName + '-Playlist', {common: {name:'Playlist to play with ' + musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', function(device, providerId, value) {
+                        if (value === '') return;
                         playMusicProvider(device, providerId, 'playlist ' + value);
                     }.bind(alexa, device, musicProviders[p].id));
                 }
@@ -1352,38 +1359,42 @@ function createStates(callback) {
                 }.bind(alexa, device, c));
             }
             setOrUpdateObject(devId + '.Commands.speak', {common: { role: 'media.tts'}}, '', function (device, value) {
-                let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
-                let speakVolume = valueArr[4] || device.speakVolume;
-                value = valueArr[5];
-                if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
-                adapter.getState(devId + '.Player.volume', (err, state) => {
-                    let speakVolumeReset = 0;
-                    if (!err && state.val !== false && state.val !== null) {
-                        speakVolumeReset = state.val;
-                    }
-                    let speakCommands = [];
-                    if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume});
-                    value.split(';').forEach((v) => {
-                        if (!v || !v.length) return;
-                        speakCommands.push({command: 'speak', value: v});
+                iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                    let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
+                    let speakVolume = valueArr[4] || iteratorDevice.speakVolume;
+                    value = valueArr[5];
+                    if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
+                    adapter.getState('Echo-Devices.' + iteratorDevice.serialNumber + '.Player.volume', (err, state) => {
+                        let speakVolumeReset = 0;
+                        if (!err && state.val !== false && state.val !== null) {
+                            speakVolumeReset = state.val;
+                        }
+                        let speakCommands = [];
+                        if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume});
+                        value.split(';').forEach((v) => {
+                            if (!v || !v.length) return;
+                            speakCommands.push({command: 'speak', value: v.trim()});
+                        });
+                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakCommands.push({command: 'volume', value: speakVolumeReset});
+                        alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, nextCallback);
                     });
-                    if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakCommands.push({command: 'volume', value: speakVolumeReset});
-                    iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, nextCallback));
                 });
             }.bind(alexa, device));
-            if (existingStates[devId + '.Commands.speak-volume']) {
-                adapter.getState(devId + '.Commands.speak-volume', function (device, err, state) {
-                    if (!err && state && state.val && state.val > 0) {
-                        device.speakVolume = state.val;
-                        adapter.log.debug('Initialize speak-Volume for ' + device.serialNumber + ': ' + state.val);
-                    }
+            if (!device.isMultiroomDevice) {
+                if (existingStates[devId + '.Commands.speak-volume']) {
+                    adapter.getState(devId + '.Commands.speak-volume', function (device, err, state) {
+                        if (!err && state && state.val && state.val > 0) {
+                            device.speakVolume = state.val;
+                            adapter.log.debug('Initialize speak-Volume for ' + device.serialNumber + ': ' + state.val);
+                        }
+                    }.bind(alexa, device));
+                }
+                setOrUpdateObject(devId + '.Commands.speak-volume', {common: {name: 'Volume to use for speak commands', role: 'level.volume', min: 0, max: 100}}, null, function (device, value) {
+                    device.speakVolume = value;
+                    adapter.log.debug('Set speak-Volume for ' + device.serialNumber + ': ' + value);
+                    adapter.setState(devId + '.Commands.speak-volume', value, true);
                 }.bind(alexa, device));
             }
-            setOrUpdateObject(devId + '.Commands.speak-volume', {common: {name: 'Volume to use for speak commands', role: 'level.volume', min: 0, max: 100}}, null, function (device, value) {
-                device.speakVolume = value;
-                adapter.log.debug('Set speak-Volume for ' + device.serialNumber + ': ' + value);
-                adapter.setState(devId + '.Commands.speak-volume', value, true);
-            }.bind(alexa, device));
             setOrUpdateObject(devId + '.Commands.doNotDisturb', {common: {role: 'switch'}}, false, device.setDoNotDisturb);
         }
 
@@ -1593,21 +1604,24 @@ function createNotificationStates(serialOrName) {
                     });
                 }
             }.bind(alexa, device));
-            /*setOrUpdateObject(devId + '.Timer', {type: 'device'});
-            setOrUpdateObject(devId + '.Timer.New', {common: {type: 'mixed', role: 'state', name: 'Add new Timer'}}, '', function(device, value) {
-                if (parseInt(value, 10) == value) value = parseInt(value, 10);
-                const notification = alexa.createNotificationObject(device, 'Timer', '', value);
-                if (notification) {
-                    alexa.createNotification(notification, (err, res) => {
-                        scheduleNotificationUpdate(device, 2000);
-                    });
-                }
-            }.bind(alexa, device));*/
+            setOrUpdateObject(devId + '.Timer', {type: 'device'});
+            setOrUpdateObject(devId + '.Timer.triggered', {common: {type: 'boolean', read: true, write: false, role: 'indicator', name: 'A timer got Triggered'}}, false);
         }
         for (let noti of device.notifications) {
+            if (notificationTimer[noti.id]) {
+                clearTimeout(notificationTimer[noti.id]);
+                notificationTimer[noti.id] = null;
+            }
             if (noti.type === 'Reminder' && !device.capabilities.includes('REMINDERS')) continue;
             if (noti.type === 'Alarm' && !device.capabilities.includes('TIMERS_AND_ALARMS')) continue;
-            if (noti.type === 'Timer') continue;
+            if (noti.type === 'Timer' && noti.status === 'ON' && noti.remainingTime > 0) {
+                adapter.log.debug(noti.type + ' ' + noti.id + ' triggered in ' + Math.floor(noti.remainingTime / 1000) + 's');
+                notificationTimer[noti.id] = setTimeout(function (noti) {
+                    notificationTimer[noti.id] = null;
+                    adapter.log.debug(noti.type + ' ' + noti.id + ' triggered');
+                    adapter.setState(devId + '.Timer.triggered', true, true);
+                }.bind(alexa, noti), noti.remainingTime);
+            }
             if (noti.originalTime) {
                 const id = noti.notificationIndex;
                 let notiId = devId + '.' + noti.type + '.' + id;
@@ -1617,19 +1631,15 @@ function createNotificationStates(serialOrName) {
                 setOrUpdateObject(notiId, {type: 'channel', common: {name: noti.reminderLabel || displayTime}});
                 setOrUpdateObject(notiId + '.time', {common: {type: 'mixed', role: 'state', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Time'}}, time, noti.set);
                 setOrUpdateObject(notiId + '.enabled', {common: {type: 'boolean', role: 'switch.enable', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Enabled'}}, (noti.status === 'ON'), noti.set);
-                setOrUpdateObject(notiId + '.triggered', {common: {type: 'boolean', read: true, write: false, role: 'indicator', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Triggered'}}, false, noti.set);
+                setOrUpdateObject(notiId + '.triggered', {common: {type: 'boolean', read: true, write: false, role: 'indicator', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Triggered'}}, false);
                 if (noti.status === 'ON' && (noti.alarmTime || (noti.originalDate && noti.originalTime))) {
-                    if (notificationTimer[noti.id]) {
-                        clearTimeout(notificationTimer[noti.id]);
-                        notificationTimer[noti.id] = null;
-                    }
                     const alarmTime = new Date((noti.originalDate + ' ' + noti.originalTime).replace(/-/g,"/"));
                     const alarmDelay = alarmTime - new Date().getTime();
-                    adapter.log.debug(noti.type + ' triggered in ' + Math.floor(alarmDelay / 1000));
+                    adapter.log.debug(noti.type + ' ' + noti.id + ' triggered in ' + Math.floor(alarmDelay / 1000) + 's');
                     if (alarmDelay > 0) {
                         notificationTimer[noti.id] = setTimeout(function (notiId, noti) {
                             notificationTimer[noti.id] = null;
-                            adapter.log.debug(noti.type + ' triggered');
+                            adapter.log.debug(noti.type + ' ' + noti.id + ' triggered');
                             adapter.setState(notiId + '.triggered', true, true);
                         }.bind(alexa, notiId, noti), alarmDelay);
                     }
@@ -2006,6 +2016,10 @@ function main() {
 
     alexa.on('ws-notification-change', (data) => {
         adapter.log.debug('notification-change: ' + JSON.stringify(data));
+        if (notificationTimer[data.notificationId]) { // Remove Timer, will be reset if neeed in 2s
+            clearTimeout(notificationTimer[data.notificationId]);
+            notificationTimer[data.notificationId] = null;
+        }
         if (data.eventType === 'DELETE') {
             let device = alexa.find(data.deviceSerialNumber);
             if (device && device.notifications) {
