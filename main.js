@@ -1364,9 +1364,10 @@ function createStates(callback) {
                     let speakCommands = [];
                     if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume});
                     value.split(';').forEach((v) => {
+                        if (!v || !v.length) return;
                         speakCommands.push({command: 'speak', value: v});
                     });
-                    if (speakVolumeReset && speakVolumeReset > 0) speakCommands.push({command: 'volume', value: speakVolumeReset});
+                    if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakCommands.push({command: 'volume', value: speakVolumeReset});
                     iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, nextCallback));
                 });
             }.bind(alexa, device));
