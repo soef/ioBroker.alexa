@@ -1364,7 +1364,7 @@ function createStates(callback) {
                     let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
                     if (!valueArr) valueArr= [];
                     let speakVolume = valueArr[4] || iteratorDevice.speakVolume;
-                    value = valueArr[5];
+                    value = valueArr[5] || value;
                     if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
                     adapter.getState('Echo-Devices.' + iteratorDevice.serialNumber + '.Player.volume', (err, state) => {
                         let speakVolumeReset = 0;
