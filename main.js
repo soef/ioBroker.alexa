@@ -85,14 +85,15 @@ let automationRoutines;
 let routineTriggerUtterances;
 const playerDevices = {};
 
-const stateChangeTrigger = {};
-const objectQueue = [];
 const lastPlayerState = {};
 const notificationTimer = {};
 let wsMqttConnected = false;
 let shApplianceEntityMap = {};
 let shGroupDetails = {};
 let shDeviceParamValues = {};
+
+const stateChangeTrigger = {};
+const objectQueue = [];
 
 const existingStates = {};
 const adapterObjects = {};

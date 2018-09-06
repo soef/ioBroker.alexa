@@ -123,6 +123,9 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 1.0.0 (2018-09-06)
+* (Apollon77) polishng and finalization, make it 1.0.0
+
 ### 0.7.5 (2018-09-04)
 * (Apollon77) speak can now contain separated text by semicolons. These Texts will then be spoken sequencially. So the old limit if 250 characters is only existing for one such text part. So, now longer texts are possible too. Separate it with a semicolon.
 * (Apollon77) more color handling fixes
