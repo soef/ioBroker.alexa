@@ -11,68 +11,226 @@
 This adapter allows you to remote control your Alexa (Amazon Echo) devices.
 
 Big thanks go to soef for the good version 1 of the adapter and to Hauke and ruhr70 for ideas in their scripts from ioBroker-Forum (especially the media progress updates)!
+Also big thanks to to meicker for support in documenting all of this and numerous users from ioBroker Forum for their testing support!
 
 ### States and their meanings:
-***Important: Docs outdated!! Will be updated soon***
 
-In the adapter namespace (e.g. alexa.0) some channels are created
+In the adapter namespace (e.g. alexa2.0) some channels are created
 
-### alexa.0
+#### alexa2.0
 
 | State name | meaning |
 | - | - |
+| bespoken.* | Send text commands to a virtual device as if you would speak to it |
 | echo-devices.* | States per Echo device, see below |
 | history.* | Infos for command history, see below |
 | smart-home-devices.* | States per smart home device and in general, see below |
-| requestResult | Error info for TuneIn requests |
+| info.*| General information about the adapter status |
+| requestResult | Error info for TuneIn and smart-home device requests |
 
+#### alexa2.0.bespoken.*
+Bespoken is normally a service provider to help automatically testing skills. But in fact you can use it to send commands to "your" Alexa/Amazon account. With this you can trigger skill actions that normally are not accessible via the Alexa App. By nature of the way it works only commands are possible that do not interact directly with the "Device you speak to", like normal commands that do a certain action and provide an answer. Playing Audio or Video or such that normally will be done by the device you spoke the command to will not work!
 
-#### alexa.0.echo-devices.Serialnumber
-
-| State name | meaning |
-| - | - |
-| Bluetooth.MAC.connected | Shows current connection status and allow connection (set to true) or disconnection (set to false) |
-| Bluetooth.MAC.unpair | Button to unpair this device |
-| Player-Controls.TuneIn | text field to put in a Station name to play this station on this device |
-| Player-Controls.forward | Button to trigger player "forward" command (30s) |
-| Player-Controls.next | Button to trigger player "next" command |
-| Player-Controls.pause | Button to trigger player "pause" command |
-| Player-Controls.play | Button to trigger player "play" command |
-| Player-Controls.previous | Button to trigger player "previous" command |
-| Player-Controls.rewind | Button to trigger player "rewind" command (30s) |
-| Player-Controls.shuffle | Switch to enable or disable Shuffle mode for player |
-| Player-Controls.repeat | Switch to enable or disable Repeat mode for player |
-| Player-Controls.volume | 0..100 number value to set volume of the device to |
-| Player-Info.status | Player status |
-| Info.capabilities | shows the device capabilities as reported by Amazon |
-| Commands.doNotDisturb | Switch to set the Do-Not-Disturb mode for this device |
-| Notifications.hh:ss | shows true/false if this notification slot is active or not, also allows to switch on/off (set true/false) or change time (set new time as value) |
-| delete | Button to log out of this device on Amazon side |
-| online | Info if the device is online or not |
-
-#### alexa.0.history
+A Request to Bespoken will take some seconds because the sent text is first converted into audio, which is then send to Alexa Voice Services and is then answered by Alexa and send back. So it easiely can take up to 10s.
 
 | State name | meaning |
 | - | - |
-| #trigger | Button to get new History (more current then timestamp in creationTime) |
-| creationTime | only history entries are considered after this timestamp, updated with timestamp of selected record on update |
-| name | Name of the device that got the request |
-| serialNumber | serialnumber of the device that got the request |
-| summary | text/summary/action received by the device |
+| #sendText | Text to be send to the virtual device |
+| answer | Answer from the device as text |
+| anwserJson | Answer from the adapter as JSON, may contain additional informations like card infos or such |
+| status | Status of the communication with bespoken (OK=Done/Wait for next command, PROCESSING=wait for answer from bespoken, FAILURE=Error happend while processing) |
+
+#### alexa2.0.echo-devices.Serialnumber.*
+Under "echo-devices" every amazon echo device is listed with it's serial number. Not every device shows all the states. Every device has it's own states as described below:
+
+#### alexa2.0.echo-devices.Serialnumber.Alarm.*
+Alarm (Wecker) settings for each device, if available.
+
+﻿| State name | meaning | value |
+| - | - | - |
+|enabled |Shows status of alarm and allows to change it: Activate alarm with true - Deactivate alarm with false | true / false |
+|time|Time for alarm. Overwrite the time for existing alarm to set a new time for this alarm | Time Input | In case you have an existing alarm you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set |
+|triggered|true if alarm is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the alarm time is reached | true / false |
+|new|time for new alarm for this device. If you put a value here a new alarm will be created | Time Input (hh:mm:ss, seconds are not needed) |
+
+#### alexa2.0.echo-devices.Serialnumber.Bluetooth.*
+Here you find all connected or known bluetooth device(s) with MAC address(es). The states of each device:
+
+﻿| State name | meaning |
+| - | - |
+| connected | Shows current connection status and allow connection (set to true) or disconnection (set to false) |
+| unpair | Button to unpair this device from the echo device |
+
+#### alexa2.0.echo-devices.Serialnumber.Commands.*
+With Commands you can trigger some actions on your Alexa-Device. If you use these on a multiroom device then they are executed independently and *will not* run in sync on the single devices!
+
+﻿| State name | meaning | value
+| - | - | - |
+| doNotDisturb | Switch on/off Do not Disturb for this device|true/false
+| flashbriefing | Briefing in 100 seconds - news etc.pp|Button
+| goodmorning | Good morning from Alexa ...|Button
+| singasong | Alexa sings a song ...|Button
+| speak | Alexa says what you type in here ...|Text Input
+| speakvolume | Adjust the speak volume of Alexa, this volume is set before the speak and reset afterwards|0-100
+| tellstory | Alexa tells a story | Button
+| traffic | Traffic news | Button
+| weather | Weather news | Button
+
+Detailed information Speak: Type in here what you want Alexa to say. You can also adjust the volume of Alexa by giving a percentage before your text.
+Example: 10;Alexa is saying Alexa with 10% volume, while 100;Alexa is 100% volume.
+Normally you only can send 250 characters per speak command. By using the semicolon it is possible to write as much as you want, as long as you separate 250 characters with a semicolon.
+Alexa will then speak the text after each other with a small break. You also can use the volume together with more 255 blocks by writing #Volume;#Block1;#Block2, a.s.o A volume set here will be used over a defined speak-volume.
+
+#### alexa2.0.echo-devices.Serialnumber.Info.*
+Information about the Alexa device
+
+﻿| State name | meaning | value |
+| - | - | - |
+| capabilities | capabilities if the alexa device | Information |
+| deviceType | device type from Amazon | Information  |
+| deviceTypeString | Device Type as string | Information |
+| isMultiroomDevice | Is multiroom device - Multiroom is a virtual device group | Information, true / false |
+| isMultiroomMember | Is Multiroom member - If true the device is part of a multiroom device group  | Information, true / false |
+| MultiroomParents | If this device is part of a multiroom device group this state shows the parent group device | Information |
+| name | Name of Alexa Device | Information |
+| SerialNumber | Serial number of Alexa device |
+
+#### alexa2.0.echo-devices.Serialnumber.Music-Provider.*
+Directly tell Alexa to play Music or a playlist from supported music providers. Actually supported are: My Library, Amazon Music, Tune In. You can also include a multiroom device group name in the phrase to play it on this group (e.g. "SWR3 auf Erdgeschoss")
+
+﻿| State name | meaning | value |
+| - | - | - |
+| Amazon-Music | Phrase to play with Amazon Music | Text input |
+| Amazon-Music-Playlist | Playlist to play with Amazon Music | Text input |
+| My-Library | Phrase to play with My Library | Text input |
+| My-Library-Playlist | Playlist to play with My Library | Text input |
+| Tune-In | Phrase to play with Tune In | Text input |
+| Tune-In-Playlist | Playlist to play with Tune In | Text input |
+
+#### alexa2.0.echo-devices.Serialnumber.Player.*
+States to control the Playback of the device and to see the current status and media information
+
+﻿| State name | meaning | value |
+| - | - | - |
+| TuneIn-Station | text field to put in a Station name to play this station on this device. Also it is possible to type in the station number (s123456) | Text input |
+| ContentType | text field to put in desired content to play on this device | Information |
+| controlForward | Button to trigger player "forward" command (30s) | Button |
+| controlNext | Button to trigger player "next" command | Button |
+| controlPause | Button to trigger player "pause" command | Button |
+| controlPlay | Button to trigger player "play" command | Button |
+| controlPrevious | Button to trigger player "previous" command | Button |
+| controlRepeat | Button to trigger player "repeat" command | true / false |
+| controlRewind | Button to trigger player "rewind" command (30s) | Button |
+| controlShuffle | Switch to enable or disable Shuffle mode for player | true / false |
+| currentAlbum | Current album actually playing | Information |
+| currentArtist | Current artist actually playing | Information |
+| currentState | If playing -> true , else false| true / false |
+| currentTitle | Current title actually playing | Information |
+| imageURL | URL to the image of the album | Information |
+| mainArtURL | URL to current main art | Information |
+| mediaLength | Length of the current title | Information |
+| mediaLengthStr |  active media length as (HH:)MM:SS | Information |
+| mainProgress | active media elapsed time | Information |
+| mainProgressPercent | active media elapsed time in percent | Information |
+| mediaProgressStr |  active media progress as (HH:)MM:SS | Information |
+| miniArtUrl | URL to the art (mini) | Information |
+| muted | state of 'MUTE' | Information, true / false, volume = 0 is considered as muted |
+| providerID | ID of the current music provider | Information |
+| providerName | Name of the current music provider | Information |
+| radioStationId | ID of the TuneIn radio station | Information |
+| service | name of the current music service | Information |
+| volume | Volume of playback. You can enter a value between 0-100% | INPUT Volume |
+
+#### alexa2.0.echo-devices.Serialnumber.Reminder.*
+Reminder (Erinnerungen) settings for each device, if available.
+
+﻿| State name | meaning | value |
+| - | - | - |
+|enabled |Shows status of reminder and allows to change it: Activate reminder with true - Deactivate reminder with false, weill be deleted some time after it automatically when disabled | true / false |
+|time|Time for reminder. Overwrite the time for existing reminder to set a new time | Time Input | In case you have an existing reminder you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set |
+|triggered|true if reminder is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the reminder time is reached | true / false |
+| new | Add a new reminder in the format <br> time(hh:mm);text<br> | Text Input <br>12:00;Remind me
+
+#### alexa2.0.echo-devices.Serialnumber.Routines.*
+Overview of routines set up in Alexa App. Self created routines have a serial number, Amazon shows as 'preconfigured:...' Each routine can be triggered with a button to run once.
+﻿| State name | meaning | value |
+| - | - | - |
+| Serial or internal name of routine | name of routine | Button
+
+#### alexa2.0.echo-devices.Serialnumber.Timer.*
+You can have one or more timer running on each Alexa device. Because of the very dynamic nature of timers there will be no further objects created like with Alarm or Reminders, but a way to get a triggered info exists.
+
+﻿| State name | meaning | value |
+| - | - | - |
+| triggered  | A timer got triggered | Information
+
+
+#### alexa2.0.echo-devices.Serialnumber.online
+Is this Alexa device online and connected to the Amazon cloud ?
+
+﻿| State name | meaning | value |
+| - | - | - |
+| online | Is the device online ? | True / False
+
+#### alexa2.0.history
+
+| State name | meaning | value
+| - | - | - |
+| #trigger | Button to get new History (more current then timestamp in creationTime), only needed when not using the push connection | Button |
+| cardContent | Additional information as shown in Alexa-App/Echo Show | Information |
+| cardJson | Additional information as shown in Alexa-App/Echo Show in JSON format | Information |
+| creationTime | date of this history entry, new history entries are only considered when later as this timestamp | Information |
+| domainApplicationId | Additional information like Skill-ID or such, optional | Information |
+| domainApplicationName | Additional information like Skill name or such, optional | Information |
+| json | Json of last command data to be able to process all infos e.g. in own JavaScripts| JSON |
+| name | Name of the device that got the last request | Information |
+| serialNumber | serialnumber of the device that got the last request | Information |
+| status | Status of last command to Alexa | SUCCESS / FAULT / DISCARDED_NON_DEVICE_DIRECTED_INTENT; last one is generated when activating the device by saying the wake word, or when the device discarded input as "not for me" |
+| summary | text/summary/action received by the device | Information |
 
 #### alexa.0.smart-home-devices
+Includes all smart home devices Alexa knows from your skills. States as follows, for all known devices:
 
-| State name | meaning |
-| - | - |
-| UniqueId.delete | Button to delete this smart home device |
-| UniqueId.isEnabled | indicator if the smart home device is enabled |
-| deleteAll | Button to delete all smart home devices in Amazon |
-| discoverDevices | Button to trigger discovering devices |
+| State name | meaning | value
+| - | - | - |
+| deleteAll | deletes all smart home devices from Alexa, same as the button in the Alexa App | Button
+| discoverDevices | finds new smart home devices, same as the button in the Alexa App | Button
+| queryAll | queries all devices, only visible when at least one device is able to retrieve information | Button
+
+#### alexa.0.smart-home-devices.serialNumber.*
+| State name | meaning | value
+| - | - | - |
+| #delete | delete smart home device from Alexa | Button
+| #enabled | Is the smart home device active ? | Information
+| #query | query data for this device, only visible when the smart home device/skill supports to retrieve information | Button |
+| active | shown for scenes when they can be activated/deactivated | true / false |
+| powerState | Switch power on / off | changeable, true / false |
+| ... | Many more possible states depending on the type the the smart home device | Information or changeable :-) |
+
+**-> Special states for color/light devices**
+| State name | meaning | value
+| - | - | - |
+| brightness | brightness of the HUE light | changeable 0-100% |
+| color-Brightness | brightness for color definition (together with hue and saturation, HSV) | Information, 0-1% |
+| color-hue | hue value of the color (together with brightness and saturation, HSV) | Information, 0-360° |
+| color-saturation | saturation of the color (together with brightness and hue, HSV) | Information, 0-1 |
+| colorRGB | RGB code of actual color build out of color-* values | Information, #rrggbb |
+| colorName | Name of the color as defined by Alexa - fixed values | changeable to set color, 0-144 |
+| colorTemperarureInKelvin | Color temperature in Kelvin | Information, 1000-10000K |
+| colorTemperatureName | Color temperature name as defined by Alexa - fixed values | changeable to set, 0-18 |
+
+With #brightness you can adjust the brightness of your light, #colorName is to pick one predefined color (0-144). For HUE Ambient light you can choose between 19 Values fom 0-18 in #colorTemperatureName. All light can switched on and off with #powerState.
+
+#### alexa2.0-info.*
+| State name | meaning | value
+| - | - | - |
+| connection | If connection to Alexa is OK | Information -> true / false |
+| cookie | Alexa cookie, use with several external scripts that also want to access Alexa APIs | Information |
+| csrf | Alexa CSRF, use with several external scripts that also want to access Alexa APIs | Information |
+
 
 ## Missing features
-* also update bluetooth status in intervals AND on connect/disconnect/unpair?
 * how to update initial status for volume, shuffle or repeat and doNotDisturb?! Or unneeded?
-* also allow station-IDs in the TuneIn field
 * add fields to show playing-info like JS version
 * self deactivation if cookie/csrf invalid
 
