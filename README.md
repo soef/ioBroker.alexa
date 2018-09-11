@@ -46,6 +46,7 @@ Under "echo-devices" every amazon echo device is listed with it's serial number.
 #### alexa2.0.echo-devices.Serialnumber.Alarm.*
 Alarm (Wecker) settings for each device, if available.
 
+
 ﻿| State name | meaning | value |
 | - | - | - |
 | enabled | Shows status of alarm and allows to change it: Activate alarm with true - Deactivate alarm with false | true / false |
@@ -56,6 +57,7 @@ Alarm (Wecker) settings for each device, if available.
 #### alexa2.0.echo-devices.Serialnumber.Bluetooth.*
 Here you find all connected or known bluetooth device(s) with MAC address(es). The states of each device:
 
+
 ﻿| State name | meaning |
 | - | - |
 | connected | Shows current connection status and allow connection (set to true) or disconnection (set to false) |
@@ -63,6 +65,7 @@ Here you find all connected or known bluetooth device(s) with MAC address(es). T
 
 #### alexa2.0.echo-devices.Serialnumber.Commands.*
 With Commands you can trigger some actions on your Alexa-Device. If you use these on a multiroom device then they are executed independently and *will not* run in sync on the single devices!
+
 
 ﻿| State name | meaning | value |
 | - | - | - |
