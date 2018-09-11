@@ -49,7 +49,7 @@ Alarm (Wecker) settings for each device, if available.
 ﻿| State name | meaning | value |
 | - | - | - |
 | enabled | Shows status of alarm and allows to change it: Activate alarm with true - Deactivate alarm with false | true / false |
-| time | Time for alarm. Overwrite the time for existing alarm to set a new time for this alarm | Time Input | In case you have an existing alarm you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set |
+| time | Time for alarm. Overwrite the time for existing alarm to set a new time for this alarm. In case you have an existing alarm you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set | Time Input |
 | triggered | true if alarm is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the alarm time is reached | true / false |
 | new | time for new alarm for this device. If you put a value here a new alarm will be created | Time Input (hh:mm:ss, seconds are not needed) |
 
