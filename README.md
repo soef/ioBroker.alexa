@@ -48,10 +48,10 @@ Alarm (Wecker) settings for each device, if available.
 
 ﻿| State name | meaning | value |
 | - | - | - |
-|enabled |Shows status of alarm and allows to change it: Activate alarm with true - Deactivate alarm with false | true / false |
-|time|Time for alarm. Overwrite the time for existing alarm to set a new time for this alarm | Time Input | In case you have an existing alarm you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set |
-|triggered|true if alarm is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the alarm time is reached | true / false |
-|new|time for new alarm for this device. If you put a value here a new alarm will be created | Time Input (hh:mm:ss, seconds are not needed) |
+| enabled | Shows status of alarm and allows to change it: Activate alarm with true - Deactivate alarm with false | true / false |
+| time | Time for alarm. Overwrite the time for existing alarm to set a new time for this alarm | Time Input | In case you have an existing alarm you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set |
+| triggered | true if alarm is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the alarm time is reached | true / false |
+| new | time for new alarm for this device. If you put a value here a new alarm will be created | Time Input (hh:mm:ss, seconds are not needed) |
 
 #### alexa2.0.echo-devices.Serialnumber.Bluetooth.*
 Here you find all connected or known bluetooth device(s) with MAC address(es). The states of each device:
@@ -64,17 +64,17 @@ Here you find all connected or known bluetooth device(s) with MAC address(es). T
 #### alexa2.0.echo-devices.Serialnumber.Commands.*
 With Commands you can trigger some actions on your Alexa-Device. If you use these on a multiroom device then they are executed independently and *will not* run in sync on the single devices!
 
-﻿| State name | meaning | value
+﻿| State name | meaning | value |
 | - | - | - |
-| doNotDisturb | Switch on/off Do not Disturb for this device|true/false
-| flashbriefing | Briefing in 100 seconds - news etc.pp|Button
-| goodmorning | Good morning from Alexa ...|Button
-| singasong | Alexa sings a song ...|Button
-| speak | Alexa says what you type in here ...|Text Input
-| speakvolume | Adjust the speak volume of Alexa, this volume is set before the speak and reset afterwards|0-100
-| tellstory | Alexa tells a story | Button
-| traffic | Traffic news | Button
-| weather | Weather news | Button
+| doNotDisturb | Switch on/off Do not Disturb for this device| true/false |
+| flashbriefing | Briefing in 100 seconds - news etc.pp| Button |
+| goodmorning | Good morning from Alexa ...| Button |
+| singasong | Alexa sings a song ...| Button |
+| speak | Alexa says what you type in here ...| Text Input |
+| speakvolume | Adjust the speak volume of Alexa, this volume is set before the speak and reset afterwards| 0-100 |
+| tellstory | Alexa tells a story | Button |
+| traffic | Traffic news | Button |
+| weather | Weather news | Button |
 
 Detailed information Speak: Type in here what you want Alexa to say. You can also adjust the volume of Alexa by giving a percentage before your text.
 Example: 10;Alexa is saying Alexa with 10% volume, while 100;Alexa is 100% volume.
@@ -146,9 +146,9 @@ Reminder (Erinnerungen) settings for each device, if available.
 
 ﻿| State name | meaning | value |
 | - | - | - |
-|enabled |Shows status of reminder and allows to change it: Activate reminder with true - Deactivate reminder with false, weill be deleted some time after it automatically when disabled | true / false |
-|time|Time for reminder. Overwrite the time for existing reminder to set a new time | Time Input | In case you have an existing reminder you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set |
-|triggered|true if reminder is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the reminder time is reached | true / false |
+| enabled | Shows status of reminder and allows to change it: Activate reminder with true - Deactivate reminder with false, will be deleted some time after it automatically when disabled | true / false |
+| time| Time for reminder. Overwrite the time for existing reminder to set a new time | Time Input | In case you have an existing reminder you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set |
+| triggered | true if reminder is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the reminder time is reached | true / false |
 | new | Add a new reminder in the format <br> time(hh:mm);text<br> | Text Input <br>12:00;Remind me
 
 #### alexa2.0.echo-devices.Serialnumber.Routines.*
@@ -162,7 +162,7 @@ You can have one or more timer running on each Alexa device. Because of the very
 
 ﻿| State name | meaning | value |
 | - | - | - |
-| triggered  | A timer got triggered | Information
+| triggered | A timer got triggered | Information
 
 
 #### alexa2.0.echo-devices.Serialnumber.online
@@ -174,7 +174,7 @@ Is this Alexa device online and connected to the Amazon cloud ?
 
 #### alexa2.0.history
 
-| State name | meaning | value
+| State name | meaning | value |
 | - | - | - |
 | #trigger | Button to get new History (more current then timestamp in creationTime), only needed when not using the push connection | Button |
 | cardContent | Additional information as shown in Alexa-App/Echo Show | Information |
@@ -191,14 +191,14 @@ Is this Alexa device online and connected to the Amazon cloud ?
 #### alexa.0.smart-home-devices
 Includes all smart home devices Alexa knows from your skills. States as follows, for all known devices:
 
-| State name | meaning | value
+| State name | meaning | value |
 | - | - | - |
 | deleteAll | deletes all smart home devices from Alexa, same as the button in the Alexa App | Button
 | discoverDevices | finds new smart home devices, same as the button in the Alexa App | Button
 | queryAll | queries all devices, only visible when at least one device is able to retrieve information | Button
 
 #### alexa.0.smart-home-devices.serialNumber.*
-| State name | meaning | value
+| State name | meaning | value |
 | - | - | - |
 | #delete | delete smart home device from Alexa | Button
 | #enabled | Is the smart home device active ? | Information
@@ -208,7 +208,7 @@ Includes all smart home devices Alexa knows from your skills. States as follows,
 | ... | Many more possible states depending on the type the the smart home device | Information or changeable :-) |
 
 **-> Special states for color/light devices**
-| State name | meaning | value
+| State name | meaning | value |
 | - | - | - |
 | brightness | brightness of the HUE light | changeable 0-100% |
 | color-Brightness | brightness for color definition (together with hue and saturation, HSV) | Information, 0-1% |
@@ -222,7 +222,7 @@ Includes all smart home devices Alexa knows from your skills. States as follows,
 With #brightness you can adjust the brightness of your light, #colorName is to pick one predefined color (0-144). For HUE Ambient light you can choose between 19 Values fom 0-18 in #colorTemperatureName. All light can switched on and off with #powerState.
 
 #### alexa2.0-info.*
-| State name | meaning | value
+| State name | meaning | value |
 | - | - | - |
 | connection | If connection to Alexa is OK | Information -> true / false |
 | cookie | Alexa cookie, use with several external scripts that also want to access Alexa APIs | Information |
