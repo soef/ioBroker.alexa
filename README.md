@@ -46,8 +46,7 @@ Under "echo-devices" every amazon echo device is listed with it's serial number.
 #### alexa2.0.echo-devices.Serialnumber.Alarm.*
 Alarm (Wecker) settings for each device, if available.
 
-
-﻿| State name | meaning | value |
+| State name | meaning | value |
 | - | - | - |
 | enabled | Shows status of alarm and allows to change it: Activate alarm with true - Deactivate alarm with false | true / false |
 | time | Time for alarm. Overwrite the time for existing alarm to set a new time for this alarm. In case you have an existing alarm you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set | Time Input |
@@ -58,7 +57,7 @@ Alarm (Wecker) settings for each device, if available.
 Here you find all connected or known bluetooth device(s) with MAC address(es). The states of each device:
 
 
-﻿| State name | meaning |
+| State name | meaning |
 | - | - |
 | connected | Shows current connection status and allow connection (set to true) or disconnection (set to false) |
 | unpair | Button to unpair this device from the echo device |
@@ -66,8 +65,7 @@ Here you find all connected or known bluetooth device(s) with MAC address(es). T
 #### alexa2.0.echo-devices.Serialnumber.Commands.*
 With Commands you can trigger some actions on your Alexa-Device. If you use these on a multiroom device then they are executed independently and *will not* run in sync on the single devices!
 
-
-﻿| State name | meaning | value |
+| State name | meaning | value |
 | - | - | - |
 | doNotDisturb | Switch on/off Do not Disturb for this device| true/false |
 | flashbriefing | Briefing in 100 seconds - news etc.pp| Button |
@@ -87,7 +85,7 @@ Alexa will then speak the text after each other with a small break. You also can
 #### alexa2.0.echo-devices.Serialnumber.Info.*
 Information about the Alexa device
 
-﻿| State name | meaning | value |
+| State name | meaning | value |
 | - | - | - |
 | capabilities | capabilities if the alexa device | Information |
 | deviceType | device type from Amazon | Information  |
@@ -101,7 +99,7 @@ Information about the Alexa device
 #### alexa2.0.echo-devices.Serialnumber.Music-Provider.*
 Directly tell Alexa to play Music or a playlist from supported music providers. Actually supported are: My Library, Amazon Music, Tune In. You can also include a multiroom device group name in the phrase to play it on this group (e.g. "SWR3 auf Erdgeschoss")
 
-﻿| State name | meaning | value |
+| State name | meaning | value |
 | - | - | - |
 | Amazon-Music | Phrase to play with Amazon Music | Text input |
 | Amazon-Music-Playlist | Playlist to play with Amazon Music | Text input |
@@ -113,7 +111,7 @@ Directly tell Alexa to play Music or a playlist from supported music providers. 
 #### alexa2.0.echo-devices.Serialnumber.Player.*
 States to control the Playback of the device and to see the current status and media information
 
-﻿| State name | meaning | value |
+| State name | meaning | value |
 | - | - | - |
 | TuneIn-Station | text field to put in a Station name to play this station on this device. Also it is possible to type in the station number (s123456) | Text input |
 | ContentType | text field to put in desired content to play on this device | Information |
@@ -147,7 +145,7 @@ States to control the Playback of the device and to see the current status and m
 #### alexa2.0.echo-devices.Serialnumber.Reminder.*
 Reminder (Erinnerungen) settings for each device, if available.
 
-﻿| State name | meaning | value |
+| State name | meaning | value |
 | - | - | - |
 | enabled | Shows status of reminder and allows to change it: Activate reminder with true - Deactivate reminder with false, will be deleted some time after it automatically when disabled | true / false |
 | time| Time for reminder. Overwrite the time for existing reminder to set a new time | Time Input | In case you have an existing reminder you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set |
@@ -156,14 +154,15 @@ Reminder (Erinnerungen) settings for each device, if available.
 
 #### alexa2.0.echo-devices.Serialnumber.Routines.*
 Overview of routines set up in Alexa App. Self created routines have a serial number, Amazon shows as 'preconfigured:...' Each routine can be triggered with a button to run once.
-﻿| State name | meaning | value |
+
+| State name | meaning | value |
 | - | - | - |
 | Serial or internal name of routine | name of routine | Button
 
 #### alexa2.0.echo-devices.Serialnumber.Timer.*
 You can have one or more timer running on each Alexa device. Because of the very dynamic nature of timers there will be no further objects created like with Alarm or Reminders, but a way to get a triggered info exists.
 
-﻿| State name | meaning | value |
+| State name | meaning | value |
 | - | - | - |
 | triggered | A timer got triggered | Information
 
@@ -171,7 +170,7 @@ You can have one or more timer running on each Alexa device. Because of the very
 #### alexa2.0.echo-devices.Serialnumber.online
 Is this Alexa device online and connected to the Amazon cloud ?
 
-﻿| State name | meaning | value |
+| State name | meaning | value |
 | - | - | - |
 | online | Is the device online ? | True / False
 
