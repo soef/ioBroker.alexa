@@ -210,6 +210,7 @@ Includes all smart home devices Alexa knows from your skills. States as follows,
 | ... | Many more possible states depending on the type the the smart home device | Information or changeable :-) |
 
 **-> Special states for color/light devices**
+
 | State name | meaning | value |
 | - | - | - |
 | brightness | brightness of the HUE light | changeable 0-100% |
