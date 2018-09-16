@@ -91,6 +91,7 @@ let wsMqttConnected = false;
 let shApplianceEntityMap = {};
 let shGroupDetails = {};
 let shDeviceParamValues = {};
+let shQueryBlocker = {};
 
 const stateChangeTrigger = {};
 const objectQueue = [];
@@ -510,13 +511,31 @@ function updateMediaProgress(serialNumber) {
     }
 }
 
-function queryAllSmartHomeDevices(callback) {
+function queryAllSmartHomeDevices(initial, callback) {
     let reqArr = [];
+    let blocked = [];
     for (let applianceId in shApplianceEntityMap) {
         if (!shApplianceEntityMap.hasOwnProperty(applianceId)) continue;
         if (shApplianceEntityMap[applianceId].readable) {
+            if (shQueryBlocker[applianceId]) {
+                blocked.push(applianceId);
+                continue;
+            }
             reqArr.push(applianceId);
+            if (!initial) {
+                let delay = 600000;
+                if (!applianceId.startsWith('SKILL_')) delay = 60000;
+                shQueryBlocker[applianceId] = setTimeout(() => {
+                    shQueryBlocker[applianceId] = null;
+                }, delay);
+            }
         }
+    }
+    if (blocked.length) {
+        adapter.log.warn('Smarthome device queries blocked for ' + blocked.join(','));
+    }
+    if (!reqArr.length) {
+        return callback && callback();
     }
     alexa.querySmarthomeDevices(reqArr, (err, res) => {
         if (!err) {
@@ -889,6 +908,10 @@ function createSmarthomeStates(callback) {
                                                 }
                                                 alexa.executeSmarthomeDeviceAction(entityId, parameters, (err, res) => {
                                                     if (!err && res && res.controlResponses && res.controlResponses[0] && res.controlResponses[0].code && res.controlResponses[0].code === 'SUCCESS') {
+                                                        if (shQueryBlocker[applianceId]) {
+                                                            clearTimeout(shQueryBlocker[applianceId]);
+                                                            shQueryBlocker[applianceId] = null;
+                                                        }
                                                         setTimeout(() => alexa.querySmarthomeDevices(applianceId, (err, res) => {
                                                             if (!err) {
                                                                 updateSmarthomeDeviceStates(res);
@@ -980,6 +1003,10 @@ function createSmarthomeStates(callback) {
                                         alexa.executeSmarthomeDeviceAction(entityId, parameters, (err, res) => {
                                             if (!err && res && res.controlResponses && res.controlResponses[0] && res.controlResponses[0].code && res.controlResponses[0].code === 'SUCCESS') {
                                                 if (obj.native.readable) {
+                                                    if (shQueryBlocker[applianceId]) {
+                                                        clearTimeout(shQueryBlocker[applianceId]);
+                                                        shQueryBlocker[applianceId] = null;
+                                                    }
                                                     setTimeout(() => alexa.querySmarthomeDevices(applianceId, (err, res) => {
                                                         if (!err) {
                                                             updateSmarthomeDeviceStates(res);
@@ -1015,6 +1042,15 @@ function createSmarthomeStates(callback) {
                             shApplianceEntityMap[shDevice.applianceId].readable = true;
                             readableCounter++;
                             setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.#query', {common: {type: 'boolean', read: false, write: true, role: 'button'}}, false, function (applianceId, value) {
+                                if (shQueryBlocker[applianceId]) {
+                                    adapter.log.warn('Smart Home device request blocked for ' + applianceId);
+                                    return;
+                                }
+                                let delay = 300000;
+                                if (!applianceId.startsWith('SKILL_')) delay = 60000;
+                                shQueryBlocker[applianceId] = setTimeout(() => {
+                                    shQueryBlocker[applianceId] = null;
+                                }, delay);
                                 alexa.querySmarthomeDevices(applianceId, (err, res) => {
                                     if (!err) {
                                         updateSmarthomeDeviceStates(res);
@@ -1087,6 +1123,10 @@ function createSmarthomeStates(callback) {
                             alexa.executeSmarthomeDeviceAction(groupIdShort, parameters, 'GROUP', (err, res) => {
                                 if (!err && res && res.controlResponses && res.controlResponses[0] && res.controlResponses[0].code && res.controlResponses[0].code === 'SUCCESS') {
                                     if (obj.native.readable) {
+                                        if (shQueryBlocker[applianceId]) {
+                                            clearTimeout(shQueryBlocker[applianceId]);
+                                            shQueryBlocker[applianceId] = null;
+                                        }
                                         setTimeout(() => alexa.querySmarthomeDevices(applianceId, (err, res) => {
                                             if (!err) {
                                                 updateSmarthomeDeviceStates(res);
@@ -1546,7 +1586,7 @@ function createBluetoothStates(serialOrName) {
         device.bluetoothState.pairedDeviceList.forEach ((bt) => {
             setOrUpdateObject(devId + '.Bluetooth.' + bt.address, {type: 'channel', common: {name: bt.friendlyName}});
             setOrUpdateObject(devId + '.Bluetooth.' + bt.address + '.connected', {common: {role: 'switch'}}, bt.connected, bt.connect);
-            setOrUpdateObject(devId + '.Bluetooth.' + bt.address + '.unpaire', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, bt.unpaire);
+            setOrUpdateObject(devId + '.Bluetooth.' + bt.address + '.unpair', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, bt.unpaire);
         });
     }
 }
@@ -2077,7 +2117,7 @@ function main() {
             initRoutines(() => {
                 createStates(() => {
                     createSmarthomeStates(() => {
-                        queryAllSmartHomeDevices(() => {
+                        queryAllSmartHomeDevices(true, () => {
                             if (!initDone) {
                                 adapter.subscribeStates('*');
                                 adapter.subscribeObjects('*');

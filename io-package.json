@@ -1,12 +1,12 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "title": "Alexa2 (Amazon Echo)",
         "desc": "Remote control for Alexa (Amazon Echo)",
         "platform": "Javascript/Node.js",
         "news": {
-            "1.0.0": {
+            "1.0.1": {
                 "en": "Bespoken, fixes, optimizations and enhanced smart home devices and group management and control",
                 "de": "Bespoken, Fixes, Optimierungen und erweiterte Smart-Home-Geräte und Gruppenmanagement und -steuerung",
                 "ru": "Bespoken, исправления, оптимизации и расширенные интеллектуальные домашние устройства, а также управление и контроль групп",
