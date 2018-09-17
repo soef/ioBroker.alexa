@@ -1369,6 +1369,13 @@ function createStates(callback) {
                                 schedulePlayerUpdate(device, 5000);
                             }
                         });
+                    } else if (query.match(/^p[0-9]{4,7}$/)) {
+                        device.setTunein(query, 'podcast', (err, ret) => {
+                            if (!err) {
+                                adapter.setState(devId + '.Player.TuneIn-Station', query, true);
+                                schedulePlayerUpdate(device, 5000);
+                            }
+                        });
                     } else {
                         alexa.tuneinSearch(query, (err, res) => {
                             setRequestResult(err, res);
