@@ -285,7 +285,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ## Changelog
 
 ### 1.1.0 (2018-09-18)
-* (Apollon77) Smarthome devices from ioBroker skill will NOT be queried anymore because generated huge load
+* (Apollon77) Further optimizations to lower number of requests
 * (Apollon77) Experimental support for Playlist IDs (p1234567) in TunieIn-Station
 
 ### 1.0.1 (2018-09-16)

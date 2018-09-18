@@ -558,11 +558,17 @@ function buildSmartHomeControlParameters(entityId, objs, changedParamName, chang
             value = obj.native.valueMap[value];
         }
         else {
+            console.log(JSON.stringify(obj));
+            console.log('1:' + value);
+            if (value === undefined && obj.native.defaultValue !== undefined) {
+                value = obj.native.defaultValue;
+            }
             if (typeof value === 'number' && obj.native.factor) {
                 value *= obj.native.factor;
             }
             value = String(value);
         }
+        console.log(value);
         return value;
     }
 
@@ -837,6 +843,7 @@ function createSmarthomeStates(callback) {
                             adapter.deleteChannel('Smart-Home-Devices', entityId);
                         }.bind(alexa, shDevice.entityId));
 
+                        const excludeReadable = shDevice.manufacturerName.startsWith('ioBroker');
                         const deviceActions = {};
                         if (behaviours[shDevice.entityId] && behaviours[shDevice.entityId].supportedOperations) {
                             behaviours[shDevice.entityId].supportedOperations.forEach((a) => {
@@ -885,7 +892,10 @@ function createSmarthomeStates(callback) {
                                                 adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId] + ' / ' + JSON.stringify(obj)));
                                             }
                                             if (obj.experimental) delete obj.experimental;
-                                            if (obj.common && obj.common.read) readableProperties++;
+                                            if (obj.common && obj.common.read) {
+                                                if (excludeReadable) obj.common.read = false;
+                                                    else readableProperties++;
+                                            }
 
                                             if (obj.native.supportedActions && obj.native.supportedActions.length) {
                                                 obj.native.supportedActions.forEach((n) => {
@@ -907,7 +917,7 @@ function createSmarthomeStates(callback) {
                                                     return;
                                                 }
                                                 alexa.executeSmarthomeDeviceAction(entityId, parameters, (err, res) => {
-                                                    if (!err && res && res.controlResponses && res.controlResponses[0] && res.controlResponses[0].code && res.controlResponses[0].code === 'SUCCESS') {
+                                                    if (!err && res && res.controlResponses && res.controlResponses[0] && res.controlResponses[0].code && res.controlResponses[0].code === 'SUCCESS' && !excludeReadable) {
                                                         if (shQueryBlocker[applianceId]) {
                                                             clearTimeout(shQueryBlocker[applianceId]);
                                                             shQueryBlocker[applianceId] = null;
@@ -944,10 +954,12 @@ function createSmarthomeStates(callback) {
                         const deviceActionsArr = Object.keys(deviceActions);
                         if (deviceActionsArr.length) {
                             let readable = false;
-                            for (let action of deviceActionsArr) {
-                                if (action.startsWith('get') || action.startsWith('retrieve')) {
-                                    readable = true;
-                                    readableProperties++;
+                            if (!excludeReadable) {
+                                for (let action of deviceActionsArr) {
+                                    if (action.startsWith('get') || action.startsWith('retrieve')) {
+                                        readable = true;
+                                        readableProperties++;
+                                    }
                                 }
                             }
 
@@ -971,6 +983,9 @@ function createSmarthomeStates(callback) {
                                         adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]) + ' / ' + JSON.stringify(obj));
                                     }
                                     if (obj.experimental) delete obj.experimental;
+                                    if (obj.common && obj.common.read && excludeReadable) {
+                                        obj.common.read = false;
+                                    }
                                     if (obj.native.supportedActions && obj.native.supportedActions.length) {
                                         obj.native.supportedActions.forEach((n) => {
                                             if (deviceActions[n] !== undefined) delete deviceActions[n];
@@ -1038,7 +1053,7 @@ function createSmarthomeStates(callback) {
                                 }
                             }
                         }
-                        if (readableProperties > 0) {
+                        if (readableProperties > 0 && !excludeReadable) {
                             shApplianceEntityMap[shDevice.applianceId].readable = true;
                             readableCounter++;
                             setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.#query', {common: {type: 'boolean', read: false, write: true, role: 'button'}}, false, function (applianceId, value) {
@@ -1370,7 +1385,7 @@ function createStates(callback) {
                             }
                         });
                     } else if (query.match(/^p[0-9]{4,7}$/)) {
-                        device.setTunein(query, 'podcast', (err, ret) => {
+                        device.setTunein(query, 'station', (err, ret) => {
                             if (!err) {
                                 adapter.setState(devId + '.Player.TuneIn-Station', query, true);
                                 schedulePlayerUpdate(device, 5000);
