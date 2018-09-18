@@ -558,8 +558,6 @@ function buildSmartHomeControlParameters(entityId, objs, changedParamName, chang
             value = obj.native.valueMap[value];
         }
         else {
-            console.log(JSON.stringify(obj));
-            console.log('1:' + value);
             if (value === undefined && obj.native.defaultValue !== undefined) {
                 value = obj.native.defaultValue;
             }
@@ -568,7 +566,6 @@ function buildSmartHomeControlParameters(entityId, objs, changedParamName, chang
             }
             value = String(value);
         }
-        console.log(value);
         return value;
     }
 
@@ -1385,7 +1382,7 @@ function createStates(callback) {
                             }
                         });
                     } else if (query.match(/^p[0-9]{4,7}$/)) {
-                        device.setTunein(query, 'station', (err, ret) => {
+                        device.setTunein(query, 'podcasts', (err, ret) => {
                             if (!err) {
                                 adapter.setState(devId + '.Player.TuneIn-Station', query, true);
                                 schedulePlayerUpdate(device, 5000);
