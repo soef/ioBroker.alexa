@@ -306,7 +306,7 @@ adapter.on('stateChange', (id, state) => {
     if (!state || state.ack) return;
     id = id.substr(adapter.namespace.length + 1);
 
-    if (state.from.startsWith('system.adapter.cloud') && id.endsWith('.Commands.speak')) {
+    if (state && state.from && state.from.startsWith('system.adapter.cloud') && id.endsWith('.Commands.speak')) {
         state.val = state.val.replace(/<[^>]+>/g, '').replace('/  /g', ' ');
     }
 
