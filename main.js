@@ -1374,21 +1374,21 @@ function createStates(callback) {
 
             if (device.capabilities.includes ('TUNE_IN')) {
                 setOrUpdateObject(devId + '.Player.TuneIn-Station', {common: {role: 'text'}}, '', function (device, query) {
-                    if (query.match(/^s[0-9]{4,6}$/)) {
+                    if (query.match(/^s[0-9]+$/)) {
                         device.setTunein(query, 'station', (err, ret) => {
                             if (!err) {
                                 adapter.setState(devId + '.Player.TuneIn-Station', query, true);
                                 schedulePlayerUpdate(device, 5000);
                             }
                         });
-                    } else if (query.match(/^p[0-9]{4,7}$/)) {
+                    } else if (query.match(/^p[0-9]+$/)) {
                         device.setTunein(query, 'show', (err, ret) => {
                             if (!err) {
                                 adapter.setState(devId + '.Player.TuneIn-Station', query, true);
                                 schedulePlayerUpdate(device, 5000);
                             }
                         });
-                    } else if (query.match(/^t[0-9]{4,11}$/)) {
+                    } else if (query.match(/^t[0-9]+$/)) {
                         device.setTunein(query, 'topic', (err, ret) => {
                             if (!err) {
                                 adapter.setState(devId + '.Player.TuneIn-Station', query, true);

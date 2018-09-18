@@ -113,7 +113,7 @@ States to control the Playback of the device and to see the current status and m
 
 | State name | meaning | value |
 | - | - | - |
-| TuneIn-Station | text field to put in a Station name to play this station on this device. Also it is possible to type in the station number (s123456) | Text input |
+| TuneIn-Station | text field to put in a Station name to play this station on this device. Also it is possible to type in the station number (s123456...), a show/podcast id (p1234567...) or a topic id (t123456789...) | Text input |
 | ContentType | text field to put in desired content to play on this device | Information |
 | controlForward | Button to trigger player "forward" command (30s) | Button |
 | controlNext | Button to trigger player "next" command | Button |
