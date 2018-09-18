@@ -1382,7 +1382,14 @@ function createStates(callback) {
                             }
                         });
                     } else if (query.match(/^p[0-9]{4,7}$/)) {
-                        device.setTunein(query, 'podcasts', (err, ret) => {
+                        device.setTunein(query, 'show', (err, ret) => {
+                            if (!err) {
+                                adapter.setState(devId + '.Player.TuneIn-Station', query, true);
+                                schedulePlayerUpdate(device, 5000);
+                            }
+                        });
+                    } else if (query.match(/^t[0-9]{4,11}$/)) {
+                        device.setTunein(query, 'topic', (err, ret) => {
                             if (!err) {
                                 adapter.setState(devId + '.Player.TuneIn-Station', query, true);
                                 schedulePlayerUpdate(device, 5000);
