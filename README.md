@@ -286,7 +286,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ### 1.1.0 (2018-09-18)
 * (Apollon77) Further optimizations to lower number of requests
-* (Apollon77) Experimental support for Playlist IDs (p1234567) in TunieIn-Station
+* (Apollon77) Experimental support for Playlist IDs (p1234567) in TuneIn-Station
 
 ### 1.0.1 (2018-09-16)
 * (Apollon77) fixes and important changes to make sure not too many requests are sent
