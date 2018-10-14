@@ -150,7 +150,7 @@ Reminder (Erinnerungen) settings for each device, if available.
 | enabled | Shows status of reminder and allows to change it: Activate reminder with true - Deactivate reminder with false, will be deleted some time after it automatically when disabled | true / false |
 | time| Time for reminder. Overwrite the time for existing reminder to set a new time | Time Input | In case you have an existing reminder you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set |
 | triggered | true if reminder is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the reminder time is reached | true / false |
-| new | Add a new reminder in the format <br> time(hh:mm);text<br> | Text Input <br>12:00;Remind me
+| new | Add a new reminder in the format <br> time(hh:mm),text<br> | Text Input <br>12:00,Remind me
 
 #### alexa2.0.echo-devices.Serialnumber.Routines.*
 Overview of routines set up in Alexa App. Self created routines have a serial number, Amazon shows as 'preconfigured:...' Each routine can be triggered with a button to run once.
