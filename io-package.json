@@ -92,6 +92,9 @@
             "echo dot",
             "echo show"
         ],
+        "authors": [
+          "Apollon77 <iobroker@fischer-ka.de>"
+        ],
         "mode": "daemon",
         "icon": "alexa.png",
         "materialize": true,
