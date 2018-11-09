@@ -6,6 +6,17 @@
         "desc": "Remote control for Alexa (Amazon Echo)",
         "platform": "Javascript/Node.js",
         "news": {
+            "1.1.1": {
+                "en": "Alexa Proxy problems fixed and some new devices added",
+                "de": "Alexa Proxy Probleme behoben und einige neue Geräte hinzugefügt",
+                "ru": "Проблемы с Alexa Proxy исправлены и добавлены новые устройства",
+                "pt": "Problemas de Alexa Proxy corrigidos e alguns novos dispositivos adicionados",
+                "nl": "Alexa Proxy-problemen opgelost en een aantal nieuwe apparaten toegevoegd",
+                "fr": "Problèmes Alexa Proxy résolus et ajout de nouveaux appareils",
+                "it": "Problemi di Alexa Proxy risolti e alcuni nuovi dispositivi aggiunti",
+                "es": "Se solucionaron los problemas de Alexa Proxy y se agregaron algunos dispositivos nuevos.",
+                "pl": "Naprawiono problemy z serwerem Alexa Proxy i dodano nowe urządzenia"
+            },
             "1.1.0": {
                 "en": "Bespoken, fixes, optimizations and enhanced smart home devices and group management and control",
                 "de": "Bespoken, Fixes, Optimierungen und erweiterte Smart-Home-Geräte und Gruppenmanagement und -steuerung",
