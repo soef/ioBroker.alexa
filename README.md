@@ -284,6 +284,13 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 1.1.3 (2018-11-17)
+* (Apollon77) optimize cookie handling again
+
+### 1.1.2 (2018-11-17)
+* (Apollon77) new devices
+* (Apollon77) make proxy for cookies work again
+
 ### 1.1.1 (2018-11-09)
 * (Apollon77) new devices
 * (Apollon77) make proxy for cookies work again
