@@ -307,6 +307,9 @@ function processObjectQueue(callback) {
 const adapter = utils.Adapter('alexa2');
 
 adapter.on('unload', (callback) => {
+    if (alexa) {
+        alexa.stop();
+    }
     callback && callback();
 });
 
@@ -367,14 +370,23 @@ adapter.on('ready', () => {
 });
 
 process.on('SIGINT', () => {
+    if (alexa) {
+        alexa.stop();
+    }
 });
 
 process.on('SIGTERM', () => {
+    if (alexa) {
+        alexa.stop();
+    }
 });
 
 process.on('uncaughtException', err => {
     if (adapter && adapter.log) {
         adapter.log.warn('Exception: ' + err);
+    }
+    if (alexa) {
+        alexa.stop();
     }
 });
 
@@ -1949,7 +1961,7 @@ function main() {
     }
 
     let options = {
-        cookie: adapter.config.cookie, // cookie if there is already one
+        cookie: adapter.config.cookieData, // cookie if there is already one
         email: adapter.config.email, // Amazon email for login
         password: adapter.config.password, // Amazon password for Login
         bluetooth: true, // fetch uetooth devices
@@ -2116,19 +2128,15 @@ function main() {
         if (err) {
             if (err.message === 'no csrf found') {
                 adapter.log.error('Error: no csrf found. Check configuration of email/password or cookie');
-            } if (err.message.includes('entered on Login Page via Proxy differs from set')) {
-                adapter.log.warn(err.message);
-                return;
             }
-            else {
-                let lines = err.message.split('You can try to get the cookie');
-                if (lines[1]) {
-                    lines[1] = 'You can try to get the cookie' + lines[1];
-                } else {
-                    lines = err.message.split('\n');
-                }
-                lines.forEach(line => adapter.log.error('Error: ' + line));
+            let lines = err.message.split('You can try to get the cookie');
+            if (lines[1]) {
+                lines[1] = 'You can try to get the cookie' + lines[1];
+            } else {
+                lines = err.message.split('\n');
             }
+            lines.forEach(line => adapter.log.error('Error: ' + line));
+
             adapter.setState('info.connection', false, true);
             return;
         }
@@ -2139,7 +2147,7 @@ function main() {
 
         if (alexa.cookie !== adapter.config.cookie) {
             adapter.log.info('Update cookie in adapter configuration ... restarting ...');
-            adapter.extendForeignObject('system.adapter.' + adapter.namespace, {native: {cookie: alexa.cookie, csrf: alexa.csrf}});
+            adapter.extendForeignObject('system.adapter.' + adapter.namespace, {native: {cookie: alexa.cookie, csrf: alexa.csrf, cookieData: alexa.cookieData}});
             return;
         }
 
