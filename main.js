@@ -1494,7 +1494,10 @@ function createStates(callback) {
                 for (let i in automationRoutines) {
                     if (!automationRoutines.hasOwnProperty(i)) continue;
                     setOrUpdateObject(devId + '.Routines.' + automationRoutines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'button', name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
-                    if (automationRoutines[i].utteranceWords) routineTriggerUtterances[automationRoutines[i].utteranceWords.toLowerCase()] = devId + '.Routines.' + automationRoutines[i].friendlyAutomationId;
+                    if (automationRoutines[i].utteranceWords) {
+                        if (!routineTriggerUtterances[device.serialNumber]) routineTriggerUtterances[device.serialNumber] = {};
+                        routineTriggerUtterances[device.serialNumber][automationRoutines[i].utteranceWords.toLowerCase()] = devId + '.Routines.' + automationRoutines[i].friendlyAutomationId;
+                    }
                 }
             }
         }
@@ -2094,8 +2097,8 @@ function main() {
 
     alexa.on('ws-device-activity', (activity) => {
         adapter.log.debug('device-activity: ' + JSON.stringify(activity));
-        if (activity.description.summary && routineTriggerUtterances[activity.description.summary.toLowerCase()]) {
-            adapter.setState(routineTriggerUtterances[activity.description.summary.toLowerCase()], true, true);
+        if (activity.description.summary && routineTriggerUtterances[activity.deviceSerialNumber] && routineTriggerUtterances[activity.deviceSerialNumber][activity.description.summary.toLowerCase()]) {
+            adapter.setState(routineTriggerUtterances[activity.deviceSerialNumber][activity.description.summary.toLowerCase()], true, true);
         }
         updateHistoryStates(activity);
     });
