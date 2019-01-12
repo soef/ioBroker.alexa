@@ -61,8 +61,8 @@
             });
 
             if (!settings) return;
-            if (settings.email === undefined) settings.email = '';
-            if (settings.password === undefined) settings.password = '';
+            settings.email = '';
+            settings.password = '';
             if (settings.cookie === undefined) settings.cookie = '';
             if (settings.alexaServiceHost === undefined) settings.alexaServiceHost = '';
             if (settings.userAgent === undefined) settings.userAgent = '';
@@ -205,22 +205,8 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col s12">
-                        <p class="translate title">auth</p>
-                        <p class="translate">auth_info</p>
-
-                        <div class="input-field col s12 m6">
-                            <input class="value validate" data-crypt="1" id="email" type="email"/>
-                            <label for="email" class="translate">Email</label>
-                            <span class="helper-text" data-error="invalid Email" data-success="valid Email"></span>
-                        </div>
-                        <div class="input-field col s12 m6">
-                            <input class="value" data-crypt="1" type="password" id="password"/>
-                            <label for="password" class="translate">password</label>
-                        </div>
-                    </div>
-                </div>
+                <input id="email" type="hidden"/>
+                <input type="hidden" id="password"/>
 
                 <div class="row">
                     <div class="col s12">

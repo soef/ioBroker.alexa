@@ -33,12 +33,14 @@ const musicControls = {
 };
 
 const commands = {
-    weather: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
-    traffic: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
-    flashbriefing: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
-    goodmorning: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
-    singasong: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
-    tellstory: { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}}
+    'weather': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'traffic': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'flashbriefing': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'goodmorning': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'singasong': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'tellstory': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'deviceStop': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'notification': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}}
 };
 
 const knownDeviceType = {
@@ -1441,6 +1443,7 @@ function createStates(callback) {
         if (device.deviceTypeDetails.commandSupport) {
             setOrUpdateObject(devId + '.Commands', {type: 'channel'});
             for (let c in commands) {
+                if (c === 'notification' && device.isMultiroomDevice) continue;
                 const obj = JSON.parse (JSON.stringify (commands[c]));
                 setOrUpdateObject(devId + '.Commands.' + c, {common: obj.common}, obj.val, function (device, command, value) {
                     iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, command, value, nextCallback));
@@ -1465,6 +1468,49 @@ function createStates(callback) {
                             if (!v || !v.length) return;
                             speakCommands.push({command: 'speak', value: v.trim()});
                         });
+                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakCommands.push({command: 'volume', value: speakVolumeReset});
+                        alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, nextCallback);
+                    });
+                });
+            }.bind(alexa, device));
+            setOrUpdateObject(devId + '.Commands.announcement', {common: { role: 'media.tts'}}, '', function (device, value) {
+                if (value === '') return;
+                iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                    let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
+                    if (!valueArr) valueArr= [];
+                    let speakVolume = valueArr[4] || iteratorDevice.speakVolume;
+                    value = valueArr[5] || value;
+                    if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
+                    adapter.getState('Echo-Devices.' + iteratorDevice.serialNumber + '.Player.volume', (err, state) => {
+                        let speakVolumeReset = 0;
+                        if (!err && state.val !== false && state.val !== null) {
+                            speakVolumeReset = state.val;
+                        }
+                        let speakCommands = [];
+                        if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume});
+                        value.split(';').forEach((v) => {
+                            if (!v || !v.length) return;
+                            speakCommands.push({command: 'announcement', value: v.trim()});
+                        });
+                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakCommands.push({command: 'volume', value: speakVolumeReset});
+                        alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, nextCallback);
+                    });
+                });
+            }.bind(alexa, device));
+            setOrUpdateObject(devId + '.Commands.ssml', {common: { role: 'media.tts'}}, '', function (device, value) {
+                if (value === '') return;
+                iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                    let speakVolume = iteratorDevice.speakVolume;
+                    adapter.getState('Echo-Devices.' + iteratorDevice.serialNumber + '.Player.volume', (err, state) => {
+                        let speakVolumeReset = 0;
+                        if (!err && state.val !== false && state.val !== null) {
+                            speakVolumeReset = state.val;
+                        }
+                        let speakCommands = [];
+                        if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume});
+
+                        speakCommands.push({command: 'ssml', value: value.trim()});
+
                         if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakCommands.push({command: 'volume', value: speakVolumeReset});
                         alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, nextCallback);
                     });

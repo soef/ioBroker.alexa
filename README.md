@@ -76,6 +76,10 @@ With Commands you can trigger some actions on your Alexa-Device. If you use thes
 | tellstory | Alexa tells a story | Button |
 | traffic | Traffic news | Button |
 | weather | Weather news | Button |
+| deviceStop | Stop all actions on device | Button |
+| notification | Send text notifcation to customer of the device | Text |
+| announcement | Play announcement (like speak but with Bing before text) | Text |
+| ssml | Speak SSML XML string | Text |
 
 Detailed information Speak: Type in here what you want Alexa to say. You can also adjust the volume of Alexa by giving a percentage before your text.
 Example: 10;Alexa is saying Alexa with 10% volume, while 100;Alexa is 100% volume.
@@ -283,6 +287,11 @@ If the automatic Cookie determination don't work or you do not trust the Adapter
 But be aware: The Cookie will time out after several time and then the adapter will stop working and disable itself. You then need to manually get a new cookie!
 
 ## Changelog
+
+### 2.1.0 (2019-01-13)
+* (Apollon77) cookie handling completely rewritten, no email/password anymore, only Proxy (still only from log)
+* (Apollon77) fixes routine triggering that triggered on wrong device sometimes
+* (Apollon77) added new commands "deviceStop", "announcement", "notification", and "ssml" (see documentation above) 
 
 ### 1.1.3 (2018-11-17)
 * (Apollon77) optimize cookie handling again
