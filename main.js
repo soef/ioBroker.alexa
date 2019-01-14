@@ -40,6 +40,9 @@ const commands = {
     'singasong': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'tellstory': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'deviceStop': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'calendarToday': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'calendarTomorrow': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'calendarNext': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'notification': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}}
 };
 
