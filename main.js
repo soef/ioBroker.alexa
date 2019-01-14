@@ -86,6 +86,8 @@ const knownDeviceType = {
     'AWZZ5CVHX2CD':     {name: 'Echo Show 2.Gen', commandSupport: true, icon: '/icons/echo_show2.png'}, // TUNE_IN,AUDIBLE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,LEMUR_ALPHA,GADGETS,FLASH_BRIEFING,SHARKNADO,PAIR_BT_SINK,PERSISTENT_CONNECTION,CHANGE_NAME,CUSTOM_ALARM_TONE,TUPLE_CATEGORY_B,EARCONS,I_HEART_RADIO,REMINDERS,SET_LOCALE,DREAM_TRAINING,POPTART,AMAZON_MUSIC,KINDLE_BOOKS,SALMON,FACTORY_RESET_DEVICE,SLEEP,GOLDFISH,ASCENDING_ALARM_VOLUME,SOUND_SETTINGS,ALLOW_LOG_UPLOAD,FAR_FIELD_WAKE_WORD,AUDIO_PLAYER,VOLUME_SETTING,VOICE_TRAINING,TUPLE,TIMERS_AND_ALARMS,SUPPORTS_SOFTWARE_VERSION,PANDORA,MICROPHONE
 };
 
+const unknownDeviceWarnings = {};
+
 let updateStateTimer;
 let updateHistoryTimer;
 const updatePlayerTimer = {};
@@ -227,7 +229,7 @@ function isEquivalent(a, b) {
 
     // If number of properties is different,
     // objects are not equivalent
-    if (aProps.length != bProps.length) {
+    if (aProps.length !== bProps.length) {
         //console.log('num props different: ' + JSON.stringify(aProps) + ' / ' + JSON.stringify(bProps));
         return false;
     }
@@ -351,8 +353,6 @@ adapter.on('objectChange', (id, object) => {
             if (typeof device.rename === 'function') device.rename(object.common.name);
         }
         return;
-    }
-    if (ar[2] === 'Smart-Home-Devices') {
     }
 });
 
@@ -893,14 +893,14 @@ function createSmarthomeStates(callback) {
                                         continue;
                                     }
                                     if (!shObjects.capabilityObjects[cap.interfaceName]) {
-                                        adapter.log.info('Smarthome-Device Capability ' + cap.interfaceName + ' unknown. Report to developer this and next log line from logfile on disk!');
-                                        adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
+                                        adapter.log.debug('Smarthome-Device Capability ' + cap.interfaceName + ' unknown. Report to developer this and next log line from logfile on disk!');
+                                        adapter.log.debug(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
                                         continue;
                                     }
                                     for (let capProp of cap.properties.supported) {
                                         if (!shObjects.capabilityObjects[cap.interfaceName][capProp.name]) {
-                                            adapter.log.info('Smarthome-Device Capability ' + cap.interfaceName + ' for ' + capProp.name + ' unknown. Report to developer this and next log line from logfile on disk!');
-                                            adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
+                                            adapter.log.debug('Smarthome-Device Capability ' + cap.interfaceName + ' for ' + capProp.name + ' unknown. Report to developer this and next log line from logfile on disk!');
+                                            adapter.log.debug(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
                                             continue;
                                         }
 
@@ -908,8 +908,8 @@ function createSmarthomeStates(callback) {
                                             if (typeof obj === 'string') continue;
                                             obj = JSON.parse(JSON.stringify(obj));
                                             if (obj.experimental) {
-                                                adapter.log.info('Smarthome-Device Capability ' + cap.interfaceName + ' for ' + capProp.name + '.' + obj.common.name + ' experimentally supported. Please check and report to developer this and next log line from logfile on disk if it works!!');
-                                                adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId] + ' / ' + JSON.stringify(obj)));
+                                                adapter.log.debug('Smarthome-Device Capability ' + cap.interfaceName + ' for ' + capProp.name + '.' + obj.common.name + ' experimentally supported. Please check and report to developer this and next log line from logfile on disk if it works!!');
+                                                adapter.log.debug(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId] + ' / ' + JSON.stringify(obj)));
                                             }
                                             if (obj.experimental) delete obj.experimental;
                                             if (obj.common && obj.common.read) {
@@ -928,11 +928,11 @@ function createSmarthomeStates(callback) {
                                                 const parameters = buildSmartHomeControlParameters(entityId, shObjects.capabilityObjects[cap.interfaceName][capProp.name], paramName, value);
                                                 if (!parameters.action || !behaviours[entityId] || ! behaviours[entityId].supportedOperations || !behaviours[entityId].supportedOperations.includes(parameters.action)) {
                                                     if (!parameters.action.startsWith('turn') && !parameters.action.startsWith('scene')) {
-                                                        adapter.log.info('Invalid action ' + parameters.action + ' provided for Capability ' + cap.interfaceName + ' for ' + obj.common.name + '. Report to developer this and next log line from logfile on disk!');
-                                                        adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[entityId]));
+                                                        adapter.log.debug('Invalid action ' + parameters.action + ' provided for Capability ' + cap.interfaceName + ' for ' + obj.common.name + '. Report to developer this and next log line from logfile on disk!');
+                                                        adapter.log.debug(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[entityId]));
                                                     }
                                                     else {
-                                                        adapter.log.info('Action ' + parameters.action + ' provided for Capability ' + cap.interfaceName + ' for ' + obj.common.name + ' is not supported, ignore');
+                                                        adapter.log.debug('Action ' + parameters.action + ' provided for Capability ' + cap.interfaceName + ' for ' + obj.common.name + ' is not supported, ignore');
                                                     }
                                                     return;
                                                 }
@@ -991,16 +991,16 @@ function createSmarthomeStates(callback) {
                                     ignoreSecondTurnOnOff = true;
                                 }
                                 if (!shObjects.actionObjects[action]) {
-                                    adapter.log.info('Smarthome-Device Action ' + action + ' unknown. Report to developer this and next log line from logfile on disk!');
-                                    adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
+                                    adapter.log.debug('Smarthome-Device Action ' + action + ' unknown. Report to developer this and next log line from logfile on disk!');
+                                    adapter.log.debug(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]));
                                     continue;
                                 }
                                 for (let obj of shObjects.actionObjects[action]) {
                                     if (typeof obj === 'string') continue;
                                     obj = JSON.parse(JSON.stringify(obj));
                                     if (obj.experimental) {
-                                        adapter.log.info('Smarthome-Device Action ' + action + '.' + obj.common.name + ' experimentally supported. Please check and report to developer this and next log line from logfile on disk if it works!!');
-                                        adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]) + ' / ' + JSON.stringify(obj));
+                                        adapter.log.debug('Smarthome-Device Action ' + action + '.' + obj.common.name + ' experimentally supported. Please check and report to developer this and next log line from logfile on disk if it works!!');
+                                        adapter.log.debug(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[shDevice.entityId]) + ' / ' + JSON.stringify(obj));
                                     }
                                     if (obj.experimental) delete obj.experimental;
                                     if (obj.common && obj.common.read && excludeReadable) {
@@ -1027,11 +1027,11 @@ function createSmarthomeStates(callback) {
 
                                         if (!behaviours[entityId] || ! behaviours[entityId].supportedOperations || !behaviours[entityId].supportedOperations.includes(parameters.action)) {
                                             if (!parameters.action.startsWith('turn') && !parameters.action.startsWith('scene')) {
-                                                adapter.log.info('Invalid action ' + parameters.action + ' provided for Action ' + action + '. Report to developer this and next log line from logfile on disk!');
-                                                adapter.log.info(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[entityId]));
+                                                adapter.log.debug('Invalid action ' + parameters.action + ' provided for Action ' + action + '. Report to developer this and next log line from logfile on disk!');
+                                                adapter.log.debug(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[entityId]));
                                             }
                                             else {
-                                                adapter.log.info('Action ' + parameters.action + ' provided for Action ' + action + ' for ' + obj.common.name + ' is not supported, ignore');
+                                                adapter.log.debug('Action ' + parameters.action + ' provided for Action ' + action + ' for ' + obj.common.name + ' is not supported, ignore');
                                             }
                                             return;
                                         }
@@ -1150,8 +1150,8 @@ function createSmarthomeStates(callback) {
                             const parameters = buildSmartHomeControlParameters(entityId, obj, paramName, value);
 
                             if (!behaviours[groupIdShort] || ! behaviours[groupIdShort].supportedOperations || !behaviours[groupIdShort].supportedOperations.includes(parameters.action)) {
-                                adapter.log.info('Invalid action ' + parameters.action + ' provided for Group-Action ' + parameters.action + '. Report to developer this and next log line from logfile on disk!');
-                                adapter.log.info(JSON.stringify(groupData) + ' / ' + JSON.stringify(behaviours[groupIdShort]));
+                                adapter.log.debug('Invalid action ' + parameters.action + ' provided for Group-Action ' + parameters.action + '. Report to developer this and next log line from logfile on disk!');
+                                adapter.log.debug(JSON.stringify(groupData) + ' / ' + JSON.stringify(behaviours[groupIdShort]));
                                 return;
                             }
 
@@ -1355,6 +1355,7 @@ function createStates(callback) {
 			setOrUpdateObject(devId + '.Player.mediaProgressPercent', {common: {name:'active media progress as percent', type:'number', role:'media.elapsed.percent', def: 0}});
 
             for (let c in playerControls) {
+                if (!playerControls.hasOwnProperty(c)) continue;
                 const obj = JSON.parse (JSON.stringify (playerControls[c]));
                 setOrUpdateObject(devId + '.Player.' + c, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
             }
@@ -1378,6 +1379,7 @@ function createStates(callback) {
 
             if (device.hasMusicPlayer) {
                 for (let c in musicControls) {
+                    if (!musicControls.hasOwnProperty(c)) continue;
                     const obj = JSON.parse (JSON.stringify (musicControls[c]));
                     setOrUpdateObject(devId + '.Player.' + c, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
                 }
@@ -1443,6 +1445,7 @@ function createStates(callback) {
         if (device.deviceTypeDetails.commandSupport) {
             setOrUpdateObject(devId + '.Commands', {type: 'channel'});
             for (let c in commands) {
+                if (!commands.hasOwnProperty(c)) continue;
                 if (c === 'notification' && device.isMultiroomDevice) continue;
                 const obj = JSON.parse (JSON.stringify (commands[c]));
                 setOrUpdateObject(devId + '.Commands.' + c, {common: obj.common}, obj.val, function (device, command, value) {
@@ -1539,7 +1542,7 @@ function createStates(callback) {
                 setOrUpdateObject(devId + '.Routines', {type: 'channel'});
                 for (let i in automationRoutines) {
                     if (!automationRoutines.hasOwnProperty(i)) continue;
-                    setOrUpdateObject(devId + '.Routines.' + automationRoutines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'button', name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
+                    setOrUpdateObject(devId + '.Routines.' + automationRoutines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'indicator', read: true, write: false, name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
                     if (automationRoutines[i].utteranceWords) {
                         if (!routineTriggerUtterances[device.serialNumber]) routineTriggerUtterances[device.serialNumber] = {};
                         routineTriggerUtterances[device.serialNumber][automationRoutines[i].utteranceWords.toLowerCase()] = devId + '.Routines.' + automationRoutines[i].friendlyAutomationId;
@@ -1621,8 +1624,11 @@ function createDeviceStates(serialOrName) {
     const commonDevice = {name: device._name};
     if (!deviceTypeDetails) {
         deviceTypeDetails =  {name: 'Unknown', commandSupport: false};
-        adapter.log.warn('Disabling some commands for device because of unknown type. Report to developer as GitHub issue with details for device. Please grab full next line pot. from logfile on disk if cutted');
-        adapter.log.warn('    Device-type:' + device.deviceType + ' (' + device.capabilities.join (',') + ')');
+        if (!unknownDeviceWarnings[device.deviceType]) {
+            adapter.log.info('Disabling some commands for device because of unknown type. Report to developer as GitHub issue with details for device. Please grab full next line pot. from logfile on disk if cutted');
+            adapter.log.info('    Device-type:' + device.deviceType + ' (' + device.capabilities.join(',') + ')');
+            unknownDeviceWarnings[device.deviceType] = true;
+        }
     } else if (deviceTypeDetails.icon) {
         commonDevice.icon = deviceTypeDetails.icon;
     }
@@ -2059,7 +2065,7 @@ function main() {
         adapter.log.debug('Alexa-Push-Connection Device Connection change for ' + data.deviceSerialNumber + ' -> ' + data.connectionState);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
-            adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+            adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
 
@@ -2071,7 +2077,7 @@ function main() {
         adapter.log.debug('Alexa-Push-Connection Bluetooth State change for ' + data.deviceSerialNumber + ' -> ' + data.bluetoothEvent);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
-            adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+            //adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
 
@@ -2082,7 +2088,7 @@ function main() {
         adapter.log.debug('Alexa-Push-Connection Audio Player State change for ' + data.deviceSerialNumber + ' -> ' + data.audioPlayerState);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
-            adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+            //adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
 
@@ -2097,7 +2103,7 @@ function main() {
         adapter.log.debug('Alexa-Push-Connection Media Queue change for ' + data.deviceSerialNumber + ' -> ' + data.changeType);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
-            adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+            //adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
 
@@ -2108,7 +2114,7 @@ function main() {
         adapter.log.debug('Alexa-Push-Connection Media change for ' + data.deviceSerialNumber);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
-            adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+            //adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
 
@@ -2119,7 +2125,7 @@ function main() {
         adapter.log.debug('Alexa-Push-Connection Device Volume change for ' + data.deviceSerialNumber + ' -> ' + data.volume + '/' + data.isMuted);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
-            adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+            //adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
 
@@ -2134,7 +2140,7 @@ function main() {
         adapter.log.debug('Alexa-Push-Connection Content Focus change for ' + data.deviceSerialNumber);
         let device = alexa.find(data.deviceSerialNumber);
         if (!device) {
-            adapter.log.warn('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+            //adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
 
@@ -2176,7 +2182,7 @@ function main() {
     alexa.init(options, err => {
         if (err) {
             if (err.message === 'no csrf found') {
-                adapter.log.error('Error: no csrf found. Check configuration of email/password or cookie');
+                adapter.log.error('Error: no csrf found. Check configuration of cookie');
             }
             let lines = err.message.split('You can try to get the cookie');
             if (lines[1]) {
