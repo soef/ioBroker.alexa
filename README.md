@@ -288,6 +288,10 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 2.2.0 (2019-01-xx)
+* (Apollon77) add new sequenceCommands "calendarNext", "calendarToday", "calendarTomorrow"
+* (Apollon77) fix wake word handling and history sanitizing
+
 ### 2.1.0 (2019-01-13)
 * (Apollon77) cookie handling completely rewritten, no email/password anymore, only Proxy (still only from log)
 * (Apollon77) fixes routine triggering that triggered on wrong device sometimes
