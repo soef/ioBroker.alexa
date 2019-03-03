@@ -1,56 +1,58 @@
 {
-    "name": "iobroker.alexa2",
-    "version": "2.2.0",
-    "description": "Remote control for Alexa (Amazon Echo)",
-    "author": {
-        "name": "Apollon77",
-        "email": "ingo@fischer-ka.de"
+  "name": "iobroker.alexa2",
+  "version": "2.2.0",
+  "description": "Remote control for Alexa (Amazon Echo)",
+  "author": {
+    "name": "Apollon77",
+    "email": "ingo@fischer-ka.de"
+  },
+  "contributors": [
+    {
+      "name": "soef",
+      "email": "soef@gmx.net"
     },
-    "contributors": [{
-            "name": "soef",
-            "email": "soef@gmx.net"
-        },
-        {
-            "name": "Apollon77",
-            "email": "ingo@fischer-ka.de"
-        }
-    ],
-    "homepage": "https://github.com/Apollon77/ioBroker.alexa2",
-    "license": "MIT",
-    "keywords": [
-        "sync",
-        "iobroker file",
-        "JetBrains",
-        "webstorm",
-        "file",
-        "debug",
-        "editor",
-        "ide"
-    ],
-    "engines": {
-        "node": ">=6.0.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Apollon77/ioBroker.alexa2"
-    },
-    "dependencies": {
-        "alexa-remote2": "^2.2.0",
-        "https": "^1.0.0",
-        "nearest-color": "^0.4.2",
-        "virtual-device-sdk": "^1.4.5"
-    },
-    "devDependencies": {
-        "gulp": "^4.0.0",
-        "mocha": "^5.2.0",
-        "chai": "^4.2.0"
-    },
-    "main": "main.js",
-    "scripts": {
-        "test": "node node_modules/mocha/bin/mocha"
-    },
-    "bugs": {
-        "url": "https://github.com/Apollon77/ioBroker.alexa2/issues"
-    },
-    "readmeFilename": "README.md"
+    {
+      "name": "Apollon77",
+      "email": "ingo@fischer-ka.de"
+    }
+  ],
+  "homepage": "https://github.com/Apollon77/ioBroker.alexa2",
+  "license": "MIT",
+  "keywords": [
+    "sync",
+    "iobroker file",
+    "JetBrains",
+    "webstorm",
+    "file",
+    "debug",
+    "editor",
+    "ide"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Apollon77/ioBroker.alexa2"
+  },
+  "dependencies": {
+    "alexa-remote2": "^2.2.0",
+    "https": "^1.0.0",
+    "nearest-color": "^0.4.2",
+    "virtual-device-sdk": "^1.4.5"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.0",
+    "mocha": "^6.0.2",
+    "chai": "^4.2.0",
+    "@iobroker/adapter-core": "^1.0.3"
+  },
+  "main": "main.js",
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha --exit"
+  },
+  "bugs": {
+    "url": "https://github.com/Apollon77/ioBroker.alexa2/issues"
+  },
+  "readmeFilename": "README.md"
 }
