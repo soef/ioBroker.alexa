@@ -9,7 +9,7 @@
 const Alexa = require('alexa-remote2');
 const path = require('path');
 const os = require('os');
-const utils = require(path.join(__dirname, 'lib', 'utils')); // Get common adapter utils
+const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const shObjects = require(path.join(__dirname, 'lib', 'smarthomedevices.js'));
 
 const bespokenVdSDK = require("virtual-device-sdk");
