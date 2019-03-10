@@ -1,6 +1,6 @@
 ![Logo](admin/alexa.png)
 # ioBroker.alexa2
-
+![Number of Installations](http://iobroker.live/badges/alexa2-installed.svg) ![Number of Installations](http://iobroker.live/badges/alexa2-stable.svg) 
 <!-- -->
 [![NPM version](https://img.shields.io/npm/v/iobroker.alexa2.svg)](https://www.npmjs.com/package/iobroker.alexa2)
 [![Build Status](https://travis-ci.org/Apollon77/ioBroker.alexa2.svg?branch=master)](https://travis-ci.org/Apollon77/ioBroker.alexa2)
