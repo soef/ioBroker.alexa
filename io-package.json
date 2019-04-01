@@ -3,7 +3,18 @@
         "name": "alexa2",
         "version": "2.2.0",
         "title": "Alexa2 (Amazon Echo)",
-        "desc": "Remote control for Alexa (Amazon Echo)",
+        "desc": {
+            "en": "Remote control for Alexa (Amazon Echo)",
+            "de": "Steuerung von Alexa (Amazon Echo)",
+            "ru": "Управление Alexa (Amazon Echo)",
+            "pt": "Controle remoto para Alexa (Amazon Echo)",
+            "nl": "Afstandsbediening voor Alexa (Amazon Echo)",
+            "fr": "Télécommande pour Alexa (Amazon Echo)",
+            "it": "Telecomando per Alexa (Amazon Echo)",
+            "es": "Control remoto para Alexa (Amazon Echo)",
+            "pl": "Pilot do Alexa (Amazon Echo)",
+            "zh-cn": "Alexa（Amazon Echo）的遥控器"
+        },
         "platform": "Javascript/Node.js",
         "news": {
             "2.1.0": {
