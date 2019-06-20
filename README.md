@@ -281,6 +281,15 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 2.3.0 (2019-06-21)
+* (Apollon77) adjust to current Amazon changes
+* (Apollon77) fix volume handling
+* (Apollon77) Add some more devices
+* (Apollon77) Logging reduced
+* (Apollon77) unknown devices get commands activated automatically
+* (Apollon77) remove Email/Password fields and add info about login to Admin screen (still needs to be polished, only Admin v3)
+* (Apollon77) detect App-Devices and remove them from the list because they are not usable in any way
+
 ### 2.2.0 (2019-01-xx)
 * (Apollon77) add new sequenceCommands "calendarNext", "calendarToday", "calendarTomorrow"
 * (Apollon77) fix wake word handling and history sanitizing

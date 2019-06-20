@@ -95,5 +95,29 @@ systemDictionary = {
         "it": "Bespoken Validation Token",
         "es": "Bespoken Validation Token",
         "pl": "Bespoken Validation Token",
+    },
+    "ProxyInfo": {
+        "en": "Please click here to <a href=\"%s\" target=\"_blank\">log in to your Amazon Account once</a> to activate the adapter connection to your Alexa devices.",
+        "de": "Klicken Sie hier, um <a href=\"%s\" target=\"_blank\">sich einmal in Ihrem Amazon-Konto anzumelden und</a> die Adapterverbindung zu Ihren Alexa-Geräten zu aktivieren.",
+        "ru": "Пожалуйста, нажмите здесь, чтобы <a href=\"%s\" target=\"_blank\">войти в свою учетную запись Amazon один раз,</a> чтобы активировать подключение адаптера к вашим устройствам Alexa.",
+        "pt": "Clique aqui para <a href=\"%s\" target=\"_blank\">fazer login na sua conta Amazon uma vez</a> para ativar a conexão do adaptador aos seus dispositivos Alexa.",
+        "nl": "Klik hier om <a href=\"%s\" target=\"_blank\">u één keer</a> aan te <a href=\"%s\" target=\"_blank\">melden bij uw Amazon-account</a> om de adapterverbinding met uw Alexa-apparaten te activeren.",
+        "fr": "Veuillez cliquer ici pour vous <a href=\"%s\" target=\"_blank\">connecter une fois à votre compte Amazon</a> afin d'activer la connexion de l'adaptateur à vos appareils Alexa.",
+        "it": "Fare clic qui per <a href=\"%s\" target=\"_blank\">accedere al proprio account Amazon una volta</a> per attivare la connessione dell'adattatore ai dispositivi Alexa.",
+        "es": "Haga clic aquí para <a href=\"%s\" target=\"_blank\">iniciar sesión en su cuenta de Amazon una vez</a> para activar la conexión del adaptador a sus dispositivos Alexa.",
+        "pl": "Kliknij tutaj, aby <a href=\"%s\" target=\"_blank\">zalogować się do konta Amazon raz,</a> aby aktywować połączenie adaptera z urządzeniami Alexa.",
+        "zh-cn": "请单击此处<a href=\"%s\" target=\"_blank\">登录您的Amazon帐户一次，</a>以激活与Alexa设备的适配器连接。"
+    },
+    "StatusInfo": {
+        "en": "Alexa-Cookies are up to date and last updated on %s",
+        "de": "Alexa-Cookies sind aktuell und zuletzt aktualisiert am %s ",
+        "ru": "Alexa-Cookies обновлены и обновлены до %s ",
+        "pt": "Os cookies Alexa estão atualizados e atualizados pela última vez em %s ",
+        "nl": "Alexa-cookies zijn up-to-date en voor het laatst bijgewerkt op %s ",
+        "fr": "Les cookies Alexa sont à jour et mis à jour pour la dernière fois le %s ",
+        "it": "Alexa-Cookies sono aggiornati e aggiornati per l'ultima volta su %s ",
+        "es": "Las cookies de Alexa están actualizadas y actualizadas por última vez en %s ",
+        "pl": "Alexa-Cookies są aktualne i ostatnio aktualizowane w %s ",
+        "zh-cn": "Alexa-Cookies是最新的，最后更新于％s"
     }
 };

@@ -16,22 +16,6 @@
 
         var secret;
 
-        function encrypt(key, value) {
-            var result = '';
-            for (var i = 0; i < value.length; ++i) {
-                result += String.fromCharCode(key[i % key.length].charCodeAt(0) ^ value.charCodeAt(i));
-            }
-            return result;
-        }
-
-        function decrypt(key, value) {
-            var result = '';
-            for (var i = 0; i < value.length; ++i) {
-                result += String.fromCharCode(key[i % key.length].charCodeAt(0) ^ value.charCodeAt(i));
-            }
-            return result;
-        }
-
         function ownFillSelectIPs(id, actualAddr, callback) {
             getIPs(function (ips) {
                 var str = '';
@@ -47,6 +31,30 @@
                 if (typeof callback === 'function') {
                     callback();
                 }
+            });
+        }
+
+        function sprintf(format) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            var i = 0;
+            return format.replace(/%s/g, function () {
+                return args[i++];
+            });
+        }
+
+        var statusUpdateTimeout = null;
+        function getStatusInfo() {
+            sendTo(null, 'getStatusInfo', null, function (response) {
+                var text;
+                if (response.result.proxyActive) {
+                    text = sprintf(systemDictionary['ProxyInfo'][systemLang], response.result.proxyUrl);
+                    if (statusUpdateTimeout) clearTimeout(statusUpdateTimeout);
+                    statusUpdateTimeout = setTimeout(getStatusInfo, 10000);
+                }
+                else {
+                    text = sprintf(systemDictionary['StatusInfo'][systemLang], response.result.cookieTimestamp);
+                }
+                $('#statusInfo').text(text);
             });
         }
 
@@ -91,7 +99,7 @@
                         showHideSettings();
                     });
                 } else {
-                    var val = $key.data('crypt') && settings[key] ? decrypt(secret, settings[key]) : settings[key];
+                    var val = settings[key];
                     $key.val(val).on('change', function () {
                         onChange();
                     }).on('keyup', function () {
@@ -108,6 +116,7 @@
             M.updateTextFields();
             $('select').select();
             onChange(false);
+            getStatusInfo();
         }
 
         function load(settings, onChange) {
@@ -131,8 +140,7 @@
                         obj[$this.attr('id')] = parseInt($this.val(), 10);
                         break;
                     default:
-                        obj[$this.attr('id')] =
-                            $this.data('crypt') && $this.val() ? encrypt(secret, $this.val()) : $this.val();
+                        obj[$this.attr('id')] = $this.val();
                         break;
                 }
             });
@@ -207,6 +215,12 @@
 
                 <input id="email" type="hidden"/>
                 <input type="hidden" id="password"/>
+
+                <div class="row">
+                    <div class="col s12">
+                        <b><span id="statusInfo"></span></b>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col s12">

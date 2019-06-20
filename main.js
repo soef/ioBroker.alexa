@@ -48,10 +48,12 @@ const commands = {
 
 const knownDeviceType = {
     'A10A33FOX2NUBK':   {name: 'Echo Spot', commandSupport: true, icon: 'icons/spot.png'},
+    'A10L5JEZTKKCZ8':   {name: 'Vobot-Clock', commandSupport: true}, // REMINDERS,VOLUME_SETTING,TUNE_IN,MUSIC_SKILL,TIMERS_AND_ALARMS,I_HEART_RADIO,PEONY,AUDIO_PLAYER,DEREGISTER_DEVICE,SLEEP,CHANGE_NAME,GOLDFISH,AUDIBLE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,KINDLE_BOOKS,PERSISTENT_CONNECTION,MICROPHONE,DREAM_TRAINING,AMAZON_MUSIC
     'A12GXV8XMS007S':   {name: 'FireTV', commandSupport: false, icon: 'icons/firetv.png'}, //? CHANGE_NAME,MICROPHONE,SUPPORTS_SOFTWARE_VERSION,ARTHUR_TARGET,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,ACTIVE_AFTER_FRO,FLASH_BRIEFING,VOLUME_SETTING
     'A15ERDAKK5HQQG':   {name: 'Sonos', commandSupport: false, icon: 'icons/sonos.png'}, //? AUDIO_PLAYER,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AMAZON_MUSIC,TUNE_IN,PANDORA,REMINDERS,I_HEART_RADIO,CHANGE_NAME,VOLUME_SETTING,PEONY
     'A17LGWINFBUTZZ':   {name: 'Anker Roav Viva Alexa', commandSupport: false}, // PERSISTENT_CONNECTION,PEONY,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,VOLUME_SETTING,MICROPHONE,AUDIO_PLAYER,AMAZON_MUSIC,TUNE_IN,I_HEART_RADIO,KINDLE_BOOKS,GOLDFISH,TIMERS_AND_ALARMS,DREAM_TRAINING,DEREGISTER_DEVICE,REMINDERS,SLEEP,AUDIBLE,CHANGE_NAME
     'A18O6U1UQFJ0XK':   {name: 'Echo Plus 2.Gen', commandSupport: true, icon: 'icons/echo_plus2.png'}, // PERSISTENT_CONNECTION,ACTIVE_AFTER_FRO,PAIR_BT_SINK,GADGETS,ASCENDING_ALARM_VOLUME,SET_LOCALE,MICROPHONE,VOLUME_SETTING,AUDIBLE,PAIR_BT_SOURCE,AUDIO_PLAYER,DREAM_TRAINING,FAR_FIELD_WAKE_WORD,UPDATE_WIFI,TUPLE,CUSTOM_ALARM_TONE,REQUIRES_OOBE_FOR_SETUP,EARCONS,KINDLE_BOOKS,SUPPORTS_SOFTWARE_VERSION,ALLOW_LOG_UPLOAD,POPTART,GOLDFISH,DEREGISTER_DEVICE,SLEEP,TAHOE_BYOD,VOICE_TRAINING,SOUND_SETTINGS,CHANGE_NAME,FLASH_BRIEFING,AUX_SETTINGS,REMINDERS,LEMUR_ALPHA,PAIR_REMOTE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TUPLE_CATEGORY_A,TIMERS_AND_ALARMS
+    'A1C66CX2XD756O':	{name: 'Fire HD 8', commandSupport: true, icon: 'icons/firetab.png'}, // MICROPHONE,ASX_TIME_ZONE,VOLUME_SETTING,SUPPORTS_SOFTWARE_VERSION,REMINDERS,PEONY,TIMERS_AND_ALARMS,PERSISTENT_CONNECTION
     'A1DL2DVDQVK3Q':	{name: 'Apps', commandSupport: false}, // (PEONY,VOLUME_SETTING)
     'A1H0CMF1XM0ZP4':	{name: 'Echo Dot/Bose', commandSupport: false}, // ??? // CHANGE_NAME,AUDIO_PLAYER,AMAZON_MUSIC,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,VOLUME_SETTING,LAMBDA // Bose: LAMBDA_DOWNCHANNEL,AUDIO_PLAYER,CHANGE_NAME,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AMAZON_MUSIC,PANDORA,PEONY,I_HEART_RADIO,TUNE_IN,REMINDERS,VOLUME_SETTING
     'A1J16TEDOYCZTN':	{name: 'Fire tab', commandSupport: true, icon: 'icons/firetab.png'}, // (PEONY,MICROPHONE,SUPPORTS_SOFTWARE_VERSION,VOLUME_SETTING,ASX_TIME_ZONE,REMINDERS)
@@ -71,6 +73,7 @@ const knownDeviceType = {
     'A2T0P32DY3F7VB':   {name: 'echosim.io', commandSupport: false},
     'A2TF17PFR55MTB':   {name: 'Apps', commandSupport: false}, // VOLUME_SETTING,MICROPHONE
     'A32DOYMUN6DTXA':   {name: 'Echo Dot 3.Gen', commandSupport: true, icon: '/icons/echo_dot3.png'}, // PAIR_BT_SINK,CUSTOM_ALARM_TONE,PAIR_REMOTE,TIMERS_AND_ALARMS,SUPPORTS_CONNECTED_HOME,TUNE_IN,SOUND_SETTINGS,DEREGISTER_DEVICE,SET_LOCALE,SLEEP,EARCONS,UPDATE_WIFI,PAIR_BT_SOURCE,SUPPORTS_SOFTWARE_VERSION,REQUIRES_OOBE_FOR_SETUP,MICROPHONE,SALMON,TAHOE_BYOD,CHANGE_NAME,FAR_FIELD_WAKE_WORD,VOLUME_SETTING,AUDIO_PLAYER,I_HEART_RADIO,REMINDERS,PERSISTENT_CONNECTION,AUDIBLE,GADGETS,SUPPORTS_CONNECTED_HOME_ALL,AMAZON_MUSIC,VOICE_TRAINING,FLASH_BRIEFING,DEREGISTER_FACTORY_RESET,GOLDFISH,PANDORA,ACTIVE_AFTER_FRO,DREAM_TRAINING,LEMUR_ALPHA,POPTART,KINDLE_BOOKS
+    'A378ND93PD0NC4':   {name: 'VR Radio', commandSupport: true}, // SLEEP,CHANGE_NAME,TUNE_IN,MICROPHONE,VOLUME_SETTING,DEREGISTER_DEVICE,GOLDFISH,AMAZON_MUSIC,KINDLE_BOOKS,REMINDERS,AUDIBLE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TIMERS_AND_ALARMS,PAIR_BT_SINK,PEONY,PERSISTENT_CONNECTION,AUDIO_PLAYER,I_HEART_RADIO,DREAM_TRAINING,MUSIC_SKILL
     'A37SHHQ3NUL7B5':   {name: 'Bose Homespeaker', commandSupport: false}, // MICROPHONE,AMAZON_MUSIC,AUDIO_PLAYER,SLEEP,PERSISTENT_CONNECTION,I_HEART_RADIO,AUDIBLE,TIMERS_AND_ALARMS,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,DREAM_TRAINING,TUNE_IN,VOLUME_SETTING,GOLDFISH,KINDLE_BOOKS,DEREGISTER_DEVICE,CHANGE_NAME
     'A38BPK7OW001EX':   {name: 'Raspberry Alexa', commandSupport: false, icon: 'icons/raspi.png'}, // TIMERS_AND_ALARMS,AMAZON_MUSIC,VOLUME_SETTING,AUDIBLE,I_HEART_RADIO,TUNE_IN,KINDLE_BOOKS,DEREGISTER_DEVICE,AUDIO_PLAYER,SLEEP,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,PERSISTENT_CONNECTION,DREAM_TRAINING,MICROPHONE,GOLDFISH,CHANGE_NAME,PEONY
     'A38EHHIB10L47V':	{name: 'Echo Dot', commandSupport: true, icon: '/icons/echo_dot.png'}, // ASCENDING_ALARM_VOLUME,MICROPHONE,REMINDERS,ASX_TIME_ZONE,VOLUME_SETTING,PEONY,SUPPORTS_SOFTWARE_VERSION)
@@ -78,6 +81,7 @@ const knownDeviceType = {
     'A3H674413M2EKB':   {name: 'echosim.io', commandSupport: false},
     'A3HF4YRA2L7XGC':   {name: 'Fire TV Cube', commandSupport: true}, // FLASH_BRIEFING,TUNE_IN,PANDORA,FAR_FIELD_WAKE_WORD,DREAM_TRAINING,AMAZON_MUSIC,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AUDIBLE,SUPPORTS_SOFTWARE_VERSION,PAIR_BT_SINK,CHANGE_NAME,AUDIO_PLAYER,VOICE_TRAINING,SET_LOCALE,EARCONS,SOUND_SETTINGS,SALMON,ACTIVE_AFTER_FRO,SLEEP,I_HEART_RADIO,TIMERS_AND_ALARMS,CUSTOM_ALARM_TONE,PERSISTENT_CONNECTION,ARTHUR_TARGET,KINDLE_BOOKS,REMINDERS
     'A3NPD82ABCPIDP':   {name: 'Sonos Beam', commandSupport: true, icon: 'icons/sonos.png'}, // AMAZON_MUSIC,CHANGE_NAME,AUDIO_PLAYER,KINDLE_BOOKS,SLEEP,DREAM_TRAINING,AUDIBLE,DEREGISTER_DEVICE,I_HEART_RADIO,GOLDFISH,PERSISTENT_CONNECTION,MICROPHONE,TIMERS_AND_ALARMS,PEONY,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,REMINDERS,VOLUME_SETTING,TUNE_IN
+    'A3R8XIAIU4HJAX':   {name: 'Echo Show', commandSupport: true}, // AMAZON_MUSIC,MUSIC_SKILL,CHANGE_NAME,I_HEART_RADIO,TUNE_IN,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,PEONY,REMINDERS,AUDIO_PLAYER,PANDORA,VOLUME_SETTING,LAMBDA_DOWNCHANNEL
     'A3R9S4ZZECZ6YL':   {name: 'Fire Tab HD 10', commandSupport: true, icon: 'icons/firetab.png'}, // ASX_TIME_ZONE,PEONY,VOLUME_SETTING,SUPPORTS_SOFTWARE_VERSION
     'A3S5BH2HU6VAYF':   {name: 'Echo Dot 2.Gen', commandSupport: true, icon: '/icons/echo_dot.png'}, // PAIR_BT_SINK,CUSTOM_ALARM_TONE,PAIR_REMOTE,TIMERS_AND_ALARMS,SUPPORTS_CONNECTED_HOME,TUNE_IN,SOUND_SETTINGS,DEREGISTER_DEVICE,SET_LOCALE,SLEEP,EARCONS,UPDATE_WIFI,PAIR_BT_SOURCE,SUPPORTS_SOFTWARE_VERSION,REQUIRES_OOBE_FOR_SETUP,MICROPHONE,SALMON,TAHOE_BYOD,CHANGE_NAME,FAR_FIELD_WAKE_WORD,VOLUME_SETTING,AUDIO_PLAYER,I_HEART_RADIO,REMINDERS,PERSISTENT_CONNECTION,AUDIBLE,GADGETS,SUPPORTS_CONNECTED_HOME_ALL,AMAZON_MUSIC,VOICE_TRAINING,FLASH_BRIEFING,DEREGISTER_FACTORY_RESET,GOLDFISH,PANDORA,ACTIVE_AFTER_FRO,DREAM_TRAINING,LEMUR_ALPHA,POPTART,KINDLE_BOOKS
     'A3SSG6GR8UU7SN':   {name: 'Echo Sub', commandSupport: true, icon: '/icons/echo_sub.png'}, // PERSISTENT_CONNECTION,ACTIVE_AFTER_FRO,SET_LOCALE,MICROPHONE,VOLUME_SETTING,AUDIBLE,AUDIO_PLAYER,UPDATE_WIFI,TUPLE,CUSTOM_ALARM_TONE,REQUIRES_OOBE_FOR_SETUP,EARCONS,KINDLE_BOOKS,TUPLE_CATEGORY_C,SUPPORTS_SOFTWARE_VERSION,ALLOW_LOG_UPLOAD,DEREGISTER_DEVICE,SLEEP,SOUND_SETTINGS,CHANGE_NAME,FLASH_BRIEFING,REMINDERS,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TIMERS_AND_ALARMS
@@ -85,11 +89,15 @@ const knownDeviceType = {
     'AB72C64C86AW2':    {name: 'Echo', commandSupport: true, icon: '/icons/echo.png'}, // PAIR_BT_SINK,CUSTOM_ALARM_TONE,PAIR_REMOTE,TIMERS_AND_ALARMS,SUPPORTS_CONNECTED_HOME,TUNE_IN,SOUND_SETTINGS,DEREGISTER_DEVICE,SET_LOCALE,SLEEP,EARCONS,UPDATE_WIFI,PAIR_BT_SOURCE,SUPPORTS_SOFTWARE_VERSION,REQUIRES_OOBE_FOR_SETUP,TUPLE_CATEGORY_B,MICROPHONE,SALMON,TAHOE_BYOD,CHANGE_NAME,FAR_FIELD_WAKE_WORD,VOLUME_SETTING,AUDIO_PLAYER,I_HEART_RADIO,REMINDERS,ASCENDING_ALARM_VOLUME,PERSISTENT_CONNECTION,AUDIBLE,GADGETS,SUPPORTS_CONNECTED_HOME_ALL,AMAZON_MUSIC,VOICE_TRAINING,FLASH_BRIEFING,DEREGISTER_FACTORY_RESET,GOLDFISH,TUPLE,PANDORA,ACTIVE_AFTER_FRO,DREAM_TRAINING,LEMUR_ALPHA,POPTART,KINDLE_BOOKS
     'ADVBD696BHNV5':    {name: 'Fire TV Stick V1', commandSupport: false, icon: 'icons/firetv.png'}, // ARTHUR_TARGET,SUPPORTS_SOFTWARE_VERSION,FLASH_BRIEFING,MICROPHONE,PERSISTENT_CONNECTION,CHANGE_NAME,ACTIVE_AFTER_FRO,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,VOLUME_SETTING
     'AILBSA2LNTOYL':    {name: 'reverb App', commandSupport: false, icon: 'icons/reverb.png'},
+    'AKOAGQTKAS9YB':    {name: 'Echo Connect', commandSupport: false}, // VOLUME_SETTING,PEONY,BLOWER,DEREGISTER_DEVICE,PERSISTENT_CONNECTION,NO_UNITS_AND_TIMEZONES,SUPPORTS_SOFTWARE_VERSION,UPDATE_WIFI,CHANGE_NAME,MICROPHONE
+    'AKPGW064GI9HE':    {name: 'Fire STick 4K', commandSupport: true, icon: '/icons/firetv.png'}, // SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,SUPPORTS_SOFTWARE_VERSION,CHANGE_NAME,PERSISTENT_CONNECTION,ARTHUR_TARGET,ACTIVE_AFTER_FRO,FLASH_BRIEFING,MICROPHONE,VOLUME_SETTING
     'AVE5HX13UR5NO':    {name: 'Logitech Zero Touch', commandSupport: false}, // SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TUNE_IN,MICROPHONE,AUDIO_PLAYER,TIMERS_AND_ALARMS,PEONY,GOLDFISH,DEREGISTER_DEVICE,AUDIBLE,AMAZON_MUSIC,PERSISTENT_CONNECTION,KINDLE_BOOKS,CHANGE_NAME,I_HEART_RADIO,SLEEP,DREAM_TRAINING,VOLUME_SETTING
     'AWZZ5CVHX2CD':     {name: 'Echo Show 2.Gen', commandSupport: true, icon: '/icons/echo_show2.png'}, // TUNE_IN,AUDIBLE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,LEMUR_ALPHA,GADGETS,FLASH_BRIEFING,SHARKNADO,PAIR_BT_SINK,PERSISTENT_CONNECTION,CHANGE_NAME,CUSTOM_ALARM_TONE,TUPLE_CATEGORY_B,EARCONS,I_HEART_RADIO,REMINDERS,SET_LOCALE,DREAM_TRAINING,POPTART,AMAZON_MUSIC,KINDLE_BOOKS,SALMON,FACTORY_RESET_DEVICE,SLEEP,GOLDFISH,ASCENDING_ALARM_VOLUME,SOUND_SETTINGS,ALLOW_LOG_UPLOAD,FAR_FIELD_WAKE_WORD,AUDIO_PLAYER,VOLUME_SETTING,VOICE_TRAINING,TUPLE,TIMERS_AND_ALARMS,SUPPORTS_SOFTWARE_VERSION,PANDORA,MICROPHONE
 };
 
 const unknownDeviceWarnings = {};
+
+let proxyUrl = null;
 
 let updateStateTimer;
 let updateHistoryTimer;
@@ -100,6 +108,7 @@ let musicProviders;
 let automationRoutines;
 let routineTriggerUtterances;
 const playerDevices = {};
+const appDevices = {};
 
 const lastPlayerState = {};
 const notificationTimer = {};
@@ -359,20 +368,11 @@ adapter.on('objectChange', (id, object) => {
     }
 });
 
-adapter.on('ready', () => {
-    adapter.getForeignObject('system.config', (err, obj) => {
-        if (obj && obj.native && obj.native.secret) {
-            //noinspection JSUnresolvedVariable
-            adapter.config.email = decrypt(obj.native.secret, adapter.config.email);
-            adapter.config.password = decrypt(obj.native.secret, adapter.config.password);
-        } else {
-            //noinspection JSUnresolvedVariable
-            adapter.config.email = decrypt('Zgfr56gFe87jJOM', adapter.config.email);
-            adapter.config.password = decrypt('Zgfr56gFe87jJOM', adapter.config.password);
-        }
-        loadExistingAccessories(main);
-    });
+adapter.on('message', function(msg) {
+    processMessage(msg);
 });
+
+adapter.on('ready', () => loadExistingAccessories(main));
 
 process.on('SIGINT', () => {
     if (alexa) {
@@ -403,6 +403,27 @@ function decrypt(key, value) {
     }
     return result;
 }
+
+function processMessage(msg) {
+    adapter.log.debug('Message: ' + JSON.stringify(msg));
+    switch (msg.command) {
+        case 'getStatusInfo':
+            getStatusInfo(msg);
+            break;
+    }
+}
+
+function getStatusInfo(msg) {
+    adapter.sendTo(msg.from, msg.command, {
+        result: {
+            proxyActive: proxyUrl !== null,
+            proxyUrl: proxyUrl,
+            cookieTimestamp: (adapter.config.cookieData && adapter.config.cookieData.tokenDate) ? adapter.formatDate(adapter.config.cookieData.tokenDate) : 0
+        },
+        error: null
+    }, msg.callback);
+}
+
 
 function setRequestResult(err, res) {
     if (!err) return;
@@ -719,6 +740,7 @@ function updateSmarthomeDeviceStates(res) {
         return value.val;
     }
 
+    if (!res) return;
     if (res && res.errors && res.errors.length === 1 && res.errors[0] && res.errors[0].code) {
         if (!res.deviceStates || res.deviceStates.length === 0) {
             adapter.setState('requestResult', res.errors[0].code, true);
@@ -1332,6 +1354,7 @@ function createStates(callback) {
         let devId = 'Echo-Devices.' + device.serialNumber;
 
         createDeviceStates(device);
+        if (device.ignore) return;
 
         if (device.isControllable) {
             playerDevices[device.serialNumber] = true;
@@ -1623,12 +1646,26 @@ function createDeviceStates(serialOrName) {
     let device = alexa.find(serialOrName);
     let devId = 'Echo-Devices.' + device.serialNumber;
 
+    if (device.appDeviceList.length) {
+        device.appDeviceList.forEach((app) => {
+            appDevices[app.serialNumber] = app;
+            appDevices[app.serialNumber].ownerDevice = device.serialNumber;
+        });
+    }
+
+    if (device.deviceType === 'A2IVLV5VM2W81') { // Apps, ignore them!
+        adapter.log.debug('Ignore Device ' + device.serialNumber + ' because is App-Type');
+        device.deviceTypeDetails = {ignore: true, name: 'App', commandSupport: false};
+        return;
+    }
+
     let deviceTypeDetails = knownDeviceType[device.deviceType];
     const commonDevice = {name: device._name};
     if (!deviceTypeDetails) {
-        deviceTypeDetails =  {name: 'Unknown', commandSupport: false};
+        deviceTypeDetails =  {name: 'Unknown', commandSupport: true};
         if (!unknownDeviceWarnings[device.deviceType]) {
-            adapter.log.info('Disabling some commands for device because of unknown type. Report to developer as GitHub issue with details for device. Please grab full next line pot. from logfile on disk if cutted');
+            adapter.log.info('Unknown Device, but enabling commands, Try it and report back if commands work.');
+            adapter.log.info('Report to developer as GitHub issue with details for device. Please grab full next line pot. from logfile on disk if cutted');
             adapter.log.info('    Device-type:' + device.deviceType + ' (' + device.capabilities.join(',') + ')');
             unknownDeviceWarnings[device.deviceType] = true;
         }
@@ -1859,10 +1896,10 @@ function updatePlayerStatus(serialOrName, callback) {
 
                 if (device.capabilities.includes ('VOLUME_SETTING')) {
                     let volume = null;
-                    if (resMedia.volume !== null) {
+                    if (resMedia && resMedia.volume !== undefined && resMedia.volume !== null) {
                         volume = ~~resMedia.volume;
                     }
-                    else if (resPlayer.playerInfo && resPlayer.playerInfo.volume && resPlayer.playerInfo.volume && resPlayer.playerInfo.volume.volume !== null) {
+                    else if (resPlayer.playerInfo && resPlayer.playerInfo.volume && resPlayer.playerInfo.volume.volume !== null) {
                         volume = ~~resPlayer.playerInfo.volume.volume;
                     }
                     if (volume === 0 && device.isMultiroomDevice) volume = null;
@@ -2020,8 +2057,8 @@ function main() {
 
     let options = {
         cookie: adapter.config.cookieData, // cookie if there is already one
-        email: adapter.config.email, // Amazon email for login
-        password: adapter.config.password, // Amazon password for Login
+        email: '', // Amazon email for login
+        password: '', // Amazon password for Login
         bluetooth: true, // fetch uetooth devices
         notifications: true, // fetch notifications (false because not works so far)
         userAgent: adapter.config.userAgent, // overwrite userAgent
@@ -2067,7 +2104,7 @@ function main() {
     alexa.on('ws-device-connection-change', (data) => {
         adapter.log.debug('Alexa-Push-Connection Device Connection change for ' + data.deviceSerialNumber + ' -> ' + data.connectionState);
         let device = alexa.find(data.deviceSerialNumber);
-        if (!device) {
+        if (!device && !appDevices[data.deviceSerialNumber]) {
             adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
@@ -2079,8 +2116,8 @@ function main() {
     alexa.on('ws-bluetooth-state-change', (data) => {
         adapter.log.debug('Alexa-Push-Connection Bluetooth State change for ' + data.deviceSerialNumber + ' -> ' + data.bluetoothEvent);
         let device = alexa.find(data.deviceSerialNumber);
-        if (!device) {
-            //adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+        if (!device && !appDevices[data.deviceSerialNumber]) {
+            //adapter.log.info('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
 
@@ -2090,8 +2127,8 @@ function main() {
     alexa.on('ws-audio-player-state-change', (data) => {
         adapter.log.debug('Alexa-Push-Connection Audio Player State change for ' + data.deviceSerialNumber + ' -> ' + data.audioPlayerState);
         let device = alexa.find(data.deviceSerialNumber);
-        if (!device) {
-            //adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+        if (!device && !appDevices[data.deviceSerialNumber]) {
+            //adapter.log.info('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
 
@@ -2105,8 +2142,8 @@ function main() {
     alexa.on('ws-media-queue-change', (data) => {
         adapter.log.debug('Alexa-Push-Connection Media Queue change for ' + data.deviceSerialNumber + ' -> ' + data.changeType);
         let device = alexa.find(data.deviceSerialNumber);
-        if (!device) {
-            //adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+        if (!device && !appDevices[data.deviceSerialNumber]) {
+            //adapter.log.info('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
 
@@ -2124,11 +2161,22 @@ function main() {
         schedulePlayerUpdate(device.serialNumber, 1000);
     });
 
+    alexa.on('ws-media-progress-change', (data) => {
+        adapter.log.debug('Alexa-Push-Connection Media Progress change for ' + data.deviceSerialNumber);
+        let device = alexa.find(data.deviceSerialNumber);
+        if (!device && !appDevices[data.deviceSerialNumber]) {
+            //adapter.log.info('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+            return;
+        }
+
+        schedulePlayerUpdate(device.serialNumber, 1000);
+    });
+
     alexa.on('ws-volume-change', (data) => {
         adapter.log.debug('Alexa-Push-Connection Device Volume change for ' + data.deviceSerialNumber + ' -> ' + data.volume + '/' + data.isMuted);
         let device = alexa.find(data.deviceSerialNumber);
-        if (!device) {
-            //adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+        if (!device && !appDevices[data.deviceSerialNumber]) {
+            //adapter.log.info('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
 
@@ -2142,8 +2190,8 @@ function main() {
     alexa.on('ws-content-focus-change', (data) => {
         adapter.log.debug('Alexa-Push-Connection Content Focus change for ' + data.deviceSerialNumber);
         let device = alexa.find(data.deviceSerialNumber);
-        if (!device) {
-            //adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
+        if (!device && !appDevices[data.deviceSerialNumber]) {
+            //adapter.log.info('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
 
@@ -2190,6 +2238,7 @@ function main() {
             let lines = err.message.split('You can try to get the cookie');
             if (lines[1]) {
                 lines[1] = 'You can try to get the cookie' + lines[1];
+                proxyUrl = lines[1].substring(lines[1].indexOf('http://'), lines[1].lastIndexOf('/') + 1);
             } else {
                 lines = err.message.split('\n');
             }
@@ -2205,7 +2254,15 @@ function main() {
 
         if (alexa.cookie !== adapter.config.cookie) {
             adapter.log.info('Update cookie in adapter configuration ... restarting ...');
-            adapter.extendForeignObject('system.adapter.' + adapter.namespace, {native: {cookie: alexa.cookie, csrf: alexa.csrf, cookieData: alexa.cookieData}});
+            adapter.extendForeignObject('system.adapter.' + adapter.namespace, {
+                native: {
+                    cookie: alexa.cookie,
+                    csrf: alexa.csrf,
+                    cookieData: alexa.cookieData,
+                    email: "",
+                    password: ""
+                }
+            });
             return;
         }
 
