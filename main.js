@@ -1657,7 +1657,8 @@ function createDeviceStates(serialOrName) {
 
     if (device.deviceType === 'A2IVLV5VM2W81') { // Apps, ignore them!
         adapter.log.debug('Ignore Device ' + device.serialNumber + ' because is App-Type');
-        device.deviceTypeDetails = {ignore: true, name: 'App', commandSupport: false};
+        device.ignore = true;
+        device.deviceTypeDetails = {name: 'App', commandSupport: false};
         return;
     }
 
@@ -1847,7 +1848,7 @@ function updateNotificationStates(serialOrName, callback) {
     alexa.initNotifications(() => {
         Object.keys(alexa.serialNumbers).forEach ((n) => {
             let device = alexa.find(n);
-            if (serialOrName && serialOrName !== device) return;
+            if ((serialOrName && serialOrName !== device) || (device && device.ignore)) return;
 
             createNotificationStates(device);
         });
