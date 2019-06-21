@@ -281,7 +281,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 2.3.0 (2019-06-21)
+### 2.3.1 (2019-06-21)
 * (Apollon77) adjust to current Amazon changes
 * (Apollon77) fix volume handling
 * (Apollon77) Add some more devices
