@@ -57,6 +57,7 @@ const knownDeviceType = {
     'A1DL2DVDQVK3Q':	{name: 'Apps', commandSupport: false}, // (PEONY,VOLUME_SETTING)
     'A1H0CMF1XM0ZP4':	{name: 'Echo Dot/Bose', commandSupport: false}, // ??? // CHANGE_NAME,AUDIO_PLAYER,AMAZON_MUSIC,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,VOLUME_SETTING,LAMBDA // Bose: LAMBDA_DOWNCHANNEL,AUDIO_PLAYER,CHANGE_NAME,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AMAZON_MUSIC,PANDORA,PEONY,I_HEART_RADIO,TUNE_IN,REMINDERS,VOLUME_SETTING
     'A1J16TEDOYCZTN':	{name: 'Fire tab', commandSupport: true, icon: 'icons/firetab.png'}, // (PEONY,MICROPHONE,SUPPORTS_SOFTWARE_VERSION,VOLUME_SETTING,ASX_TIME_ZONE,REMINDERS)
+    'A1JJ0KFC4ZPNJ3':	{name: 'Echo Input', commandSupport: true, icon: 'icons/echo.png'}, // (ACTIVE_AFTER_FRO,TIMERS_AND_ALARMS,SET_LOCALE,TAHOE_BYOD,AUDIBLE,FLASH_BRIEFING,I_HEART_RADIO,GOLDFISH,DREAM_TRAINING,KINDLE_BOOKS,REMINDERS,GADGETS,ALLOW_LOG_UPLOAD,SOUND_SETTINGS,FAR_FIELD_WAKE_WORD,PAIR_BT_SINK,DEREGISTER_DEVICE,AMAZON_MUSIC,LEMUR_ALPHA,VOICE_TRAINING,MICROPHONE,CHANGE_NAME,SUPPORTS_SOFTWARE_VERSION,SALMON,PAIR_BT_SOURCE,CUSTOM_ALARM_TONE,SLEEP,PANDORA,AUDIO_PLAYER,ASCENDING_ALARM_VOLUME,DS_VOLUME_SETTING,POPTART,PERSISTENT_CONNECTION,REQUIRES_OOBE_FOR_SETUP,VOLUME_SETTING,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,MUSIC_SKILL,UPDATE_WIFI,EARCONS,TUNE_IN,SUPPORT_CALENDAR_ALERT)
     'A1NL4BVLQ4L3N3':	{name: 'Echo Show', commandSupport: true, icon: 'icons/echo_show.png'}, // PAIR_BT_SINK,CUSTOM_ALARM_TONE,TIMERS_AND_ALARMS,TUNE_IN,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,SOUND_SETTINGS,SET_LOCALE,SLEEP,EARCONS,SHARKNADO,SUPPORTS_SOFTWARE_VERSION,TUPLE_CATEGORY_B,MICROPHONE,SALMON,ALLOW_LOG_UPLOAD,CHANGE_NAME,FAR_FIELD_WAKE_WORD,VOLUME_SETTING,AUDIO_PLAYER,I_HEART_RADIO,REMINDERS,ASCENDING_ALARM_VOLUME,PERSISTENT_CONNECTION,AUDIBLE,GADGETS,AMAZON_MUSIC,VOICE_TRAINING,FLASH_BRIEFING,GOLDFISH,FACTORY_RESET_DEVICE,TUPLE,PANDORA,DREAM_TRAINING,LEMUR_ALPHA,POPTART,KINDLE_BOOKS
     'A1RTAM01W29CUP':   {name: 'Windows App', commandSupport: false}, // FLASH_BRIEFING,AUDIO_PLAYER,VOLUME_SETTING,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,SET_LOCALE,SOUND_SETTINGS,PERSISTENT_CONNECTION,KINDLE_BOOKS,CHANGE_NAME,TUNE_IN,TIMERS_AND_ALARMS,AUDIBLE,AMAZON_MUSIC,MICROPHONE,I_HEART_RADIO,EARCONS,REMINDERS,SLEEP,DREAM_TRAINING,DEREGISTER_DEVICE
     'A1X7HJX9QL16M5':	{name: 'Bespoken.io', commandSupport: false},
@@ -91,6 +92,7 @@ const knownDeviceType = {
     'AILBSA2LNTOYL':    {name: 'reverb App', commandSupport: false, icon: 'icons/reverb.png'},
     'AKOAGQTKAS9YB':    {name: 'Echo Connect', commandSupport: false}, // VOLUME_SETTING,PEONY,BLOWER,DEREGISTER_DEVICE,PERSISTENT_CONNECTION,NO_UNITS_AND_TIMEZONES,SUPPORTS_SOFTWARE_VERSION,UPDATE_WIFI,CHANGE_NAME,MICROPHONE
     'AKPGW064GI9HE':    {name: 'Fire STick 4K', commandSupport: true, icon: '/icons/firetv.png'}, // SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,SUPPORTS_SOFTWARE_VERSION,CHANGE_NAME,PERSISTENT_CONNECTION,ARTHUR_TARGET,ACTIVE_AFTER_FRO,FLASH_BRIEFING,MICROPHONE,VOLUME_SETTING
+    'AVD3HM0HOJAAL':     {name: 'Sonos One 2.Gen', commandSupport: true, icon: 'icons/sonos.png'}, // CHANGE_NAME,DEREGISTER_DEVICE,DREAM_TRAINING,PEONY,AMAZON_MUSIC,MICROPHONE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TIMERS_AND_ALARMS,VOLUME_SETTING,AUDIBLE,KINDLE_BOOKS,SLEEP,AUDIO_PLAYER,GOLDFISH,I_HEART_RADIO,TUNE_IN,MUSIC_SKILL,PERSISTENT_CONNECTION,REMINDERS
     'AVE5HX13UR5NO':    {name: 'Logitech Zero Touch', commandSupport: false}, // SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TUNE_IN,MICROPHONE,AUDIO_PLAYER,TIMERS_AND_ALARMS,PEONY,GOLDFISH,DEREGISTER_DEVICE,AUDIBLE,AMAZON_MUSIC,PERSISTENT_CONNECTION,KINDLE_BOOKS,CHANGE_NAME,I_HEART_RADIO,SLEEP,DREAM_TRAINING,VOLUME_SETTING
     'AWZZ5CVHX2CD':     {name: 'Echo Show 2.Gen', commandSupport: true, icon: '/icons/echo_show2.png'}, // TUNE_IN,AUDIBLE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,LEMUR_ALPHA,GADGETS,FLASH_BRIEFING,SHARKNADO,PAIR_BT_SINK,PERSISTENT_CONNECTION,CHANGE_NAME,CUSTOM_ALARM_TONE,TUPLE_CATEGORY_B,EARCONS,I_HEART_RADIO,REMINDERS,SET_LOCALE,DREAM_TRAINING,POPTART,AMAZON_MUSIC,KINDLE_BOOKS,SALMON,FACTORY_RESET_DEVICE,SLEEP,GOLDFISH,ASCENDING_ALARM_VOLUME,SOUND_SETTINGS,ALLOW_LOG_UPLOAD,FAR_FIELD_WAKE_WORD,AUDIO_PLAYER,VOLUME_SETTING,VOICE_TRAINING,TUPLE,TIMERS_AND_ALARMS,SUPPORTS_SOFTWARE_VERSION,PANDORA,MICROPHONE
 };
@@ -2108,6 +2110,7 @@ function main() {
             adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
+        if (!device) return;
 
         let devId = 'Echo-Devices.' + device.serialNumber;
         adapter.setState(devId + '.online', data.connectionState === 'ONLINE', true);
@@ -2120,6 +2123,7 @@ function main() {
             //adapter.log.info('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
+        if (!device) return;
 
         updateBluetoothStatus(device);
     });
@@ -2131,6 +2135,7 @@ function main() {
             //adapter.log.info('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
+        if (!device) return;
 
         if (data.audioPlayerState === 'INTERRUPTED' && lastPlayerState[device.serialNumber] && lastPlayerState[device.serialNumber].timeout) {
             clearTimeout(lastPlayerState[device.serialNumber].timeout);
@@ -2146,6 +2151,7 @@ function main() {
             //adapter.log.info('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
+        if (!device) return;
 
         schedulePlayerUpdate(device.serialNumber, 1000);
     });
@@ -2157,6 +2163,7 @@ function main() {
             //adapter.log.debug('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
+        if (!device) return;
 
         schedulePlayerUpdate(device.serialNumber, 1000);
     });
@@ -2168,6 +2175,7 @@ function main() {
             //adapter.log.info('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
+        if (!device) return;
 
         schedulePlayerUpdate(device.serialNumber, 1000);
     });
@@ -2179,6 +2187,7 @@ function main() {
             //adapter.log.info('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
+        if (!device) return;
 
         let devId = 'Echo-Devices.' + device.serialNumber;
         let muted = !!data.isMuted;
@@ -2194,6 +2203,7 @@ function main() {
             //adapter.log.info('Please Restart Adapter. Non-Existing Device was returned: ' + data.deviceSerialNumber);
             return;
         }
+        if (!device) return;
 
         schedulePlayerUpdate(device.serialNumber, 1000);
     });
