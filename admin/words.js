@@ -119,5 +119,17 @@ systemDictionary = {
         "es": "Las cookies de Alexa están actualizadas y actualizadas por última vez en %s ",
         "pl": "Alexa-Cookies są aktualne i ostatnio aktualizowane w %s ",
         "zh-cn": "Alexa-Cookies是最新的，最后更新于％s"
+    },
+    "proxyOverrideIp": {
+        "en": "External Container-IP (Docker)",
+        "de": "Externe Container-IP (Docker)",
+        "ru": "Внешний контейнер-IP (Docker)",
+        "pt": "Container-IP Externo (Docker)",
+        "nl": "External Container-IP (Docker)",
+        "fr": "IP de conteneur externe (Docker)",
+        "it": "External Container-IP (Docker)",
+        "es": "Contenedor externo-IP (Docker)",
+        "pl": "Zewnętrzny kontener-IP (Docker)",
+        "zh-cn": "外部容器-IP（Docker）"
     }
 };

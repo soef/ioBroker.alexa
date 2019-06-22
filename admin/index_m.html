@@ -79,6 +79,7 @@
             if (settings.updateStateInterval === undefined) settings.updateStateInterval = 0;
             if (settings.updateHistoryInterval === undefined) settings.updateHistoryInterval = 0;
             if (settings.proxyOwnIp === undefined) settings.proxyOwnIp = '';
+            if (settings.proxyOverrideIp === undefined) settings.proxyOverrideIp = '';
             if (settings.proxyPort === undefined) settings.proxyPort = 0;
             if (settings.proxyListenBind === undefined) settings.proxyListenBind = '';
             if (settings.usePushConnection === undefined) settings.usePushConnection = false;
@@ -332,6 +333,11 @@
                         <div class="input-field col s12">
                             <select id="proxyListenBind" class="value"></select>
                             <label for="proxyListenBind" class="translate">proxyListenBind</label>
+                        </div>
+
+                        <div class="input-field col s12 m6">
+                            <input id="proxyOverrideIp" class="value" type="text"/>
+                            <label for="proxyOverrideIp" class="translate">proxyOverrideIp</label>
                         </div>
 
                     </div>

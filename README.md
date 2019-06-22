@@ -281,6 +281,9 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 2.4.0 (2019-06-23)
+* (Apollon77) Allow to specify an external docker container IP to override Proxy-IP 
+
 ### 2.3.3 (2019-06-21/22)
 * (Apollon77) adjust to current Amazon changes
 * (Apollon77) fix volume handling

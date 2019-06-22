@@ -2058,6 +2058,12 @@ function main() {
         }
     }
 
+    let proxyOwnIp = adapter.config.proxyOwnIp;
+    if (adapter.config.proxyOverrideIp) {
+        proxyOwnIp = adapter.config.proxyOverrideIp;
+        adapter.log.info('Use Override IP ' + adapter.config.proxyOverrideIp + ' for Proxy');
+    }
+
     let options = {
         cookie: adapter.config.cookieData, // cookie if there is already one
         email: '', // Amazon email for login
@@ -2070,7 +2076,7 @@ function main() {
         alexaServiceHost: adapter.config.alexaServiceHost, // overwrite alexa Servcie Host
         logger: adapter.log.debug, // Logger with detailed debug only in debug
         setupProxy: true,          // optional: should the library setup a proxy to get cookie when automatic way did not worked? Default false!
-        proxyOwnIp: adapter.config.proxyOwnIp, // required if proxy enabled: provide own IP or hostname to later access the proxy. needed to setup all rewriting and proxy stuff internally
+        proxyOwnIp: proxyOwnIp, // required if proxy enabled: provide own IP or hostname to later access the proxy. needed to setup all rewriting and proxy stuff internally
         proxyPort: adapter.config.proxyPort,           // optional: use this port for the proxy, default is 0 means random port is selected
         proxyListenBind: adapter.config.proxyListenBind,// optional: set this to bind the proxy to a special IP, default is '0.0.0.0'
         proxyLogLevel: null,      // optional: Loglevel of Proxy, default 'warn'
