@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "2.4.1",
+        "version": "2.4.2",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "2.4.2": {
+                "en": "Docker usage for Amazon-Login optimized and much more, see Changelog. Admin 2.x no longer supported!",
+                "de": "Docker-Nutzung für Amazon-Login optimiert und vieles mehr, siehe Changelog. Admin 2.x wird nicht mehr unterstützt!",
+                "ru": "Оптимизировано использование Docker для Amazon-Login и многое другое, см. Журнал изменений. Admin 2.x больше не поддерживается!",
+                "pt": "Uso do Docker para o Amazon-Login otimizado e muito mais, consulte Changelog. Admin 2.x não é mais suportado!",
+                "nl": "Docker-gebruik voor Amazon-Login geoptimaliseerd en nog veel meer, zie Changelog. Admin 2.x wordt niet langer ondersteund!",
+                "fr": "Utilisation de Docker pour Amazon-Login optimisé et bien plus encore, voir Changelog. Admin 2.x n'est plus supporté!",
+                "it": "Utilizzo Docker per Amazon-Login ottimizzato e molto altro, vedi Changelog. Admin 2.x non è più supportato!",
+                "es": "Uso de Docker para Amazon-Login optimizado y mucho más, vea Changelog. Admin 2.x ya no es compatible!",
+                "pl": "Zoptymalizowane użycie Dockera dla Amazon-Login i wiele więcej, zobacz Dziennik zmian. Admin 2.x nie jest już obsługiwany!",
+                "zh-cn": "适用于Amazon-Login的Docker使用优化等等，请参阅Changelog。 Admin 2.x不再受支持！"
+            },
             "2.3.3": {
                 "en": "Auto-Amazon-Cookie-Renewal and lot of new Features and fixes. For Details see Changelog!",
                 "de": "Auto-Amazon-Cookie-Erneuerung und viele neue Funktionen und Fehlerbehebungen. Für Details siehe Changelog!",
