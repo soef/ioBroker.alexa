@@ -19,11 +19,16 @@
         function ownFillSelectIPs(id, actualAddr, callback) {
             getIPs(function (ips) {
                 var str = '';
+                var existingFound = false;
                 for (var i = 0; i < ips.length; i++) {
                     if (ips[i].family === 'ipv6') continue;
                     if (ips[i].address === '0.0.0.0') continue;
                     if (ips[i].address === '127.0.0.1') continue;
+                    if (ips[i].address === actualAddr) existingFound = true;
                     str += '<option value="' + ips[i].address + '" ' + ((ips[i].address === actualAddr) ? 'selected' : '') + '>' + ips[i].name + '</option>';
+                }
+                if (!existingFound && actualAddr) {
+                    str = '<option value="' + actualAddr + '" selected> Please change INVALID!!' + actualAddr + '</option>' + str;
                 }
 
                 $(id).html(str);
@@ -43,23 +48,27 @@
         }
 
         var statusUpdateTimeout = null;
-        function getStatusInfo() {
+        function getStatusInfo(updateCall) {
+            if (statusUpdateTimeout) clearTimeout(statusUpdateTimeout);
+            if (!updateCall) {
+                statusUpdateTimeout = setTimeout(getStatusInfo, 5000);
+            }
             sendTo(null, 'getStatusInfo', null, function (response) {
+                if (statusUpdateTimeout) clearTimeout(statusUpdateTimeout);
                 var text;
                 if (response.result.proxyActive) {
-                    text = sprintf(systemDictionary['ProxyInfo'][systemLang], response.result.proxyUrl);
-                    if (statusUpdateTimeout) clearTimeout(statusUpdateTimeout);
-                    statusUpdateTimeout = setTimeout(getStatusInfo, 10000);
+                    text = '<img src="warning.png" width=60 height=60 align="middle">' + sprintf(systemDictionary['ProxyInfo'][systemLang], response.result.proxyUrl);
+                    statusUpdateTimeout = setTimeout(getStatusInfo, 5000, true);
                 }
                 else {
-                    text = sprintf(systemDictionary['StatusInfo'][systemLang], response.result.cookieTimestamp);
+                    text = '<img src="info.png" width=60 height=60 align="middle">' + sprintf(systemDictionary['StatusInfo'][systemLang], response.result.cookieTimestamp);
                 }
-                $('#statusInfo').text(text);
+                $('#statusInfo').html(text);
             });
         }
 
         // the function loadSettings has to exist ...
-        function loadHelper(settings, onChange) {
+        function load(settings, onChange) {
             ownFillSelectIPs('#proxyOwnIp', settings.proxyOwnIp, false, true, function () {
                 $('#proxyOwnIp').select();
             });
@@ -118,15 +127,6 @@
             $('select').select();
             onChange(false);
             getStatusInfo();
-        }
-
-        function load(settings, onChange) {
-            socket.emit('getObject', 'system.config', function (err, obj) {
-                secret = (obj.native ? obj.native.secret : '') || 'Zgfr56gFe87jJOM';
-                loadHelper(settings, onChange);
-            });
-
-            onChange(false);
         }
 
         function save(callback) {
@@ -219,7 +219,7 @@
 
                 <div class="row">
                     <div class="col s12">
-                        <b><span id="statusInfo"></span></b>
+                        <b><span id="statusInfo" for="statusInfo" class="translate">Please wait while loading Adapter-Status ...</span></b>
                     </div>
                 </div>
 

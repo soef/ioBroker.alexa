@@ -98,10 +98,10 @@ systemDictionary = {
     },
     "ProxyInfo": {
         "en": "Please click here to <a href=\"%s\" target=\"_blank\">log in to your Amazon Account once</a> to activate the adapter connection to your Alexa devices.",
-        "de": "Klicken Sie hier, um <a href=\"%s\" target=\"_blank\">sich einmal in Ihrem Amazon-Konto anzumelden und</a> die Adapterverbindung zu Ihren Alexa-Geräten zu aktivieren.",
+        "de": "Klicken Sie hier, um <a href=\"%s\" target=\"_blank\">sich einmal in Ihrem Amazon-Konto anzumelden</a>  und die Adapterverbindung zu Ihren Alexa-Geräten zu aktivieren.",
         "ru": "Пожалуйста, нажмите здесь, чтобы <a href=\"%s\" target=\"_blank\">войти в свою учетную запись Amazon один раз,</a> чтобы активировать подключение адаптера к вашим устройствам Alexa.",
         "pt": "Clique aqui para <a href=\"%s\" target=\"_blank\">fazer login na sua conta Amazon uma vez</a> para ativar a conexão do adaptador aos seus dispositivos Alexa.",
-        "nl": "Klik hier om <a href=\"%s\" target=\"_blank\">u één keer</a> aan te <a href=\"%s\" target=\"_blank\">melden bij uw Amazon-account</a> om de adapterverbinding met uw Alexa-apparaten te activeren.",
+        "nl": "Klik hier om <a href=\"%s\" target=\"_blank\">u één keer aan te melden bij uw Amazon-account</a> om de adapterverbinding met uw Alexa-apparaten te activeren.",
         "fr": "Veuillez cliquer ici pour vous <a href=\"%s\" target=\"_blank\">connecter une fois à votre compte Amazon</a> afin d'activer la connexion de l'adaptateur à vos appareils Alexa.",
         "it": "Fare clic qui per <a href=\"%s\" target=\"_blank\">accedere al proprio account Amazon una volta</a> per attivare la connessione dell'adattatore ai dispositivi Alexa.",
         "es": "Haga clic aquí para <a href=\"%s\" target=\"_blank\">iniciar sesión en su cuenta de Amazon una vez</a> para activar la conexión del adaptador a sus dispositivos Alexa.",
@@ -131,5 +131,17 @@ systemDictionary = {
         "es": "Contenedor externo-IP (Docker)",
         "pl": "Zewnętrzny kontener-IP (Docker)",
         "zh-cn": "外部容器-IP（Docker）"
+    },
+    "Please wait while loading Adapter-Status ...": {
+        "en": "Please wait while loading Adapter-Status ...",
+        "de": "Bitte warten Sie, während der Adapter-Status geladen wird ...",
+        "ru": "Пожалуйста, подождите, пока загружается Adapter-Status ...",
+        "pt": "Por favor, aguarde enquanto carrega o Adapter-Status ...",
+        "nl": "Een ogenblik geduld tijdens het laden van de adapter-status ...",
+        "fr": "Veuillez patienter pendant le chargement de Adapter-Status ...",
+        "it": "Si prega di attendere durante il caricamento di Adapter-Status ...",
+        "es": "Por favor, espere mientras se carga el adaptador de estado ...",
+        "pl": "Poczekaj na załadowanie statusu adaptera ...",
+        "zh-cn": "在等待Adapter-Status时请稍候......"
     }
 };

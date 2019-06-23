@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "2.4.0",
+        "version": "2.4.1",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -149,7 +149,8 @@
         "type": "iot-systems",
         "enabled": true,
         "messagebox": true,
-        "license": "MIT"
+        "license": "MIT",
+        "localLink": "https://alexa.amazon.com"
     },
     "native": {
         "cookie": "",
