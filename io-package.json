@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "2.4.2",
+        "version": "2.4.3",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "2.4.3": {
+                "en": "enhance error handling for Amazon Push Infos",
+                "de": "Verbesserte Fehlerbehandlung für Amazon Push Infos",
+                "ru": "улучшить обработку ошибок для Amazon Push Infos",
+                "pt": "aprimora o tratamento de erros para o Amazon Push Infos",
+                "nl": "verbeteren van de foutafhandeling voor Amazon Push Infos",
+                "fr": "améliorer la gestion des erreurs pour Amazon Push Infos",
+                "it": "migliorare la gestione degli errori per Amazon Push Infos",
+                "es": "mejorar el manejo de errores para Amazon Push Infos",
+                "pl": "usprawnienie obsługi błędów w informacjach Amazon Push",
+                "zh-cn": "增强Amazon Push Infos的错误处理能力"
+            },
             "2.4.2": {
                 "en": "Docker usage for Amazon-Login optimized and much more, see Changelog. Admin 2.x no longer supported!",
                 "de": "Docker-Nutzung für Amazon-Login optimiert und vieles mehr, siehe Changelog. Admin 2.x wird nicht mehr unterstützt!",

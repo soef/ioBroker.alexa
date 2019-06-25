@@ -281,7 +281,11 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 2.4.1 (2019-06-23)
+
+### 2.4.3 (2019-06-25)
+* (Apollon77) enhance error handling for Amazon Push Infos
+
+### 2.4.1/2 (2019-06-23)
 * (Apollon77) Allow to specify an external docker container IP to override Proxy-IP
 * (Apollon77) Add more Devices from GitHub
 * (Apollon77) try to work around an Image URL bug from Amazon
