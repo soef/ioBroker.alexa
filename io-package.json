@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "2.4.3",
+        "version": "2.4.4",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "2.4.4": {
+                "en": "new devices added",
+                "de": "neue Geräte hinzugefügt",
+                "ru": "добавлены новые устройства",
+                "pt": "novos dispositivos adicionados",
+                "nl": "nieuwe apparaten toegevoegd",
+                "fr": "nouveaux appareils ajoutés",
+                "it": "nuovi dispositivi aggiunti",
+                "es": "nuevos dispositivos añadidos",
+                "pl": "dodane nowe urządzenia",
+                "zh-cn": "添加了新设备"
+            },
             "2.4.3": {
                 "en": "enhance error handling for Amazon Push Infos",
                 "de": "Verbesserte Fehlerbehandlung für Amazon Push Infos",

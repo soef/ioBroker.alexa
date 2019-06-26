@@ -282,6 +282,9 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ## Changelog
 
 
+### 2.4.4 (2019-06-26)
+* (Apollon77) new devices added
+
 ### 2.4.3 (2019-06-25)
 * (Apollon77) enhance error handling for Amazon Push Infos
 
