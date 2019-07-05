@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "2.4.5",
+        "version": "2.4.6",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "2.4.6": {
+                "en": "enhance error handling for broken authentications",
+                "de": "Verbesserte Fehlerbehandlung bei fehlerhaften Authentifizierungen",
+                "ru": "улучшите обработку ошибок для сломанных аутентификаций",
+                "pt": "melhorar o tratamento de erros para autenticações quebradas",
+                "nl": "verbeteren van de afhandeling van fouten bij kapotte authenticaties",
+                "fr": "améliorer la gestion des erreurs pour les authentifications brisées",
+                "it": "migliorare la gestione degli errori per le autenticazioni non funzionanti",
+                "es": "mejorar el manejo de errores para autenticaciones rotas",
+                "pl": "poprawić obsługę błędów w przypadku zerwanych uwierzytelnień",
+                "zh-cn": "增强破坏的身份验证的错误处理"
+            },
             "2.4.5": {
                 "en": "enhance error handling for broken authentications",
                 "de": "Verbesserte Fehlerbehandlung bei fehlerhaften Authentifizierungen",
