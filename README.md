@@ -282,7 +282,8 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ## Changelog
 
 
-### 2.4.7 (2019-07-06)
+### 2.5.0 (2019-07-07)
+* (INgoRah) Support custom mode
 * (Apollon77) enhance error handling for broken authentications
 
 ### 2.4.6 (2019-07-05)
