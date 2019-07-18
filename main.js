@@ -18,6 +18,7 @@ let bespokenDevice;
 const forbiddenCharacters = /[\]\[*,;'"`<>\\\s?]/g;
 
 let alexa;
+let adapter;
 
 const playerControls = {
     controlPlay: { command: 'play', val: false, common: { type: 'boolean', read: false, write: true, role: 'button.play'}},
@@ -327,59 +328,68 @@ function processObjectQueue(callback) {
     });
 }
 
-const adapter = utils.Adapter('alexa2');
+function startAdapter(options) {
+    options = options || {};
+    Object.assign(options, {
+        name: 'alexa2'
+    });
 
-adapter.on('unload', (callback) => {
-    if (alexa) {
-        alexa.stop();
-    }
-    callback && callback();
-});
+    adapter = new utils.Adapter(options);
 
-adapter.on('stateChange', (id, state) => {
-    adapter.log.debug('State changed ' + id + ': ' + JSON.stringify(state));
-    if (!state || state.ack) return;
-    id = id.substr(adapter.namespace.length + 1);
+    adapter.on('unload', (callback) => {
+        if (alexa) {
+            alexa.stop();
+        }
+        callback && callback();
+    });
 
-    if (state && state.from && state.from.startsWith('system.adapter.cloud') && id.endsWith('.Commands.speak')) {
-        state.val = state.val.replace(/<[^>]+>/g, '').replace('/  /g', ' ');
-    }
+    adapter.on('stateChange', (id, state) => {
+        adapter.log.debug('State changed ' + id + ': ' + JSON.stringify(state));
+        if (!state || state.ack) return;
+        id = id.substr(adapter.namespace.length + 1);
 
-    if (typeof stateChangeTrigger[id] === 'function') {
-        if (adapterObjects[id] && adapterObjects[id].common && adapterObjects[id].common.type && adapterObjects[id].common.type !== 'mixed') {
-            if (adapterObjects[id].common.type === 'boolean' && adapterObjects[id].common.role && adapterObjects[id].common.role.startsWith('button')) state.val = !!state.val;
-            if (typeof state.val !== adapterObjects[id].common.type) {
-                adapter.log.error('Datatype for ' + id + ' differs from expected, ignore state change! Please write correct datatype (' + adapterObjects[id].common.type + ')');
+        if (state && state.from && state.from.startsWith('system.adapter.cloud') && id.endsWith('.Commands.speak')) {
+            state.val = state.val.replace(/<[^>]+>/g, '').replace('/  /g', ' ');
+        }
+
+        if (typeof stateChangeTrigger[id] === 'function') {
+            if (adapterObjects[id] && adapterObjects[id].common && adapterObjects[id].common.type && adapterObjects[id].common.type !== 'mixed') {
+                if (adapterObjects[id].common.type === 'boolean' && adapterObjects[id].common.role && adapterObjects[id].common.role.startsWith('button')) state.val = !!state.val;
+                if (typeof state.val !== adapterObjects[id].common.type) {
+                    adapter.log.error('Datatype for ' + id + ' differs from expected, ignore state change! Please write correct datatype (' + adapterObjects[id].common.type + ')');
+                    return;
+                }
+            }
+            stateChangeTrigger[id](state.val);
+        }
+
+        if (!wsMqttConnected) scheduleStatesUpdate(3000);
+    });
+
+    adapter.on('objectChange', (id, object) => {
+        adapter.log.debug('Object changed ' + id + ': ' + JSON.stringify(object));
+        let ar = id.split('.');
+        if (ar[2] === 'Echo-Devices' && ar.length === 4) {
+            if (object === null) {
+                //deleted, do nothing
                 return;
             }
-        }
-        stateChangeTrigger[id](state.val);
-    }
-
-    if (!wsMqttConnected) scheduleStatesUpdate(3000);
-});
-
-adapter.on('objectChange', (id, object) => {
-    adapter.log.debug('Object changed ' + id + ': ' + JSON.stringify(object));
-    let ar = id.split('.');
-    if (ar[2] === 'Echo-Devices' && ar.length === 4) {
-        if (object === null) {
-            //deleted, do nothing
+            let device = alexa.serialNumbers[ar[3]];
+            if (object && object.common && object.common.name) {
+                if (typeof device.rename === 'function') device.rename(object.common.name);
+            }
             return;
         }
-        let device = alexa.serialNumbers[ar[3]];
-        if (object && object.common && object.common.name) {
-            if (typeof device.rename === 'function') device.rename(object.common.name);
-        }
-        return;
-    }
-});
+    });
 
-adapter.on('message', function(msg) {
-    processMessage(msg);
-});
+    adapter.on('message', function(msg) {
+        processMessage(msg);
+    });
 
-adapter.on('ready', () => loadExistingAccessories(main));
+    adapter.on('ready', () => loadExistingAccessories(main));
+    
+    return adapter;
+}
 
 process.on('SIGINT', () => {
     if (alexa) {
@@ -2318,4 +2328,12 @@ function main() {
             });
         });
     });
+}
+
+// If started as allInOne mode => return function to create instance
+if (module.parent) {
+    module.exports = startAdapter;
+} else {
+    // or start the instance directly
+    startAdapter();
 }

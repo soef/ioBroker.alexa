@@ -222,7 +222,8 @@
         "enabled": true,
         "messagebox": true,
         "license": "MIT",
-        "localLink": "https://alexa.amazon.com"
+        "localLink": "https://alexa.amazon.com",
+        "compact": true
     },
     "native": {
         "cookie": "",
