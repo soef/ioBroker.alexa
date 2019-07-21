@@ -2040,6 +2040,66 @@ function initRoutines(callback) {
     });
 }
 
+function initCommUsers(callback) {
+    alexa.getAccount((err, commOwnAccount) => {
+        alexa.getHomeGroup((err, commHomeGroup) => {
+            if (commHomeGroup.commsId) {
+                alexa.commsId = commHomeGroup.commsId;
+            }
+            alexa.getContacts({homeGroupId: commHomeGroup.homeGroupId}, (err, commContacts) => {
+                setOrUpdateObject('Contacts', {type: 'device', common: {name: 'Communication contacts'}});
+
+                commContacts.forEach((comEntry) => {
+                    if (!comEntry.commsId || !comEntry.commsId.length || !comEntry.alexaEnabled || comEntry.commsId[0] === commHomeGroup.homeGroupId) return;
+
+                    const contactId = comEntry.commsId[0].substr(comEntry.commsId[0].lastIndexOf('.') + 1);
+                    let contactName = comEntry.name.firstName + ' ' + comEntry.name.lastName;
+                    if (!comEntry.name.firstName) {
+                        contactName = comEntry.company;
+                    }
+                    if (comEntry.commsId[0] === alexa.commsId) {
+                        contactName += ' (Self)';
+                    }
+
+                    setOrUpdateObject('Contacts.' + contactId, {type: 'channel', common: {name: contactName}});
+
+                    setOrUpdateObject('Contacts.' + contactId + '.textMessage', {common: {role: 'text', def: ''}}, '', function (value) {
+                        if (value === '') return;
+
+                        alexa.sendTextMessage(comEntry.commsId[0], value, (err, res) => {
+                            // Alexa-Remote: Response: {"conversationId":"amzn1.comms.messaging.id.conversationV2~b3e030bd-3ca7-4921-9084-ab16832fd1ca","messageIds":[1],"sequenceIds":[1],"time":"2019-07-21T08:49:13.522Z"}
+                            //if (!err && res && res.messageIds && Array.isArray(res.messageIds) && res.messageIds.length === 1) {
+
+                            //}
+                        });
+                    });
+
+                    if (comEntry.commsId[0] === alexa.commsId) {
+                        setOrUpdateObject('Contacts.' + contactId + '.#clearOwnMessages', {common: {role: 'button', type: 'boolean', read: false, write: true, def: false}}, '', function (value) {
+                            alexa.getConversations((err, res) => {
+                               if (!err && res && res.conversations) {
+                                   res.conversations.forEach((conversation) => {
+                                       if (!conversation.participants || !conversation.participants.length || conversation.participants[0] !== alexa.commsId) return;
+                                       adapter.log.debug('Delete Conversation with ID ' + conversation.conversationId);
+                                       alexa.deleteConversation(conversation.conversationId, (err, res) => {
+                                           //TODO
+                                       });
+                                   });
+                               }
+                            });
+                        });
+                    }
+
+                    adapter.log.debug('Create contact "' + contactName + '" (' + contactId + ')');
+                });
+
+                processObjectQueue(callback);
+            });
+        });
+    });
+}
+
+
 function loadExistingAccessories(callback) {
     adapter.getAdapterObjects((res) => {
         const objectKeys = Object.keys(res);
@@ -2309,19 +2369,21 @@ function main() {
                 createStates(() => {
                     createSmarthomeStates(() => {
                         queryAllSmartHomeDevices(true, () => {
-                            if (!initDone) {
-                                adapter.subscribeStates('*');
-                                adapter.subscribeObjects('*');
-                                initDone = true;
-                                const delIds = Object.keys(existingStates);
-                                if (delIds.length) {
-                                    adapter.log.info('Deleting the following states: ' + JSON.stringify(delIds));
-                                    for (let i = 0; i < delIds.length; i++) {
-                                        adapter.delObject(delIds[i]);
-                                        delete existingStates[delIds[i]];
+                            initCommUsers(() => {
+                                if (!initDone) {
+                                    adapter.subscribeStates('*');
+                                    adapter.subscribeObjects('*');
+                                    initDone = true;
+                                    const delIds = Object.keys(existingStates);
+                                    if (delIds.length) {
+                                        adapter.log.info('Deleting the following states: ' + JSON.stringify(delIds));
+                                        for (let i = 0; i < delIds.length; i++) {
+                                            adapter.delObject(delIds[i]);
+                                            delete existingStates[delIds[i]];
+                                        }
                                     }
                                 }
-                            }
+                            });
                         });
                     });
                 });
