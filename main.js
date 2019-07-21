@@ -1521,6 +1521,9 @@ function createStates(callback) {
             }.bind(alexa, device));
             setOrUpdateObject(devId + '.Commands.announcement', {common: { role: 'media.tts'}}, '', function (device, value) {
                 if (value === '') return;
+                const speakCommands = [];
+                const volResetCommands = [];
+                let speakValue = '';
                 iterateMultiroom(device, (iteratorDevice, nextCallback) => {
                     let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
                     if (!valueArr) valueArr= [];
@@ -1532,19 +1535,25 @@ function createStates(callback) {
                         if (!err && state.val !== false && state.val !== null) {
                             speakVolumeReset = state.val;
                         }
-                        let speakCommands = [];
-                        if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume});
-                        value.split(';').forEach((v) => {
-                            if (!v || !v.length) return;
-                            speakCommands.push({command: 'announcement', value: v.trim()});
-                        });
-                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakCommands.push({command: 'volume', value: speakVolumeReset});
-                        alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, nextCallback);
+                        if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume, device: iteratorDevice});
+                        if (!speakValue) speakValue = value;
+                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) volResetCommands.push({command: 'volume', value: speakVolumeReset, device: iteratorDevice});
+                        nextCallback();
                     });
+                }, () => {
+                    speakValue.split(';').forEach((v) => {
+                        if (!v || !v.length) return;
+                        speakCommands.push({command: 'announcement', value: v.trim()});
+                    });
+                    volResetCommands.forEach((cmd) => speakCommands.push(cmd));
+
+                    alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, speakCommands);
                 });
             }.bind(alexa, device));
             setOrUpdateObject(devId + '.Commands.ssml', {common: { role: 'media.tts'}}, '', function (device, value) {
                 if (value === '') return;
+                const speakCommands = [];
+                const volResetCommands = [];
                 iterateMultiroom(device, (iteratorDevice, nextCallback) => {
                     let speakVolume = iteratorDevice.speakVolume;
                     adapter.getState('Echo-Devices.' + iteratorDevice.serialNumber + '.Player.volume', (err, state) => {
@@ -1553,13 +1562,16 @@ function createStates(callback) {
                             speakVolumeReset = state.val;
                         }
                         let speakCommands = [];
-                        if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume});
+                        if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume, device: iteratorDevice});
 
-                        speakCommands.push({command: 'ssml', value: value.trim()});
-
-                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakCommands.push({command: 'volume', value: speakVolumeReset});
-                        alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, nextCallback);
+                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) volResetCommands.push({command: 'volume', value: speakVolumeReset, device: iteratorDevice});
+                        nextCallback();
                     });
+                }, () => {
+                    speakCommands.push({command: 'ssml', value: value.trim()});
+                    volResetCommands.forEach((cmd) => speakCommands.push(cmd));
+
+                    alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, speakCommands);
                 });
             }.bind(alexa, device));
             if (!device.isMultiroomDevice) {

@@ -293,6 +293,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ### 2.6.0 (2019-07-21)
 * (Apollon77) added possibility to send text messages to users including himself, allows deletion of all messages to himself
 * (Apollon77) added option to reset Cookies. After sahev the adapter will restart and needs to get a new Login (see adapter config)
+* (Apollon77) change announcement and ssml to send commands more synchronous
 
 ### 2.5.0/1 (2019-07-07/18)
 * (INgoRah) Support compact mode
