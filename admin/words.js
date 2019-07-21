@@ -143,5 +143,17 @@ systemDictionary = {
         "es": "Por favor, espere mientras se carga el adaptador de estado ...",
         "pl": "Poczekaj na załadowanie statusu adaptera ...",
         "zh-cn": "在等待Adapter-Status时请稍候......"
+    },
+    "resetCookie": {
+        "en": "Reset Amazon Cookies",
+        "de": "Amazon-Cookies zurücksetzen",
+        "ru": "Сброс Amazon Cookies",
+        "pt": "Redefinir cookies da Amazon",
+        "nl": "Reset Amazon-cookies",
+        "fr": "Réinitialiser les cookies Amazon",
+        "it": "Reimposta i cookie Amazon",
+        "es": "Restablecer las cookies de Amazon",
+        "pl": "Zresetuj ciasteczka Amazon",
+        "zh-cn": "重置Amazon Cookies"
     }
 };

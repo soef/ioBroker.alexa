@@ -2140,6 +2140,11 @@ function main() {
         adapter.log.info('Use Override IP ' + adapter.config.proxyOverrideIp + ' for Proxy');
     }
 
+    if (adapter.config.resetCookies) {
+        adapter.config.cookieData = '';
+        adapter.config.cookie = '';
+    }
+
     let options = {
         cookie: adapter.config.cookieData || adapter.config.cookie, // cookie if there is already one
         email: '', // Amazon email for login
@@ -2353,7 +2358,8 @@ function main() {
                     csrf: alexa.csrf,
                     cookieData: alexa.cookieData,
                     email: "",
-                    password: ""
+                    password: "",
+                    resetCookies: false
                 }
             });
             return;

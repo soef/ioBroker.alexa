@@ -18,16 +18,16 @@
         "platform": "Javascript/Node.js",
         "news": {
             "2.6.0": {
-                "en": "added possibility to send text messages to users including himself, allows deletion of all messages to himself",
-                "de": "Möglichkeit hinzugefügt, Textnachrichten an Benutzer einschließlich sich selbst zu senden, ermöglicht das Löschen aller Nachrichten an sich selbst",
-                "ru": "добавлена возможность отправлять текстовые сообщения пользователям, включая себя, позволяет удалять все сообщения себе",
-                "pt": "adicionada possibilidade de enviar mensagens de texto para usuários, incluindo ele mesmo, permite a exclusão de todas as mensagens para si mesmo",
-                "nl": "mogelijkheid toegevoegd om sms-berichten te verzenden naar gebruikers inclusief zichzelf, staat toe dat alle berichten aan zichzelf worden verwijderd",
-                "fr": "possibilité supplémentaire d'envoyer des messages texte aux utilisateurs, y compris lui-même, permet la suppression de tous les messages pour lui-même",
-                "it": "aggiunta possibilità di inviare messaggi di testo agli utenti incluso se stesso, permette di cancellare tutti i messaggi a se stesso",
-                "es": "La posibilidad adicional de enviar mensajes de texto a los usuarios, incluido él mismo, permite la eliminación de todos los mensajes para sí mismo",
-                "pl": "dodana możliwość wysyłania wiadomości tekstowych do użytkowników, w tym on sam, umożliwia usunięcie wszystkich wiadomości do siebie",
-                "zh-cn": "增加了向包括他自己在内的用户发送短信的可能性，允许删除所有留言给自己"
+                "en": "added possibility to send text messages to users including himself, allows deletion of all messages to himself, allow to reset cookies via admin",
+                "de": "Möglichkeit hinzugefügt, Textnachrichten an Benutzer zu senden, einschließlich sich selbst, erlaubt das Löschen aller Nachrichten an sich selbst, erlaubt das Zurücksetzen von Cookies über den Administrator",
+                "ru": "добавлена возможность отправлять текстовые сообщения пользователям, в том числе и ему самому, разрешать удаление всех сообщений себе, разрешать сброс куки через админа",
+                "pt": "adicionou possibilidade de enviar mensagens de texto para usuários, incluindo ele próprio, permite a exclusão de todas as mensagens para si mesmo, permitir a redefinição de cookies via admin",
+                "nl": "mogelijkheid toegevoegd om sms-berichten naar gebruikers, inclusief zichzelf, te verzenden, staat het verwijderen van alle berichten toe aan zichzelf, staat toe om cookies via admin opnieuw in te stellen",
+                "fr": "possibilité supplémentaire d'envoyer des messages texte aux utilisateurs, y compris lui-même, permet la suppression de tous les messages à lui-même, permet de réinitialiser les cookies via admin",
+                "it": "aggiunta possibilità di inviare messaggi di testo agli utenti incluso se stesso, permette di cancellare tutti i messaggi a se stesso, consentire di ripristinare i cookie via admin",
+                "es": "La posibilidad adicional de enviar mensajes de texto a los usuarios, incluido él mismo, permite la eliminación de todos los mensajes para sí mismo, permite restablecer las cookies a través de admin.",
+                "pl": "dodana możliwość wysyłania wiadomości tekstowych do użytkowników, w tym samego siebie, pozwala na usunięcie wszystkich wiadomości do siebie, pozwala zresetować pliki cookie przez administratora",
+                "zh-cn": "增加了向包括他自己在内的用户发送短信的可能性，允许删除所有留言给自己，允许通过管理员重置cookie"
             },
             "2.5.1": {
                 "en": "enhance error handling for broken authentications, compact mode supported",
