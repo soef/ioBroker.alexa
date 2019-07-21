@@ -2065,9 +2065,12 @@ function initCommUsers(callback) {
                     if (!comEntry.commsId || !comEntry.commsId.length || !comEntry.alexaEnabled || comEntry.commsId[0] === commHomeGroup.homeGroupId) return;
 
                     const contactId = comEntry.commsId[0].substr(comEntry.commsId[0].lastIndexOf('.') + 1);
-                    let contactName = comEntry.name.firstName + ' ' + comEntry.name.lastName;
-                    if (!comEntry.name.firstName) {
+                    let contactName = comEntry.name.firstName;
+                    if (!contactName) {
                         contactName = comEntry.company;
+                    }
+                    else if (comEntry.name.lastName) {
+                        contactName += ' ' + comEntry.name.lastName;
                     }
                     if (comEntry.commsId[0] === alexa.commsId) {
                         contactName += ' (Self)';
