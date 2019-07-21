@@ -28,7 +28,6 @@
                 "es": "posibilidad adicional de enviar mensajes de texto a los usuarios, incluido él mismo, permite la eliminación de todos los mensajes para sí mismo, permite restablecer las cookies a través de admin, anuncio optimizado y ssml",
                 "pl": "dodano możliwość wysyłania wiadomości tekstowych do użytkowników, w tym samego siebie, umożliwia usunięcie wszystkich wiadomości do siebie, pozwala zresetować pliki cookie poprzez administratora, zoptymalizowane powiadomienia i ssml",
                 "zh-cn": "增加了向用户发送短信的可能性，包括他自己，允许删除所有消息给自己，允许通过管理员重置cookie，优化公告和ssml"
-            }
             },
             "2.5.1": {
                 "en": "enhance error handling for broken authentications, compact mode supported",
@@ -257,7 +256,8 @@
         "bespokenToken": "",
         "bespokenVoiceId": "Hans",
         "bespokenLocale": "de-DE",
-        "proxyOverrideIp": ""
+        "proxyOverrideIp": "",
+        "resetCookies": false
     },
     "objects": [],
     "instanceObjects": [{
