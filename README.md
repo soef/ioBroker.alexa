@@ -290,6 +290,11 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ## Changelog
 
 
+### 2.6.1 (2019-07-22)
+* (Apollon77) add new device
+* (Apollon77) fix volume logic for ssml
+* (Apollon77) Allow reminders to bet set >+ 1day
+
 ### 2.6.0 (2019-07-21)
 * (Apollon77) added possibility to send text messages to users including himself, allows deletion of all messages to himself
 * (Apollon77) added option to reset Cookies. After sahev the adapter will restart and needs to get a new Login (see adapter config)
