@@ -2059,6 +2059,10 @@ function initCommUsers(callback) {
                 alexa.commsId = commHomeGroup.commsId;
             }
             alexa.getContacts({homeGroupId: commHomeGroup.homeGroupId}, (err, commContacts) => {
+                if (err || commContacts) {
+                    callback && callback ();
+                    return;
+                }
                 setOrUpdateObject('Contacts', {type: 'device', common: {name: 'Communication contacts'}});
 
                 commContacts.forEach((comEntry) => {

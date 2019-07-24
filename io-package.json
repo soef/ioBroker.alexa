@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "2.6.1",
+        "version": "2.6.2",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,7 +17,7 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
-            "2.6.1": {
+            "2.6.2": {
                 "en": "added possibility to send text messages to users including himself, allows deletion of all messages to himself, allow to reset cookies via admin, optimized announcement and ssml",
                 "de": "Möglichkeit hinzugefügt, Textnachrichten an Benutzer zu senden, einschließlich sich selbst, erlaubt das Löschen aller Nachrichten an sich selbst, erlaubt das Zurücksetzen von Cookies über Admin, optimierte Ankündigung und ssml",
                 "ru": "добавлена возможность отправлять текстовые сообщения пользователям, в том числе и ему самому, разрешать удаление всех сообщений самому себе, разрешать сброс файлов cookie через администратора, оптимизированные объявления и ssml.",
