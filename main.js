@@ -15,6 +15,10 @@ const shObjects = require(path.join(__dirname, 'lib', 'smarthomedevices.js'));
 const bespokenVdSDK = require("virtual-device-sdk");
 let bespokenDevice;
 
+const Sentry = require('@sentry/node');
+const SentryIntegrations = require('@sentry/integrations');
+const packageJson = require('./package.json');
+
 const forbiddenCharacters = /[\]\[*,;'"`<>\\\s?]/g;
 
 let alexa;
@@ -387,7 +391,43 @@ function startAdapter(options) {
         processMessage(msg);
     });
 
-    adapter.on('ready', () => loadExistingAccessories(main));
+    adapter.on('ready', () => {
+        Sentry.init({
+            release: packageJson.name + '@' + packageJson.version,
+            dsn: 'https://75f5da9008d64e9e859641533329756b@sentry.io/1831519',
+            integrations: [
+                new SentryIntegrations.Dedupe()
+            ]
+        });
+        Sentry.configureScope(scope => {
+            scope.setTag('version', adapter.common.installedVersion || adapter.common.version);
+            if (adapter.common.installedFrom) {
+                scope.setTag('installedFrom', adapter.common.installedFrom);
+            }
+            else {
+                scope.setTag('installedFrom', adapter.common.installedVersion || adapter.common.version);
+            }
+        });
+
+        adapter.getForeignObject('system.config', (err, obj) => {
+            if (obj && obj.common && obj.common.diag) {
+                adapter.getForeignObject('system.meta.uuid', (err, obj) => {
+                    // create uuid
+                    if (!err  && obj) {
+                        Sentry.configureScope(scope => {
+                            scope.setUser({
+                                id: obj.native.uuid
+                            });
+                        });
+                    }
+                    loadExistingAccessories(main);
+                });
+            }
+            else {
+                loadExistingAccessories(main);
+            }
+        });
+    });
     
     return adapter;
 }
@@ -743,7 +783,7 @@ function updateSmarthomeDeviceStates(res) {
         else if (native.valueFalse && native.valueFalse === value) {
             value = false;
         }
-        else if (native.valueMap) {
+        else if (native.valueMap && Array.isArray(native.valueMap) && native.valueMap.length) {
             adapter.log.debug('Get Index for value "' + cap.namespace + '.' + cap.value + '" for Smart-Home-Devices.' + deviceEntityId + '.' + stateName + ', value=' + value + ' of ' + JSON.stringify(native.valueMap));
             value = native.valueMap.indexOf(value);
             if (value === -1) return null;
@@ -906,7 +946,7 @@ function createSmarthomeStates(callback) {
                             adapter.deleteChannel('Smart-Home-Devices', entityId);
                         }.bind(alexa, shDevice.entityId));
 
-                        const excludeReadable = shDevice.manufacturerName.startsWith('ioBroker');
+                        const excludeReadable = shDevice.manufacturerName.startsWith('ioBroker') || shDevice.manufacturerName.startsWith('openHAB');
                         const deviceActions = {};
                         if (behaviours[shDevice.entityId] && behaviours[shDevice.entityId].supportedOperations) {
                             behaviours[shDevice.entityId].supportedOperations.forEach((a) => {
@@ -1319,7 +1359,7 @@ function updateHistoryStates(o) {
         }
         else {
             adapter.setState('History.domainApplicationId', '', true);
-            adapter.setState('History.domainApplicationname', '', true);
+            adapter.setState('History.domainApplicationName', '', true);
         }
         if (o.domainAttributes.card) {
             adapter.setState('History.cardContent', o.domainAttributes.card.content || '', true);
@@ -1334,7 +1374,7 @@ function updateHistoryStates(o) {
     }
     else {
         adapter.setState('History.domainApplicationId', '', true);
-        adapter.setState('History.domainApplicationname', '', true);
+        adapter.setState('History.domainApplicationName', '', true);
         adapter.setState('History.cardContent', '', true);
         adapter.setState('History.cardJson', '', true);
     }
@@ -1597,7 +1637,7 @@ function createStates(callback) {
                 setOrUpdateObject(devId + '.Routines', {type: 'channel'});
                 for (let i in automationRoutines) {
                     if (!automationRoutines.hasOwnProperty(i)) continue;
-                    setOrUpdateObject(devId + '.Routines.' + automationRoutines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'indicator', read: true, write: false, name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
+                    setOrUpdateObject(devId + '.Routines.' + automationRoutines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'indicator', read: true, write: true, name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
                     if (automationRoutines[i].utteranceWords) {
                         if (!routineTriggerUtterances[device.serialNumber]) routineTriggerUtterances[device.serialNumber] = {};
                         routineTriggerUtterances[device.serialNumber][automationRoutines[i].utteranceWords.toLowerCase()] = devId + '.Routines.' + automationRoutines[i].friendlyAutomationId;
@@ -2036,6 +2076,9 @@ function initRoutines(callback) {
                     name = routine.triggers[0].payload.schedule.triggerTime;
                     if (name.length === 6) name = name.replace(/^({0-9}{2})({0-9}{2})({0-9}{2})$/, '$1:$2:$3');
                     if (routine.triggers[0].payload.schedule.recurrence) name += ` ${routine.triggers[0].payload.schedule.recurrence}`;
+                }
+                else if (!name && routine.triggers && routine.triggers[0] && routine.triggers[0].type) {
+                    name = routine.triggers.type;
                 }
                 else {
                     adapter.log.debug('Ignore unknown type of Automation Routine Trigger' + JSON.stringify(routine.triggers.payload));

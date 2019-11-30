@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "2.6.4",
+        "version": "2.7.0",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
