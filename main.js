@@ -28,6 +28,7 @@ const playerControls = {
     controlPlay: { command: 'play', val: false, common: { type: 'boolean', read: false, write: true, role: 'button.play'}},
     controlPause:{ command: 'pause', val: false, common: { type: 'boolean', read: false, write: true, role: 'button.pause'}}
 };
+
 const musicControls = {
     controlNext: { command: 'next', val: false, common: { type: 'boolean', read: false, write: true, role: 'button.next'}},
     controlPrevious: { command: 'previous', val: false, common: { type: 'boolean', read: false, write: true, role: 'button.prev'}},
@@ -36,6 +37,34 @@ const musicControls = {
     controlShuffle: { command: 'shuffle', val: false, common: { type: 'boolean', read: false, write: true, role: 'media.mode.shuffle'}},
     controlRepeat: { command: 'repeat', val: false, common: { type: 'boolean', read: false, write: true, role: 'media.mode.repeat'}},
 };
+
+const listObjects = {
+	'archived': { type: 'boolean', role: 'indicator' },
+	'createdDate': { type: 'number', role: 'date' },
+	'customerId': { type: 'string', role: 'text' },
+	'defaultList': { type: 'boolean', role: 'indicator' },
+	'itemId': { type: 'string', role: 'text' },
+	'listReorderVersion': { type: 'number', role: 'value' },
+	'name': { type: 'string', role: 'text' },
+	'nbestItems': { type: 'string', role: 'text' },
+	'originalAudioId': { type: 'string', role: 'text' },
+	'type': { type: 'string', role: 'text' },
+	'updatedDate': { type: 'number', role: 'date' },
+	'version': { type: 'number', role: 'value' }
+}
+
+const listItemsObjects = {
+	'#delete': { type: 'boolean', role: 'button' },
+	'completed': { type: 'boolean', role: 'indicator', write: true },
+	'createdDateTime': { type: 'number', role: 'date' },
+	'customerId': { type: 'string', role: 'text' },
+	'id': { type: 'string', role: 'text' },
+	'listId': { type: 'string', role: 'text' },
+	'shoppingListItem': { type: 'boolean', role: 'indicator' },
+	'updatedDateTime': { type: 'number', role: 'date' },
+	'value': { type: 'string', role: 'text', write: true },
+	'version': { type: 'number', role: 'value' }
+}
 
 const commands = {
     'weather': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
@@ -242,6 +271,9 @@ function deleteObject(id) {
     }
 }
 
+function ucFirst(str) {
+	return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 function isEquivalent(a, b) {
     //adapter.log.debug('Compare ' + JSON.stringify(a) + ' with ' +  JSON.stringify(b));
@@ -2051,6 +2083,125 @@ function updatePlayerStatus(serialOrName, callback) {
     })();
 }
 
+function getLists(callback) {
+	
+	let allListItems = [];
+	let node = 'Lists';
+	alexa.getLists((err, lists) => {
+		setOrUpdateObject(node, {type: 'device', common: { 'name': 'Lists' }});
+		
+		lists.forEach(list => {
+			
+			// modify states
+			list.name = list.name || list.type;
+			list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
+			list.listId = list.itemId;
+			delete list.listIds;
+			delete list.itemId;
+			
+			// create channel
+			setOrUpdateObject(node + '.' + list.id, {type: 'channel', common: {name: ucFirst(list.name.toLowerCase().replace('list', '').replace(/_/g, ' ')) + ' List'}});
+			
+			// create state for new item
+			//adapter.subscribeStates(node + '.' + list.id + '.#New');
+			setOrUpdateObject(node + '.' + list.id + '.#New', {common: {type: 'mixed', role: 'state', name: 'Add new list item'}}, '', (value) => {
+				
+				if (value)
+				{
+					adapter.setState(node + '.' + list.id + '.#New', '', true);
+					addListItem(list, typeof value == 'string' ? { 'value': value } : JSON.parse(value))
+				}
+			});
+			
+			// write list contents as states
+			for (let key in list) {
+				if (list[key] !== null) {
+					setOrUpdateObject(node + '.' + list.id + '.' + key, { common: listObjects[key] ? listObjects[key] : {'role': 'text'} }, list[key]);
+					adapter.setState(node + '.' + list.id + '.' + key, list[key], true);
+				}
+			}
+			
+			// read list items
+			adapter.log.info('Updating list ' + list.name + '...');
+			allListItems.push(updateListItems(list));
+		});
+		
+		Promise.all(allListItems).then(() => callback && callback());
+	});
+}
+
+function addListItem(list, item) {
+	
+	adapter.log.info('Adding item "' + item.value + '" (' + JSON.stringify(item) + ') to the list ' + list.name + '.');
+	alexa.addListItem(list.listId, item); // , (err, res) => updateListItems(list)
+}
+
+function updateListItem(list, item) {
+	
+	adapter.log.info('Updating item "' + item.value + '" (' + JSON.stringify(item) + ') of the list ' + list.name + '.');
+	alexa.updateListItem(list.listId, item.id, item); // , (err, res) => updateListItems(list)
+}
+
+function deleteListItem(list, item) {
+	
+	adapter.log.info('Deleting item "' + item.value + '" from the list ' + list.name + '.');
+	alexa.deleteListItem(list.listId, item.id); // , (err, res) => updateListItems(list)
+}
+
+function updateListItems(list, callback) {
+	
+	let node = 'Lists.' + list.id;
+	return new Promise(resolve => {
+		alexa.getListItems(list.listId, (err, items) => {
+			setOrUpdateObject(node + '.json', {common: {name: 'List as json', role: 'json'}}, JSON.stringify(items));
+			
+			node = node + '.items';
+			setOrUpdateObject(node, {type: 'channel', common: {name: 'All list items'}});
+			
+			items.forEach((item, index) => {
+				item.index = index;
+				item['#delete'] = false;
+				item.listName = list.name;
+				
+				/*
+				 * EXAMPLE PAYLOAD
+				 *
+				{
+					completed: true,
+					createdDateTime: 1574597641331,
+					customerId: null,
+					id: '8140fa62-XXXX-XXXX-XXXX-7380a2ccd6ab',
+					listId: 'YW16bjEuYWNXXXXXXXXXZCWFhRLVRBU0s=',
+					shoppingListItem: false,
+					updatedDateTime: 1574619085063,
+					value: 'Q',
+					version: 2
+				}
+				*/
+
+				setOrUpdateObject(node + '.' + item.id, {type: 'channel', common: {name: 'List item ' + (index+1)}});
+				for (let key in item) {
+					
+					if (item[key] !== null) {
+						if (key == '#delete') {
+							//adapter.subscribeStates(node + '.' + item.id + '.' + key);
+							setOrUpdateObject(node + '.' + item.id + '.' + key, { common: listItemsObjects[key] ? listItemsObjects[key] : {'role': 'text'} }, item[key], () => deleteListItem(list, item));
+						}
+						else {
+							setOrUpdateObject(node + '.' + item.id + '.' + key, { common: listItemsObjects[key] ? listItemsObjects[key] : {'role': 'text'} }, item[key], ['completed', 'value'].indexOf(key) === -1 ? null : (value) => updateListItem(list, { ...item, [key]: value }));
+						}
+						
+						adapter.setState(node + '.' + item.id + '.' + key, item[key], true);
+					}
+				}
+			});
+			
+			callback && callback();
+			resolve(true);
+		});
+	});
+}
+
 function initRoutines(callback) {
     alexa.getAutomationRoutines((err, routines) => {
         automationRoutines = [];
@@ -2370,6 +2521,36 @@ function main() {
         adapter.log.info('Alexa-Push-Connection Unknown Command ' + command + ' - send to Developer: ' + JSON.stringify(payload));
     });
 
+    alexa.on('ws-todo-change', (payload) => {
+        adapter.log.info('Received updated list: ' + JSON.stringify(payload));
+		
+		alexa.getList(payload.listId, (err, list) => {
+			
+			// modify states
+			list.name = list.name || list.type;
+			list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
+			list.listId = list.itemId;
+			delete list.listIds;
+			delete list.itemId;
+			
+			// always update list
+			updateListItems(list, processObjectQueue);
+			
+			// eventType: deleted
+			if (payload.eventType == 'itemDeleted') {
+				
+				// delete objects
+				let node = adapter.namespace + '.Lists.' + list.id + '.items.' + payload.listItemId;
+				adapter.getObjectList({startkey: node, endkey: node + '.\u9999'}, (err, objects) => {
+					
+					if (objects && objects.rows) {
+						objects.rows.forEach(object => adapter.delObject(object.id));
+					}
+				});
+			}
+		});
+    });
+
     alexa.on('ws-notification-change', (data) => {
         adapter.log.debug('notification-change: ' + JSON.stringify(data));
         if (notificationTimer[data.notificationId]) { // Remove Timer, will be reset if neeed in 2s
@@ -2434,26 +2615,30 @@ function main() {
             }
 
             initRoutines(() => {
-                createStates(() => {
-                    createSmarthomeStates(() => {
-                        queryAllSmartHomeDevices(true, () => {
-                            initCommUsers(() => {
-                                if (!initDone) {
-                                    adapter.subscribeStates('*');
-                                    adapter.subscribeObjects('*');
-                                    initDone = true;
-                                    const delIds = Object.keys(existingStates);
-                                    if (delIds.length) {
-                                        adapter.log.info('Deleting the following states: ' + JSON.stringify(delIds));
-                                        for (let i = 0; i < delIds.length; i++) {
-                                            adapter.delObject(delIds[i]);
-                                            delete existingStates[delIds[i]];
-                                        }
-                                    }
-                                }
-                            });
-                        });
-                    });
+				getLists(() => {
+					createStates(() => {
+						createSmarthomeStates(() => {
+							queryAllSmartHomeDevices(true, () => {
+								initCommUsers(() => {
+									if (!initDone) {
+										adapter.log.info('Subscribing to states...');
+										adapter.subscribeStates('*');
+										adapter.subscribeObjects('*');
+										initDone = true;
+										
+										const delIds = Object.keys(existingStates);
+										if (delIds.length) {
+											adapter.log.info('Deleting the following states: ' + JSON.stringify(delIds));
+											for (let i = 0; i < delIds.length; i++) {
+												adapter.delObject(delIds[i]);
+												delete existingStates[delIds[i]];
+											}
+										}
+									}
+								});
+							});
+						});
+					});
                 });
             });
         });
