@@ -426,7 +426,7 @@ function startAdapter(options) {
     adapter.on('ready', () => {
         Sentry.init({
             release: packageJson.name + '@' + packageJson.version,
-            dsn: 'https://75f5da9008d64e9e859641533329756b@sentry.io/1831519',
+            dsn: 'https://4f6a36ee8b304289b624e5726cf8e6e5@sentry.io/1839681',
             integrations: [
                 new SentryIntegrations.Dedupe()
             ]
