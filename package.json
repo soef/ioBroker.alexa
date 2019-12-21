@@ -1,6 +1,6 @@
 {
   "name": "iobroker.alexa2",
-  "version": "2.7.0",
+  "version": "3.0.0",
   "description": "Remote control for Alexa (Amazon Echo)",
   "author": {
     "name": "Apollon77",
@@ -29,7 +29,7 @@
     "ide"
   ],
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "repository": {
     "type": "git",
@@ -41,8 +41,8 @@
     "nearest-color": "^0.4.4",
     "virtual-device-sdk": "^1.6.2",
     "@iobroker/adapter-core": "^1.0.3",
-    "@sentry/node": "^5.9.0",
-    "@sentry/integrations": "^5.8.0"
+    "@sentry/node": "^5.10.2",
+    "@sentry/integrations": "^5.10.2"
   },
   "devDependencies": {
     "gulp": "^4.0.2",

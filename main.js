@@ -51,7 +51,7 @@ const listObjects = {
 	'type': { type: 'string', role: 'text' },
 	'updatedDate': { type: 'number', role: 'date' },
 	'version': { type: 'number', role: 'value' }
-}
+};
 
 const listItemsObjects = {
 	'#delete': { type: 'boolean', role: 'button' },
@@ -64,7 +64,7 @@ const listItemsObjects = {
 	'updatedDateTime': { type: 'number', role: 'date' },
 	'value': { type: 'string', role: 'text', write: true },
 	'version': { type: 'number', role: 'value' }
-}
+};
 
 const commands = {
     'weather': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
@@ -91,11 +91,13 @@ const knownDeviceType = {
     'A1DL2DVDQVK3Q':	{name: 'Apps', commandSupport: false, icon: 'icons/apps.png'}, // (PEONY,VOLUME_SETTING)
     'A1H0CMF1XM0ZP4':	{name: 'Echo Dot/Bose', commandSupport: false}, // ??? // CHANGE_NAME,AUDIO_PLAYER,AMAZON_MUSIC,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,VOLUME_SETTING,LAMBDA // Bose: LAMBDA_DOWNCHANNEL,AUDIO_PLAYER,CHANGE_NAME,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AMAZON_MUSIC,PANDORA,PEONY,I_HEART_RADIO,TUNE_IN,REMINDERS,VOLUME_SETTING
     'A1J16TEDOYCZTN':	{name: 'Fire tab', commandSupport: true, icon: 'icons/firetab.png'}, // (PEONY,MICROPHONE,SUPPORTS_SOFTWARE_VERSION,VOLUME_SETTING,ASX_TIME_ZONE,REMINDERS)
-    'A1JJ0KFC4ZPNJ3':	{name: 'Echo Input', commandSupport: true, icon: 'icons/echo.png'}, // (ACTIVE_AFTER_FRO,TIMERS_AND_ALARMS,SET_LOCALE,TAHOE_BYOD,AUDIBLE,FLASH_BRIEFING,I_HEART_RADIO,GOLDFISH,DREAM_TRAINING,KINDLE_BOOKS,REMINDERS,GADGETS,ALLOW_LOG_UPLOAD,SOUND_SETTINGS,FAR_FIELD_WAKE_WORD,PAIR_BT_SINK,DEREGISTER_DEVICE,AMAZON_MUSIC,LEMUR_ALPHA,VOICE_TRAINING,MICROPHONE,CHANGE_NAME,SUPPORTS_SOFTWARE_VERSION,SALMON,PAIR_BT_SOURCE,CUSTOM_ALARM_TONE,SLEEP,PANDORA,AUDIO_PLAYER,ASCENDING_ALARM_VOLUME,DS_VOLUME_SETTING,POPTART,PERSISTENT_CONNECTION,REQUIRES_OOBE_FOR_SETUP,VOLUME_SETTING,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,MUSIC_SKILL,UPDATE_WIFI,EARCONS,TUNE_IN,SUPPORT_CALENDAR_ALERT)
+    'A1JJ0KFC4ZPNJ3':	{name: 'Echo Input', commandSupport: true, icon: 'icons/echo-input.png'}, // (ACTIVE_AFTER_FRO,TIMERS_AND_ALARMS,SET_LOCALE,TAHOE_BYOD,AUDIBLE,FLASH_BRIEFING,I_HEART_RADIO,GOLDFISH,DREAM_TRAINING,KINDLE_BOOKS,REMINDERS,GADGETS,ALLOW_LOG_UPLOAD,SOUND_SETTINGS,FAR_FIELD_WAKE_WORD,PAIR_BT_SINK,DEREGISTER_DEVICE,AMAZON_MUSIC,LEMUR_ALPHA,VOICE_TRAINING,MICROPHONE,CHANGE_NAME,SUPPORTS_SOFTWARE_VERSION,SALMON,PAIR_BT_SOURCE,CUSTOM_ALARM_TONE,SLEEP,PANDORA,AUDIO_PLAYER,ASCENDING_ALARM_VOLUME,DS_VOLUME_SETTING,POPTART,PERSISTENT_CONNECTION,REQUIRES_OOBE_FOR_SETUP,VOLUME_SETTING,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,MUSIC_SKILL,UPDATE_WIFI,EARCONS,TUNE_IN,SUPPORT_CALENDAR_ALERT)
     'A1NL4BVLQ4L3N3':	{name: 'Echo Show', commandSupport: true, icon: 'icons/echo_show.png'}, // PAIR_BT_SINK,CUSTOM_ALARM_TONE,TIMERS_AND_ALARMS,TUNE_IN,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,SOUND_SETTINGS,SET_LOCALE,SLEEP,EARCONS,SHARKNADO,SUPPORTS_SOFTWARE_VERSION,TUPLE_CATEGORY_B,MICROPHONE,SALMON,ALLOW_LOG_UPLOAD,CHANGE_NAME,FAR_FIELD_WAKE_WORD,VOLUME_SETTING,AUDIO_PLAYER,I_HEART_RADIO,REMINDERS,ASCENDING_ALARM_VOLUME,PERSISTENT_CONNECTION,AUDIBLE,GADGETS,AMAZON_MUSIC,VOICE_TRAINING,FLASH_BRIEFING,GOLDFISH,FACTORY_RESET_DEVICE,TUPLE,PANDORA,DREAM_TRAINING,LEMUR_ALPHA,POPTART,KINDLE_BOOKS
     'A1P31Q3MOWSHOD':    {name: 'Anker Zalo Halo Speaker', commandSupport: false}, // (PEONY,PERSISTENT_CONNECTION,AMAZON_MUSIC,TUNE_IN,MICROPHONE,DREAM_TRAINING,DEREGISTER_DEVICE,KINDLE_BOOKS,MUSIC_SKILL,REMINDERS,AUDIO_PLAYER,GOLDFISH,TIMERS_AND_ALARMS,...
+    'A1RABVCI4QCIKC':   {name: 'Echo Dot 3.Gen', commandSupport: true, icon: '/icons/echo_dot3.png'}, // (SUPPORT_CALENDAR_ALERT,DEREGISTER_DEVICE,CUSTOM_ALARM_TONE,TUPLE_CATEGORY_A,AUDIBLE,ASCENDING_ALARM_VOLUME,EARCONS,SALMON,ACTIVE_AFTER_FRO,SLEEP,REQUIRES_OOBE_FOR_SETUP,FAR_FIELD_WAKE_WORD,FLASH_BRIEFING,PERSISTENT_CONNECTION,PANDORA,SUPPORTS_SOFTWARE_VERSION,I_HEART_RADIO,BT_PAIRING_FLOW_V2,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AMAZON_MUSIC,PAIR_BT_SINK,ALEXA_PRESENCE,ALLOW_LOG_UPLOAD,SET_LOCALE,PAIR_REMOTE,UPDATE_WIFI,KINDLE_BOOKS,DREAM_TRAINING,MUSIC_SKILL,TIMERS_ALARMS_NOTIFICATIONS_VOLUME,DS_VOLUME_SETTING,TUNE_IN,REMINDERS,AUDIO_PLAYER,VOLUME_SETTING,PAIR_BT_SOURCE,GADGETS,GOLDFISH,CHANGE_NAME,VOICE_TRAINING,TUPLE,POPTART,TAHOE_BYOD,MICROPHONE,DIALOG_INTERFACE_VERSION,TIMERS_AND_ALARMS,SOUND_SETTINGS,LEMUR_ALPHA)
     'A1RTAM01W29CUP':   {name: 'Windows App', commandSupport: false, icon: 'icons/apps.png'}, // FLASH_BRIEFING,AUDIO_PLAYER,VOLUME_SETTING,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,SET_LOCALE,SOUND_SETTINGS,PERSISTENT_CONNECTION,KINDLE_BOOKS,CHANGE_NAME,TUNE_IN,TIMERS_AND_ALARMS,AUDIBLE,AMAZON_MUSIC,MICROPHONE,I_HEART_RADIO,EARCONS,REMINDERS,SLEEP,DREAM_TRAINING,DEREGISTER_DEVICE
     'A1X7HJX9QL16M5':	{name: 'Bespoken.io', commandSupport: false},
+    'A1Z88NGR2BK6A2':   {name: 'Echo Show 8', commandSupport: true, icon: 'icons/echo_show.png'},
     'A21Z3CGI8UIP0F':   {name: 'Apps', commandSupport: false, icon: 'icons/apps.png'}, // AUDIO_PLAYER,AMAZON_MUSIC,PANDORA,CHANGE_NAME,REMINDERS,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,I_HEART_RADIO,VOLUME_SETTING,TUNE_IN,LAMBDA_DOWNCHANNEL,PEONY
     'A2825NDLA7WDZV':   {name: 'Apps', commandSupport: false, icon: 'icons/apps.png'}, // PEONY,VOLUME_SETTING
     'A2E0SNTXJVT7WK':   {name: 'Fire TV V1', commandSupport: false, icon: 'icons/firetv.png'},
@@ -114,6 +116,7 @@ const knownDeviceType = {
     'A38BPK7OW001EX':   {name: 'Raspberry Alexa', commandSupport: false, icon: 'icons/raspi.png'}, // TIMERS_AND_ALARMS,AMAZON_MUSIC,VOLUME_SETTING,AUDIBLE,I_HEART_RADIO,TUNE_IN,KINDLE_BOOKS,DEREGISTER_DEVICE,AUDIO_PLAYER,SLEEP,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,PERSISTENT_CONNECTION,DREAM_TRAINING,MICROPHONE,GOLDFISH,CHANGE_NAME,PEONY
     'A38EHHIB10L47V':	{name: 'Echo Dot', commandSupport: true, icon: '/icons/echo_dot.png'}, // ASCENDING_ALARM_VOLUME,MICROPHONE,REMINDERS,ASX_TIME_ZONE,VOLUME_SETTING,PEONY,SUPPORTS_SOFTWARE_VERSION)
     'A3C9PE6TNYLTCH':   {name: 'Multiroom', commandSupport: true, icon: '/icons/multiroom.png'}, // AUDIO_PLAYER,AMAZON_MUSIC,KINDLE_BOOKS,TUNE_IN,AUDIBLE,PANDORA,I_HEART_RADIO,SALMON,VOLUME_SETTING
+    'A3GZUE7F9MEB4U':   {name: 'Fire TV Cube', commandSupport: true, icon: 'icons/firetv.png'}, // (AMAZON_MUSIC,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,CHANGE_NAME,VOLUME_SETTING,I_HEART_RADIO,AUDIBLE,SLEEP,DREAM_TRAINING,KINDLE_BOOKS,TIMERS_AND_ALARMS,MUSIC_SKILL,MICROPHONE,DEREGISTER_DEVICE,TUNE_IN,GOLDFISH,PERSISTENT_CONNECTION,AUDIO_PLAYER)
     'A3H674413M2EKB':   {name: 'echosim.io', commandSupport: false},
     'A3HF4YRA2L7XGC':   {name: 'Fire TV Cube', commandSupport: true}, // FLASH_BRIEFING,TUNE_IN,PANDORA,FAR_FIELD_WAKE_WORD,DREAM_TRAINING,AMAZON_MUSIC,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AUDIBLE,SUPPORTS_SOFTWARE_VERSION,PAIR_BT_SINK,CHANGE_NAME,AUDIO_PLAYER,VOICE_TRAINING,SET_LOCALE,EARCONS,SOUND_SETTINGS,SALMON,ACTIVE_AFTER_FRO,SLEEP,I_HEART_RADIO,TIMERS_AND_ALARMS,CUSTOM_ALARM_TONE,PERSISTENT_CONNECTION,ARTHUR_TARGET,KINDLE_BOOKS,REMINDERS
     'A3NPD82ABCPIDP':   {name: 'Sonos Beam', commandSupport: true, icon: 'icons/sonos.png'}, // AMAZON_MUSIC,CHANGE_NAME,AUDIO_PLAYER,KINDLE_BOOKS,SLEEP,DREAM_TRAINING,AUDIBLE,DEREGISTER_DEVICE,I_HEART_RADIO,GOLDFISH,PERSISTENT_CONNECTION,MICROPHONE,TIMERS_AND_ALARMS,PEONY,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,REMINDERS,VOLUME_SETTING,TUNE_IN
@@ -123,6 +126,7 @@ const knownDeviceType = {
     'A3SSG6GR8UU7SN':   {name: 'Echo Sub', commandSupport: true, icon: '/icons/echo_sub.png'}, // PERSISTENT_CONNECTION,ACTIVE_AFTER_FRO,SET_LOCALE,MICROPHONE,VOLUME_SETTING,AUDIBLE,AUDIO_PLAYER,UPDATE_WIFI,TUPLE,CUSTOM_ALARM_TONE,REQUIRES_OOBE_FOR_SETUP,EARCONS,KINDLE_BOOKS,TUPLE_CATEGORY_C,SUPPORTS_SOFTWARE_VERSION,ALLOW_LOG_UPLOAD,DEREGISTER_DEVICE,SLEEP,SOUND_SETTINGS,CHANGE_NAME,FLASH_BRIEFING,REMINDERS,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TIMERS_AND_ALARMS
     'A3TCJ8RTT3NVI7': {name: 'Listens for Alexa', commandSupport: false, icon: '/icons/microphone.png'}, // (AUDIBLE,DEREGISTER_DEVICE,MICROPHONE,GOLDFISH,CHANGE_NAME,PERSISTENT_CONNECTION,TUNE_IN,SLEEP,AUDIO_PLAYER,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,KINDLE_BOOKS,VOLUME_SETTING,I_HEART_RADIO,DREAM_TRAINING,MUSIC_SKILL,PEONY,AMAZON_MUSIC,TIMERS_AND_ALARMS)
     'A3V3VA38K169FO': {name: 'Fire Tab', commandSupport: true, icon: 'icons/firetab.png'}, // (VOLUME_SETTING,MUSIC_SKILL,AUDIO_PLAYER,AUDIBLE,KINDLE_BOOKS,SLEEP,I_HEART_RADIO,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,PERSISTENT_CONNECTION,CHANGE_NAME,TIMERS_AND_ALARMS,PEONY,DREAM_TRAINING,MICROPHONE,TUNE_IN,AMAZON_MUSIC,GOLDFISH,DEREGISTER_DEVICE)
+    'A3VRME03NAXFUB': {name: 'Echo Flex', commandSupport: true}, // (LEMUR_ALPHA,TUNE_IN,EARCONS,ALEXA_PRESENCE,AMAZON_MUSIC,TUPLE,DREAM_TRAINING,TIMERS_ALARMS_NOTIFICATIONS_VOLUME,FLASH_BRIEFING,DIALOG_INTERFACE_VERSION,PAIR_REMOTE,SOUND_SETTINGS,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,UPDATE_WIFI,AUDIBLE,SLEEP,VOLUME_SETTING,GOLDFISH,CHANGE_NAME,SALMON,GADGETS,ACTIVE_AFTER_FRO,PANDORA,ASCENDING_ALARM_VOLUME,PAIR_BT_SINK,KINDLE_BOOKS,VOICE_TRAINING,DS_VOLUME_SETTING,SUPPORT_CALENDAR_ALERT,TAHOE_BYOD,FAR_FIELD_WAKE_WORD,I_HEART_RADIO,SUPPORTS_SOFTWARE_VERSION,PAIR_BT_SOURCE,TUPLE_CATEGORY_A,ALLOW_LOG_UPLOAD,POPTART,SET_LOCALE,TIMERS_AND_ALARMS,BT_PAIRING_FLOW_V2,REQUIRES_OOBE_FOR_SETUP,CUSTOM_ALARM_TONE,REMINDERS,MUSIC_SKILL,DEREGISTER_DEVICE,PERSISTENT_CONNECTION,MICROPHONE,DISPLAY_BRIGHTNESS_ADJUST,AUDIO_PLAYER)
     'A4ZP7ZC4PI6TO': {name: 'Echo Show 5.Gen', commandSupport: true, icon: 'icons/echo_show5.png'}, // FAR_FIELD_WAKE_WORD,AMAZON_MUSIC,LEMUR_ALPHA,MICROPHONE,PANDORA,I_HEART_RADIO,VOLUME_SETTING,EARCONS,PAIR_BT_SINK,DS_VOLUME_SETTING,SOUND_SETTINGS,TIMERS_AND_ALARMS,LOCAL_VOICE,DIALOG_INTERFACE_VERSION,GOLDFISH,SHARKNADO,TIMERS_ALARMS_NOTIFICATIONS_VOLUME,CHANGE_NAME,SUPPORTS_SOFTWARE_VERSION,REMINDERS,AUDIO_PLAYER,SALMON,MUSIC_SKILL,ALLOW_LOG_UPLOAD,TUNE_IN,DREAM_TRAINING,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,ASCENDING_ALARM_VOLUME,AUDIBLE,FACTORY_RESET_DEVICE,FLASH_BRIEFING,SLEEP,SET_LOCALE,PERSISTENT_CONNECTION,VOICE_TRAINING,CUSTOM_ALARM_TONE,KINDLE_BOOKS,SUPPORT_CALENDAR_ALERT
     'A7WXQPH584YP':     {name: 'Echo 2.Gen', commandSupport: true, icon: '/icons/echo2.png'}, // PAIR_BT_SINK,CUSTOM_ALARM_TONE,PAIR_REMOTE,TIMERS_AND_ALARMS,TUNE_IN,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,SOUND_SETTINGS,DEREGISTER_DEVICE,SET_LOCALE,SLEEP,EARCONS,UPDATE_WIFI,PAIR_BT_SOURCE,SUPPORTS_SOFTWARE_VERSION,REQUIRES_OOBE_FOR_SETUP,MICROPHONE,SALMON,TAHOE_BYOD,CHANGE_NAME,FAR_FIELD_WAKE_WORD,VOLUME_SETTING,AUDIO_PLAYER,I_HEART_RADIO,REMINDERS,ASCENDING_ALARM_VOLUME,PERSISTENT_CONNECTION,AUDIBLE,GADGETS,TUPLE_CATEGORY_A,AMAZON_MUSIC,VOICE_TRAINING,FLASH_BRIEFING,DEREGISTER_FACTORY_RESET,GOLDFISH,TUPLE,PANDORA,ACTIVE_AFTER_FRO,DREAM_TRAINING,LEMUR_ALPHA,POPTART,KINDLE_BOOKS
     'AB72C64C86AW2':    {name: 'Echo', commandSupport: true, icon: '/icons/echo.png'}, // PAIR_BT_SINK,CUSTOM_ALARM_TONE,PAIR_REMOTE,TIMERS_AND_ALARMS,SUPPORTS_CONNECTED_HOME,TUNE_IN,SOUND_SETTINGS,DEREGISTER_DEVICE,SET_LOCALE,SLEEP,EARCONS,UPDATE_WIFI,PAIR_BT_SOURCE,SUPPORTS_SOFTWARE_VERSION,REQUIRES_OOBE_FOR_SETUP,TUPLE_CATEGORY_B,MICROPHONE,SALMON,TAHOE_BYOD,CHANGE_NAME,FAR_FIELD_WAKE_WORD,VOLUME_SETTING,AUDIO_PLAYER,I_HEART_RADIO,REMINDERS,ASCENDING_ALARM_VOLUME,PERSISTENT_CONNECTION,AUDIBLE,GADGETS,SUPPORTS_CONNECTED_HOME_ALL,AMAZON_MUSIC,VOICE_TRAINING,FLASH_BRIEFING,DEREGISTER_FACTORY_RESET,GOLDFISH,TUPLE,PANDORA,ACTIVE_AFTER_FRO,DREAM_TRAINING,LEMUR_ALPHA,POPTART,KINDLE_BOOKS
@@ -426,7 +430,7 @@ function startAdapter(options) {
     adapter.on('ready', () => {
         Sentry.init({
             release: packageJson.name + '@' + packageJson.version,
-            dsn: 'https://4f6a36ee8b304289b624e5726cf8e6e5@sentry.io/1839681',
+            dsn: 'https://dcc71ec0ea3244ebb0cf5ac0b3ccd120@sentry.io/1839681',
             integrations: [
                 new SentryIntegrations.Dedupe()
             ]
@@ -616,10 +620,10 @@ function updateMediaProgress(serialNumber) {
     let lastTimestamp = lastPlayerState[serialNumber].ts;
 
 	let currentState = resPlayer.playerInfo.state;
-	let mediaProgress = parseInt(resPlayer.playerInfo.progress.mediaProgress, 10);
-	let mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength, 10);
 
-	if (currentState === 'PLAYING') {
+	if (currentState === 'PLAYING' && resPlayer.playerInfo && resPlayer.playerInfo.progress) {
+        let mediaProgress = parseInt(resPlayer.playerInfo.progress.mediaProgress, 10);
+        let mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength, 10);
         let timeframe = ~~((Date.now() - lastTimestamp) / 1000); // calculae time since last data
 		let mediaProgressNew = mediaProgress + timeframe; // add this to the progress
 
@@ -1140,7 +1144,7 @@ function createSmarthomeStates(callback) {
                                         let origValue = value;
                                         const parameters = buildSmartHomeControlParameters(shDevice.entityId, shObjects.actionObjects[action], paramName, value);
 
-                                        if (!behaviours[entityId] || ! behaviours[entityId].supportedOperations || !behaviours[entityId].supportedOperations.includes(parameters.action)) {
+                                        if (!behaviours[entityId] || !behaviours[entityId].supportedOperations || !behaviours[entityId].supportedOperations.includes(parameters.action)) {
                                             if (!parameters.action.startsWith('turn') && !parameters.action.startsWith('scene')) {
                                                 adapter.log.debug('Invalid action ' + parameters.action + ' provided for Action ' + action + '. Report to developer this and next log line from logfile on disk!');
                                                 adapter.log.debug(JSON.stringify(shDevice) + ' / ' + JSON.stringify(behaviours[entityId]));
@@ -1379,7 +1383,8 @@ function updateHistoryStates(o) {
         domainApplicationId: '',
         domainApplicationName: '',
         cardContent: '',
-        card: ''
+        card: '',
+        answerText: ''
     };
 
     if (o.domainAttributes) {
@@ -1403,12 +1408,20 @@ function updateHistoryStates(o) {
             adapter.setState('History.cardContent', '', true);
             adapter.setState('History.cardJson', '', true);
         }
+        if (o.domainAttributes.nBestList && o.domainAttributes.nBestList[0]) {
+            adapter.setState('History.answerText', o.domainAttributes.nBestList[0].answerText || '', true);
+            jsonHistory.answerText = o.domainAttributes.nBestList[0].answerText;
+        }
+        else {
+            adapter.setState('History.answerText', '', true);
+        }
     }
     else {
         adapter.setState('History.domainApplicationId', '', true);
         adapter.setState('History.domainApplicationName', '', true);
         adapter.setState('History.cardContent', '', true);
         adapter.setState('History.cardJson', '', true);
+        adapter.setState('History.answerText', '', true);
     }
     adapter.setState('History.json', JSON.stringify(jsonHistory), true);
 }
@@ -1693,6 +1706,7 @@ function createStates(callback) {
     setOrUpdateObject('History.domainApplicationName', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('History.cardContent', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('History.cardJson', {common: {role: 'text', write: false}}, '');
+    setOrUpdateObject('History.answerText', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('History.json', {common: {type: 'string', role: 'json', write: false}}, '');
 
     if (adapter.config.bespokenToken && adapter.config.bespokenToken.length) {
@@ -1867,6 +1881,10 @@ function createNotificationStates(serialOrName) {
         if (device.capabilities.includes('REMINDERS')) {
             setOrUpdateObject(devId + '.Reminder', {type: 'device'});
             setOrUpdateObject(devId + '.Reminder.New', {common: {type: 'mixed', role: 'state', name: 'Add new Reminder'}}, '', function(device, value) {
+                if (typeof value !== 'string') {
+                    adapter.log.error('Invalid value for new Reminder, please provide a string');
+                    return;
+                }
                 let valueArr = value.split(',');
                 let time = valueArr.shift().trim();
                 if (parseInt(time, 10) == time) time = parseInt(time, 10);
@@ -1881,6 +1899,10 @@ function createNotificationStates(serialOrName) {
         if (device.capabilities.includes('TIMERS_AND_ALARMS')) {
             setOrUpdateObject(devId + '.Alarm', {type: 'device'});
             setOrUpdateObject(devId + '.Alarm.New', {common: {type: 'mixed', role: 'state', name: 'Add new Alarm'}}, '', function(device, value) {
+                if (typeof value !== 'string') {
+                    adapter.log.error('Invalid value for new Alarm, please provide a string');
+                    return;
+                }
                 let valueArr = value.split(',');
                 let time = valueArr.shift().trim();
                 if (parseInt(time, 10) == time) time = parseInt(time, 10);
@@ -2219,20 +2241,22 @@ function initRoutines(callback) {
                 }
                 let name = routine.name;
                 let utteranceWords = null;
-                if (!name && routine.triggers && routine.triggers[0].payload && routine.triggers[0].payload.utterance) {
-                    name = routine.triggers[0].payload.utterance;
+                if (routine.triggers && routine.triggers[0].payload && routine.triggers[0].payload.utterance) {
+                    name = name  || routine.triggers[0].payload.utterance;
                     utteranceWords = routine.triggers[0].payload.utterance;
                 }
-                else if (!name && routine.triggers && routine.triggers[0].payload && routine.triggers[0].payload.schedule && routine.triggers[0].payload.schedule.triggerTime) {
-                    name = routine.triggers[0].payload.schedule.triggerTime;
-                    if (name.length === 6) name = name.replace(/^({0-9}{2})({0-9}{2})({0-9}{2})$/, '$1:$2:$3');
-                    if (routine.triggers[0].payload.schedule.recurrence) name += ` ${routine.triggers[0].payload.schedule.recurrence}`;
+                else if (routine.triggers && routine.triggers[0].payload && routine.triggers[0].payload.schedule && routine.triggers[0].payload.schedule.triggerTime) {
+                    if (!name) {
+                        name = name  || routine.triggers[0].payload.schedule.triggerTime;
+                        if (name.length === 6) name = name.replace(/^({0-9}{2})({0-9}{2})({0-9}{2})$/, '$1:$2:$3');
+                        if (routine.triggers[0].payload.schedule.recurrence) name += ` ${routine.triggers[0].payload.schedule.recurrence}`;
+                    }
                 }
                 else if (!name && routine.triggers && routine.triggers[0] && routine.triggers[0].type) {
                     name = routine.triggers.type;
                 }
                 else {
-                    adapter.log.debug('Ignore unknown type of Automation Routine Trigger' + JSON.stringify(routine.triggers.payload));
+                    adapter.log.debug('Ignore unknown type of Automation Routine Trigger' + JSON.stringify(routine.triggers[0].payload));
                     name = 'Unknown';
                 }
                 routine.friendlyName = name;
@@ -2511,7 +2535,7 @@ function main() {
 
     alexa.on('ws-device-activity', (activity) => {
         adapter.log.debug('device-activity: ' + JSON.stringify(activity));
-        if (activity.description.summary && routineTriggerUtterances[activity.deviceSerialNumber] && routineTriggerUtterances[activity.deviceSerialNumber][activity.description.summary.toLowerCase()]) {
+        if (activity.description.summary && routineTriggerUtterances && routineTriggerUtterances[activity.deviceSerialNumber] && routineTriggerUtterances[activity.deviceSerialNumber][activity.description.summary.toLowerCase()]) {
             adapter.setState(routineTriggerUtterances[activity.deviceSerialNumber][activity.description.summary.toLowerCase()], true, true);
         }
         updateHistoryStates(activity);
@@ -2522,7 +2546,7 @@ function main() {
     });
 
     alexa.on('ws-todo-change', (payload) => {
-        adapter.log.info('Received updated list: ' + JSON.stringify(payload));
+        adapter.log.debug('Received updated list: ' + JSON.stringify(payload));
 		
 		alexa.getList(payload.listId, (err, list) => {
 			
