@@ -289,7 +289,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 3.0.1 (2019-12-xx) WIP
+### 3.0.2 (2019-12-xx) WIP
 * Adapter needs nodejs 8+
 * (Apollon77) handle error for empty valueMaps for ColorTemperatures
 * (Apollon77) also support names for new special routines (Alarm Notifications, Sensor Detections, ..)

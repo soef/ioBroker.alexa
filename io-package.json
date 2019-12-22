@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.0.1",
+        "version": "3.0.2",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -235,7 +235,12 @@
         "messagebox": true,
         "license": "MIT",
         "localLink": "https://alexa.amazon.com",
-        "compact": true
+        "compact": true,
+        "dependencies": [
+            {
+                "js-controller": ">=2.0.0"
+            }
+        ]
     },
     "native": {
         "cookie": "",

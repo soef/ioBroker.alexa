@@ -1410,7 +1410,7 @@ function updateHistoryStates(o) {
             adapter.setState('History.cardJson', '', true);
         }
         if (o.domainAttributes.nBestList && o.domainAttributes.nBestList[0]) {
-            adapter.setState('History.answerText', o.domainAttributes.nBestList[0].answerText || '', true);
+            adapter.setState('History.answerText', o.domainAttributes.nBestList[0].answerText || o.domainAttributes.nBestList[0].text || '', true);
             jsonHistory.answerText = o.domainAttributes.nBestList[0].answerText;
         }
         else {
