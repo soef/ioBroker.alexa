@@ -561,8 +561,9 @@ function scheduleNotificationUpdate(deviceId, delay) {
     }, delay);
 }
 
-function schedulePlayerUpdate(deviceId, delay) {
+function schedulePlayerUpdate(deviceId, delay, onlyIfNew) {
     if (updatePlayerTimer[deviceId]) {
+        if (onlyIfNew) return;
         clearTimeout(updatePlayerTimer[deviceId]);
     }
     updatePlayerTimer[deviceId] = setTimeout(() => {
@@ -624,7 +625,7 @@ function updateMediaProgress(serialNumber) {
 	if (currentState === 'PLAYING' && resPlayer.playerInfo && resPlayer.playerInfo.progress) {
         let mediaProgress = parseInt(resPlayer.playerInfo.progress.mediaProgress, 10);
         let mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength, 10);
-        let timeframe = ~~((Date.now() - lastTimestamp) / 1000); // calculae time since last data
+        let timeframe = ~~((Date.now() - lastTimestamp) / 1000); // calculate time since last data
 		let mediaProgressNew = mediaProgress + timeframe; // add this to the progress
 
 		// Am Ende des Titels soll neu geladen werden. Ist es Radio (länge = 0) dann alle 200 sekunden
@@ -935,7 +936,7 @@ function createSmarthomeStates(callback) {
 
             alexa.getSmarthomeEntities((err, res2) => {
                 let behaviours = {};
-                if (res2) {
+                if (res2 && Array.isArray(res2)) {
                     res2.forEach((behaviour) => {
                         behaviours[behaviour.id] = behaviour;
                     });
@@ -1325,7 +1326,7 @@ function updateHistory(callback) {
         updateHistoryTimer = null;
     }
     alexa.getActivities({size: 3, filter: true}, (err, res) => {
-        if (err || !res) {
+        if (err || !res || !Array.isArray(res)) {
             if (adapter.config.updateHistoryInterval > 0) {
                 scheduleHistoryUpdate();
             }
@@ -2111,42 +2112,51 @@ function getLists(callback) {
 	let node = 'Lists';
 	alexa.getLists((err, lists) => {
 		setOrUpdateObject(node, {type: 'device', common: { 'name': 'Lists' }});
-		
-		lists.forEach(list => {
-			
-			// modify states
-			list.name = list.name || list.type;
-			list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
-			list.listId = list.itemId;
-			delete list.listIds;
-			delete list.itemId;
-			
-			// create channel
-			setOrUpdateObject(node + '.' + list.id, {type: 'channel', common: {name: ucFirst(list.name.toLowerCase().replace('list', '').replace(/_/g, ' ')) + ' List'}});
-			
-			// create state for new item
-			//adapter.subscribeStates(node + '.' + list.id + '.#New');
-			setOrUpdateObject(node + '.' + list.id + '.#New', {common: {type: 'mixed', role: 'state', name: 'Add new list item'}}, '', (value) => {
-				
-				if (value)
-				{
-					adapter.setState(node + '.' + list.id + '.#New', '', true);
-					addListItem(list, typeof value == 'string' ? { 'value': value } : JSON.parse(value))
-				}
-			});
-			
-			// write list contents as states
-			for (let key in list) {
-				if (list[key] !== null) {
-					setOrUpdateObject(node + '.' + list.id + '.' + key, { common: listObjects[key] ? listObjects[key] : {'role': 'text'} }, list[key]);
-					adapter.setState(node + '.' + list.id + '.' + key, list[key], true);
-				}
-			}
-			
-			// read list items
-			adapter.log.info('Updating list ' + list.name + '...');
-			allListItems.push(updateListItems(list));
-		});
+
+		if (Array.isArray(lists)) {
+            lists.forEach(list => {
+
+                // modify states
+                list.name = list.name || list.type;
+                list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
+                list.listId = list.itemId;
+                delete list.listIds;
+                delete list.itemId;
+
+                // create channel
+                setOrUpdateObject(node + '.' + list.id, {
+                    type: 'channel',
+                    common: {name: ucFirst(list.name.toLowerCase().replace('list', '').replace(/_/g, ' ')) + ' List'}
+                });
+
+                // create state for new item
+                //adapter.subscribeStates(node + '.' + list.id + '.#New');
+                setOrUpdateObject(node + '.' + list.id + '.#New', {
+                    common: {
+                        type: 'mixed',
+                        role: 'state',
+                        name: 'Add new list item'
+                    }
+                }, '', (value) => {
+                    if (value) {
+                        adapter.setState(node + '.' + list.id + '.#New', '', true);
+                        addListItem(list, typeof value == 'string' ? {'value': value} : JSON.parse(value))
+                    }
+                });
+
+                // write list contents as states
+                for (let key in list) {
+                    if (list[key] !== null) {
+                        setOrUpdateObject(node + '.' + list.id + '.' + key, {common: listObjects[key] ? listObjects[key] : {'role': 'text'}}, list[key]);
+                        adapter.setState(node + '.' + list.id + '.' + key, list[key], true);
+                    }
+                }
+
+                // read list items
+                adapter.log.debug('Updating list ' + list.name + '...');
+                allListItems.push(updateListItems(list));
+            });
+        }
 		
 		Promise.all(allListItems).then(() => callback && callback());
 	});
@@ -2179,44 +2189,51 @@ function updateListItems(list, callback) {
 			
 			node = node + '.items';
 			setOrUpdateObject(node, {type: 'channel', common: {name: 'All list items'}});
-			
-			items.forEach((item, index) => {
-				item.index = index;
-				item['#delete'] = false;
-				item.listName = list.name;
-				
-				/*
-				 * EXAMPLE PAYLOAD
-				 *
-				{
-					completed: true,
-					createdDateTime: 1574597641331,
-					customerId: null,
-					id: '8140fa62-XXXX-XXXX-XXXX-7380a2ccd6ab',
-					listId: 'YW16bjEuYWNXXXXXXXXXZCWFhRLVRBU0s=',
-					shoppingListItem: false,
-					updatedDateTime: 1574619085063,
-					value: 'Q',
-					version: 2
-				}
-				*/
 
-				setOrUpdateObject(node + '.' + item.id, {type: 'channel', common: {name: 'List item ' + (index+1)}});
-				for (let key in item) {
-					
-					if (item[key] !== null) {
-						if (key == '#delete') {
-							//adapter.subscribeStates(node + '.' + item.id + '.' + key);
-							setOrUpdateObject(node + '.' + item.id + '.' + key, { common: listItemsObjects[key] ? listItemsObjects[key] : {'role': 'text'} }, item[key], () => deleteListItem(list, item));
-						}
-						else {
-							setOrUpdateObject(node + '.' + item.id + '.' + key, { common: listItemsObjects[key] ? listItemsObjects[key] : {'role': 'text'} }, item[key], ['completed', 'value'].indexOf(key) === -1 ? null : (value) => updateListItem(list, { ...item, [key]: value }));
-						}
-						
-						adapter.setState(node + '.' + item.id + '.' + key, item[key], true);
-					}
-				}
-			});
+			if (Array.isArray(items)) {
+                items.forEach((item, index) => {
+                    item.index = index;
+                    item['#delete'] = false;
+                    item.listName = list.name;
+
+                    /*
+                     * EXAMPLE PAYLOAD
+                     *
+                    {
+                        completed: true,
+                        createdDateTime: 1574597641331,
+                        customerId: null,
+                        id: '8140fa62-XXXX-XXXX-XXXX-7380a2ccd6ab',
+                        listId: 'YW16bjEuYWNXXXXXXXXXZCWFhRLVRBU0s=',
+                        shoppingListItem: false,
+                        updatedDateTime: 1574619085063,
+                        value: 'Q',
+                        version: 2
+                    }
+                    */
+
+                    setOrUpdateObject(node + '.' + item.id, {
+                        type: 'channel',
+                        common: {name: 'List item ' + (index + 1)}
+                    });
+                    for (let key in item) {
+
+                        if (item[key] !== null) {
+                            if (key === '#delete') {
+                                //adapter.subscribeStates(node + '.' + item.id + '.' + key);
+                                setOrUpdateObject(node + '.' + item.id + '.' + key, {common: listItemsObjects[key] ? listItemsObjects[key] : {'role': 'text'}}, item[key], () => deleteListItem(list, item));
+                            } else {
+                                setOrUpdateObject(node + '.' + item.id + '.' + key, {common: listItemsObjects[key] ? listItemsObjects[key] : {'role': 'text'}}, item[key], ['completed', 'value'].indexOf(key) === -1 ? null : (value) => updateListItem(list, {
+                                    ...item,
+                                    [key]: value
+                                }));
+                            }
+
+                            adapter.setState(node + '.' + item.id + '.' + key, item[key], true);
+                        }
+                    }
+                });
+            }
 			
 			callback && callback();
 			resolve(true);
@@ -2228,7 +2245,7 @@ function initRoutines(callback) {
     alexa.getAutomationRoutines((err, routines) => {
         automationRoutines = [];
         routineTriggerUtterances = {};
-        if (!err && routines) {
+        if (!err && routines && Array.isArray(routines)) {
             for (let i = 0; i < routines.length; i++) {
                 let routine = routines[i];
                 if (routine['@type'] !== 'com.amazon.alexa.behaviors.model.Automation') {
@@ -2314,7 +2331,7 @@ function initCommUsers(callback) {
                     if (comEntry.commsId[0] === alexa.commsId) {
                         setOrUpdateObject('Contacts.' + contactId + '.#clearOwnMessages', {common: {role: 'button', type: 'boolean', read: false, write: true, def: false}}, '', function (value) {
                             alexa.getConversations((err, res) => {
-                               if (!err && res && res.conversations) {
+                               if (!err && res && res.conversations && Array.isArray(res.conversations)) {
                                    res.conversations.forEach((conversation) => {
                                        if (!conversation.participants || !conversation.participants.length || conversation.participants[0] !== alexa.commsId) return;
                                        adapter.log.debug('Delete Conversation with ID ' + conversation.conversationId);
@@ -2519,6 +2536,8 @@ function main() {
         if (data.isMuted === null && data.volume === 0) muted = true;
         if (!muted) adapter.setState(devId + '.Player.volume', data.volume, true);
         adapter.setState(devId + '.Player.muted', muted, true);
+
+        schedulePlayerUpdate(device.serialNumber, 15000, true);
     });
 
     alexa.on('ws-content-focus-change', (data) => {
@@ -2561,7 +2580,7 @@ function main() {
 			updateListItems(list, processObjectQueue);
 			
 			// eventType: deleted
-			if (payload.eventType == 'itemDeleted') {
+			if (payload.eventType === 'itemDeleted') {
 				
 				// delete objects
 				let node = adapter.namespace + '.Lists.' + list.id + '.items.' + payload.listItemId;

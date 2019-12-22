@@ -289,7 +289,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
-### 3.0.0 (2019-12-xx) WIP
+### 3.0.1 (2019-12-xx) WIP
 * Adapter needs nodejs 8+
 * (Apollon77) handle error for empty valueMaps for ColorTemperatures
 * (Apollon77) also support names for new special routines (Alarm Notifications, Sensor Detections, ..)
@@ -300,7 +300,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 * (Apollon77) fix Routine names after changes by Amazon
 * (Apollon77) add some devices and new images
 * (Apollon77) Add answerText when available from history
-
+* (Apollon77) Add more situations to update player status because amazon send no info anymore on title changes 
 
 ### 2.6.4 (2019-07-25)
 * (Apollon77) add some error handling for contacts
