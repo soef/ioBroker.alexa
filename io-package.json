@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.0.2",
+        "version": "3.0.3",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.0.3": {
+                "en": "BREAKING: Nodejs 8 and js-controller 2.0 are required now! Lists (Shopping/Todo) are supported now, more data are captured in history, Several fixes because of changes by Amazon",
+                "de": "BREAKING: Nodejs 8 und js-controller 2.0 werden jetzt benötigt! Listen (Shopping / Todo) werden jetzt unterstützt, es werden mehr Daten in der Historie erfasst. Mehrere Korrekturen aufgrund von Änderungen durch Amazon",
+                "ru": "BREAKING: сейчас требуются Nodejs 8 и js-controller 2.0! Списки (Shopping / Todo) теперь поддерживаются, больше данных заносится в историю, Несколько исправлений из-за изменений Amazon",
+                "pt": "BREAKING: Nodejs 8 e js-controller 2.0 são necessários agora! As listas (Compras / Todo) são suportadas agora, mais dados são capturados no histórico. Várias correções devido a alterações na Amazon",
+                "nl": "BREAKING: Nodejs 8 en js-controller 2.0 zijn nu vereist! Lijsten (Shopping / Todo) worden nu ondersteund, meer gegevens worden vastgelegd in de geschiedenis, verschillende fixes vanwege wijzigingen door Amazon",
+                "fr": "RUPTURE: Nodejs 8 et js-controller 2.0 sont requis maintenant! Les listes (Shopping / Todo) sont prises en charge maintenant, plus de données sont capturées dans l'historique, plusieurs correctifs en raison des modifications apportées par Amazon",
+                "it": "ROTTURA: Nodejs 8 e js-controller 2.0 sono richiesti ora! Le liste (Shopping / Todo) sono ora supportate, più dati vengono acquisiti nella cronologia, Diverse correzioni a causa delle modifiche di Amazon",
+                "es": "ROMPIENDO: ¡Ahora se requieren Nodejs 8 y js-controller 2.0! Las listas (Compras / Todo) son compatibles ahora, se capturan más datos en el historial, Varias correcciones debido a los cambios de Amazon",
+                "pl": "ŁAMANIE: Nodejs 8 i js-kontroler 2.0 są teraz wymagane! Listy (Zakupy / Todo) są teraz obsługiwane, więcej danych jest rejestrowanych w historii, Kilka poprawek z powodu zmian wprowadzonych przez Amazon",
+                "zh-cn": "BREAKING：现在需要Nodejs 8和js-controller 2.0！现在支持列表（购物/ Todo），历史记录中捕获了更多数据，由于亚马逊的更改而进行了一些修复"
+            },
             "2.6.4": {
                 "en": "added possibility to send text messages to users including himself, allows deletion of all messages to himself, allow to reset cookies via admin, optimized announcement and ssml",
                 "de": "Möglichkeit hinzugefügt, Textnachrichten an Benutzer zu senden, einschließlich sich selbst, erlaubt das Löschen aller Nachrichten an sich selbst, erlaubt das Zurücksetzen von Cookies über Admin, optimierte Ankündigung und ssml",
