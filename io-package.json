@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.0.3",
+        "version": "3.0.4",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.0.4": {
+                "en": "some errors prevented",
+                "de": "Einige Fehler wurden verhindert",
+                "ru": "предотвращены некоторые ошибки",
+                "pt": "alguns erros impedidos",
+                "nl": "enkele fouten voorkomen",
+                "fr": "quelques erreurs évitées",
+                "it": "alcuni errori evitati",
+                "es": "algunos errores prevenidos",
+                "pl": "niektóre błędy zapobiegły",
+                "zh-cn": "防止一些错误"
+            },
             "3.0.3": {
                 "en": "BREAKING: Nodejs 8 and js-controller 2.0 are required now! Lists (Shopping/Todo) are supported now, more data are captured in history, Several fixes because of changes by Amazon",
                 "de": "BREAKING: Nodejs 8 und js-controller 2.0 werden jetzt benötigt! Listen (Shopping / Todo) werden jetzt unterstützt, es werden mehr Daten in der Historie erfasst. Mehrere Korrekturen aufgrund von Änderungen durch Amazon",

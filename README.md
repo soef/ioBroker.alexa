@@ -289,6 +289,9 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 3.0.4 (2019-12-24)
+* (Apollon77) Prevent some errors
+
 ### 3.0.3 (2019-12-24)
 * Adapter needs nodejs 8+ and js-controller 2.0 now!
 * (Zefau) add functionality for handling of lists

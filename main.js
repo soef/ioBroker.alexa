@@ -1592,7 +1592,7 @@ function createStates(callback) {
                     if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
                     adapter.getState('Echo-Devices.' + iteratorDevice.serialNumber + '.Player.volume', (err, state) => {
                         let speakVolumeReset = 0;
-                        if (!err && state.val !== false && state.val !== null) {
+                        if (!err && state && state.val !== false && state.val !== null) {
                             speakVolumeReset = state.val;
                         }
                         let speakCommands = [];
@@ -1619,7 +1619,7 @@ function createStates(callback) {
                     if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
                     adapter.getState('Echo-Devices.' + iteratorDevice.serialNumber + '.Player.volume', (err, state) => {
                         let speakVolumeReset = 0;
-                        if (!err && state.val !== false && state.val !== null) {
+                        if (!err && state && state.val !== false && state.val !== null) {
                             speakVolumeReset = state.val;
                         }
                         if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume, device: iteratorDevice});
@@ -1645,7 +1645,7 @@ function createStates(callback) {
                     let speakVolume = iteratorDevice.speakVolume;
                     adapter.getState('Echo-Devices.' + iteratorDevice.serialNumber + '.Player.volume', (err, state) => {
                         let speakVolumeReset = 0;
-                        if (!err && state.val !== false && state.val !== null) {
+                        if (!err && state && state.val !== false && state.val !== null) {
                             speakVolumeReset = state.val;
                         }
                         if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume, device: iteratorDevice});
