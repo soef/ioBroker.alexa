@@ -2571,6 +2571,7 @@ function main() {
 			
 			// modify states
 			list.name = list.name || list.type;
+			if (!list.name) return;
 			list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
 			list.listId = list.itemId;
 			delete list.listIds;

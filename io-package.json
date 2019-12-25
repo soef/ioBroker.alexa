@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.0.4",
+        "version": "3.0.5",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.0.5": {
+                "en": "some errors prevented",
+                "de": "Einige Fehler wurden verhindert",
+                "ru": "предотвращены некоторые ошибки",
+                "pt": "alguns erros impedidos",
+                "nl": "enkele fouten voorkomen",
+                "fr": "quelques erreurs évitées",
+                "it": "alcuni errori evitati",
+                "es": "algunos errores prevenidos",
+                "pl": "niektóre błędy zapobiegły",
+                "zh-cn": "防止一些错误"
+            },
             "3.0.4": {
                 "en": "some errors prevented",
                 "de": "Einige Fehler wurden verhindert",
