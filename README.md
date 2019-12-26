@@ -289,6 +289,9 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 
+### 3.0.6 (2019-12-26)
+* (Apollon77) Prevent some errors
+
 ### 3.0.5 (2019-12-25)
 * (Apollon77) Prevent some errors
 
