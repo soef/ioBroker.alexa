@@ -2293,9 +2293,13 @@ function initCommUsers(callback) {
             if (commHomeGroup.commsId) {
                 alexa.commsId = commHomeGroup.commsId;
             }
+            if (!commHomeGroup || !commHomeGroup.homeGroupId) {
+                processObjectQueue(callback);
+                return;
+            }
             alexa.getContacts({homeGroupId: commHomeGroup.homeGroupId}, (err, commContacts) => {
                 if (err || !commContacts || !Array.isArray(commContacts)) {
-                    callback && callback ();
+                    processObjectQueue(callback);
                     return;
                 }
                 setOrUpdateObject('Contacts', {type: 'device', common: {name: 'Communication contacts'}});
@@ -2568,8 +2572,8 @@ function main() {
         adapter.log.debug('Received updated list: ' + JSON.stringify(payload));
 		
 		alexa.getList(payload.listId, (err, list) => {
-			
-			// modify states
+            if (!list) return;
+            // modify states
 			list.name = list.name || list.type;
 			if (!list.name) return;
 			list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
