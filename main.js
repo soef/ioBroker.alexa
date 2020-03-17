@@ -1926,6 +1926,7 @@ function createNotificationStates(serialOrName) {
             if (noti.type === 'Alarm' && !device.capabilities.includes('TIMERS_AND_ALARMS')) continue;
             if (noti.type === 'Timer' && noti.status === 'ON' && noti.remainingTime > 0) {
                 adapter.log.debug(noti.type + ' ' + noti.id + ' triggered in ' + Math.floor(noti.remainingTime / 1000) + 's');
+                setOrUpdateObject(devId + '.Timer.lastTimerRemainingTime', {common: {type: 'integer', role: 'state', name: 'Remaining time of last timer in seconds'}}, Math.floor(noti.remainingTime / 1000), noti.set);
                 notificationTimer[noti.id] = setTimeout(function (noti) {
                     notificationTimer[noti.id] = null;
                     adapter.log.debug(noti.type + ' ' + noti.id + ' triggered');
