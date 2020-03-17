@@ -631,6 +631,7 @@ function schedulePlayerUpdate(deviceId, delay, onlyIfNew) {
         if (onlyIfNew) return;
         clearTimeout(updatePlayerTimer[deviceId]);
     }
+    adapter.log.debug('Schedule new Player Update in ' + delay + 'ms');
     updatePlayerTimer[deviceId] = setTimeout(() => {
         updatePlayerTimer[deviceId] = null;
         updatePlayerStatus(deviceId);
