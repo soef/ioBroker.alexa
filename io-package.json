@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.1.1",
+        "version": "3.1.2",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.1.2": {
+                "en": "next timer date and softwareVersion states added, optimizations and fixes",
+                "de": "Nächstes Timer-Datum und Software-Versionsstatus hinzugefügt, Optimierungen und Korrekturen",
+                "ru": "добавлена следующая дата таймера и программное обеспечение. Версии состояний, оптимизация и исправления.",
+                "pt": "data do próximo timer e softwareVersion states added, optimizations and fixes",
+                "nl": "volgende timer datum en softwareVersion statussen toegevoegd, optimalisaties en fixes",
+                "fr": "prochaine date de temporisation et états de version du logiciel ajoutés, optimisations et corrections",
+                "it": "data e software del prossimo timer Stati di versione aggiunti, ottimizzazioni e correzioni",
+                "es": "próxima fecha del temporizador y estados de versión de software agregados, optimizaciones y correcciones",
+                "pl": "dodana data następnego timera i oprogramowanie Wersje, optymalizacje i poprawki",
+                "zh-cn": "下一个计时器日期和软件版本状态已添加，优化和修复"
+            },
             "3.0.8": {
                 "en": "some errors prevented",
                 "de": "Einige Fehler wurden verhindert",
