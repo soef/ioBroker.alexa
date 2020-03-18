@@ -2614,7 +2614,7 @@ function main() {
         if (!muted) adapter.setState(devId + '.Player.volume', data.volume, true);
         adapter.setState(devId + '.Player.muted', muted, true);
 
-        schedulePlayerUpdate(device.serialNumber, 15000, true);
+        //schedulePlayerUpdate(device.serialNumber, 15000, true);
     });
 
     alexa.on('ws-content-focus-change', (data) => {
