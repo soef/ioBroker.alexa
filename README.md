@@ -296,7 +296,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.2.0 (2020-06-17)
 * (Apollon77/hive) add new commands, jokes/facts/goodnight/cleanup
 * (Apollon77/hive) add new command curatedtts with allowed values ["goodbye", "confirmations", "goodmorning", "compliments", "birthday", "goodnight", "iamhome"] to play random curated sentences
 * (Apollon77) Prevent some crashes
@@ -304,7 +304,7 @@ When the adapter crashes or an other Code error happens, this error message that
 * (Apollon77) make sure that Lists objects are deleted correctly when deleting
 * (Apollon77) Make compatible with nodejs 14
 * (Apollon77) Adjust to changes from Amazon so that initial Proxy process works again
-* (OberstVonGatow) Make sure that for Spotify Media data requests do not ave negative effects and stop the playback  
+* (OberstVonGatow) Make sure that for Spotify Media data requests do not have negative effects and stop the playback  
 
 ### 3.1.2 (2020-03-18)
 * (Gieskanne/Apollon77) Add Next Timer Date as state
