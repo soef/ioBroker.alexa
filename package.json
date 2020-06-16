@@ -36,23 +36,25 @@
     "url": "https://github.com/Apollon77/ioBroker.alexa2"
   },
   "dependencies": {
-    "alexa-remote2": "^3.1.0",
+    "alexa-remote2": "^3.2.0",
     "https": "^1.0.0",
     "nearest-color": "^0.4.4",
-    "virtual-device-sdk": "^1.7.2",
-    "@iobroker/adapter-core": "^2.2.1",
-    "@sentry/node": "^5.14.2",
-    "@sentry/integrations": "^5.14.2",
-    "source-map-support": "^0.5.16"
+    "virtual-device-sdk": "^1.7.3",
+    "@iobroker/adapter-core": "^2.4.0",
+    "@sentry/node": "^5.17.0",
+    "@sentry/integrations": "^5.17.0",
+    "source-map-support": "^0.5.19"
   },
   "devDependencies": {
+    "@alcalzone/release-script": "^1.4.1",
     "gulp": "^4.0.2",
-    "mocha": "^7.1.1",
+    "mocha": "^8.0.1",
     "chai": "^4.2.0"
   },
   "main": "main.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --exit"
+    "test": "node node_modules/mocha/bin/mocha --exit",
+    "release": "release-script"
   },
   "bugs": {
     "url": "https://github.com/Apollon77/ioBroker.alexa2/issues"

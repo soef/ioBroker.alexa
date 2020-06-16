@@ -76,7 +76,12 @@ const commands = {
     'calendarToday': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'calendarTomorrow': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'calendarNext': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
-    'notification': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}}
+    'notification': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}},
+    'goodnight': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'funfact': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'joke': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'cleanup': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
+    'curatedtts': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}}
 };
 
 const knownDeviceType = {
@@ -109,6 +114,7 @@ const knownDeviceType = {
     'A2OSP3UA4VC85F':   {name: 'Sonos', commandSupport: true, icon: 'icons/sonos.png'}, // DEREGISTER_DEVICE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,CHANGE_NAME,KINDLE_BOOKS,AUDIO_PLAYER,TIMERS_AND_ALARMS,VOLUME_SETTING,PEONY,AMAZON_MUSIC,REMINDERS,SLEEP,I_HEART_RADIO,AUDIBLE,GOLDFISH,TUNE_IN,DREAM_TRAINING,PERSISTENT_CONNECTION
     'A2T0P32DY3F7VB':   {name: 'echosim.io', commandSupport: false},
     'A2TF17PFR55MTB':   {name: 'Apps', commandSupport: false, icon: 'icons/apps.png'}, // VOLUME_SETTING,MICROPHONE
+    'A30YDR2MK8HMRV':   {name: 'Echo Dot 3.Gen Clock', commandSupport: true, icon: '/icons/echo_dot3.png'}, // DREAM_TRAINING,DISPLAY_BRIGHTNESS_ADJUST,SUPPORTS_LOCALE,TUNE_IN,TUPLE_CATEGORY_A,KINDLE_BOOKS,ALEXA_PRESENCE,GOLDFISH,I_HEART_RADIO,DEREGISTER_DEVICE,DIALOG_INTERFACE_VERSION,CHANGE_NAME,UPDATE_WIFI,AUDIO_CONTROLS,TUPLE,REMINDERS,EQUALIZER_CONTROLLER_TREBLE,GADGETS,SUPPORTS_LOCALE_SWITCH,TIMERS_AND_ALARMS,ALEXA_GESTURES,EQUALIZER_CONTROLLER_MIDRANGE,AUDIO_PLAYER,TIMERS_ALARMS_NOTIFICATIONS_VOLUME,SUPPORTS_SOFTWARE_VERSION,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,POPTART,SOUND_SETTINGS,ACTIVE_AFTER_FRO,PANDORA,DS_VOLUME_SETTING,PERSISTENT_CONNECTION,SLEEP,GUARD_EARCON,SUPPORT_CALENDAR_ALERT,EQUALIZER_CONTROLLER_BASS,AUDIBLE,EARCONS,FLASH_BRIEFING,PAIR_REMOTE,CUSTOM_ALARM_TONE,CLOCK_FORMAT_24_HR,DISPLAY_POWER_TOGGLE,REQUIRES_OOBE_FOR_SETUP,MICROPHONE,MUSIC_SKILL,FAR_FIELD_WAKE_WORD,VOICE_TRAINING,TAHOE_BYOD,PAIR_BT_SOURCE,PAIR_BT_SINK,AMAZON_MUSIC,SALMON,ASCENDING_ALARM_VOLUME,BT_PAIRING_FLOW_V2,LEMUR_ALPHA,SET_LOCALE,DISPLAY_ADAPTIVE_BRIGHTNESS,VOLUME_SETTING
     'A32DOYMUN6DTXA':   {name: 'Echo Dot 3.Gen', commandSupport: true, icon: '/icons/echo_dot3.png'}, // PAIR_BT_SINK,CUSTOM_ALARM_TONE,PAIR_REMOTE,TIMERS_AND_ALARMS,SUPPORTS_CONNECTED_HOME,TUNE_IN,SOUND_SETTINGS,DEREGISTER_DEVICE,SET_LOCALE,SLEEP,EARCONS,UPDATE_WIFI,PAIR_BT_SOURCE,SUPPORTS_SOFTWARE_VERSION,REQUIRES_OOBE_FOR_SETUP,MICROPHONE,SALMON,TAHOE_BYOD,CHANGE_NAME,FAR_FIELD_WAKE_WORD,VOLUME_SETTING,AUDIO_PLAYER,I_HEART_RADIO,REMINDERS,PERSISTENT_CONNECTION,AUDIBLE,GADGETS,SUPPORTS_CONNECTED_HOME_ALL,AMAZON_MUSIC,VOICE_TRAINING,FLASH_BRIEFING,DEREGISTER_FACTORY_RESET,GOLDFISH,PANDORA,ACTIVE_AFTER_FRO,DREAM_TRAINING,LEMUR_ALPHA,POPTART,KINDLE_BOOKS
     'A378ND93PD0NC4':   {name: 'VR Radio', commandSupport: true}, // SLEEP,CHANGE_NAME,TUNE_IN,MICROPHONE,VOLUME_SETTING,DEREGISTER_DEVICE,GOLDFISH,AMAZON_MUSIC,KINDLE_BOOKS,REMINDERS,AUDIBLE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TIMERS_AND_ALARMS,PAIR_BT_SINK,PEONY,PERSISTENT_CONNECTION,AUDIO_PLAYER,I_HEART_RADIO,DREAM_TRAINING,MUSIC_SKILL
     'A37SHHQ3NUL7B5':   {name: 'Bose Homespeaker', commandSupport: false}, // MICROPHONE,AMAZON_MUSIC,AUDIO_PLAYER,SLEEP,PERSISTENT_CONNECTION,I_HEART_RADIO,AUDIBLE,TIMERS_AND_ALARMS,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,DREAM_TRAINING,TUNE_IN,VOLUME_SETTING,GOLDFISH,KINDLE_BOOKS,DEREGISTER_DEVICE,CHANGE_NAME
@@ -267,7 +273,7 @@ function deleteObject(id) {
 
         }
         adapter.delObject(id, (err) => {
-            adapter.log.info(adapterObjects[id].type + ' ' +  id + ' deleted (' + err + ')');
+            adapter.log.info(obj.type + ' ' +  id + ' deleted (' + err + ')');
             if (!err) {
                 delete adapterObjects[id];
             }
@@ -417,26 +423,32 @@ function initSentry(callback) {
         }
         scope.addEventProcessor(function(event, hint) {
             // Try to filter out some events
-            if (event && event.metadata) {
-                if (event.metadata.function && event.metadata.function.startsWith('Module.')) {
+            if (event.exception && event.exception.values && event.exception.values[0]) {
+                const eventData = event.exception.values[0];
+                // if error type is one from blacklist we ignore this error
+                if (eventData.type && sentryErrorBlacklist.includes(eventData.type)) {
                     return null;
                 }
-                if (event.metadata.type && sentryErrorBlacklist.includes(event.metadata.type)) {
-                    return null;
-                }
-                if (event.metadata.filename && !sentryPathWhitelist.find(path => path && path.length && event.metadata.filename.includes(path))) {
-                    return null;
-                }
-                if (event.exception && event.exception.values && event.exception.values[0] && event.exception.values[0].stacktrace && event.exception.values[0].stacktrace.frames) {
-                    for (let i = 0; i < (event.exception.values[0].stacktrace.frames.length > 5 ? 5 : event.exception.values[0].stacktrace.frames.length); i++) {
-                        let foundWhitelisted = false;
-                        if (event.exception.values[0].stacktrace.frames[i].filename && sentryPathWhitelist.find(path => path && path.length && event.exception.values[0].stacktrace.frames[i].filename.includes(path))) {
-                            foundWhitelisted = true;
-                            break;
+                if (eventData.stacktrace && eventData.stacktrace.frames && Array.isArray(eventData.stacktrace.frames) && eventData.stacktrace.frames.length) {
+                    // if last exception frame is from an nodejs internal method we ignore this error
+                    if (eventData.stacktrace.frames[eventData.stacktrace.frames.length - 1].filename && (eventData.stacktrace.frames[eventData.stacktrace.frames.length - 1].filename.startsWith('internal/') || eventData.stacktrace.frames[eventData.stacktrace.frames.length - 1].filename.startsWith('Module.'))) {
+                        return null;
+                    }
+                    // Check if any entry is whitelisted from pathWhitelist
+                    const whitelisted = eventData.stacktrace.frames.find(frame => {
+                        if (frame.function && frame.function.startsWith('Module.')) {
+                            return false;
                         }
-                        if (!foundWhitelisted) {
-                            return null;
+                        if (frame.filename && frame.filename.startsWith('internal/')) {
+                            return false;
                         }
+                        if (frame.filename && !sentryPathWhitelist.find(path => path && path.length && frame.filename.includes(path))) {
+                            return false;
+                        }
+                        return true;
+                    });
+                    if (!whitelisted) {
+                        return null;
                     }
                 }
             }
@@ -445,7 +457,7 @@ function initSentry(callback) {
         });
 
         adapter.getForeignObject('system.config', (err, obj) => {
-            if (obj && obj.common && obj.common.diag) {
+            if (obj && obj.common && obj.common.diag !== 'none') {
                 adapter.getForeignObject('system.meta.uuid', (err, obj) => {
                     // create uuid
                     if (!err  && obj) {
@@ -1908,7 +1920,7 @@ function createBluetoothStates(serialOrName) {
     let device = alexa.find(serialOrName);
     let devId = 'Echo-Devices.' + device.serialNumber;
 
-    if (device.bluetoothState && !device.isMultiroomDevice && device.deviceTypeDetails.commandSupport) {
+    if (device.bluetoothState && !device.isMultiroomDevice && device.deviceTypeDetails && device.deviceTypeDetails.commandSupport) {
         setOrUpdateObject(devId + '.Bluetooth', {type: 'device'});
         device.bluetoothState.pairedDeviceList.forEach ((bt) => {
             setOrUpdateObject(devId + '.Bluetooth.' + bt.address, {type: 'channel', common: {name: bt.friendlyName}});
@@ -2028,9 +2040,7 @@ function createNotificationStates(serialOrName) {
                 }
             }
         }
-        if (nextTimerObject) {
-            setOrUpdateObject(devId + '.Timer.nextTimerDate', {common: {type: 'number', role: 'date', name: 'Unix epoch timestamp for next timer'}}, Date.now() + nextTimerObject.remainingTime, nextTimerObject.set);
-        }
+        setOrUpdateObject(devId + '.Timer.nextTimerDate', {common: {type: 'number', role: 'date', name: 'Unix epoch timestamp for next timer'}}, nextTimerObject ? (Date.now() + nextTimerObject.remainingTime) : 0, nextTimerObject ? nextTimerObject.set : null);
     }
 }
 
@@ -2083,106 +2093,142 @@ function updatePlayerStatus(serialOrName, callback) {
         }
         let device = alexa.find(serials[i++]);
         if (! device || !device.isControllable) return doIt();
+        let devId = 'Echo-Devices.' + device.serialNumber;
 
         alexa.getPlayerInfo(device , (err, resPlayer) => {
             if (err || !resPlayer || !resPlayer.playerInfo) return doIt();
-            alexa.getMedia(device, (err, resMedia) => {
-                if (err || !resMedia) return doIt();
-                let devId = 'Echo-Devices.' + device.serialNumber;
+
+            let playerData = {
+                providerName: '',
+                providerId: '',
+                radioStationId: '',
+                service: '',
+                contentType: '',
+                controlShuffle: null,
+                controlRepeat: null,
+                imageURL: '',
+                muted: null,
+                volume: null,
+                controlPause: false,
+                controlPlay: false,
+                currentState: '',
+                title : '',
+                artist : '',
+                album : '',
+                mainArtUrl : '',
+                miniArtUrl : '',
+                mediaLength : 0,
+                mediaProgress : 0,
+                mediaProgressPercent : 0
+            };
+
+            function finalize() {
+                lastPlayerState[device.serialNumber] = { resPlayer: resPlayer, ts: Date.now(), devId: devId, timeout: null };
                 if (lastPlayerState[device.serialNumber] && lastPlayerState[device.serialNumber].timeout) {
                     clearTimeout(lastPlayerState[device.serialNumber].timeout);
                 }
-                lastPlayerState[device.serialNumber] = {resPlayer: resPlayer, resMedia: resMedia, ts: Date.now(), devId: devId, timeout: null};
 
-                if (device.capabilities.includes ('VOLUME_SETTING')) {
-                    let volume = null;
-                    if (resMedia && resMedia.volume !== undefined && resMedia.volume !== null) {
-                        volume = ~~resMedia.volume;
-                    }
-                    else if (resPlayer.playerInfo && resPlayer.playerInfo.volume && resPlayer.playerInfo.volume.volume !== null) {
-                        volume = ~~resPlayer.playerInfo.volume.volume;
-                    }
-                    if (volume === 0 && device.isMultiroomDevice) volume = null;
-                    if (volume !== null) adapter.setState(devId + '.Player.volume', volume, true);
+                playerData.currentState = resPlayer.playerInfo.state;
+
+                if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.infoText) {
+                    playerData.title = resPlayer.playerInfo.infoText.title;
+                    playerData.artist = resPlayer.playerInfo.infoText.subText1;
+                    playerData.album = resPlayer.playerInfo.infoText.subText2;
                 }
-                if (resMedia.shuffling !== undefined) adapter.setState(devId + '.Player.controlShuffle', resMedia.shuffling, true);
-                if (resMedia.looping !== undefined) adapter.setState(devId + '.Player.controlRepeat', resMedia.looping, true);
-                //let muted = res.playerInfo.volume.muted;
-                adapter.setState(devId + '.Player.controlPause', (resPlayer.playerInfo.state === 'PAUSED'), true);
-                adapter.setState(devId + '.Player.controlPlay', (resPlayer.playerInfo.state === 'PLAYING'), true);
 
-                //if (resPlayer.playerInfo.state !== null) adapter.setState(devId + '.Player.status', resPlayer.playerInfo.state, true);
-                adapter.setState(devId + '.Player.contentType', resMedia.contentType || '', true);	// 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
-
-                adapter.setState(devId + '.Player.currentState', resPlayer.playerInfo.state === 'PLAYING', true);	// 'PAUSED' | 'PLAYING'
-
-                if (resMedia.imageURL && resMedia.imageURL.endsWith('.')) resMedia.imageURL += 'png'; // Handle Amazon errors
-                adapter.setState(devId + '.Player.imageURL', resMedia.imageURL || '', true);
-                adapter.setState(devId + '.Player.muted', !!resMedia.muted, true);
-                adapter.setState(devId + '.Player.providerId', resMedia.providerId || '', true); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
-                adapter.setState(devId + '.Player.radioStationId', resMedia.radioStationId || '', true); // 's24885' | null
-                adapter.setState(devId + '.Player.service', resMedia.service || '', true); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
-
-                let providerName = '';
-                if (resPlayer.playerInfo !== undefined && 'provider' in resPlayer.playerInfo && resPlayer.playerInfo.provider !== null) {
-                    providerName = resPlayer.playerInfo.provider.providerName;
+                if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.mainArt) {
+                    playerData.mainArtUrl = resPlayer.playerInfo.mainArt.url;
                 }
-                adapter.setState(devId + '.Player.providerName', providerName || '',	true); // 'Amazon Music' | 'TuneIn Live-Radio'
-
-                let title = '';
-                let artist = '';
-                let album = '';
-                if (resPlayer.playerInfo !== undefined && 'infoText' in resPlayer.playerInfo && resPlayer.playerInfo.infoText !== null) {
-                    title = resPlayer.playerInfo.infoText.title;
-                    artist = resPlayer.playerInfo.infoText.subText1;
-                    album = resPlayer.playerInfo.infoText.subText2;
+                if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.miniArt) {
+                    playerData.miniArtUrl = resPlayer.playerInfo.miniArt.url;
                 }
-                adapter.setState(devId + '.Player.currentTitle', title || '', true);
-                adapter.setState(devId + '.Player.currentArtist', artist || '', true);
-                adapter.setState(devId + '.Player.currentAlbum', album || '', true);
 
-                let mainArtUrl = '';
-                if (resPlayer.playerInfo !== undefined && 'mainArt' in resPlayer.playerInfo && resPlayer.playerInfo.mainArt !== null) {
-                    mainArtUrl = resPlayer.playerInfo.mainArt.url;
-                }
-                adapter.setState(devId + '.Player.mainArtUrl', mainArtUrl || '', true);
-
-                let miniArtUrl = '';
-                if (resPlayer.playerInfo !== undefined && 'miniArt' in resPlayer.playerInfo && resPlayer.playerInfo.miniArt !== null) {
-                    miniArtUrl = resPlayer.playerInfo.miniArt.url;
-                }
-                adapter.setState(devId + '.Player.miniArtUrl', miniArtUrl || mainArtUrl || '', true);
-
-                let mediaLength = 0;
-                let mediaProgress = 0;
-                let mediaProgressPercent = 0;
-                if (resPlayer.playerInfo !== undefined && 'progress' in resPlayer.playerInfo && resPlayer.playerInfo.progress !== null) {
-                    mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength, 10);
-                    mediaProgress = parseInt(resPlayer.playerInfo.progress.mediaProgress, 10);
-                    if (mediaLength > 0) {
-                        mediaProgressPercent = Math.round(((mediaProgress * 100) / mediaLength));
+                if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.progress) {
+                    playerData.mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength, 10);
+                    playerData.mediaProgress = parseInt(resPlayer.playerInfo.progress.mediaProgress, 10);
+                    if (playerData.mediaLength > 0) {
+                        playerData.mediaProgressPercent = Math.round(((playerData.mediaProgress * 100) / playerData.mediaLength));
                     }
                 }
-                adapter.setState(devId + '.Player.mediaLength', mediaLength || '', true);
-                adapter.setState(devId + '.Player.mediaLengthStr',	sec2HMS(mediaLength) || '', true);
-                adapter.setState(devId + '.Player.mediaProgress', mediaProgress || 0, true);
-                adapter.setState(devId + '.Player.mediaProgressStr', sec2HMS(mediaProgress) || 0, true);
-                adapter.setState(devId + '.Player.mediaProgressPercent', mediaProgressPercent || 0, true);
 
-                if (resPlayer.playerInfo.state === 'PLAYING') {
+                // Set States
+                adapter.setState(devId + '.Player.providerName', playerData.providerName, true); // 'Amazon Music' | 'TuneIn Live-Radio'
+                adapter.setState(devId + '.Player.providerId', playerData.providerId, true);
+                adapter.setState(devId + '.Player.radioStationId', playerData.radioStationId, true); // 's24885' | null
+                adapter.setState(devId + '.Player.service', playerData.service, true);
+                adapter.setState(devId + '.Player.contentType', playerData.contentType, true);	// 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION
+                if (playerData.controlShuffle !== null) adapter.setState(devId + '.Player.controlShuffle', playerData.controlShuffle, true);
+                if (playerData.controlRepeat !== null) adapter.setState(devId + '.Player.controlRepeat', playerData.controlRepeat, true);
+                adapter.setState(devId + '.Player.imageURL', playerData.imageURL, true);
+
+                if (device.capabilities.includes('VOLUME_SETTING')) {
+                    if (playerData.muted !== null) adapter.setState(devId + '.Player.muted', playerData.muted, true);
+                    if (playerData.volume === 0 && device.isMultiroomDevice) playerData.volume = null;
+                    if (playerData.volume !== null) adapter.setState(devId + '.Player.volume', playerData.volume, true);
+                }
+
+                adapter.setState(devId + '.Player.currentState', playerData.currentState, true);
+
+                adapter.setState(devId + '.Player.currentTitle', playerData.title, true);
+                adapter.setState(devId + '.Player.currentArtist', playerData.artist, true);
+                adapter.setState(devId + '.Player.currentAlbum', playerData.album, true);
+
+                adapter.setState(devId + '.Player.mainArtUrl', playerData.mainArtUrl, true);
+                adapter.setState(devId + '.Player.miniArtUrl', playerData.miniArtUrl, true);
+
+                adapter.setState(devId + '.Player.mediaLength', playerData.mediaLength || '', true);
+                adapter.setState(devId + '.Player.mediaLengthStr', sec2HMS(playerData.mediaLength), true);
+                adapter.setState(devId + '.Player.mediaProgress', playerData.mediaProgress, true);
+                adapter.setState(devId + '.Player.mediaProgressStr', sec2HMS(playerData.mediaProgress), true);
+                adapter.setState(devId + '.Player.mediaProgressPercent', playerData.mediaProgressPercent, true);
+
+                // Check Progress
+                if (playerData.currentState === 'PLAYING') {
                     lastPlayerState[device.serialNumber].timeout = setTimeout( () => {
                         lastPlayerState[device.serialNumber].timeout = null;
                         updateMediaProgress(device.serialNumber);
                     }, 2000);
                 }
                 doIt();
-            });
+            }
+
+            if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.provider) {
+                playerData.providerName = resPlayer.playerInfo.provider.providerName;
+            }
+
+            if (resPlayer.mainArt && resPlayer.mainArt.url !== undefined) playerData.mainArtUrl = resPlayer.mainArt.url;
+
+            if (resPlayer.volume !== undefined) playerData.muted = !!resPlayer.volume.muted;
+            if (resPlayer.playerInfo && resPlayer.playerInfo.volume && resPlayer.playerInfo.volume.volume !== null) {
+                playerData.volume = ~~resPlayer.playerInfo.volume.volume;
+            }
+
+            if (playerData.providerName !== 'Spotify' && playerData.providerName !== '') { // Spotify Podcast -> empty providerName
+                alexa.getMedia(device, (err, resMedia) => {
+                    if (err || !resMedia) return doIt();
+
+                    if (resMedia.shuffling !== undefined) playerData.controlShuffle = resMedia.shuffling;
+                    if (resMedia.looping !== undefined) playerData.controlRepeat = resMedia.looping;
+                    playerData.contentType = resMedia.contentType || '';	// 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
+                    if (resMedia.imageURL && resMedia.imageURL.endsWith('.')) resMedia.imageURL += 'png'; // Handle Amazon errors
+                    playerData.imageURL = resMedia.imageURL || '';
+                    playerData.muted = !!resMedia.muted;
+                    playerData.providerId = resMedia.providerId || ''; // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
+                    playerData.radioStationId = resMedia.radioStationId || ''; // 's24885' | null
+                    playerData.service = resMedia.service || '', true; // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
+                    if (resMedia && resMedia.volume !== undefined && resMedia.volume !== null) {
+                        playerData.volume = ~~resMedia.volume;
+                    }
+                    finalize();
+                });
+            } else {
+                finalize();
+            }
         });
     })();
 }
 
 function getLists(callback) {
-	
 	let allListItems = [];
 	let node = 'Lists';
 	alexa.getLists((err, lists) => {
@@ -2223,7 +2269,6 @@ function getLists(callback) {
                 for (let key in list) {
                     if (list[key] !== null) {
                         setOrUpdateObject(node + '.' + list.id + '.' + key, {common: listObjects[key] ? listObjects[key] : {'role': 'text'}}, list[key]);
-                        adapter.setState(node + '.' + list.id + '.' + key, list[key], true);
                     }
                 }
 
@@ -2238,25 +2283,21 @@ function getLists(callback) {
 }
 
 function addListItem(list, item) {
-	
 	adapter.log.info('Adding item "' + item.value + '" (' + JSON.stringify(item) + ') to the list ' + list.name + '.');
 	alexa.addListItem(list.listId, item); // , (err, res) => updateListItems(list)
 }
 
 function updateListItem(list, item) {
-	
 	adapter.log.info('Updating item "' + item.value + '" (' + JSON.stringify(item) + ') of the list ' + list.name + '.');
 	alexa.updateListItem(list.listId, item.id, item); // , (err, res) => updateListItems(list)
 }
 
 function deleteListItem(list, item) {
-	
 	adapter.log.info('Deleting item "' + item.value + '" from the list ' + list.name + '.');
 	alexa.deleteListItem(list.listId, item.id); // , (err, res) => updateListItems(list)
 }
 
 function updateListItems(list, callback) {
-	
 	let node = 'Lists.' + list.id;
 	return new Promise(resolve => {
 		alexa.getListItems(list.listId, (err, items) => {
@@ -2303,8 +2344,6 @@ function updateListItems(list, callback) {
                                     [key]: value
                                 }));
                             }
-
-                            adapter.setState(node + '.' + item.id + '.' + key, item[key], true);
                         }
                     }
                 });
@@ -2365,7 +2404,7 @@ function initRoutines(callback) {
 function initCommUsers(callback) {
     alexa.getAccount((err, commOwnAccount) => {
         alexa.getHomeGroup((err, commHomeGroup) => {
-            if (commHomeGroup.commsId) {
+            if (commHomeGroup && commHomeGroup.commsId) {
                 alexa.commsId = commHomeGroup.commsId;
             }
             if (!commHomeGroup || !commHomeGroup.homeGroupId) {
@@ -2393,6 +2432,7 @@ function initCommUsers(callback) {
                     if (comEntry.commsId[0] === alexa.commsId) {
                         contactName += ' (Self)';
                     }
+                    contactName = contactName || 'Unknown';
 
                     setOrUpdateObject('Contacts.' + contactId, {type: 'channel', common: {name: contactName}});
 
@@ -2673,7 +2713,7 @@ function main() {
 				adapter.getObjectList({startkey: node, endkey: node + '.\u9999'}, (err, objects) => {
 
                     if (objects && objects.rows) {
-						objects.rows.forEach(object => adapter.delObject(object.id));
+						objects.rows.forEach(object => deleteObject(object.id));
 					}
                     delete listsInProgress[payload.listId];
 				});
@@ -2683,15 +2723,19 @@ function main() {
 
     alexa.on('ws-notification-change', (data) => {
         adapter.log.debug('notification-change: ' + JSON.stringify(data));
-        if (notificationTimer[data.notificationId]) { // Remove Timer, will be reset if neeed in 2s
-            clearTimeout(notificationTimer[data.notificationId]);
-            notificationTimer[data.notificationId] = null;
-        }
         if (data.eventType === 'DELETE') {
             let device = alexa.find(data.deviceSerialNumber);
             if (device && device.notifications) {
                 for (let i = 0; i < device.notifications.length; i++) {
+                    if (notificationTimer[data.notificationId]) {
+                        clearTimeout(notificationTimer[data.notificationId]);
+                        notificationTimer[data.notificationId] = null;
+                    }
                     if (device.notifications[i].notificationIndex === data.notificationId) {
+                        if (notificationTimer[device.notifications[i].id]) { // Remove Timer, will be reset if neeed in 2s
+                            clearTimeout(notificationTimer[device.notifications[i].id]);
+                            notificationTimer[device.notifications[i].id] = null;
+                        }
                         deleteObject('Echo-Devices.' + data.deviceSerialNumber + '.' + device.notifications[i].type + '.' + data.notificationId);
                         break;
                     }

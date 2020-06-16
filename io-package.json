@@ -143,7 +143,7 @@
         ],
         "plugins": {
             "sentry": {
-                "dsn": "https://dda448c59eac4bf6a6b27daba18820fd@sentry.iobroker.net/8",
+                "dsn": "https://e9ac55f23fe149e78b1eab9ed4bf26ad@sentry.iobroker.net/8",
                 "pathWhitelist": ["@apollon", "alexa-cookie2", "alexa-remote2"],
                 "errorBlacklist": ["SyntaxError"]
             }
