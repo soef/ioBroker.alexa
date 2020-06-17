@@ -79,6 +79,10 @@ With Commands you can trigger some actions on your Alexa-Device. If you use thes
 | doNotDisturb | Switch on/off Do not Disturb for this device| true/false |
 | flashbriefing | Briefing in 100 seconds - news etc.pp| Button |
 | goodmorning | Good morning from Alexa ...| Button |
+| funfact | Fun fact from Alexa ...| Button |
+| joke | Joke from Alexa ...| Button |
+| cleanup | Plays a "gong" tone like for start/end of listening mode ...| Button |
+| curatedtts | Random sentence from the choosen area from Alexa ...| Text (allowed: "goodbye", "confirmations", "goodmorning", "compliments", "birthday", "goodnight", "iamhome") |
 | singasong | Alexa sings a song ...| Button |
 | speak | Alexa says what you type in here ...| Text Input |
 | speakvolume | Adjust the speak volume of Alexa, this volume is set before the speak and reset afterwards| 0-100 |
