@@ -77,7 +77,6 @@ const commands = {
     'calendarTomorrow': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'calendarNext': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'notification': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}},
-    'goodnight': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'funfact': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'joke': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'cleanup': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
@@ -2122,13 +2121,19 @@ function updatePlayerStatus(serialOrName, callback) {
                 mediaProgressPercent : 0
             };
 
-            function finalize() {
-                lastPlayerState[device.serialNumber] = { resPlayer: resPlayer, ts: Date.now(), devId: devId, timeout: null };
+            function finalize(resMedia) {
+                lastPlayerState[device.serialNumber] = {
+                    resPlayer,
+                    resMedia,
+                    ts: Date.now(),
+                    devId: devId,
+                    timeout: null
+                };
                 if (lastPlayerState[device.serialNumber] && lastPlayerState[device.serialNumber].timeout) {
                     clearTimeout(lastPlayerState[device.serialNumber].timeout);
                 }
 
-                playerData.currentState = resPlayer.playerInfo.state;
+                playerData.currentState = resPlayer.playerInfo.state === 'PLAYING';
 
                 if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.infoText) {
                     playerData.title = resPlayer.playerInfo.infoText.title;
@@ -2151,6 +2156,8 @@ function updatePlayerStatus(serialOrName, callback) {
                     }
                 }
 
+                playerData.controlPause = resPlayer.playerInfo.state === 'PAUSED';
+                playerData.controlPlay = resPlayer.playerInfo.state === 'PLAYING';
                 // Set States
                 adapter.setState(devId + '.Player.providerName', playerData.providerName, true); // 'Amazon Music' | 'TuneIn Live-Radio'
                 adapter.setState(devId + '.Player.providerId', playerData.providerId, true);
@@ -2159,6 +2166,11 @@ function updatePlayerStatus(serialOrName, callback) {
                 adapter.setState(devId + '.Player.contentType', playerData.contentType, true);	// 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION
                 if (playerData.controlShuffle !== null) adapter.setState(devId + '.Player.controlShuffle', playerData.controlShuffle, true);
                 if (playerData.controlRepeat !== null) adapter.setState(devId + '.Player.controlRepeat', playerData.controlRepeat, true);
+
+                //let muted = res.playerInfo.volume.muted;
+                adapter.setState(devId + '.Player.controlPause', playerData.controlPause, true);
+                adapter.setState(devId + '.Player.controlPlay', playerData.controlPlay, true);
+
                 adapter.setState(devId + '.Player.imageURL', playerData.imageURL, true);
 
                 if (device.capabilities.includes('VOLUME_SETTING')) {
@@ -2219,7 +2231,7 @@ function updatePlayerStatus(serialOrName, callback) {
                     if (resMedia && resMedia.volume !== undefined && resMedia.volume !== null) {
                         playerData.volume = ~~resMedia.volume;
                     }
-                    finalize();
+                    finalize(resMedia);
                 });
             } else {
                 finalize();

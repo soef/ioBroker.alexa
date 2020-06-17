@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.2.1",
+        "version": "3.2.2",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.2.2": {
+                "en": "remove goodnight because was not working\nFix Play/Pause states and some media optimizations",
+                "de": "Gute Nacht entfernen, weil nicht funktioniert hat\nFix Play / Pause-Zustände und einige Medienoptimierungen",
+                "ru": "удалить спокойной ночи, потому что не работал\nИсправление состояний воспроизведения / паузы и некоторых оптимизаций мультимедиа",
+                "pt": "remover boa noite porque não estava funcionando\nCorrigir estados Play / Pause e algumas otimizações de mídia",
+                "nl": "verwijder welterusten omdat het niet werkte\nFix Play / Pause-statussen en enkele media-optimalisaties",
+                "fr": "supprimer bonne nuit car ne fonctionnait pas\nCorrection des états de lecture / pause et certaines optimisations multimédias",
+                "it": "rimuovere la buonanotte perché non funzionava\nCorreggi gli stati di riproduzione / pausa e alcune ottimizzazioni multimediali",
+                "es": "quitar buenas noches porque no funcionaba\nRepara los estados de reproducción / pausa y algunas optimizaciones de medios",
+                "pl": "usuń dobranoc, ponieważ nie działał\nNapraw stany odtwarzania / pauzy i niektóre optymalizacje multimediów",
+                "zh-cn": "删除晚安，因为没有工作\n修复播放/暂停状态和某些媒体优化"
+            },
             "3.2.1": {
                 "en": "update amazon-cookie library: another optimization for Node.js 14",
                 "de": "Update der Amazon-Cookie-Bibliothek: Eine weitere Optimierung für Node.js 14",
