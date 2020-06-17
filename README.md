@@ -296,6 +296,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.2.1 (2020-06-17)
+* (Apollon77) update amazon-cookie library: another optimization for Node.js 14
+
 ### 3.2.0 (2020-06-17)
 * (Apollon77/hive) add new commands, jokes/facts/goodnight/cleanup
 * (Apollon77/hive) add new command curatedtts with allowed values ["goodbye", "confirmations", "goodmorning", "compliments", "birthday", "goodnight", "iamhome"] to play random curated sentences

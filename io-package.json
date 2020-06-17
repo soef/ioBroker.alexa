@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.2.0",
+        "version": "3.2.1",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.2.1": {
+                "en": "update amazon-cookie library: another optimization for Node.js 14",
+                "de": "Update der Amazon-Cookie-Bibliothek: Eine weitere Optimierung für Node.js 14",
+                "ru": "обновление библиотеки amazon-cookie: еще одна оптимизация для Node.js 14",
+                "pt": "atualização da biblioteca amazon-cookie: outra otimização para o Node.js 14",
+                "nl": "update amazon-cookie-bibliotheek: nog een optimalisatie voor Node.js 14",
+                "fr": "mettre à jour la bibliothèque amazon-cookie: une autre optimisation pour Node.js 14",
+                "it": "aggiorna la libreria di cookie amazon: un'altra ottimizzazione per Node.js 14",
+                "es": "actualizar la biblioteca amazon-cookie: otra optimización para Node.js 14",
+                "pl": "zaktualizuj bibliotekę amazon-cookie: kolejna optymalizacja dla Node.js 14",
+                "zh-cn": "更新amazon-cookie库：Node.js的另一种优化14"
+            },
             "3.2.0": {
                 "en": "(Apollon77/hive) add new commands, jokes/facts/goodnight/cleanup\n(Apollon77/hive) add new command curatedtts with allowed values [\"goodbye\", \"confirmations\", \"goodmorning\", \"compliments\", \"birthday\", \"goodnight\", \"iamhome\"] to play random curated sentences\nPrevent some crashes\nMake sure Timer are not triggering the state when deleted\nmake sure that Lists objects are deleted correctly when deleting\nMake compatible with nodejs 14\nAdjust to changes from Amazon so that initial Proxy process works again\nMake sure that for Spotify Media data requests do not have negative effects and stop the playback",
                 "de": "(Apollon77 / hive) Füge neue Befehle, Witze / Fakten / Gute Nacht / Aufräumen hinzu\n(Apollon77 / hive) Fügen Sie neue kuratierte Befehlswerte mit zulässigen Werten [\"Auf Wiedersehen\", \"Bestätigungen\", \"Guten Morgen\", \"Komplimente\", \"Geburtstag\", \"Gute Nacht\", \"iamhome\"] hinzu, um zufällige kuratierte Sätze abzuspielen\nVerhindern Sie einige Abstürze\nStellen Sie sicher, dass der Timer den Status beim Löschen nicht auslöst\nStellen Sie sicher, dass Listenobjekte beim Löschen korrekt gelöscht werden\nKompatibel machen mit nodejs 14\nPassen Sie die Änderungen von Amazon an, damit der anfängliche Proxy-Prozess wieder funktioniert\nStellen Sie sicher, dass Datenanforderungen für Spotify Media keine negativen Auswirkungen haben, und stoppen Sie die Wiedergabe",
