@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.2.3",
+        "version": "3.2.4",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.2.4": {
+                "en": "Update Alexa-Remote Library to optimize communication error/timeout cases",
+                "de": "Aktualisieren Sie die Alexa-Remote-Bibliothek, um Kommunikationsfehler / Timeout-Fälle zu optimieren",
+                "ru": "Обновите Alexa-Remote Library, чтобы оптимизировать случаи ошибок / тайм-аута связи",
+                "pt": "Atualize a Alexa-Remote Library para otimizar casos de erro de comunicação / tempo limite",
+                "nl": "Update Alexa-Remote Library om communicatiefouten / time-outgevallen te optimaliseren",
+                "fr": "Mettre à jour la bibliothèque Alexa-Remote pour optimiser les cas d'erreur de communication / de délai d'attente",
+                "it": "Aggiorna la libreria Alexa-Remote per ottimizzare i casi di errore di comunicazione / timeout",
+                "es": "Actualice Alexa-Remote Library para optimizar los casos de error de comunicación / tiempo de espera",
+                "pl": "Zaktualizuj bibliotekę Alexa-Remote, aby zoptymalizować przypadki błędów komunikacji / przekroczenia limitu czasu",
+                "zh-cn": "更新Alexa-Remote库以优化通信错误/超时情况"
+            },
             "3.2.3": {
                 "en": "Fix currentState handling",
                 "de": "Korrigieren Sie die aktuelle Statusbehandlung",

@@ -300,6 +300,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.2.4 (2020-06-18)
+* (Apollon77) Update Alexa-Remote Library to optimize communication error/timeout cases
+
 ### 3.2.3 (2020-06-17)
 * (Apollon77) Fix currentState handling
 
