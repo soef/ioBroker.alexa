@@ -2110,7 +2110,7 @@ function updatePlayerStatus(serialOrName, callback) {
                 volume: null,
                 controlPause: false,
                 controlPlay: false,
-                currentState: '',
+                currentState: false,
                 title : '',
                 artist : '',
                 album : '',
@@ -2195,7 +2195,7 @@ function updatePlayerStatus(serialOrName, callback) {
                 adapter.setState(devId + '.Player.mediaProgressPercent', playerData.mediaProgressPercent, true);
 
                 // Check Progress
-                if (playerData.currentState === 'PLAYING') {
+                if (resPlayer.playerInfo.state === 'PLAYING') {
                     lastPlayerState[device.serialNumber].timeout = setTimeout( () => {
                         lastPlayerState[device.serialNumber].timeout = null;
                         updateMediaProgress(device.serialNumber);

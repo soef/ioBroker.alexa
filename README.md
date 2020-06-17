@@ -296,6 +296,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.2.3 (2020-06-17)
+* (Apollon77) Fix currentState handling
+
 ### 3.2.2 (2020-06-17)
 * (Apollon77) remove goodnight because was not working
 * (Apollon77) Fix Play/Pause states and some media optimizations

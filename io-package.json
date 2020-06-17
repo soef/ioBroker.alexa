@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.2.2",
+        "version": "3.2.3",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.2.3": {
+                "en": "Fix currentState handling",
+                "de": "Korrigieren Sie die aktuelle Statusbehandlung",
+                "ru": "Исправить обработку currentState",
+                "pt": "Corrigir manuseio currentState",
+                "nl": "Corrigeer de afhandeling van currentState",
+                "fr": "Correction de la gestion de l'état actuel",
+                "it": "Correggi la gestione dello stato corrente",
+                "es": "Corregir el manejo actual",
+                "pl": "Napraw bieżącą obsługę stanu",
+                "zh-cn": "修复currentState处理"
+            },
             "3.2.2": {
                 "en": "remove goodnight because was not working\nFix Play/Pause states and some media optimizations",
                 "de": "Gute Nacht entfernen, weil nicht funktioniert hat\nFix Play / Pause-Zustände und einige Medienoptimierungen",
