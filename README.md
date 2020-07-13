@@ -300,6 +300,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Work around Amazon Security changes and make proxy working again 
+* (Apollon77) fix Sentry crash case when Amazon do not respond correctly (IOBROKER-ALEXA2-1C)
+
 ### 3.2.4 (2020-06-18)
 * (Apollon77) Update Alexa-Remote Library to optimize communication error/timeout cases
 

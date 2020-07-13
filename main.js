@@ -262,7 +262,7 @@ function deleteObject(id) {
                 if (objId.startsWith(id + '.')) {
                     adapter.delObject(objId, (err) => {
                         err = err ? ' (' + err + ')' : '';
-                        adapter.log.info(adapterObjects[objId].type + ' ' +  objId + ' deleted' + err);
+                        adapter.log.info((adapterObjects[objId] ? adapterObjects[objId].type : '?') + ' ' +  objId + ' deleted' + err);
                         if (!err) {
                             delete adapterObjects[objId];
                         }
@@ -523,7 +523,7 @@ function startAdapter(options) {
                 return;
             }
             let device = alexa.serialNumbers[ar[3]];
-            if (object && object.common && object.common.name) {
+            if (device && object && object.common && object.common.name) {
                 if (typeof device.rename === 'function') device.rename(object.common.name);
             }
         }
@@ -996,7 +996,9 @@ function createSmarthomeStates(callback) {
         if (!err && resProperties) shObjects.patchProperties(resProperties);
 
         alexa.getSmarthomeDevices((err, res) => {
-            if (err || !res) return callback(err);
+            if (err || !res) {
+                return callback && callback(err);
+            }
             setOrUpdateObject('Smart-Home-Devices', {type: 'device', common: {name: 'Smart Home Devices'}});
 
             setOrUpdateObject('Smart-Home-Devices.deleteAll', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, (val) => {
@@ -1574,7 +1576,7 @@ function createStates(callback) {
                     if (device.isMultiroomDevice) {
                         alexa.sendCommand(device, 'volume', value, (err, res) => {
                             // on unavailability {"message":"No routes found","userFacingMessage":null}
-                            if (res.message && res.message === 'No routes found') {
+                            if (res && res.message === 'No routes found') {
                                 iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, 'volume', value, nextCallback));
                             }
                         });
@@ -2702,35 +2704,36 @@ function main() {
         if (listsInProgress[payload.listId]) return;
 
         listsInProgress[payload.listId] = true;
-		alexa.getList(payload.listId, (err, list) => {
-            if (!list) return;
-            delete listsInProgress[payload.listId];
+        alexa.getList(payload.listId, (err, list) => {
+            if (!list || typeof list !== 'object') return;
             // modify states
-			list.name = list.name || list.type;
-			if (!list.name) return;
-			list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
-			list.listId = list.itemId;
-			delete list.listIds;
-			delete list.itemId;
-			
-			// always update list
-			updateListItems(list, processObjectQueue);
-			
-			// eventType: deleted
-			if (payload.eventType === 'itemDeleted') {
-				
-				// delete objects
-				let node = adapter.namespace + '.Lists.' + list.id + '.items.' + payload.listItemId;
+            list.name = list.name || list.type;
+            if (!list.name) return;
+            list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
+            list.listId = list.itemId;
+            delete list.listIds;
+            delete list.itemId;
+
+            // always update list
+            updateListItems(list, processObjectQueue);
+
+            // eventType: deleted
+            if (payload.eventType === 'itemDeleted') {
+
+                // delete objects
+                let node = adapter.namespace + '.Lists.' + list.id + '.items.' + payload.listItemId;
                 listsInProgress[payload.listId] = true;
-				adapter.getObjectList({startkey: node, endkey: node + '.\u9999'}, (err, objects) => {
+                adapter.getObjectList({startkey: node, endkey: node + '.\u9999'}, (err, objects) => {
 
                     if (objects && objects.rows) {
-						objects.rows.forEach(object => deleteObject(object.id));
-					}
+                        objects.rows.forEach(object => deleteObject(object.id));
+                    }
                     delete listsInProgress[payload.listId];
-				});
-			}
-		});
+                });
+            } else {
+                delete listsInProgress[payload.listId];
+            }
+        });
     });
 
     alexa.on('ws-notification-change', (data) => {
