@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.2.5",
+        "version": "3.2.6",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.2.6": {
+                "en": "Work around Amazon Security changes and make proxy working again",
+                "de": "Umgehen Sie Änderungen an Amazon Security und sorgen Sie dafür, dass der Proxy wieder funktioniert",
+                "ru": "Обойти изменения в Amazon Security и заставить прокси снова работать",
+                "pt": "Solução alternativa às alterações do Amazon Security e faça o proxy funcionar novamente",
+                "nl": "Omzeil Amazon-beveiligingswijzigingen en laat de proxy weer werken",
+                "fr": "Contournement des modifications d'Amazon Security et réactivation du proxy",
+                "it": "Aggira le modifiche di Amazon Security e riattiva il proxy",
+                "es": "Evite los cambios de Amazon Security y haga que el proxy vuelva a funcionar",
+                "pl": "Obejdź zmiany w Amazon Security i spraw, aby serwer proxy znów działał",
+                "zh-cn": "解决Amazon Security更改，并使代理再次工作"
+            },
             "3.2.5": {
                 "en": "Work around Amazon Security changes and make proxy working again \nfix Sentry crash case when Amazon do not respond correctly (IOBROKER-ALEXA2-1C)",
                 "de": "Umgehen Sie Änderungen an Amazon Security und sorgen Sie dafür, dass der Proxy wieder funktioniert\nBehebung des Sentry-Absturzfalls, wenn Amazon nicht richtig reagiert (IOBROKER-ALEXA2-1C)",
