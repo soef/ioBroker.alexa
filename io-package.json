@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.2.6",
+        "version": "3.2.7",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.2.7": {
+                "en": "Work around Amazon Security changes and make proxy working again\nadd echo show",
+                "de": "Umgehen Sie Änderungen an Amazon Security und sorgen Sie dafür, dass der Proxy wieder funktioniert\nEcho-Show hinzufügen",
+                "ru": "Обойти изменения в Amazon Security и заставить прокси снова работать\nдобавить эхо-шоу",
+                "pt": "Solução alternativa às alterações do Amazon Security e faça o proxy funcionar novamente\nadicionar show de eco",
+                "nl": "Omzeil Amazon-beveiligingswijzigingen en laat de proxy weer werken\necho show toevoegen",
+                "fr": "Contournement des modifications d'Amazon Security et réactivation du proxy\najouter un écho",
+                "it": "Aggira le modifiche di Amazon Security e riattiva il proxy\naggiungi eco show",
+                "es": "Evite los cambios de Amazon Security y haga que el proxy vuelva a funcionar\nagregar echo show",
+                "pl": "Obejdź zmiany w Amazon Security i spraw, aby serwer proxy znów działał\ndodaj pokaz echa",
+                "zh-cn": "解决Amazon Security更改，并使代理再次工作\n添加回显"
+            },
             "3.2.6": {
                 "en": "Work around Amazon Security changes and make proxy working again",
                 "de": "Umgehen Sie Änderungen an Amazon Security und sorgen Sie dafür, dass der Proxy wieder funktioniert",
