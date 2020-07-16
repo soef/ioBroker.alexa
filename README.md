@@ -300,6 +300,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Work around Amazon Security changes and make proxy working again
+
 ### 3.2.7 (2020-07-15)
 * (Apollon77) Work around Amazon Security changes and make proxy working again
 * (arteck) add echo studio
