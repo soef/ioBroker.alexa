@@ -300,7 +300,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.2.8 (2020-07-16)
 * (Apollon77) Work around Amazon Security changes and make proxy working again
 
 ### 3.2.7 (2020-07-15)
