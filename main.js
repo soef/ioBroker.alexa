@@ -2549,7 +2549,8 @@ function main() {
         proxyPort: adapter.config.proxyPort,           // optional: use this port for the proxy, default is 0 means random port is selected
         proxyListenBind: adapter.config.proxyListenBind,// optional: set this to bind the proxy to a special IP, default is '0.0.0.0'
         proxyLogLevel: null,      // optional: Loglevel of Proxy, default 'warn'
-        useWsMqtt: adapter.config.usePushConnection
+        useWsMqtt: adapter.config.usePushConnection,
+        formerDataStorePath: path.join(__dirname, 'formerDataStore' + adapter.namespace + '.json')
     };
     adapter.config.updateHistoryInterval = parseInt(adapter.config.updateHistoryInterval, 10);
     adapter.config.updateStateInterval = parseInt(adapter.config.updateStateInterval, 10);

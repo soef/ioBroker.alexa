@@ -300,6 +300,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Hopefully allow easier upgrades if old deviceId is invalid now
+* (Apollon77) Allow to have separate deviceIds per instance
+
 ### 3.2.8 (2020-07-16)
 * (Apollon77) Work around Amazon Security changes and make proxy working again
 
