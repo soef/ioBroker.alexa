@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.2.8",
+        "version": "3.3.0",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.3.0": {
+                "en": "Hopefully allow easier upgrades if old deviceId is invalid now\nAllow to have separate deviceIds per instance",
+                "de": "Erlaube hoffentlich einfachere Upgrades, wenn die alte Geräte-ID jetzt ungültig ist\nErmöglichen Sie separate Geräte-IDs pro Instanz",
+                "ru": "Надеемся, что более легкие обновления разрешены, если старый deviceId сейчас недействителен\nРазрешить иметь отдельные идентификаторы устройств для каждого экземпляра",
+                "pt": "Espero permitir atualizações mais fáceis se o deviceId antigo for inválido agora\nPermitir ter deviceIds separados por instância",
+                "nl": "Hopelijk staan eenvoudigere upgrades toe als het oude deviceId nu ongeldig is\nSta toe om per apparaat afzonderlijke deviceIds te hebben",
+                "fr": "Espérons permettre des mises à niveau plus faciles si l'ancien deviceId n'est plus valide maintenant\nAutoriser à avoir des DeviceIds séparés par instance",
+                "it": "Spero che consenti aggiornamenti più semplici se il vecchio deviceId non è più valido ora\nConsentire di avere ID dispositivo separati per istanza",
+                "es": "Esperemos que permita actualizaciones más fáciles si el dispositivo antiguo no es válido ahora\nPermitir tener dispositivos separados por instancia",
+                "pl": "Mam nadzieję, że umożliwią łatwiejsze aktualizacje, jeśli stary identyfikator urządzenia jest teraz nieprawidłowy\nZezwalaj na osobne deviceIds na instancję",
+                "zh-cn": "如果旧的deviceId现在无效，希望允许更轻松的升级\n允许每个实例具有单独的deviceId"
+            },
             "3.2.8": {
                 "en": "Work around Amazon Security changes and make proxy working again",
                 "de": "Umgehen Sie Änderungen an Amazon Security und sorgen Sie dafür, dass der Proxy wieder funktioniert",

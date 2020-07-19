@@ -300,7 +300,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.3.0 (2020-07-19)
 * (Apollon77) Hopefully allow easier upgrades if old deviceId is invalid now
 * (Apollon77) Allow to have separate deviceIds per instance
 
