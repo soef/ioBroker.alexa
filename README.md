@@ -300,6 +300,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) prevent crash cases and optimize reconnection handling
+
 ### 3.3.1 (2020-07-24)
 * (Apollon77) Further optimize Cookie handling
 
