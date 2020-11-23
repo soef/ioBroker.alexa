@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.3.1",
+        "version": "3.3.2",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.3.2": {
+                "en": "prevent crash cases and optimize reconnection handling",
+                "de": "Verhindern Sie Absturzfälle und optimieren Sie die Handhabung der Wiederverbindung",
+                "ru": "предотвращение сбоев и оптимизация обработки повторного подключения",
+                "pt": "evitar casos de acidente e otimizar o manuseio de reconexão",
+                "nl": "voorkom crashgevallen en optimaliseer de afhandeling van herverbinden",
+                "fr": "éviter les cas de crash et optimiser la gestion des reconnexions",
+                "it": "prevenire i casi di crash e ottimizzare la gestione della riconnessione",
+                "es": "prevenir casos de accidentes y optimizar el manejo de la reconexión",
+                "pl": "zapobiegaj przypadkom awarii i optymalizuj obsługę ponownego łączenia",
+                "zh-cn": "防止发生崩溃情况并优化重新连接处理"
+            },
             "3.3.1": {
                 "en": "Further optimize Cookie handling",
                 "de": "Optimieren Sie die Cookie-Handhabung weiter",

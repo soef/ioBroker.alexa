@@ -300,7 +300,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.3.2 (2020-11-23)
 * (Apollon77) prevent crash cases and optimize reconnection handling
 
 ### 3.3.1 (2020-07-24)
