@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.3.2",
+        "version": "3.3.3",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.3.3": {
+                "en": "make sure music providers with empty names do not produce errors",
+                "de": "Stellen Sie sicher, dass Musikanbieter mit leeren Namen keine Fehler verursachen",
+                "ru": "убедитесь, что поставщики музыки с пустыми именами не вызывают ошибок",
+                "pt": "certifique-se de que os provedores de música com nomes vazios não produzam erros",
+                "nl": "zorg ervoor dat muziekaanbieders met lege namen geen fouten produceren",
+                "fr": "assurez-vous que les fournisseurs de musique avec des noms vides ne produisent pas d'erreurs",
+                "it": "assicurati che i fornitori di musica con nomi vuoti non producano errori",
+                "es": "asegúrese de que los proveedores de música con nombres vacíos no produzcan errores",
+                "pl": "upewnij się, że dostawcy muzyki z pustymi nazwami nie powodują błędów",
+                "zh-cn": "确保带有空名称的音乐提供者不会产生错误"
+            },
             "3.3.2": {
                 "en": "prevent crash cases and optimize reconnection handling",
                 "de": "Verhindern Sie Absturzfälle und optimieren Sie die Handhabung der Wiederverbindung",
@@ -244,18 +256,6 @@
                 "es": "ROMPIENDO: ¡Ahora se requieren Nodejs 8 y js-controller 2.0! Las listas (Compras / Todo) son compatibles ahora, se capturan más datos en el historial, Varias correcciones debido a los cambios de Amazon",
                 "pl": "ŁAMANIE: Nodejs 8 i js-kontroler 2.0 są teraz wymagane! Listy (Zakupy / Todo) są teraz obsługiwane, więcej danych jest rejestrowanych w historii, Kilka poprawek z powodu zmian wprowadzonych przez Amazon",
                 "zh-cn": "BREAKING：现在需要Nodejs 8和js-controller 2.0！现在支持列表（购物/ Todo），历史记录中捕获了更多数据，由于亚马逊的更改而进行了一些修复"
-            },
-            "2.6.4": {
-                "en": "added possibility to send text messages to users including himself, allows deletion of all messages to himself, allow to reset cookies via admin, optimized announcement and ssml",
-                "de": "Möglichkeit hinzugefügt, Textnachrichten an Benutzer zu senden, einschließlich sich selbst, erlaubt das Löschen aller Nachrichten an sich selbst, erlaubt das Zurücksetzen von Cookies über Admin, optimierte Ankündigung und ssml",
-                "ru": "добавлена возможность отправлять текстовые сообщения пользователям, в том числе и ему самому, разрешать удаление всех сообщений самому себе, разрешать сброс файлов cookie через администратора, оптимизированные объявления и ssml.",
-                "pt": "adicionou possibilidade de enviar mensagens de texto para usuários, incluindo ele mesmo, permite a exclusão de todas as mensagens para si mesmo, permitir a redefinição de cookies via admin, anúncio otimizado e ssml",
-                "nl": "mogelijkheid toegevoegd om sms-berichten naar gebruikers te sturen, inclusief zichzelf, staat het verwijderen van alle berichten toe aan zichzelf, sta cookies opnieuw toe via admin, geoptimaliseerde aankondiging en ssml",
-                "fr": "possibilité supplémentaire d'envoyer des messages texte aux utilisateurs, y compris lui-même, permet de supprimer tous les messages, d'autoriser la réinitialisation des cookies via admin, une annonce optimisée et ssml",
-                "it": "aggiunta possibilità di inviare messaggi di testo agli utenti incluso se stesso, permette di cancellare tutti i messaggi a se stesso, consentire di ripristinare i cookie tramite admin, annuncio ottimizzato e ssml",
-                "es": "posibilidad adicional de enviar mensajes de texto a los usuarios, incluido él mismo, permite la eliminación de todos los mensajes para sí mismo, permite restablecer las cookies a través de admin, anuncio optimizado y ssml",
-                "pl": "dodano możliwość wysyłania wiadomości tekstowych do użytkowników, w tym samego siebie, umożliwia usunięcie wszystkich wiadomości do siebie, pozwala zresetować pliki cookie poprzez administratora, zoptymalizowane powiadomienia i ssml",
-                "zh-cn": "增加了向用户发送短信的可能性，包括他自己，允许删除所有消息给自己，允许通过管理员重置cookie，优化公告和ssml"
             }
         },
         "keywords": [
