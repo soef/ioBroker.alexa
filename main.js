@@ -1600,7 +1600,7 @@ function createStates(callback) {
                     if (!musicProviders[p].supportedOperations.includes('Alexa.Music.PlaySearchPhrase')) continue;
                     let displayName = musicProviders[p].displayName.replace(forbiddenCharacters, '-');
                     if (!displayName.length) {
-                        adapter.log.warn('Music Provider has no name, ignoring! (' + JSON.stringify(musicProviders[p]) + ')');
+                        musicProviders[p].id !== 'DEFAULT' && adapter.log.warn('Music Provider has no name, ignoring! (' + JSON.stringify(musicProviders[p]) + ')');
                         continue;
                     }
 
