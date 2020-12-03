@@ -17,18 +17,6 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
-            "3.3.3": {
-                "en": "make sure music providers with empty names do not produce errors",
-                "de": "Stellen Sie sicher, dass Musikanbieter mit leeren Namen keine Fehler verursachen",
-                "ru": "убедитесь, что поставщики музыки с пустыми именами не вызывают ошибок",
-                "pt": "certifique-se de que os provedores de música com nomes vazios não produzam erros",
-                "nl": "zorg ervoor dat muziekaanbieders met lege namen geen fouten produceren",
-                "fr": "assurez-vous que les fournisseurs de musique avec des noms vides ne produisent pas d'erreurs",
-                "it": "assicurati che i fornitori di musica con nomi vuoti non producano errori",
-                "es": "asegúrese de que los proveedores de música con nombres vacíos no produzcan errores",
-                "pl": "upewnij się, że dostawcy muzyki z pustymi nazwami nie powodują błędów",
-                "zh-cn": "确保带有空名称的音乐提供者不会产生错误"
-            },
             "3.3.2": {
                 "en": "prevent crash cases and optimize reconnection handling",
                 "de": "Verhindern Sie Absturzfälle und optimieren Sie die Handhabung der Wiederverbindung",

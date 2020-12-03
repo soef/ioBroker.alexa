@@ -300,7 +300,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 3.3.3 (2020-12-03)
+### __WORK IN PROGRESS__
 * (Apollon77) make sure music providers with empty names do not produce errors
 
 ### 3.3.2 (2020-11-23)
