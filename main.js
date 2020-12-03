@@ -1599,6 +1599,10 @@ function createStates(callback) {
                     if (musicProviders[p].availability !== 'AVAILABLE') continue;
                     if (!musicProviders[p].supportedOperations.includes('Alexa.Music.PlaySearchPhrase')) continue;
                     let displayName = musicProviders[p].displayName.replace(forbiddenCharacters, '-');
+                    if (!displayName.length) {
+                        adapter.log.warning('Music Provider has no name, ignoring! (' + JSON.stringify(musicProviders[p]) + ')');
+                        continue;
+                    }
 
                     setOrUpdateObject(devId + '.Music-Provider.' + displayName, {common: {name:'Phrase to play with ' + musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', playMusicProvider.bind(alexa, device, musicProviders[p].id));
                     setOrUpdateObject(devId + '.Music-Provider.' + displayName + '-Playlist', {common: {name:'Playlist to play with ' + musicProviders[p].displayName, type:'string', role:'text', def: ''}}, '', function(device, providerId, value) {
