@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.3.5",
+        "version": "3.4.0",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.4.0": {
+                "en": "add support for textCommand - tell an Alexa device a text as you would speak it\nmake sure discovery of devices is still possible also after deleting all devices before",
+                "de": "Unterstützung für textCommand hinzufügen - Teilen Sie einem Alexa-Gerät einen Text so mit, wie Sie ihn sprechen würden\nStellen Sie sicher, dass die Erkennung von Geräten auch nach dem Löschen aller Geräte weiterhin möglich ist",
+                "ru": "добавить поддержку textCommand - сообщить устройству Alexa текст, как если бы вы его произносили\nубедитесь, что обнаружение устройств по-прежнему возможно даже после удаления всех устройств перед",
+                "pt": "adicionar suporte para textCommand - diga a um dispositivo Alexa um texto como você falaria\ncertifique-se de que a descoberta de dispositivos ainda seja possível depois de excluir todos os dispositivos antes",
+                "nl": "ondersteuning toevoegen voor textCommand - vertel een Alexa-apparaat een tekst zoals je die zou uitspreken\nzorg ervoor dat het vinden van apparaten nog steeds mogelijk is, ook nadat alle apparaten eerder zijn verwijderd",
+                "fr": "ajouter la prise en charge de textCommand - dites à un appareil Alexa un texte comme vous le diriez\nassurez-vous que la découverte des périphériques est toujours possible après la suppression de tous les périphériques avant",
+                "it": "aggiungi il supporto per textCommand: comunica a un dispositivo Alexa un testo come lo pronunceresti\nassicurarsi che il rilevamento dei dispositivi sia ancora possibile anche dopo aver eliminato tutti i dispositivi prima",
+                "es": "agregue soporte para textCommand: dígale a un dispositivo Alexa un texto como lo diría\nasegúrese de que el descubrimiento de dispositivos aún sea posible también después de eliminar todos los dispositivos antes",
+                "pl": "dodaj obsługę textCommand - powiedz urządzeniu Alexa tekst tak, jakbyś go wymawiał\nupewnij się, że wykrywanie urządzeń jest nadal możliwe również po wcześniejszym usunięciu wszystkich urządzeń",
+                "zh-cn": "添加对textCommand的支持-像说的那样告诉Alexa设备文本\n确保在删除所有设备之后仍可以发现设备"
+            },
             "3.3.5": {
                 "en": "make sure music providers with empty names do not produce errors",
                 "de": "Stellen Sie sicher, dass Musikanbieter mit leeren Namen keine Fehler verursachen",
@@ -244,18 +256,6 @@
                 "es": "algunos errores prevenidos",
                 "pl": "niektóre błędy zapobiegły",
                 "zh-cn": "防止一些错误"
-            },
-            "3.0.3": {
-                "en": "BREAKING: Nodejs 8 and js-controller 2.0 are required now! Lists (Shopping/Todo) are supported now, more data are captured in history, Several fixes because of changes by Amazon",
-                "de": "BREAKING: Nodejs 8 und js-controller 2.0 werden jetzt benötigt! Listen (Shopping / Todo) werden jetzt unterstützt, es werden mehr Daten in der Historie erfasst. Mehrere Korrekturen aufgrund von Änderungen durch Amazon",
-                "ru": "BREAKING: сейчас требуются Nodejs 8 и js-controller 2.0! Списки (Shopping / Todo) теперь поддерживаются, больше данных заносится в историю, Несколько исправлений из-за изменений Amazon",
-                "pt": "BREAKING: Nodejs 8 e js-controller 2.0 são necessários agora! As listas (Compras / Todo) são suportadas agora, mais dados são capturados no histórico. Várias correções devido a alterações na Amazon",
-                "nl": "BREAKING: Nodejs 8 en js-controller 2.0 zijn nu vereist! Lijsten (Shopping / Todo) worden nu ondersteund, meer gegevens worden vastgelegd in de geschiedenis, verschillende fixes vanwege wijzigingen door Amazon",
-                "fr": "RUPTURE: Nodejs 8 et js-controller 2.0 sont requis maintenant! Les listes (Shopping / Todo) sont prises en charge maintenant, plus de données sont capturées dans l'historique, plusieurs correctifs en raison des modifications apportées par Amazon",
-                "it": "ROTTURA: Nodejs 8 e js-controller 2.0 sono richiesti ora! Le liste (Shopping / Todo) sono ora supportate, più dati vengono acquisiti nella cronologia, Diverse correzioni a causa delle modifiche di Amazon",
-                "es": "ROMPIENDO: ¡Ahora se requieren Nodejs 8 y js-controller 2.0! Las listas (Compras / Todo) son compatibles ahora, se capturan más datos en el historial, Varias correcciones debido a los cambios de Amazon",
-                "pl": "ŁAMANIE: Nodejs 8 i js-kontroler 2.0 są teraz wymagane! Listy (Zakupy / Todo) są teraz obsługiwane, więcej danych jest rejestrowanych w historii, Kilka poprawek z powodu zmian wprowadzonych przez Amazon",
-                "zh-cn": "BREAKING：现在需要Nodejs 8和js-controller 2.0！现在支持列表（购物/ Todo），历史记录中捕获了更多数据，由于亚马逊的更改而进行了一些修复"
             }
         },
         "keywords": [
