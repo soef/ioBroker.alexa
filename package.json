@@ -13,7 +13,7 @@
     },
     {
       "name": "Apollon77",
-      "email": "ingo@fischer-ka.de"
+      "email": "iobroker@fischer-ka.de"
     }
   ],
   "homepage": "https://github.com/Apollon77/ioBroker.alexa2",
@@ -36,7 +36,7 @@
     "url": "https://github.com/Apollon77/ioBroker.alexa2"
   },
   "dependencies": {
-    "alexa-remote2": "^3.3.3",
+    "alexa-remote2": "^3.4.0",
     "https": "^1.0.0",
     "nearest-color": "^0.4.4",
     "virtual-device-sdk": "^1.8.3",

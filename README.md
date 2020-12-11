@@ -302,7 +302,7 @@ When the adapter crashes or an other Code error happens, this error message that
 ## Changelog
 
 ### __WORK IN PROGRESS__
-* (Apollon77) add experimental support for textcommand (US only!)
+* (Apollon77) add support for textCommand - tell an Alexa device a text as you would speak it
 * (Apollon77) make sure discovery of devices is still possible also after deleting all devices before
 
 ### 3.3.5 (2020-12-03)
