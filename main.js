@@ -80,7 +80,8 @@ const commands = {
     'funfact': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'joke': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'cleanup': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
-    'curatedtts': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}}
+    'curatedtts': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}},
+    'textCommand': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}}
 };
 
 const knownDeviceType = {
@@ -997,9 +998,6 @@ function createSmarthomeStates(callback) {
         if (!err && resProperties) shObjects.patchProperties(resProperties);
 
         alexa.getSmarthomeDevices((err, res) => {
-            if (err || !res) {
-                return callback && callback(err);
-            }
             setOrUpdateObject('Smart-Home-Devices', {type: 'device', common: {name: 'Smart Home Devices'}});
 
             setOrUpdateObject('Smart-Home-Devices.deleteAll', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, (val) => {
@@ -1014,6 +1012,10 @@ function createSmarthomeStates(callback) {
                     return createSmarthomeStates();
                 });
             });
+
+            if (err || !res) {
+                return processObjectQueue(() => callback && callback(err));
+            }
 
             alexa.getSmarthomeEntities((err, res2) => {
                 let behaviours = {};
