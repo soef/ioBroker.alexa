@@ -92,9 +92,6 @@
             if (settings.proxyPort === undefined) settings.proxyPort = 0;
             if (settings.proxyListenBind === undefined) settings.proxyListenBind = '';
             if (settings.usePushConnection === undefined) settings.usePushConnection = false;
-            if (settings.bespokenToken === undefined) settings.bespokenToken = '';
-            if (settings.bespokenVoiceId === undefined) settings.bespokenVoiceId = 'Hans';
-            if (settings.bespokenLocale === undefined) settings.bespokenLocale = 'de-DE';
             if (settings.resetCookies === undefined) settings.resetCookies = false;
 
             for (var key in settings) {
@@ -195,10 +192,6 @@
                     <!-- Tab3 Proxy -->
                     <li class="tab col s3">
                         <a href="#tab-proxy" class="translate">proxy</a>
-                    </li>
-                    <!-- Tab4 Proxy -->
-                    <li class="tab col s3">
-                        <a href="#tab-bespoken" class="translate">bespoken</a>
                     </li>
                     <!-- weitere Tabs hier einfügen -->
                 </ul>
@@ -354,29 +347,6 @@
 
                 </div>
             </div> <!-- Ende Tab3 -->
-
-            <!-- Tab4 Bespoken -->
-            <div id="tab-bespoken" class="col s12 page">
-                <div class="row">
-                    <div class="col s12 m4 l2">
-                        <img src="alexa.png" class="logo">
-                    </div>
-                </div>
-                <div class="row">
-
-                    <div class="col s12">
-                        <p class="translate title">bespoken</p>
-                        <p class="translate proxy-info">bespoken_info</p>
-
-                        <div class="input-field col s12">
-                            <input id="bespokenToken" class="value" type="text"/>
-                            <label for="bespokenToken" class="translate">bespokenToken</label>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div> <!-- Ende Tab4 -->
 
         </div><!-- Ende row -->
 

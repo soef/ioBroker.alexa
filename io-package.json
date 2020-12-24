@@ -315,9 +315,6 @@
         "updateStateInterval": 300,
         "updateHistoryInterval": 300,
         "usePushConnection": true,
-        "bespokenToken": "",
-        "bespokenVoiceId": "Hans",
-        "bespokenLocale": "de-DE",
         "proxyOverrideIp": "",
         "resetCookies": false
     },
