@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.4.0",
+        "version": "3.5.0",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.5.0": {
+                "en": "Remove bespoken because textCommand is more flexible\nAdd and adjust some known devices, add Echo 4 image",
+                "de": "Entfernen Sie das Bespoken, da textCommand flexibler ist\nFügen Sie einige bekannte Geräte hinzu und passen Sie sie an. Fügen Sie das Echo 4-Bild hinzu",
+                "ru": "Удалите заказ, потому что textCommand более гибок\nДобавьте и настройте некоторые известные устройства, добавьте изображение Echo 4",
+                "pt": "Remova bespoken porque textCommand é mais flexível\nAdicione e ajuste alguns dispositivos conhecidos, adicione a imagem Echo 4",
+                "nl": "Verwijder op maat gemaakte omdat textCommand flexibeler is\nVoeg enkele bekende apparaten toe en pas ze aan, voeg Echo 4-afbeelding toe",
+                "fr": "Supprimer bespoken car textCommand est plus flexible\nAjouter et ajuster certains appareils connus, ajouter une image Echo 4",
+                "it": "Rimuovi bespoken perché textCommand è più flessibile\nAggiungi e regola alcuni dispositivi noti, aggiungi l'immagine Echo 4",
+                "es": "Eliminar personalizado porque textCommand es más flexible\nAgregue y ajuste algunos dispositivos conocidos, agregue la imagen de Echo 4",
+                "pl": "Usuń bespoken, ponieważ textCommand jest bardziej elastyczny\nDodaj i dostosuj niektóre znane urządzenia, dodaj obraz Echo 4",
+                "zh-cn": "因为textCommand更灵活，所以删除了预定的\n添加并调整一些已知设备，添加Echo 4图像"
+            },
             "3.4.0": {
                 "en": "add support for textCommand - tell an Alexa device a text as you would speak it\nmake sure discovery of devices is still possible also after deleting all devices before",
                 "de": "Unterstützung für textCommand hinzufügen - Teilen Sie einem Alexa-Gerät einen Text so mit, wie Sie ihn sprechen würden\nStellen Sie sicher, dass die Erkennung von Geräten auch nach dem Löschen aller Geräte weiterhin möglich ist",
@@ -234,18 +246,6 @@
                 "zh-cn": "防止一些错误"
             },
             "3.0.5": {
-                "en": "some errors prevented",
-                "de": "Einige Fehler wurden verhindert",
-                "ru": "предотвращены некоторые ошибки",
-                "pt": "alguns erros impedidos",
-                "nl": "enkele fouten voorkomen",
-                "fr": "quelques erreurs évitées",
-                "it": "alcuni errori evitati",
-                "es": "algunos errores prevenidos",
-                "pl": "niektóre błędy zapobiegły",
-                "zh-cn": "防止一些错误"
-            },
-            "3.0.4": {
                 "en": "some errors prevented",
                 "de": "Einige Fehler wurden verhindert",
                 "ru": "предотвращены некоторые ошибки",
