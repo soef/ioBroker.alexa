@@ -40,12 +40,12 @@
     "https": "^1.0.0",
     "nearest-color": "^0.4.4",
     "@iobroker/adapter-core": "^2.4.0",
-    "@sentry/node": "^5.29.2",
-    "@sentry/integrations": "^5.29.2",
+    "@sentry/node": "^5.30.0",
+    "@sentry/integrations": "^5.30.0",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
-    "@alcalzone/release-script": "^1.8.1",
+    "@alcalzone/release-script": "^1.8.3",
     "gulp": "^4.0.2",
     "mocha": "^8.2.1",
     "chai": "^4.2.0"

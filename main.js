@@ -108,6 +108,7 @@ const knownDeviceType = {
     'A2GFL5ZMWNE0PX':   {name: 'Fire TV', commandSupport: true, icon: 'icons/firetv.png'}, // SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,VOLUME_SETTING,SUPPORTS_SOFTWARE_VERSION,CHANGE_NAME,ACTIVE_AFTER_FRO,ARTHUR_TARGET,FLASH_BRIEFING
     'A2H4LV5GIZ1JFT':     {name: 'Echo 4 Clock', commandSupport: true, icon: '/icons/echo4.png'}, // ACTIVE_AFTER_FRO,SLEEP,TAHOE_BYOD,DISPLAY_ADAPTIVE_BRIGHTNESS,EQUALIZER_CONTROLLER_MIDRANGE,SALMON,VOLUME_SETTING,GOLDFISH,MULTI_WAKEWORDS_SUPPORTED,ALEXA_PRESENCE,PERSISTENT_CONNECTION,KINDLE_BOOKS,SET_LOCALE,APPLE_MUSIC,AUDIO_PLAYER,AMAZON_MUSIC,DS_VOLUME_SETTING,SUPPORTS_LOCALE,MOTION_DETECTION,EQUALIZER_CONTROLLER_BASS,SIRIUSXM,MICROPHONE,MUSIC_SKILL,DEEZER,AUDIO_CONTROLS,POPTART,CUSTOM_ALARM_TONE,SUPPORTS_LOCALE_SWITCH,PAIR_BT_SINK,DREAM_TRAINING,EARCONS,DIALOG_INTERFACE_VERSION,BT_PAIRING_FLOW_V2,DEREGISTER_DEVICE,EFDCARDS,TIMERS_AND_ALARMS,REQUIRES_OOBE_FOR_SETUP,EQUALIZER_CONTROLLER_TREBLE,TIMERS_ALARMS_NOTIFICATIONS_VOLUME,SUPPORT_CALENDAR_ALERT,CLOCK_FORMAT_24_HR,TUNE_IN,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TUPLE,ALEXA_GESTURES,DISPLAY_BRIGHTNESS_ADJUST,UPDATE_WIFI,TUPLE_CATEGORY_A,SET_TIME_ZONE,ASCENDING_ALARM_VOLUME,PAIR_BT_SOURCE,GADGETS,CHANGE_NAME,VOICE_TRAINING,REMINDERS,SOUND_SETTINGS,I_HEART_RADIO,DISPLAY_POWER_TOGGLE,AUDIBLE,FLASH_BRIEFING,GUARD_EARCON,SUPPORTS_SOFTWARE_VERSION,FAR_FIELD_WAKE_WORD,PANDORA,TIDAL,LEMUR_ALPHA
     'A2IVLV5VM2W81':    {name: 'Apps', commandSupport: false, icon: 'icons/apps.png'}, // VOLUME_SETTING,MICROPHONE
+    'A2J0R2SD7G9LPA':   {name: 'Tablet', commandSupport: false}, // SHARKNADO,FAR_FIELD_WAKE_WORD,SUPPORTS_LOCALE,TIMERS_ALARMS_NOTIFICATIONS_VOLUME,MUSIC_SKILL,I_HEART_RADIO,SALMON,EARCONS,TIMERS_AND_ALARMS,TUNE_IN,REMINDERS,SUPPORTS_LOCALE_SWITCH,DREAM_TRAINING,GADGETS,PERSISTENT_CONNECTION,SOUND_SETTINGS,VOICE_TRAINING,PANDORA,AUDIO_PLAYER,AUDIBLE,ASCENDING_ALARM_VOLUME,VOLUME_SETTING,CUSTOM_ALARM_TONE,GOLDFISH,AMAZON_MUSIC,FLASH_BRIEFING,SET_LOCALE,SLEEP,KINDLE_BOOKS,CHANGE_NAME,POPTART,MICROPHONE
     'A2L8KG0CT86ADW':   {name: 'RaspPi', commandSupport: false}, // KINDLE_BOOKS,DREAM_TRAINING,PEONY,VOLUME_SETTING,CHANGE_NAME,PAIR_BT_SINK,SLEEP,I_HEART_RADIO,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,PERSISTENT_CONNECTION,TUNE_IN,TIMERS_AND_ALARMS,MICROPHONE,AUDIBLE,DEREGISTER_DEVICE,GOLDFISH,AUDIO_PLAYER,REMINDERS,AMAZON_MUSIC
     'A2LWARUGJLBYEW':   {name: 'Fire TV Stick V2', commandSupport: true, icon: 'icons/firetv.png'}, // SOUND_SETTINGS,CHANGE_NAME,ARTHUR_TARGET,PERSISTENT_CONNECTION,DIALOG_INTERFACE_VERSION,ASCENDING_ALARM_VOLUME,VOLUME_SETTING,MICROPHONE,TIMERS_AND_ALARMS,SUPPORTS_LOCALE,CUSTOM_ALARM_TONE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,ACTIVE_AFTER_FRO,FLASH_BRIEFING,REMINDERS,SUPPORTS_LOCALE_SWITCH,SUPPORTS_SOFTWARE_VERSION
     'A2M35JJZWCQOMZ':   {name: 'Echo Plus', commandSupport: true, icon: 'icons/echo.png'}, // PAIR_BT_SINK,SOUND_SETTINGS,FAR_FIELD_WAKE_WORD,CUSTOM_ALARM_TONE,MICROPHONE,VOLUME_SETTING,ACTIVE_AFTER_FRO,POPTART,REMINDERS,AMAZON_MUSIC,TUNE_IN,CHANGE_NAME,I_HEART_RADIO,DEREGISTER_FACTORY_RESET,SUPPORTS_SOFTWARE_VERSION,EARCONS,PAIR_REMOTE,PERSISTENT_CONNECTION,LEMUR_ALPHA,SALMON,DREAM_TRAINING,UPDATE_WIFI,VOICE_TRAINING,TIMERS_AND_ALARMS,ASCENDING_ALARM_VOLUME,AUDIBLE,SLEEP,AUDIO_PLAYER,PAIR_BT_SOURCE,FLASH_BRIEFING,SET_LOCALE,REQUIRES_OOBE_FOR_SETUP,DEREGISTER_DEVICE,PANDORA,GOLDFISH,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,KINDLE_BOOKS
@@ -547,7 +548,7 @@ function startAdapter(options) {
             initSentry(() => loadExistingAccessories(main));
         }
     });
-    
+
     return adapter;
 }
 
@@ -1577,7 +1578,7 @@ function createStates(callback) {
                 setOrUpdateObject(devId + '.Player.' + c, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
             }
 
-            if (device.capabilities.includes ('VOLUME_SETTING')) {
+            if (device.capabilities.includes('VOLUME_SETTING')) {
                 setOrUpdateObject(devId + '.Player.muted',	{common: {type: 'boolean', role: 'media.mute', write: false, def: false}});
                 setOrUpdateObject(devId + '.Player.volume', {common: {role: 'level.volume', min: 0, max: 100}}, 0, function (device, value) {
                     if (device.isMultiroomDevice) {
@@ -2273,7 +2274,7 @@ function getLists(callback) {
                 allListItems.push(updateListItems(list));
             });
         }
-		
+
 		Promise.all(allListItems).then(() => callback && callback());
 	});
 }
@@ -2298,7 +2299,7 @@ function updateListItems(list, callback) {
 	return new Promise(resolve => {
 		alexa.getListItems(list.listId, (err, items) => {
 			setOrUpdateObject(node + '.json', {common: {name: 'List as json', role: 'json'}}, JSON.stringify(items));
-			
+
 			node = node + '.items';
 			setOrUpdateObject(node, {type: 'channel', common: {name: 'All list items'}});
 
@@ -2344,7 +2345,7 @@ function updateListItems(list, callback) {
                     }
                 });
             }
-			
+
 			callback && callback();
 			resolve(true);
 		});
@@ -2646,6 +2647,7 @@ function main() {
             return;
         }
         if (!device) return;
+        if (!device.capabilities.includes('VOLUME_SETTING')) return;
 
         let devId = 'Echo-Devices.' + device.serialNumber;
         let muted = !!data.isMuted;
@@ -2797,7 +2799,7 @@ function main() {
 										adapter.subscribeStates('*');
 										adapter.subscribeObjects('*');
 										initDone = true;
-										
+
 										const delIds = Object.keys(existingStates);
 										if (delIds.length) {
 											adapter.log.info('Deleting the following states: ' + JSON.stringify(delIds));
