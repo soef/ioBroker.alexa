@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.5.0",
+        "version": "3.5.1",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.5.1": {
+                "en": "Prevent to write non-existing state values\nAdd and adjust some known devices",
+                "de": "Verhindern Sie das Schreiben nicht vorhandener Statuswerte\nFügen Sie einige bekannte Geräte hinzu und passen Sie sie an",
+                "ru": "Запретить запись несуществующих значений состояния\nДобавить и настроить некоторые известные устройства",
+                "pt": "Impedir a gravação de valores de estado não existentes\nAdicione e ajuste alguns dispositivos conhecidos",
+                "nl": "Voorkom dat niet-bestaande statuswaarden worden geschreven\nVoeg enkele bekende apparaten toe en pas ze aan",
+                "fr": "Empêcher d'écrire des valeurs d'état non existantes\nAjouter et ajuster certains appareils connus",
+                "it": "Impedisci di scrivere valori di stato non esistenti\nAggiungi e modifica alcuni dispositivi noti",
+                "es": "Evitar escribir valores de estado no existentes\nAgregar y ajustar algunos dispositivos conocidos",
+                "pl": "Zapobiegaj zapisywaniu nieistniejących wartości stanu\nDodaj i dostosuj niektóre znane urządzenia",
+                "zh-cn": "防止写入不存在的状态值\n添加和调整一些已知设备"
+            },
             "3.5.0": {
                 "en": "Remove bespoken because textCommand is more flexible\nAdd and adjust some known devices, add Echo 4 image",
                 "de": "Entfernen Sie das Bespoken, da textCommand flexibler ist\nFügen Sie einige bekannte Geräte hinzu und passen Sie sie an. Fügen Sie das Echo 4-Bild hinzu",
@@ -234,18 +246,6 @@
                 "zh-cn": "防止一些错误"
             },
             "3.0.6": {
-                "en": "some errors prevented",
-                "de": "Einige Fehler wurden verhindert",
-                "ru": "предотвращены некоторые ошибки",
-                "pt": "alguns erros impedidos",
-                "nl": "enkele fouten voorkomen",
-                "fr": "quelques erreurs évitées",
-                "it": "alcuni errori evitati",
-                "es": "algunos errores prevenidos",
-                "pl": "niektóre błędy zapobiegły",
-                "zh-cn": "防止一些错误"
-            },
-            "3.0.5": {
                 "en": "some errors prevented",
                 "de": "Einige Fehler wurden verhindert",
                 "ru": "предотвращены некоторые ошибки",
