@@ -2647,7 +2647,7 @@ function main() {
             return;
         }
         if (!device) return;
-        if (!device.capabilities.includes('VOLUME_SETTING')) return;
+        if (!device.isControllable || !device.capabilities.includes('VOLUME_SETTING')) return;
 
         let devId = 'Echo-Devices.' + device.serialNumber;
         let muted = !!data.isMuted;
