@@ -288,7 +288,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 3.5.1 (2021-01-14)
+### __WORK IN PROGRESS__
 * (Apollon77) Prevent to write non-existing state values
 * (Apollon77) Add and adjust some known devices
 
