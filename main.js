@@ -2747,19 +2747,26 @@ function main() {
 
     alexa.init(options, err => {
         if (err) {
+            let restartAdapter = true;
             if (err.message === 'no csrf found') {
                 adapter.log.error('Error: no csrf found. Check configuration of cookie');
+                restartAdapter = false;
             }
             let lines = err.message.split('You can try to get the cookie');
             if (lines[1]) {
                 lines[1] = 'You can try to get the cookie' + lines[1];
                 proxyUrl = lines[1].substring(lines[1].indexOf('http://'), lines[1].lastIndexOf('/') + 1);
+                restartAdapter = false;
             } else {
                 lines = err.message.split('\n');
             }
             lines.forEach(line => adapter.log.error('Error: ' + line));
 
             adapter.setState('info.connection', false, true);
+
+            if (!initDone && restartAdapter) {
+                this.terminate ? this.terminate(utils.EXIT_CODES.START_IMMEDIATELY_AFTER_STOP) : process.exit(utils.EXIT_CODES.START_IMMEDIATELY_AFTER_STOP);
+            }
             return;
         }
 
