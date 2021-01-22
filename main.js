@@ -2765,7 +2765,7 @@ function main() {
             adapter.setState('info.connection', false, true);
 
             if (!initDone && restartAdapter) {
-                this.terminate ? this.terminate(utils.EXIT_CODES.START_IMMEDIATELY_AFTER_STOP) : process.exit(utils.EXIT_CODES.START_IMMEDIATELY_AFTER_STOP);
+                adapter.terminate ? adapter.terminate(utils.EXIT_CODES.START_IMMEDIATELY_AFTER_STOP) : process.exit(utils.EXIT_CODES.START_IMMEDIATELY_AFTER_STOP);
             }
             return;
         }

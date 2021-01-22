@@ -17,18 +17,6 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
-            "3.5.3": {
-                "en": "restart adapter when no initial cookie could be requested",
-                "de": "Starten Sie den Adapter neu, wenn kein erstes Cookie angefordert werden konnte",
-                "ru": "перезапустите адаптер, когда не удалось запросить начальный файл cookie",
-                "pt": "reinicie o adaptador quando nenhum cookie inicial puder ser solicitado",
-                "nl": "herstart adapter wanneer geen initiële cookie kon worden aangevraagd",
-                "fr": "redémarrer l'adaptateur lorsqu'aucun cookie initial n'a pu être demandé",
-                "it": "riavviare l'adattatore quando non è stato possibile richiedere alcun cookie iniziale",
-                "es": "reinicie el adaptador cuando no se pueda solicitar ninguna cookie inicial",
-                "pl": "zrestartuj adapter, gdy nie można zażądać początkowego pliku cookie",
-                "zh-cn": "当没有初始Cookie的请求时重启适配器"
-            },
             "3.5.2": {
                 "en": "Prevent to write non-existing state values\nAdd and adjust some known devices",
                 "de": "Verhindern Sie das Schreiben nicht vorhandener Statuswerte\nFügen Sie einige bekannte Geräte hinzu und passen Sie sie an",
