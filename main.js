@@ -2811,7 +2811,11 @@ function main() {
 										if (delIds.length) {
 											adapter.log.info('Deleting the following states: ' + JSON.stringify(delIds));
 											for (let i = 0; i < delIds.length; i++) {
-												adapter.delObject(delIds[i]);
+												try {
+												    adapter.delObject(delIds[i]);
+                                                } catch (err) {
+												    adapter.log.info('Can not delete object ' + delIds[i]);
+                                                }
 												delete existingStates[delIds[i]];
 											}
 										}

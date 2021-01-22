@@ -288,6 +288,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Catch error when deleting objects
+
 ### 3.5.4 (2021-01-22)
 * (Apollon77) restart adapter when no initial cookie could be requested
 
