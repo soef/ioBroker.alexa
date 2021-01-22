@@ -288,7 +288,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 3.5.5 (2021-01-22)
+### __WORK IN PROGRESS__
 * (Apollon77) Catch error when deleting objects
 
 ### 3.5.4 (2021-01-22)

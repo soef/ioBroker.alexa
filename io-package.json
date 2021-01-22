@@ -17,18 +17,6 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
-            "3.5.5": {
-                "en": "Catch error when deleting objects",
-                "de": "Catch-Fehler beim Löschen von Objekten",
-                "ru": "Выловить ошибку при удалении объектов",
-                "pt": "Detectar erro ao excluir objetos",
-                "nl": "Vang een fout op bij het verwijderen van objecten",
-                "fr": "Erreur de capture lors de la suppression d'objets",
-                "it": "Errore di rilevamento durante l'eliminazione di oggetti",
-                "es": "Detectar error al eliminar objetos",
-                "pl": "Błąd podczas usuwania obiektów",
-                "zh-cn": "删除对象时捕获错误"
-            },
             "3.5.4": {
                 "en": "restart adapter when no initial cookie could be requested",
                 "de": "Starten Sie den Adapter neu, wenn kein erstes Cookie angefordert werden konnte",
