@@ -288,7 +288,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.6.0 (2021-01-28)
 * (Apollon77) Update Routines API because of amazon changes
 
 ### 3.5.6 (2021-01-22)

@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.5.6",
+        "version": "3.6.0",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.6.0": {
+                "en": "Update Routines API because of amazon changes",
+                "de": "Aktualisieren Sie die Routines-API aufgrund von Amazon-Änderungen",
+                "ru": "Обновить Routines API из-за изменений Amazon",
+                "pt": "Atualizar API de Rotinas por causa das mudanças do Amazon",
+                "nl": "Update Routines API vanwege amazon-wijzigingen",
+                "fr": "Mettre à jour l'API des routines en raison des modifications d'Amazon",
+                "it": "Aggiorna l'API delle routine a causa delle modifiche di Amazon",
+                "es": "Actualizar la API de rutinas debido a los cambios de Amazon",
+                "pl": "Zaktualizuj interfejs API procedur z powodu zmian w Amazon",
+                "zh-cn": "由于亚马逊更改而更新例程API"
+            },
             "3.5.6": {
                 "en": "Catch error when deleting objects",
                 "de": "Catch-Fehler beim Löschen von Objekten",
@@ -244,18 +256,6 @@
                 "es": "(Apollon77 / hive) agrega nuevos comandos, chistes / hechos / buenas noches / limpieza\n(Apollon77 / hive) agregue un nuevo comando curatedtts con valores permitidos [\"adiós\", \"confirmaciones\", \"buenos días\", \"cumplidos\", \"cumpleaños\", \"buenas noches\", \"iamhome\"] para reproducir oraciones curadas al azar\nPrevenir algunos accidentes\nAsegúrese de que el temporizador no active el estado cuando se elimine\nasegúrese de que los objetos de Listas se eliminen correctamente al eliminar\nHacer compatible con nodejs 14\nAjústese a los cambios de Amazon para que el proceso Proxy inicial funcione nuevamente\nAsegúrese de que las solicitudes de datos de Spotify Media no tengan efectos negativos y detenga la reproducción",
                 "pl": "(Apollon77 / hive) dodaj nowe komendy, żarty / fakty / dobranoc / porządki\n(Apollon77 / hive) dodaj nowe polecenia kuratedtts z dozwolonymi wartościami [„do widzenia”, „potwierdzenia”, „dzień dobry”, „komplementy”, „urodziny”, „dobranoc”, „iamhome”], aby odtwarzać losowe zdania\nZapobiegaj awariom\nUpewnij się, że Timer nie wyzwala stanu po usunięciu\nupewnij się, że obiekty Lists są poprawnie usuwane podczas usuwania\nZgodność z nodejs 14\nDostosuj się do zmian z Amazon, aby początkowy proces proxy działał ponownie\nUpewnij się, że żądania Spotify Media nie mają negatywnych skutków i zatrzymaj odtwarzanie",
                 "zh-cn": "（Apollon77 / hive）添加新命令，笑话/事实/晚安/清理\n（Apollon77 / hive）添加带有允许值的新命令策展人[“再见”，“确认”，“早安”，“赞美”，“生日”，“晚安”，“ iamhome”]以播放随机策展的句子\n防止崩溃\n确保计时器在删除时未触发状态\n确保删除时正确删除列表对象\n与Node.js 14兼容\n调整以适应来自Amazon的更改，以便初始代理过程再次起作用\n确保对于Spotify Media数据请求没有负面影响并停止播放"
-            },
-            "3.1.2": {
-                "en": "next timer date and softwareVersion states added, optimizations and fixes",
-                "de": "Nächstes Timer-Datum und Software-Versionsstatus hinzugefügt, Optimierungen und Korrekturen",
-                "ru": "добавлена следующая дата таймера и программное обеспечение. Версии состояний, оптимизация и исправления.",
-                "pt": "data do próximo timer e softwareVersion states added, optimizations and fixes",
-                "nl": "volgende timer datum en softwareVersion statussen toegevoegd, optimalisaties en fixes",
-                "fr": "prochaine date de temporisation et états de version du logiciel ajoutés, optimisations et corrections",
-                "it": "data e software del prossimo timer Stati di versione aggiunti, ottimizzazioni e correzioni",
-                "es": "próxima fecha del temporizador y estados de versión de software agregados, optimizaciones y correcciones",
-                "pl": "dodana data następnego timera i oprogramowanie Wersje, optymalizacje i poprawki",
-                "zh-cn": "下一个计时器日期和软件版本状态已添加，优化和修复"
             }
         },
         "keywords": [
