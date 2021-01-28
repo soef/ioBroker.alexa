@@ -288,6 +288,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Update Routines API because of amazon changes
+
 ### 3.5.6 (2021-01-22)
 * (Apollon77) Catch error when deleting objects
 
