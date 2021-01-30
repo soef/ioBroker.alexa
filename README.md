@@ -288,6 +288,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (fbeister) Add and adjust some known devices
+
 ### 3.6.0 (2021-01-28)
 * (Apollon77) Update Routines API because of amazon changes
 
