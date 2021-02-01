@@ -288,7 +288,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.6.1 (2021-02-02)
 * (fbeister) Add and adjust some known devices
 * (Apollon77) Optimize object deletion
 

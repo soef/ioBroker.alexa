@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.6.0",
+        "version": "3.6.1",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.6.1": {
+                "en": "Add and adjust some known devices\nOptimize object deletion",
+                "de": "Fügen Sie einige bekannte Geräte hinzu und passen Sie sie an\nObjektlöschung optimieren",
+                "ru": "Добавить и настроить некоторые известные устройства\nОптимизировать удаление объекта",
+                "pt": "Adicione e ajuste alguns dispositivos conhecidos\nOtimize a exclusão de objetos",
+                "nl": "Voeg enkele bekende apparaten toe en pas ze aan\nOptimaliseer het verwijderen van objecten",
+                "fr": "Ajouter et ajuster certains appareils connus\nOptimiser la suppression des objets",
+                "it": "Aggiungi e modifica alcuni dispositivi noti\nOttimizza l'eliminazione degli oggetti",
+                "es": "Agregar y ajustar algunos dispositivos conocidos\nOptimizar la eliminación de objetos",
+                "pl": "Dodaj i dostosuj niektóre znane urządzenia\nZoptymalizuj usuwanie obiektów",
+                "zh-cn": "添加和调整一些已知设备\n优化对象删除"
+            },
             "3.6.0": {
                 "en": "Update Routines API because of amazon changes",
                 "de": "Aktualisieren Sie die Routines-API aufgrund von Amazon-Änderungen",
@@ -244,18 +256,6 @@
                 "es": "actualizar la biblioteca amazon-cookie: otra optimización para Node.js 14",
                 "pl": "zaktualizuj bibliotekę amazon-cookie: kolejna optymalizacja dla Node.js 14",
                 "zh-cn": "更新amazon-cookie库：Node.js的另一种优化14"
-            },
-            "3.2.0": {
-                "en": "(Apollon77/hive) add new commands, jokes/facts/goodnight/cleanup\n(Apollon77/hive) add new command curatedtts with allowed values [\"goodbye\", \"confirmations\", \"goodmorning\", \"compliments\", \"birthday\", \"goodnight\", \"iamhome\"] to play random curated sentences\nPrevent some crashes\nMake sure Timer are not triggering the state when deleted\nmake sure that Lists objects are deleted correctly when deleting\nMake compatible with nodejs 14\nAdjust to changes from Amazon so that initial Proxy process works again\nMake sure that for Spotify Media data requests do not have negative effects and stop the playback",
-                "de": "(Apollon77 / hive) Füge neue Befehle, Witze / Fakten / Gute Nacht / Aufräumen hinzu\n(Apollon77 / hive) Fügen Sie neue kuratierte Befehlswerte mit zulässigen Werten [\"Auf Wiedersehen\", \"Bestätigungen\", \"Guten Morgen\", \"Komplimente\", \"Geburtstag\", \"Gute Nacht\", \"iamhome\"] hinzu, um zufällige kuratierte Sätze abzuspielen\nVerhindern Sie einige Abstürze\nStellen Sie sicher, dass der Timer den Status beim Löschen nicht auslöst\nStellen Sie sicher, dass Listenobjekte beim Löschen korrekt gelöscht werden\nKompatibel machen mit nodejs 14\nPassen Sie die Änderungen von Amazon an, damit der anfängliche Proxy-Prozess wieder funktioniert\nStellen Sie sicher, dass Datenanforderungen für Spotify Media keine negativen Auswirkungen haben, und stoppen Sie die Wiedergabe",
-                "ru": "(Apollon77 / hive) добавьте новые команды, анекдоты / факты / спокойной ночи / cleanup\n(Apollon77 / hive) добавьте новую команду curatedtts с допустимыми значениями [\"до свидания\", \"подтверждения\", \"доброе утро\", \"комплименты\", \"день рождения\", \"спокойной ночи\", \"ямхом\"] для воспроизведения случайных кураторских предложений\nПредотвратить некоторые сбои\nУбедитесь, что таймер не вызывает состояние при удалении\nубедитесь, что объекты списков удаляются правильно при удалении\nСделать совместимым с nodejs 14\nПриспособьтесь к изменениям из Amazon, чтобы начальный процесс Proxy снова работал\nУбедитесь, что для запросов данных Spotify Media не имеют отрицательных эффектов и остановите воспроизведение",
-                "pt": "(Apollon77 / hive) adicione novos comandos, piadas / fatos / boa noite / limpeza\n(Apollon77 / hive) adicione novo comando curatedtts com valores permitidos [\"adeus\", \"confirmações\", \"bom dia\", \"elogios\", \"aniversário\", \"boa noite\", \"iamhome\"] para reproduzir frases aleatórias com curadoria\nEvitar algumas falhas\nVerifique se o timer não está acionando o estado quando excluído\nverifique se Listas de objetos foram excluídos corretamente ao excluir\nTornar compatível com nodejs 14\nAjustar às alterações da Amazon para que o processo Proxy inicial funcione novamente\nCertifique-se de que as solicitações de dados do Spotify Media não tenham efeitos negativos e pare a reprodução",
-                "nl": "(Apollon77 / hive) nieuwe commando's, grappen / feiten / welterusten / opschonen toevoegen\n(Apollon77 / hive) voeg nieuwe opdracht toe curatedtts met toegestane waarden [\"tot ziens\", \"bevestigingen\", \"goedemorgen\", \"complimenten\", \"verjaardag\", \"welterusten\", \"iamhome\"] om willekeurige samengestelde zinnen te spelen\nVoorkom enkele crashes\nZorg ervoor dat de timer de status niet activeert wanneer deze wordt verwijderd\nzorg ervoor dat Lijsten-objecten correct worden verwijderd bij het verwijderen\nCompatibel maken met nodejs 14\nPas de wijzigingen van Amazon aan zodat het eerste proxyproces weer werkt\nZorg ervoor dat voor Spotify Media-gegevensverzoeken geen negatieve effecten hebben en stop het afspelen",
-                "fr": "(Apollon77 / ruche) ajouter de nouvelles commandes, blagues / faits / bonne nuit / nettoyage\n(Apollon77 / hive) ajouter une nouvelle commande curatedtts avec les valeurs autorisées [\"au revoir\", \"confirmations\", \"bonjour\", \"compliments\", \"anniversaire\", \"bonne nuit\", \"iamhome\"] pour lire des phrases choisies au hasard\nEmpêcher certains plantages\nAssurez-vous que la minuterie ne déclenche pas l'état lorsqu'elle est supprimée\nassurez-vous que les objets Listes sont supprimés correctement lors de la suppression\nRendre compatible avec nodejs 14\nAdaptez-vous aux modifications d'Amazon pour que le processus de proxy initial fonctionne à nouveau\nAssurez-vous que pour Spotify Media, les demandes de données n'ont pas d'effets négatifs et arrêtez la lecture",
-                "it": "(Apollon77 / hive) aggiungere nuovi comandi, scherzi / fatti / buonanotte / pulizia\n(Apollon77 / hive) aggiungi nuovi comandi curatedtts con valori consentiti [\"arrivederci\", \"conferme\", \"buongiorno\", \"complimenti\", \"compleanno\", \"buonanotte\", \"iamhome\"] per riprodurre frasi curate casuali\nPrevenire alcuni arresti anomali\nAssicurarsi che il timer non stia attivando lo stato quando viene eliminato\nassicurarsi che gli oggetti Elenchi vengano eliminati correttamente durante l'eliminazione\nRendi compatibile con nodejs 14\nRegola le modifiche da Amazon in modo che il processo proxy iniziale funzioni di nuovo\nAssicurati che per Spotify Media le richieste di dati non abbiano effetti negativi e interrompano la riproduzione",
-                "es": "(Apollon77 / hive) agrega nuevos comandos, chistes / hechos / buenas noches / limpieza\n(Apollon77 / hive) agregue un nuevo comando curatedtts con valores permitidos [\"adiós\", \"confirmaciones\", \"buenos días\", \"cumplidos\", \"cumpleaños\", \"buenas noches\", \"iamhome\"] para reproducir oraciones curadas al azar\nPrevenir algunos accidentes\nAsegúrese de que el temporizador no active el estado cuando se elimine\nasegúrese de que los objetos de Listas se eliminen correctamente al eliminar\nHacer compatible con nodejs 14\nAjústese a los cambios de Amazon para que el proceso Proxy inicial funcione nuevamente\nAsegúrese de que las solicitudes de datos de Spotify Media no tengan efectos negativos y detenga la reproducción",
-                "pl": "(Apollon77 / hive) dodaj nowe komendy, żarty / fakty / dobranoc / porządki\n(Apollon77 / hive) dodaj nowe polecenia kuratedtts z dozwolonymi wartościami [„do widzenia”, „potwierdzenia”, „dzień dobry”, „komplementy”, „urodziny”, „dobranoc”, „iamhome”], aby odtwarzać losowe zdania\nZapobiegaj awariom\nUpewnij się, że Timer nie wyzwala stanu po usunięciu\nupewnij się, że obiekty Lists są poprawnie usuwane podczas usuwania\nZgodność z nodejs 14\nDostosuj się do zmian z Amazon, aby początkowy proces proxy działał ponownie\nUpewnij się, że żądania Spotify Media nie mają negatywnych skutków i zatrzymaj odtwarzanie",
-                "zh-cn": "（Apollon77 / hive）添加新命令，笑话/事实/晚安/清理\n（Apollon77 / hive）添加带有允许值的新命令策展人[“再见”，“确认”，“早安”，“赞美”，“生日”，“晚安”，“ iamhome”]以播放随机策展的句子\n防止崩溃\n确保计时器在删除时未触发状态\n确保删除时正确删除列表对象\n与Node.js 14兼容\n调整以适应来自Amazon的更改，以便初始代理过程再次起作用\n确保对于Spotify Media数据请求没有负面影响并停止播放"
             }
         },
         "keywords": [
