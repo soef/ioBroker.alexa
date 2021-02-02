@@ -1415,7 +1415,7 @@ function updateHistory(callback) {
         clearTimeout(updateHistoryTimer);
         updateHistoryTimer = null;
     }
-    alexa.getActivities({size: 3, filter: true}, (err, res) => {
+    alexa.getCustomerHistoryRecords({maxRecordSize: 3, filter: true}, (err, res) => {
         if (err || !res || !Array.isArray(res)) {
             if (adapter.config.updateHistoryInterval > 0) {
                 scheduleHistoryUpdate();
@@ -1442,7 +1442,7 @@ function updateHistory(callback) {
                 }
 
                 let o = res[i--];
-                if (last >= o.data.creationTimestamp) return doIt();
+                if (last >= o.creationTimestamp) return doIt();
 
                 updateHistoryStates(o);
                 last = o.creationTimestamp;
@@ -1472,10 +1472,13 @@ function updateHistoryStates(o) {
         creationTime: o.creationTimestamp,
         status: o.activityStatus,
         domainApplicationId: '',
-        domainApplicationName: '',
+        domainApplicationName: o.data.skillName,
         cardContent: '',
         card: '',
-        answerText: ''
+        answerText: o.alexaResponse || '',
+        utteranceType: o.data.utteranceType,
+        domain: o.data.domain,
+        intent: o.data.intent
     };
 
     if (o.domainAttributes) {
@@ -1508,11 +1511,13 @@ function updateHistoryStates(o) {
         }
     }
     else {
-        adapter.setState('History.domainApplicationId', '', true);
-        adapter.setState('History.domainApplicationName', '', true);
-        adapter.setState('History.cardContent', '', true);
-        adapter.setState('History.cardJson', '', true);
-        adapter.setState('History.answerText', '', true);
+        adapter.setState('History.domainApplicationId', jsonHistory.domainApplicationId, true);
+        adapter.setState('History.domainApplicationName', jsonHistory.domainApplicationName, true);
+        adapter.setState('History.cardContent', jsonHistory.cardContent, true);
+        adapter.setState('History.cardJson', JSON.stringify(jsonHistory.card), true);
+        adapter.setState('History.answerText', jsonHistory.answerText, true);
+        adapter.setState('History.domain', jsonHistory.domain, true);
+        adapter.setState('History.intent', jsonHistory.intent, true);
     }
     adapter.setState('History.json', JSON.stringify(jsonHistory), true);
 }
@@ -1803,6 +1808,8 @@ function createStates(callback) {
     setOrUpdateObject('History.cardJson', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('History.answerText', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('History.json', {common: {type: 'string', role: 'json', write: false}}, '');
+    setOrUpdateObject('History.domain', {common: {role: 'text', write: false}}, '');
+    setOrUpdateObject('History.intent', {common: {role: 'text', write: false}}, '');
 
     processObjectQueue(() => {
         scheduleStatesUpdate();
