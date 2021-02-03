@@ -1481,7 +1481,7 @@ function updateHistoryStates(o) {
         intent: o.data.intent
     };
 
-    if (o.domainAttributes) {
+    if (o.domainAttributes) { // deprecated
         if (o.domainAttributes.applicationMetadata) {
             adapter.setState('History.domainApplicationId', o.domainAttributes.applicationMetadata.applicationId || '', true);
             jsonHistory.domainApplicationId = o.domainAttributes.applicationMetadata.applicationId || '';
@@ -1516,6 +1516,7 @@ function updateHistoryStates(o) {
         adapter.setState('History.cardContent', jsonHistory.cardContent, true);
         adapter.setState('History.cardJson', JSON.stringify(jsonHistory.card), true);
         adapter.setState('History.answerText', jsonHistory.answerText, true);
+        adapter.setState('History.utteranceType', jsonHistory.utteranceType, true);
         adapter.setState('History.domain', jsonHistory.domain, true);
         adapter.setState('History.intent', jsonHistory.intent, true);
     }
@@ -1806,6 +1807,7 @@ function createStates(callback) {
     setOrUpdateObject('History.domainApplicationName', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('History.cardContent', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('History.cardJson', {common: {role: 'text', write: false}}, '');
+    setOrUpdateObject('History.utteranceType', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('History.answerText', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('History.json', {common: {type: 'string', role: 'json', write: false}}, '');
     setOrUpdateObject('History.domain', {common: {role: 'text', write: false}}, '');

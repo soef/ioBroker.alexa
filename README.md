@@ -289,7 +289,8 @@ When the adapter crashes or an other Code error happens, this error message that
 ## Changelog
 
 ### __WORK IN PROGRESS__
-* (Apollon77) Try to get activities back working with new CustomerHistory requests
+* (Apollon77) IMPORTANT: History entries are now requested via a different data source because Amazon seems to tun off the old option. History.status is for this no longer filled, but new states were added. Only voice commands are reported ( textCommand entries not longer)
+* (Apollon77) other optimizations in communications and prevent hammering amazon with requests in error cases
 
 ### 3.6.1 (2021-02-02)
 * (fbeister) Add and adjust some known devices
