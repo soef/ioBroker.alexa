@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.7.0",
+        "version": "3.7.1",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.7.1": {
+                "en": "add some more detected text into summary and answerText states (textCommand commands should be in history back again)",
+                "de": "Fügen Sie etwas mehr erkannten Text zu den Zuständen \"Zusammenfassung\" und \"Antworttext\" hinzu (textCommand-Befehle sollten wieder im Verlauf sein).",
+                "ru": "добавить еще немного обнаруженного текста в состояния Summary и answerText (команды textCommand должны снова вернуться в историю)",
+                "pt": "adicione um pouco mais de texto detectado nos estados de resumo e answerText (os comandos textCommand devem estar no histórico novamente)",
+                "nl": "voeg wat meer gedetecteerde tekst toe aan samenvattings- en answerText-staten (textCommand-opdrachten zouden weer in de geschiedenis moeten staan)",
+                "fr": "ajouter un peu plus de texte détecté dans les états summary et answerText (les commandes textCommand devraient être à nouveau dans l'historique)",
+                "it": "aggiungere altro testo rilevato negli stati di riepilogo e answerText (i comandi textCommand dovrebbero essere di nuovo nella cronologia)",
+                "es": "agregue más texto detectado en los estados de resumen y answerText (los comandos textCommand deberían estar en el historial nuevamente)",
+                "pl": "dodaj więcej wykrytego tekstu do podsumowania i odpowiedzi Stany tekstu (polecenia textCommand powinny ponownie znaleźć się w historii)",
+                "zh-cn": "将更多检测到的文本添加到summary和answerText状态中（textCommand命令应再次回到历史记录中）"
+            },
             "3.7.0": {
                 "en": "IMPORTANT: History entries are now requested via a different data source because Amazon seems to tun off the old option. History.status is for this no longer filled, but new states were added. Only voice commands are reported ( textCommand entries not longer)\nother optimizations in communications and prevent hammering amazon with requests in error cases",
                 "de": "WICHTIG: Verlaufseinträge werden jetzt über eine andere Datenquelle angefordert, da Amazon die alte Option anscheinend deaktiviert. History.status ist dafür nicht mehr gefüllt, aber neue Zustände wurden hinzugefügt. Es werden nur Sprachbefehle gemeldet (textCommand-Einträge nicht mehr)\nandere Optimierungen in der Kommunikation und verhindern, dass Amazon mit Anfragen in Fehlerfällen hämmert",
@@ -244,18 +256,6 @@
                 "es": "Corregir el manejo actual",
                 "pl": "Napraw bieżącą obsługę stanu",
                 "zh-cn": "修复currentState处理"
-            },
-            "3.2.2": {
-                "en": "remove goodnight because was not working\nFix Play/Pause states and some media optimizations",
-                "de": "Gute Nacht entfernen, weil nicht funktioniert hat\nFix Play / Pause-Zustände und einige Medienoptimierungen",
-                "ru": "удалить спокойной ночи, потому что не работал\nИсправление состояний воспроизведения / паузы и некоторых оптимизаций мультимедиа",
-                "pt": "remover boa noite porque não estava funcionando\nCorrigir estados Play / Pause e algumas otimizações de mídia",
-                "nl": "verwijder welterusten omdat het niet werkte\nFix Play / Pause-statussen en enkele media-optimalisaties",
-                "fr": "supprimer bonne nuit car ne fonctionnait pas\nCorrection des états de lecture / pause et certaines optimisations multimédias",
-                "it": "rimuovere la buonanotte perché non funzionava\nCorreggi gli stati di riproduzione / pausa e alcune ottimizzazioni multimediali",
-                "es": "quitar buenas noches porque no funcionaba\nRepara los estados de reproducción / pausa y algunas optimizaciones de medios",
-                "pl": "usuń dobranoc, ponieważ nie działał\nNapraw stany odtwarzania / pauzy i niektóre optymalizacje multimediów",
-                "zh-cn": "删除晚安，因为没有工作\n修复播放/暂停状态和某些媒体优化"
             }
         },
         "keywords": [
