@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.6.3",
+        "version": "3.7.0",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.7.0": {
+                "en": "IMPORTANT: History entries are now requested via a different data source because Amazon seems to tun off the old option. History.status is for this no longer filled, but new states were added. Only voice commands are reported ( textCommand entries not longer)\nother optimizations in communications and prevent hammering amazon with requests in error cases",
+                "de": "WICHTIG: Verlaufseinträge werden jetzt über eine andere Datenquelle angefordert, da Amazon die alte Option anscheinend deaktiviert. History.status ist dafür nicht mehr gefüllt, aber neue Zustände wurden hinzugefügt. Es werden nur Sprachbefehle gemeldet (textCommand-Einträge nicht mehr)\nandere Optimierungen in der Kommunikation und verhindern, dass Amazon mit Anfragen in Fehlerfällen hämmert",
+                "ru": "ВАЖНО: записи истории теперь запрашиваются через другой источник данных, потому что Amazon, похоже, отключает старую опцию. History.status для этого больше не заполняется, но были добавлены новые состояния. Сообщаются только голосовые команды (записи textCommand не длиннее)\nдругие оптимизации в коммуникации и предотвращение забивания amazon запросами в случаях ошибок",
+                "pt": "IMPORTANTE: As entradas de histórico agora são solicitadas por meio de uma fonte de dados diferente porque a Amazon parece desligar a opção antiga. History.status não é mais preenchido, mas novos estados foram adicionados. Apenas comandos de voz são relatados (entradas textCommand não mais)\noutras otimizações nas comunicações e evita martelar amazon com requisições em casos de erro",
+                "nl": "BELANGRIJK: geschiedenisinvoeren worden nu opgevraagd via een andere gegevensbron omdat Amazon de oude optie lijkt af te stemmen. History.status wordt hiervoor niet meer gevuld, maar er zijn nieuwe statussen toegevoegd. Alleen spraakopdrachten worden gerapporteerd (tekstcommando's niet langer)\nandere optimalisaties in communicatie en voorkomen dat amazon wordt gehamerd met verzoeken in foutgevallen",
+                "fr": "IMPORTANT: les entrées d'historique sont désormais demandées via une autre source de données, car Amazon semble désactiver l'ancienne option. History.status n'est plus rempli pour cela, mais de nouveaux états ont été ajoutés. Seules les commandes vocales sont signalées (les entrées textCommand ne sont pas plus longues)\nd'autres optimisations dans les communications et éviter de marteler Amazon avec des requêtes en cas d'erreur",
+                "it": "IMPORTANTE: le voci della cronologia ora vengono richieste tramite un'origine dati diversa perché Amazon sembra disattivare la vecchia opzione. History.status non è più compilato, ma sono stati aggiunti nuovi stati. Vengono riportati solo i comandi vocali (le voci textCommand non sono più lunghe)\naltre ottimizzazioni nelle comunicazioni e prevenire il martellamento di Amazon con richieste in casi di errore",
+                "es": "IMPORTANTE: Las entradas del historial ahora se solicitan a través de una fuente de datos diferente porque Amazon parece desconectar la opción anterior. History.status ya no se completa, pero se agregaron nuevos estados. Solo se informan los comandos de voz (las entradas de textCommand ya no)\notras optimizaciones en las comunicaciones y evitar golpear a Amazon con solicitudes en casos de error",
+                "pl": "WAŻNE: Wpisy historii są teraz żądane za pośrednictwem innego źródła danych, ponieważ Amazon wydaje się wyłączać starą opcję. History.status nie jest już wypełniony, ale dodano nowe stany. Zgłaszane są tylko polecenia głosowe (wpisy TextCommand nie są już dostępne)\ninne optymalizacje w komunikacji i zapobiegają obciążaniu Amazon żądaniami w przypadkach błędów",
+                "zh-cn": "重要信息：现在，通过另一个数据源来请求历史记录条目，因为Amazon似乎已淘汰了旧选项。为此，History.status不再填充，但是添加了新的状态。仅报告语音命令（不再输入textCommand条目）\n通讯方面的其他优化，并防止在错误情况下因请求而影响亚马逊"
+            },
             "3.6.1": {
                 "en": "Add and adjust some known devices\nOptimize object deletion",
                 "de": "Fügen Sie einige bekannte Geräte hinzu und passen Sie sie an\nObjektlöschung optimieren",
@@ -244,18 +256,6 @@
                 "es": "quitar buenas noches porque no funcionaba\nRepara los estados de reproducción / pausa y algunas optimizaciones de medios",
                 "pl": "usuń dobranoc, ponieważ nie działał\nNapraw stany odtwarzania / pauzy i niektóre optymalizacje multimediów",
                 "zh-cn": "删除晚安，因为没有工作\n修复播放/暂停状态和某些媒体优化"
-            },
-            "3.2.1": {
-                "en": "update amazon-cookie library: another optimization for Node.js 14",
-                "de": "Update der Amazon-Cookie-Bibliothek: Eine weitere Optimierung für Node.js 14",
-                "ru": "обновление библиотеки amazon-cookie: еще одна оптимизация для Node.js 14",
-                "pt": "atualização da biblioteca amazon-cookie: outra otimização para o Node.js 14",
-                "nl": "update amazon-cookie-bibliotheek: nog een optimalisatie voor Node.js 14",
-                "fr": "mettre à jour la bibliothèque amazon-cookie: une autre optimisation pour Node.js 14",
-                "it": "aggiorna la libreria di cookie amazon: un'altra ottimizzazione per Node.js 14",
-                "es": "actualizar la biblioteca amazon-cookie: otra optimización para Node.js 14",
-                "pl": "zaktualizuj bibliotekę amazon-cookie: kolejna optymalizacja dla Node.js 14",
-                "zh-cn": "更新amazon-cookie库：Node.js的另一种优化14"
             }
         },
         "keywords": [
