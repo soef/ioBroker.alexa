@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.7.1",
+        "version": "3.8.0",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.8.0": {
+                "en": "Add configuration option to not write history entries where no command text was recognized",
+                "de": "Fügen Sie die Konfigurationsoption hinzu, um keine Verlaufseinträge zu schreiben, bei denen kein Befehlstext erkannt wurde",
+                "ru": "Добавить параметр конфигурации, чтобы не записывать записи в историю, где текст команды не был распознан",
+                "pt": "Adicionar opção de configuração para não gravar entradas de histórico onde nenhum texto de comando foi reconhecido",
+                "nl": "Voeg een configuratieoptie toe om geen geschiedenisitems te schrijven waar geen commandotekst werd herkend",
+                "fr": "Ajouter une option de configuration pour ne pas écrire les entrées d'historique où aucun texte de commande n'a été reconnu",
+                "it": "Aggiungere un'opzione di configurazione per non scrivere voci della cronologia in cui non è stato riconosciuto alcun testo di comando",
+                "es": "Agregue la opción de configuración para no escribir entradas del historial donde no se reconoció el texto del comando",
+                "pl": "Dodaj opcję konfiguracji, aby nie zapisywać wpisów historii, w których nie rozpoznano żadnego tekstu polecenia",
+                "zh-cn": "添加配置选项以不写入无法识别命令文本的历史记录条目"
+            },
             "3.7.1": {
                 "en": "add some more detected text into summary and answerText states (textCommand commands should be in history back again)",
                 "de": "Fügen Sie etwas mehr erkannten Text zu den Zuständen \"Zusammenfassung\" und \"Antworttext\" hinzu (textCommand-Befehle sollten wieder im Verlauf sein).",
@@ -244,18 +256,6 @@
                 "es": "Actualice Alexa-Remote Library para optimizar los casos de error de comunicación / tiempo de espera",
                 "pl": "Zaktualizuj bibliotekę Alexa-Remote, aby zoptymalizować przypadki błędów komunikacji / przekroczenia limitu czasu",
                 "zh-cn": "更新Alexa-Remote库以优化通信错误/超时情况"
-            },
-            "3.2.3": {
-                "en": "Fix currentState handling",
-                "de": "Korrigieren Sie die aktuelle Statusbehandlung",
-                "ru": "Исправить обработку currentState",
-                "pt": "Corrigir manuseio currentState",
-                "nl": "Corrigeer de afhandeling van currentState",
-                "fr": "Correction de la gestion de l'état actuel",
-                "it": "Correggi la gestione dello stato corrente",
-                "es": "Corregir el manejo actual",
-                "pl": "Napraw bieżącą obsługę stanu",
-                "zh-cn": "修复currentState处理"
             }
         },
         "keywords": [
