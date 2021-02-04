@@ -1459,6 +1459,11 @@ activityCard - > JSON.stringify(activity.domainAttributes.card)
 */
 
 function updateHistoryStates(o) {
+    if (adapter.config.historyIgnoreEmptySummary && !o.description.summary.length) {
+        adapter.log.debug('Ignore History entry because configured: ' + JSON.stringify(o));
+        return;
+    }
+
     adapter.setState('History.name', o.name, true);
     adapter.setState('History.serialNumber', o.deviceSerialNumber, true);
     adapter.setState('History.summary', o.description.summary, true);

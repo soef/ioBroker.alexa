@@ -155,5 +155,41 @@ systemDictionary = {
         "es": "Restablecer las cookies de Amazon",
         "pl": "Zresetuj ciasteczka Amazon",
         "zh-cn": "重置Amazon Cookies"
+    },
+    "history": {
+        "en": "History Settings",
+        "de": "Verlaufseinstellungen",
+        "ru": "Настройки истории",
+        "pt": "Configurações de histórico",
+        "nl": "Geschiedenis instellingen",
+        "fr": "Paramètres d'historique",
+        "it": "Impostazioni cronologia",
+        "es": "Configuración del historial",
+        "pl": "Ustawienia historii",
+        "zh-cn": "历史记录设置"
+    },
+    "history_info": {
+        "en": "Settings for History data that are available in the \"History\" states",
+        "de": "Einstellungen für Verlaufsdaten, die in den Status \"History\" verfügbar sind",
+        "ru": "Настройки для данных истории, которые доступны в состояниях \"History\"",
+        "pt": "Configurações para dados de histórico que estão disponíveis nos estados \"History\"",
+        "nl": "Instellingen voor geschiedenisgegevens die beschikbaar zijn in de status \"History\"",
+        "fr": "Paramètres des données d'historique disponibles dans les états \"History\"",
+        "it": "Impostazioni per i dati della cronologia disponibili negli stati \"History\"",
+        "es": "Configuración de los datos del historial que están disponibles en los estados \"History\"",
+        "pl": "Ustawienia danych historii, które są dostępne w stanach „History”",
+        "zh-cn": "在“历史记录”状态下可用的历史记录数据设置"
+    },
+    "historyIgnoreEmptySummary": {
+        "en": "Ignore History-Entries where no command was recognized",
+        "de": "Ignorieren Sie Verlaufseinträge, bei denen kein Befehl erkannt wurde",
+        "ru": "Игнорировать записи истории, в которых не была распознана команда",
+        "pt": "Ignorar entradas de histórico onde nenhum comando foi reconhecido",
+        "nl": "Negeer geschiedenis-items waar geen commando werd herkend",
+        "fr": "Ignorer les entrées d'historique où aucune commande n'a été reconnue",
+        "it": "Ignora voci di cronologia in cui non è stato riconosciuto alcun comando",
+        "es": "Ignorar entradas de historial donde no se reconoció ningún comando",
+        "pl": "Ignoruj wpisy historii, w których nie rozpoznano żadnego polecenia",
+        "zh-cn": "忽略未识别命令的历史条目"
     }
 };

@@ -316,7 +316,8 @@
         "updateHistoryInterval": 300,
         "usePushConnection": true,
         "proxyOverrideIp": "",
-        "resetCookies": false
+        "resetCookies": false,
+        "historyIgnoreEmptySummary": false
     },
     "objects": [],
     "instanceObjects": [

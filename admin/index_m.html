@@ -93,6 +93,7 @@
             if (settings.proxyListenBind === undefined) settings.proxyListenBind = '';
             if (settings.usePushConnection === undefined) settings.usePushConnection = false;
             if (settings.resetCookies === undefined) settings.resetCookies = false;
+            if (settings.historyIgnoreEmptySummary === undefined) settings.historyIgnoreEmptySummary = false;
 
             for (var key in settings) {
                 if (!settings.hasOwnProperty(key)) continue;
@@ -243,6 +244,18 @@
                             <input class="value validate" placeholder="300" id="updateHistoryInterval" type="number" min="0" max="1440">
                             <label for="updateHistoryInterval" class="translate">updateHistoryInterval</label>
                             <span class="helper-text translate">s (0 = disabled)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <p class="translate title">history</p>
+                        <p class="translate">history_info</p>
+
+                        <div class="input-field col s12 m6">
+                            <input id="historyIgnoreEmptySummary" type="checkbox" class="value" />
+                            <span for="historyIgnoreEmptySummary" class="translate">historyIgnoreEmptySummary</span>
                         </div>
                     </div>
                 </div>
