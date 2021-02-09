@@ -165,6 +165,7 @@ const updatePlayerTimer = {};
 const updateNotificationTimer = {};
 
 let musicProviders;
+const initialDeviceVolumes = {}
 let automationRoutines;
 let routineTriggerUtterances;
 const playerDevices = {};
@@ -2121,6 +2122,12 @@ function updatePlayerStatus(serialOrName, callback) {
                 mediaProgress : 0,
                 mediaProgressPercent : 0
             };
+            if (initialDeviceVolumes[device.serialNumber]) {
+                playerData.volume = initialDeviceVolumes[device.serialNumber].speakerVolume;
+                playerData.muted = initialDeviceVolumes[device.serialNumber].speakerMuted;
+                adapter.log.debug(`Initialize Volume for Device ${device.serialNumber}: volume=${playerData.volume} (muted=${playerData.muted})`);
+                delete initialDeviceVolumes[device.serialNumber];
+            }
 
             function finalize(resMedia) {
                 lastPlayerState[device.serialNumber] = {
@@ -2813,35 +2820,40 @@ function main() {
 
             initRoutines(() => {
 				getLists(() => {
-					createStates(() => {
-						createSmarthomeStates(() => {
-							queryAllSmartHomeDevices(true, () => {
-								initCommUsers(() => {
-									if (!initDone) {
-										adapter.log.info('Subscribing to states...');
-										adapter.subscribeStates('*');
-										adapter.subscribeObjects('*');
-										initDone = true;
+                    alexa.getAllDeviceVolumes((err, deviceVolumes) => {
+                        if (!err && deviceVolumes) {
+                            deviceVolumes.forEach(vol => initialDeviceVolumes[vol.dsn] = vol);
+                        }
+                        createStates(() => {
+                            createSmarthomeStates(() => {
+                                queryAllSmartHomeDevices(true, () => {
+                                    initCommUsers(() => {
+                                        if (!initDone) {
+                                            adapter.log.info('Subscribing to states...');
+                                            adapter.subscribeStates('*');
+                                            adapter.subscribeObjects('*');
+                                            initDone = true;
 
-										const delIds = Object.keys(existingStates);
-										if (delIds.length) {
-											adapter.log.info('Deleting the following states: ' + JSON.stringify(delIds));
-											for (let i = 0; i < delIds.length; i++) {
-												try {
-												    adapter.delObject(delIds[i], err => {
-												        if (err) adapter.log.info('Can not delete object ' + delIds[i]);
-                                                    });
-                                                } catch (err) {
-												    adapter.log.info('Can not delete object ' + delIds[i]);
+                                            const delIds = Object.keys(existingStates);
+                                            if (delIds.length) {
+                                                adapter.log.info('Deleting the following states: ' + JSON.stringify(delIds));
+                                                for (let i = 0; i < delIds.length; i++) {
+                                                    try {
+                                                        adapter.delObject(delIds[i], err => {
+                                                            if (err) adapter.log.info('Can not delete object ' + delIds[i]);
+                                                        });
+                                                    } catch (err) {
+                                                        adapter.log.info('Can not delete object ' + delIds[i]);
+                                                    }
+                                                    delete existingStates[delIds[i]];
                                                 }
-												delete existingStates[delIds[i]];
-											}
-										}
-									}
-								});
-							});
-						});
-					});
+                                            }
+                                        }
+                                    });
+                                });
+                            });
+                        });
+                    });
                 });
             });
         });
