@@ -2821,8 +2821,8 @@ function main() {
             initRoutines(() => {
 				getLists(() => {
                     alexa.getAllDeviceVolumes((err, deviceVolumes) => {
-                        if (!err && deviceVolumes) {
-                            deviceVolumes.forEach(vol => initialDeviceVolumes[vol.dsn] = vol);
+                        if (!err && deviceVolumes && deviceVolumes.volumes) {
+                            deviceVolumes.volumes.forEach(vol => initialDeviceVolumes[vol.dsn] = vol);
                         }
                         createStates(() => {
                             createSmarthomeStates(() => {
