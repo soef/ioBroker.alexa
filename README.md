@@ -288,7 +288,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.8.1 (2021-02-09)
 * (Apollon77) Initialize volume for all devices on start
 
 ### 3.8.0 (2021-02-04)
