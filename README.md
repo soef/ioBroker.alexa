@@ -87,6 +87,8 @@ Example: 10;Alexa is saying Alexa with 10% volume, while 100;Alexa is 100% volum
 Normally you only can send 250 characters per speak command. By using the semicolon it is possible to write as much as you want, as long as you separate 250 characters with a semicolon.
 Alexa will then speak the text after each other with a small break. You also can use the volume together with more 255 blocks by writing #Volume;#Block1;#Block2, a.s.o A volume set here will be used over a defined speak-volume.
 
+Partially also sounds from https://developer.amazon.com/en-US/docs/alexa/custom-skills/ask-soundlibrary.html work. Specify in speak or ssml as `<audio src="soundbank://soundlibrary/animals/amzn_sfx_bear_groan_roar_01"/>`. Details and discussion please at https://forum.iobroker.net/topic/27509/ssml-audio
+
 ### alexa2.0.Echo-Devices.Serialnumber.Info.*
 Information about the Alexa device
 
