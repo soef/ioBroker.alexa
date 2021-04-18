@@ -290,7 +290,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.8.2 (2021-04-19)
 * (Apollon77) Adjust automatic Cookie Refresh interval from 7 to 4 days
 
 ### 3.8.1 (2021-02-09)

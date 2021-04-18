@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.8.1",
+        "version": "3.8.2",
         "title": "Alexa2 (Amazon Echo)",
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
@@ -17,6 +17,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.8.2": {
+                "en": "Adjust automatic Cookie Refresh interval from 7 to 4 days",
+                "de": "Passen Sie das automatische Cookie-Aktualisierungsintervall von 7 bis 4 Tagen an",
+                "ru": "Установите интервал автоматического обновления файлов cookie с 7 до 4 дней.",
+                "pt": "Ajuste o intervalo de atualização automática de cookies de 7 a 4 dias",
+                "nl": "Pas het interval voor het automatisch vernieuwen van cookies aan van 7 tot 4 dagen",
+                "fr": "Ajuster l'intervalle d'actualisation automatique des cookies de 7 à 4 jours",
+                "it": "Regola l'intervallo di aggiornamento automatico dei cookie da 7 a 4 giorni",
+                "es": "Ajustar el intervalo de actualización automática de cookies de 7 a 4 días",
+                "pl": "Dostosuj interwał automatycznego odświeżania plików cookie z 7 do 4 dni",
+                "zh-cn": "将自动刷新Cookie的间隔从7天调整为4天"
+            },
             "3.8.1": {
                 "en": "Initialize volume for all devices on start",
                 "de": "Initialisieren Sie die Lautstärke für alle Geräte beim Start",
@@ -244,18 +256,6 @@
                 "es": "Evite los cambios de Amazon Security y haga que el proxy vuelva a funcionar",
                 "pl": "Obejdź zmiany w Amazon Security i spraw, aby serwer proxy znów działał",
                 "zh-cn": "解决Amazon Security更改，并使代理再次工作"
-            },
-            "3.2.5": {
-                "en": "Work around Amazon Security changes and make proxy working again \nfix Sentry crash case when Amazon do not respond correctly (IOBROKER-ALEXA2-1C)",
-                "de": "Umgehen Sie Änderungen an Amazon Security und sorgen Sie dafür, dass der Proxy wieder funktioniert\nBehebung des Sentry-Absturzfalls, wenn Amazon nicht richtig reagiert (IOBROKER-ALEXA2-1C)",
-                "ru": "Обойти изменения в Amazon Security и заставить прокси снова работать\nисправить ошибку при сбое Sentry, когда Amazon не отвечает правильно (IOBROKER-ALEXA2-1C)",
-                "pt": "Solução alternativa às alterações do Amazon Security e faça o proxy funcionar novamente\ncorrigir caso de falha do Sentry quando a Amazon não responder corretamente (IOBROKER-ALEXA2-1C)",
-                "nl": "Omzeil Amazon-beveiligingswijzigingen en laat de proxy weer werken\nFix Sentry-crashcase wanneer Amazon niet correct reageert (IOBROKER-ALEXA2-1C)",
-                "fr": "Contournement des modifications d'Amazon Security et réactivation du proxy\ncorrection du cas de crash de Sentry lorsque Amazon ne répond pas correctement (IOBROKER-ALEXA2-1C)",
-                "it": "Aggira le modifiche di Amazon Security e riattiva il proxy\nrisolve il caso di crash di Sentry quando Amazon non risponde correttamente (IOBROKER-ALEXA2-1C)",
-                "es": "Evite los cambios de Amazon Security y haga que el proxy vuelva a funcionar\narregla el caso de bloqueo de Sentry cuando Amazon no responde correctamente (IOBROKER-ALEXA2-1C)",
-                "pl": "Obejdź zmiany w Amazon Security i spraw, aby serwer proxy znów działał\nnaprawiono awarię Sentry, gdy Amazon nie reaguje poprawnie (IOBROKER-ALEXA2-1C)",
-                "zh-cn": "解决Amazon Security更改，并使代理再次工作\n修复了Amazon无法正确响应时的Sentry崩溃情况（IOBROKER-ALEXA2-1C）"
             }
         },
         "keywords": [
