@@ -2768,6 +2768,25 @@ function main() {
         scheduleNotificationUpdate(data.deviceSerialNumber, 2000);
     });
 
+    alexa.on('cookie', (cookie, csrf) => {
+        adapter.setState('info.cookie', alexa.cookie, true);
+        adapter.setState('info.csrf', alexa.csrf, true);
+
+        if (cookie !== adapter.config.cookie) {
+            adapter.log.info('Update cookie in adapter configuration ... restarting ...');
+            adapter.extendForeignObject('system.adapter.' + adapter.namespace, {
+                native: {
+                    cookie: alexa.cookie,
+                    csrf: alexa.csrf,
+                    cookieData: alexa.cookieData,
+                    email: "",
+                    password: "",
+                    resetCookies: false
+                }
+            });
+        }
+    });
+
     alexa.init(options, err => {
         if (err) {
             let restartAdapter = true;
@@ -2793,24 +2812,11 @@ function main() {
             return;
         }
 
-        adapter.setState('info.connection', true, true);
-        adapter.setState('info.cookie', alexa.cookie, true);
-        adapter.setState('info.csrf', alexa.csrf, true);
-
         if (alexa.cookie !== adapter.config.cookie) {
-            adapter.log.info('Update cookie in adapter configuration ... restarting ...');
-            adapter.extendForeignObject('system.adapter.' + adapter.namespace, {
-                native: {
-                    cookie: alexa.cookie,
-                    csrf: alexa.csrf,
-                    cookieData: alexa.cookieData,
-                    email: "",
-                    password: "",
-                    resetCookies: false
-                }
-            });
             return;
         }
+
+        adapter.setState('info.connection', true, true);
 
         alexa.getMusicProviders((err, providers) => {
             musicProviders = [];
