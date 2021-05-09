@@ -3,6 +3,18 @@
         "name": "alexa2",
         "version": "3.8.2",
         "title": "Alexa2 (Amazon Echo)",
+        "titleLang": {
+            "en": "Alexa2 (Amazon Echo)",
+            "de": "Alexa2 (Amazon Echo)",
+            "ru": "Alexa2 (Amazon Echo)",
+            "pt": "Alexa2 (Amazon Echo)",
+            "nl": "Alexa2 (Amazon Echo)",
+            "fr": "Alexa2 (Amazon Echo)",
+            "it": "Alexa2 (Amazon Echo)",
+            "es": "Alexa2 (eco de Amazon)",
+            "pl": "Alexa2 (Amazon Echo)",
+            "zh-cn": "Alexa2（Amazon回声）"
+        },
         "desc": {
             "en": "Remote control for Alexa (Amazon Echo)",
             "de": "Steuerung von Alexa (Amazon Echo)",
@@ -279,6 +291,9 @@
         "messagebox": true,
         "license": "MIT",
         "localLink": "https://alexa.amazon.com",
+        "connectionType": "cloud",
+        "dataSource": "push",
+        "tier": 2,
         "compact": true,
         "dependencies": [
             {

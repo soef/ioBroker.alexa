@@ -292,6 +292,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### __WORK IN PROGRESS__
 * (Apollon77) Optimize Cookie refresh handling
+* (Apollon77) Fix warnings from js-controller 3.3 and optimize
 
 ### 3.8.2 (2021-04-19)
 * (Apollon77) Adjust automatic Cookie Refresh interval from 7 to 4 days
@@ -613,7 +614,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2018 soef <soef@gmx.net>, 2018-2020 Ingo Fischer <iobroker@fischer-ka.de>
+Copyright (c) 2017-2018 soef <soef@gmx.net>, 2018-2021 Ingo Fischer <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -712,7 +712,7 @@ function updateMediaProgress(serialNumber) {
 
 	if (currentState === 'PLAYING' && resPlayer.playerInfo && resPlayer.playerInfo.progress) {
         let mediaProgress = parseInt(resPlayer.playerInfo.progress.mediaProgress, 10);
-        let mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength, 10);
+        let mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength || '0', 10);
         let timeframe = ~~((Date.now() - lastTimestamp) / 1000); // calculate time since last data
 		let mediaProgressNew = mediaProgress + timeframe; // add this to the progress
 
@@ -1467,8 +1467,8 @@ function updateHistoryStates(o) {
 
     adapter.setState('History.name', o.name, true);
     adapter.setState('History.serialNumber', o.deviceSerialNumber, true);
-    adapter.setState('History.summary', o.description.summary, true);
-    adapter.setState('History.status', o.activityStatus, true);
+    adapter.setState('History.summary', o.description.summary || '', true);
+    o.activityStatus !== undefined && adapter.setState('History.status', o.activityStatus, true);
     adapter.setState('History.creationTime', o.creationTimestamp, true);
 
     const jsonHistory = {
@@ -2157,7 +2157,7 @@ function updatePlayerStatus(serialOrName, callback) {
                 }
 
                 if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.progress) {
-                    playerData.mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength, 10);
+                    playerData.mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength || '0', 10);
                     playerData.mediaProgress = parseInt(resPlayer.playerInfo.progress.mediaProgress, 10);
                     if (playerData.mediaLength > 0) {
                         playerData.mediaProgressPercent = Math.round(((playerData.mediaProgress * 100) / playerData.mediaLength));
@@ -2196,7 +2196,7 @@ function updatePlayerStatus(serialOrName, callback) {
                 adapter.setState(devId + '.Player.mainArtUrl', playerData.mainArtUrl, true);
                 adapter.setState(devId + '.Player.miniArtUrl', playerData.miniArtUrl, true);
 
-                adapter.setState(devId + '.Player.mediaLength', playerData.mediaLength || '', true);
+                adapter.setState(devId + '.Player.mediaLength', parseInt(playerData.mediaLength || '0', 10), true);
                 adapter.setState(devId + '.Player.mediaLengthStr', sec2HMS(playerData.mediaLength), true);
                 adapter.setState(devId + '.Player.mediaProgress', playerData.mediaProgress, true);
                 adapter.setState(devId + '.Player.mediaProgressStr', sec2HMS(playerData.mediaProgress), true);
