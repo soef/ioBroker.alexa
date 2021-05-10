@@ -2189,12 +2189,12 @@ function updatePlayerStatus(serialOrName, callback) {
 
                 adapter.setState(devId + '.Player.currentState', playerData.currentState, true);
 
-                adapter.setState(devId + '.Player.currentTitle', playerData.title, true);
-                adapter.setState(devId + '.Player.currentArtist', playerData.artist, true);
-                adapter.setState(devId + '.Player.currentAlbum', playerData.album, true);
+                adapter.setState(devId + '.Player.currentTitle', playerData.title || '', true);
+                adapter.setState(devId + '.Player.currentArtist', playerData.artist || '', true);
+                adapter.setState(devId + '.Player.currentAlbum', playerData.album || '', true);
 
-                adapter.setState(devId + '.Player.mainArtUrl', playerData.mainArtUrl, true);
-                adapter.setState(devId + '.Player.miniArtUrl', playerData.miniArtUrl, true);
+                adapter.setState(devId + '.Player.mainArtUrl', playerData.mainArtUrl || '', true);
+                adapter.setState(devId + '.Player.miniArtUrl', playerData.miniArtUrl || '', true);
 
                 adapter.setState(devId + '.Player.mediaLength', parseInt(playerData.mediaLength || '0', 10), true);
                 adapter.setState(devId + '.Player.mediaLengthStr', sec2HMS(playerData.mediaLength), true);
@@ -2468,7 +2468,7 @@ function initCommUsers(callback) {
                     });
 
                     if (comEntry.commsId[0] === alexa.commsId) {
-                        setOrUpdateObject('Contacts.' + contactId + '.#clearOwnMessages', {common: {role: 'button', type: 'boolean', read: false, write: true, def: false}}, '', function (value) {
+                        setOrUpdateObject('Contacts.' + contactId + '.#clearOwnMessages', {common: {role: 'button', type: 'boolean', read: false, write: true, def: false}}, false, function (value) {
                             alexa.getConversations((err, res) => {
                                if (!err && res && res.conversations && Array.isArray(res.conversations)) {
                                    res.conversations.forEach((conversation) => {
