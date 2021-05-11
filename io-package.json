@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.8.4",
+        "version": "3.9.0",
         "title": "Alexa2 (Amazon Echo)",
         "titleLang": {
             "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.9.0": {
+                "en": "Add some new devices\nAlways recognize \"alexa\" as wakeword to handle commands via the apps correctly",
+                "de": "Fügen Sie einige neue Geräte hinzu\nErkennen Sie \"alexa\" immer als Wakeword, um Befehle über die Apps korrekt zu verarbeiten",
+                "ru": "Добавить новые устройства\nВсегда распознавайте alexa как wakeword для правильной обработки команд через приложения.",
+                "pt": "Adicione alguns novos dispositivos\nSempre reconheça \"alexa\" como wakeword para lidar com os comandos por meio dos aplicativos corretamente",
+                "nl": "Voeg een paar nieuwe apparaten toe\nHerken \"alexa\" altijd als wakewoord om opdrachten via de apps correct af te handelen",
+                "fr": "Ajouter de nouveaux appareils\nReconnaissez toujours \"alexa\" comme mot de réveil pour gérer correctement les commandes via les applications",
+                "it": "Aggiungi alcuni nuovi dispositivi\nRiconosci sempre \"alexa\" come wakeword per gestire correttamente i comandi tramite le app",
+                "es": "Agregar algunos dispositivos nuevos\nReconozca siempre \"alexa\" como wakeword para manejar los comandos a través de las aplicaciones correctamente",
+                "pl": "Dodaj nowe urządzenia\nZawsze rozpoznawaj „alexa” jako wakeword, aby poprawnie obsługiwać polecenia w aplikacjach",
+                "zh-cn": "添加一些新设备\n始终将“ alexa”识别为唤醒词，以通过应用程序正确处理命令"
+            },
             "3.8.4": {
                 "en": "Optimize Cookie refresh handling\nFix warnings from js-controller 3.3 and optimize",
                 "de": "Optimieren Sie die Handhabung der Cookie-Aktualisierung\nKorrigieren Sie Warnungen von js-controller 3.3 und optimieren Sie",
@@ -246,18 +258,6 @@
                 "zh-cn": "如果旧的deviceId现在无效，希望允许更轻松的升级\n允许每个实例具有单独的deviceId"
             },
             "3.2.8": {
-                "en": "Work around Amazon Security changes and make proxy working again",
-                "de": "Umgehen Sie Änderungen an Amazon Security und sorgen Sie dafür, dass der Proxy wieder funktioniert",
-                "ru": "Обойти изменения в Amazon Security и заставить прокси снова работать",
-                "pt": "Solução alternativa às alterações do Amazon Security e faça o proxy funcionar novamente",
-                "nl": "Omzeil Amazon-beveiligingswijzigingen en laat de proxy weer werken",
-                "fr": "Contournement des modifications d'Amazon Security et réactivation du proxy",
-                "it": "Aggira le modifiche di Amazon Security e riattiva il proxy",
-                "es": "Evite los cambios de Amazon Security y haga que el proxy vuelva a funcionar",
-                "pl": "Obejdź zmiany w Amazon Security i spraw, aby serwer proxy znów działał",
-                "zh-cn": "解决Amazon Security更改，并使代理再次工作"
-            },
-            "3.2.7": {
                 "en": "Work around Amazon Security changes and make proxy working again",
                 "de": "Umgehen Sie Änderungen an Amazon Security und sorgen Sie dafür, dass der Proxy wieder funktioniert",
                 "ru": "Обойти изменения в Amazon Security и заставить прокси снова работать",
