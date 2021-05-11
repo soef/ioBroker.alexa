@@ -36,18 +36,18 @@
     "url": "https://github.com/Apollon77/ioBroker.alexa2"
   },
   "dependencies": {
-    "alexa-remote2": "^3.7.2",
+    "alexa-remote2": "^3.8.0",
     "https": "^1.0.0",
     "nearest-color": "^0.4.4",
     "@iobroker/adapter-core": "^2.4.0",
-    "@sentry/node": "^6.3.5",
-    "@sentry/integrations": "^6.3.5",
+    "@sentry/node": "^6.3.6",
+    "@sentry/integrations": "^6.3.6",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^1.10.0",
     "gulp": "^4.0.2",
-    "mocha": "^8.3.2",
+    "mocha": "^8.4.0",
     "chai": "^4.3.4"
   },
   "main": "main.js",
