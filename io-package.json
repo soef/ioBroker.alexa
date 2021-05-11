@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.8.2",
+        "version": "3.8.3",
         "title": "Alexa2 (Amazon Echo)",
         "titleLang": {
             "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.8.3": {
+                "en": "Optimize Cookie refresh handling\nFix warnings from js-controller 3.3 and optimize",
+                "de": "Optimieren Sie die Handhabung der Cookie-Aktualisierung\nKorrigieren Sie Warnungen von js-controller 3.3 und optimieren Sie",
+                "ru": "Оптимизация обработки обновления файлов cookie\nИсправить предупреждения от js-controller 3.3 и оптимизировать",
+                "pt": "Otimize o manuseio da atualização de cookies\nCorrija os avisos do js-controller 3.3 e otimize",
+                "nl": "Optimaliseer de afhandeling van het vernieuwen van cookies\nHerstel waarschuwingen van js-controller 3.3 en optimaliseer",
+                "fr": "Optimiser la gestion de l'actualisation des cookies\nCorrection des avertissements de js-controller 3.3 et optimisation",
+                "it": "Ottimizza la gestione dell'aggiornamento dei cookie\nCorreggi gli avvisi da js-controller 3.3 e ottimizza",
+                "es": "Optimizar el manejo de la actualización de cookies\nCorrija las advertencias de js-controller 3.3 y optimice",
+                "pl": "Zoptymalizuj obsługę odświeżania plików cookie\nNapraw ostrzeżenia z js-controller 3.3 i zoptymalizuj",
+                "zh-cn": "优化Cookie刷新处理\n修复来自js-controller 3.3的警告并进行优化"
+            },
             "3.8.2": {
                 "en": "Adjust automatic Cookie Refresh interval from 7 to 4 days",
                 "de": "Passen Sie das automatische Cookie-Aktualisierungsintervall von 7 bis 4 Tagen an",
@@ -246,18 +258,6 @@
                 "zh-cn": "解决Amazon Security更改，并使代理再次工作"
             },
             "3.2.7": {
-                "en": "Work around Amazon Security changes and make proxy working again",
-                "de": "Umgehen Sie Änderungen an Amazon Security und sorgen Sie dafür, dass der Proxy wieder funktioniert",
-                "ru": "Обойти изменения в Amazon Security и заставить прокси снова работать",
-                "pt": "Solução alternativa às alterações do Amazon Security e faça o proxy funcionar novamente",
-                "nl": "Omzeil Amazon-beveiligingswijzigingen en laat de proxy weer werken",
-                "fr": "Contournement des modifications d'Amazon Security et réactivation du proxy",
-                "it": "Aggira le modifiche di Amazon Security e riattiva il proxy",
-                "es": "Evite los cambios de Amazon Security y haga que el proxy vuelva a funcionar",
-                "pl": "Obejdź zmiany w Amazon Security i spraw, aby serwer proxy znów działał",
-                "zh-cn": "解决Amazon Security更改，并使代理再次工作"
-            },
-            "3.2.6": {
                 "en": "Work around Amazon Security changes and make proxy working again",
                 "de": "Umgehen Sie Änderungen an Amazon Security und sorgen Sie dafür, dass der Proxy wieder funktioniert",
                 "ru": "Обойти изменения в Amazon Security и заставить прокси снова работать",

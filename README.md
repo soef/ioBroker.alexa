@@ -292,7 +292,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.8.3 (2021-05-11)
 * (Apollon77) Optimize Cookie refresh handling
 * (Apollon77) Fix warnings from js-controller 3.3 and optimize
 
