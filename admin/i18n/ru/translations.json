@@ -3,7 +3,7 @@
     "Password": "пароль",
     "Please wait while loading Adapter-Status ...": "Пожалуйста, подождите, пока загружается Adapter-Status ...",
     "ProxyInfo": "Пожалуйста, нажмите здесь, чтобы <a href=\"%s\" target=\"_blank\">войти в свою учетную запись Amazon один раз,</a> чтобы активировать подключение адаптера к вашим устройствам Alexa.",
-    "Settings": "настройки",
+    "Settings": "Настройки",
     "StatusInfo": "Alexa-Cookies обновлены и обновлены до %s ",
     "acceptLanguage": "Пользовательский заголовок Accept-Language",
     "alexaLogin": "Входные данные Alexa",
