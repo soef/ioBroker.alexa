@@ -1,6 +1,6 @@
 {
     "Email": "Пользователь/Email",
-    "Password": "пароль",
+    "Password": "Пароль",
     "Please wait while loading Adapter-Status ...": "Пожалуйста, подождите, пока загружается Adapter-Status ...",
     "ProxyInfo": "Пожалуйста, нажмите здесь, чтобы <a href=\"%s\" target=\"_blank\">войти в свою учетную запись Amazon один раз,</a> чтобы активировать подключение адаптера к вашим устройствам Alexa.",
     "Settings": "Настройки",
