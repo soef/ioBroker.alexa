@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.9.0",
+        "version": "3.9.1",
         "title": "Alexa2 (Amazon Echo)",
         "titleLang": {
             "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.9.1": {
+                "en": "Fix cookie exchange and cookie validation checks",
+                "de": "Behebung von Cookie-Austausch- und Cookie-Validierungsprüfungen",
+                "ru": "Исправить обмен файлами cookie и проверки проверки файлов cookie",
+                "pt": "Corrigir trocas de cookies e verificações de validação de cookies",
+                "nl": "Herstel cookie-uitwisseling en cookie-validatiecontroles",
+                "fr": "Correction de l'échange de cookies et des contrôles de validation des cookies",
+                "it": "Correggi lo scambio di cookie e i controlli di convalida dei cookie",
+                "es": "Corregir el intercambio de cookies y las comprobaciones de validación de cookies",
+                "pl": "Napraw wymianę plików cookie i sprawdzanie poprawności plików cookie",
+                "zh-cn": "修复 cookie 交换和 cookie 验证检查"
+            },
             "3.9.0": {
                 "en": "Add some new devices\nAlways recognize \"alexa\" as wakeword to handle commands via the apps correctly",
                 "de": "Fügen Sie einige neue Geräte hinzu\nErkennen Sie \"alexa\" immer als Wakeword, um Befehle über die Apps korrekt zu verarbeiten",
@@ -256,18 +268,6 @@
                 "es": "Esperemos que permita actualizaciones más fáciles si el dispositivo antiguo no es válido ahora\nPermitir tener dispositivos separados por instancia",
                 "pl": "Mam nadzieję, że umożliwią łatwiejsze aktualizacje, jeśli stary identyfikator urządzenia jest teraz nieprawidłowy\nZezwalaj na osobne deviceIds na instancję",
                 "zh-cn": "如果旧的deviceId现在无效，希望允许更轻松的升级\n允许每个实例具有单独的deviceId"
-            },
-            "3.2.8": {
-                "en": "Work around Amazon Security changes and make proxy working again",
-                "de": "Umgehen Sie Änderungen an Amazon Security und sorgen Sie dafür, dass der Proxy wieder funktioniert",
-                "ru": "Обойти изменения в Amazon Security и заставить прокси снова работать",
-                "pt": "Solução alternativa às alterações do Amazon Security e faça o proxy funcionar novamente",
-                "nl": "Omzeil Amazon-beveiligingswijzigingen en laat de proxy weer werken",
-                "fr": "Contournement des modifications d'Amazon Security et réactivation du proxy",
-                "it": "Aggira le modifiche di Amazon Security e riattiva il proxy",
-                "es": "Evite los cambios de Amazon Security y haga que el proxy vuelva a funcionar",
-                "pl": "Obejdź zmiany w Amazon Security i spraw, aby serwer proxy znów działał",
-                "zh-cn": "解决Amazon Security更改，并使代理再次工作"
             }
         },
         "keywords": [

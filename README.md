@@ -292,7 +292,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.9.1 (2021-06-04)
 * (Apollon77) Fix cookie exchange and cookie validation checks
 
 ### 3.9.0 (2021-05-11)
