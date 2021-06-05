@@ -274,6 +274,7 @@ function deleteObject(id) {
     const obj = adapterObjects[id];
     if (obj && obj.type) {
         if (obj.type !== 'state') {
+            adapter.log.debug(`Delete objects for ${id}`);
             Object.keys(adapterObjects).forEach((objId) => {
                 if (objId.startsWith(id + '.')) {
                     adapter.delObject(objId, (err) => {
@@ -2737,13 +2738,15 @@ function main() {
                 // delete objects
                 let node = adapter.namespace + '.Lists.' + list.id + '.items.' + payload.listItemId;
                 listsInProgress[payload.listId] = true;
-                adapter.getObjectList({startkey: node, endkey: node + '.\u9999'}, (err, objects) => {
+                /*adapter.getObjectList({startkey: node, endkey: node + '.\u9999'}, (err, objects) => {
 
+                    adapter.log.debug('Object list for delete for ' + node + '* : ' + JSON.stringify(objects));
                     if (objects && objects.rows) {
                         objects.rows.forEach(object => deleteObject(object.id));
                     }
                     delete listsInProgress[payload.listId];
-                });
+                });*/
+                deleteObject(node);
             } else {
                 delete listsInProgress[payload.listId];
             }
