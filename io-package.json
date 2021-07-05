@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.9.1",
+        "version": "3.9.2",
         "title": "Alexa2 (Amazon Echo)",
         "titleLang": {
             "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.9.2": {
+                "en": "Only ignore empty history entries if both, summary and alexaResponse is empty",
+                "de": "Ignorieren Sie leere Verlaufseinträge nur, wenn Zusammenfassung und alexaResponse leer sind",
+                "ru": "Игнорировать пустые записи истории только в том случае, если и summary, и alexaResponse пусты.",
+                "pt": "Ignore entradas de histórico vazias apenas se sumário e alexaResponse estiverem vazios",
+                "nl": "Negeer alleen lege geschiedenisvermeldingen als zowel samenvatting als alexaResponse leeg is",
+                "fr": "Ignorer uniquement les entrées d'historique vides si les deux, summary et alexaResponse sont vides",
+                "it": "Ignora solo le voci della cronologia vuote se entrambi, sommario e alexaResponse sono vuoti",
+                "es": "Solo ignore las entradas del historial vacías si ambos, resumen y alexaResponse están vacíos",
+                "pl": "Ignoruj tylko puste wpisy historii, jeśli zarówno podsumowanie, jak i alexaResponse są puste",
+                "zh-cn": "如果 summary 和 alexaResponse 都为空，则仅忽略空的历史条目"
+            },
             "3.9.1": {
                 "en": "Fix cookie exchange and cookie validation checks",
                 "de": "Behebung von Cookie-Austausch- und Cookie-Validierungsprüfungen",
@@ -256,18 +268,6 @@
                 "es": "Optimizar aún más el manejo de cookies",
                 "pl": "Dalsza optymalizacja obsługi plików cookie",
                 "zh-cn": "进一步优化Cookie处理"
-            },
-            "3.3.0": {
-                "en": "Hopefully allow easier upgrades if old deviceId is invalid now\nAllow to have separate deviceIds per instance",
-                "de": "Erlaube hoffentlich einfachere Upgrades, wenn die alte Geräte-ID jetzt ungültig ist\nErmöglichen Sie separate Geräte-IDs pro Instanz",
-                "ru": "Надеемся, что более легкие обновления разрешены, если старый deviceId сейчас недействителен\nРазрешить иметь отдельные идентификаторы устройств для каждого экземпляра",
-                "pt": "Espero permitir atualizações mais fáceis se o deviceId antigo for inválido agora\nPermitir ter deviceIds separados por instância",
-                "nl": "Hopelijk staan eenvoudigere upgrades toe als het oude deviceId nu ongeldig is\nSta toe om per apparaat afzonderlijke deviceIds te hebben",
-                "fr": "Espérons permettre des mises à niveau plus faciles si l'ancien deviceId n'est plus valide maintenant\nAutoriser à avoir des DeviceIds séparés par instance",
-                "it": "Spero che consenti aggiornamenti più semplici se il vecchio deviceId non è più valido ora\nConsentire di avere ID dispositivo separati per istanza",
-                "es": "Esperemos que permita actualizaciones más fáciles si el dispositivo antiguo no es válido ahora\nPermitir tener dispositivos separados por instancia",
-                "pl": "Mam nadzieję, że umożliwią łatwiejsze aktualizacje, jeśli stary identyfikator urządzenia jest teraz nieprawidłowy\nZezwalaj na osobne deviceIds na instancję",
-                "zh-cn": "如果旧的deviceId现在无效，希望允许更轻松的升级\n允许每个实例具有单独的deviceId"
             }
         },
         "keywords": [
