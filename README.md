@@ -292,6 +292,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Only ignore empty history entries if both, summary and alexaResponse is empty
+
 ### 3.9.1 (2021-06-04)
 * (Apollon77) Fix cookie exchange and cookie validation checks
 

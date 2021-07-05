@@ -1467,7 +1467,7 @@ activityCard - > JSON.stringify(activity.domainAttributes.card)
 */
 
 function updateHistoryStates(o) {
-    if (adapter.config.historyIgnoreEmptySummary && !o.description.summary.length) {
+    if (adapter.config.historyIgnoreEmptySummary && !o.description.summary.length && !o.alexaResponse) {
         adapter.log.debug('Ignore History entry because configured: ' + JSON.stringify(o));
         return;
     }
