@@ -783,7 +783,7 @@ function queryAllSmartHomeDevices(initial, callback) {
 
 }
 
-function buildSmartHomeControlParameters(entityId, objs, changedParamName, changedParamvalue) {
+function buildSmartHomeControlParameters(entityId, objs, selectorName, changedParamName, changedParamvalue) {
     function getValueToSend(obj, value) {
         if (value && obj.native.valueTrue) {
             value = obj.native.valueTrue;
@@ -805,8 +805,13 @@ function buildSmartHomeControlParameters(entityId, objs, changedParamName, chang
         }
         return value;
     }
+    const fullObj = objs;
+    if (selectorName !== null) {
+        objs = objs[selectorName];
+    }
 
     let parameters = {};
+    let sendAdditional = [];
     if (!Array.isArray(objs)) objs = [objs];
     for (let obj of objs) {
         let paramName = obj.common.name;
@@ -824,11 +829,27 @@ function buildSmartHomeControlParameters(entityId, objs, changedParamName, chang
                     parameters.action = obj.native.actionFalse;
                 }
             }
+            if (obj.native.sendAdditional) {
+                sendAdditional = sendAdditional.concat(obj.native.sendAdditional);
+            }
         }
         else if (!obj.native.donotsend) {
             if (obj.native.paramName) paramName = obj.native.paramName;
             parameters[paramName] = getValueToSend(obj, shDeviceParamValues['Smart-Home-Devices.' + entityId + '.' + obj.common.name]);
         }
+    }
+    if (sendAdditional.length) {
+        sendAdditional.forEach(actionName => {
+            let addObjs = fullObj[actionName];
+            if (!Array.isArray(addObjs)) addObjs = [addObjs];
+            for (let obj of addObjs) {
+                let paramName = obj.common.name;
+                if (!obj.native.donotsend) {
+                    if (obj.native.paramName) paramName = obj.native.paramName;
+                    parameters[paramName] = getValueToSend(obj, shDeviceParamValues['Smart-Home-Devices.' + entityId + '.' + obj.common.name]);
+                }
+            }
+        });
     }
     return parameters;
 }
@@ -1143,7 +1164,7 @@ function createSmarthomeStates(callback) {
 
                                             setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.' + obj.common.name, obj, false, function (entityId, paramName, applianceId, value) {
                                                 if (!obj.common.write) return;
-                                                const parameters = buildSmartHomeControlParameters(entityId, shObjects.capabilityObjects[cap.interfaceName][capProp.name], paramName, value);
+                                                const parameters = buildSmartHomeControlParameters(entityId, shObjects.capabilityObjects[cap.interfaceName], capProp.name, paramName, value);
                                                 if (!parameters.action || !behaviours[entityId] || ! behaviours[entityId].supportedOperations || !behaviours[entityId].supportedOperations.includes(parameters.action)) {
                                                     if (!parameters.action.startsWith('turn') && !parameters.action.startsWith('scene')) {
                                                         adapter.log.debug('Invalid action ' + parameters.action + ' provided for Capability ' + cap.interfaceName + ' for ' + obj.common.name + '. Report to developer this and next log line from logfile on disk!');
@@ -1241,7 +1262,7 @@ function createSmarthomeStates(callback) {
                                     setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.' + obj.common.name, obj, null, function (entityId, paramName, applianceId, value) {
                                         if (!obj.common.write) return;
                                         let origValue = value;
-                                        const parameters = buildSmartHomeControlParameters(shDevice.entityId, shObjects.actionObjects[action], paramName, value);
+                                        const parameters = buildSmartHomeControlParameters(shDevice.entityId, shObjects.actionObjects[action], null, paramName, value);
 
                                         if (!behaviours[entityId] || !behaviours[entityId].supportedOperations || !behaviours[entityId].supportedOperations.includes(parameters.action)) {
                                             if (!parameters.action.startsWith('turn') && !parameters.action.startsWith('scene')) {
@@ -1365,7 +1386,7 @@ function createSmarthomeStates(callback) {
                         //obj.common.read = false;
                         setOrUpdateObject('Smart-Home-Devices.' + groupIdShort + '.' + obj.common.name, obj, null, function (entityId, paramName, applianceId, value) {
                             if (!obj.common.write) return;
-                            const parameters = buildSmartHomeControlParameters(entityId, obj, paramName, value);
+                            const parameters = buildSmartHomeControlParameters(entityId, obj, null, paramName, value);
 
                             if (!behaviours[groupIdShort] || ! behaviours[groupIdShort].supportedOperations || !behaviours[groupIdShort].supportedOperations.includes(parameters.action)) {
                                 adapter.log.debug('Invalid action ' + parameters.action + ' provided for Group-Action ' + parameters.action + '. Report to developer this and next log line from logfile on disk!');
