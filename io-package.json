@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alexa2",
-        "version": "3.9.2",
+        "version": "3.9.3",
         "title": "Alexa2 (Amazon Echo)",
         "titleLang": {
             "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
         },
         "platform": "Javascript/Node.js",
         "news": {
+            "3.9.3": {
+                "en": "Try to fix setting targetTemperature for ThermostatCOntroller",
+                "de": "Versuchen Sie, die Einstellung der Zieltemperatur für ThermostatCOntroller zu korrigieren",
+                "ru": "Попытайтесь исправить настройку целевой температуры для ThermostatCOntroller",
+                "pt": "Tente corrigir a configuração targetTemperature para ThermostatCOntroller",
+                "nl": "Probeer de instelling targetTemperature voor ThermostatCONtroller te herstellen",
+                "fr": "Essayez de corriger le réglage de targetTemperature pour ThermostatCOntroller",
+                "it": "Prova a correggere l'impostazione della temperatura target per ThermostatCOntroller",
+                "es": "Intente fijar la temperatura objetivo de ajuste para el controlador del termostato",
+                "pl": "Spróbuj naprawić ustawienie docelowej temperatury dla termostatu",
+                "zh-cn": "尝试修复 ThermostatCONtroller 的设置 targetTemperature"
+            },
             "3.9.2": {
                 "en": "Only ignore empty history entries if both, summary and alexaResponse is empty",
                 "de": "Ignorieren Sie leere Verlaufseinträge nur, wenn Zusammenfassung und alexaResponse leer sind",
@@ -256,18 +268,6 @@
                 "es": "prevenir casos de accidentes y optimizar el manejo de la reconexión",
                 "pl": "zapobiegaj przypadkom awarii i optymalizuj obsługę ponownego łączenia",
                 "zh-cn": "防止发生崩溃情况并优化重新连接处理"
-            },
-            "3.3.1": {
-                "en": "Further optimize Cookie handling",
-                "de": "Optimieren Sie die Cookie-Handhabung weiter",
-                "ru": "Дальнейшая оптимизация обработки Cookie",
-                "pt": "Otimize ainda mais o manuseio de cookies",
-                "nl": "Optimaliseer de verwerking van cookies verder",
-                "fr": "Optimiser davantage la gestion des cookies",
-                "it": "Ottimizza ulteriormente la gestione dei cookie",
-                "es": "Optimizar aún más el manejo de cookies",
-                "pl": "Dalsza optymalizacja obsługi plików cookie",
-                "zh-cn": "进一步优化Cookie处理"
             }
         },
         "keywords": [

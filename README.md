@@ -292,7 +292,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.9.3 (2021-07-11)
 * (Apollon77) Try to fix setting targetTemperature for ThermostatCOntroller
 
 ### 3.9.2 (2021-07-05)
