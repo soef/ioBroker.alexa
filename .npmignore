@@ -1,8 +1,13 @@
-Gruntfile.js
+gulpfile.js
+admin/i18n
 tasks
 node_modules
 .idea
 .git
 /node_modules
 test
-ba
+.travis.yml
+appveyor.yml
+.github
+package-lock.json
+.gitattributes

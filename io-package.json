@@ -1,81 +1,387 @@
 {
-  "common": {
-    "name": "alexa",
-    "version": "0.0.36",
-    "title": "Alexa (Amazon Echo) Adapter",
-    "desc": "Remote control for Alexa (Amazon Echo)",
-    "platform": "Javascript/Node.js",
-    "news": {
-      "0.0.36": {
-        "en": "update exception fixed",
-        "de": "Schutzverletzung bei Datenpunkt-Update behoben"
-      },
-      "0.0.35": {
-        "en": "Test URL in readme fixed",
-        "de": "Test URL in readme angepasst"
-      },
-      "0.0.34": {
-        "en": "tunein search string will now be escaped",
-        "de": "tunein Suchwort wird nun escaped"
-      },
-      "0.0.33": {
-        "en": "node 4.x test removed",
-        "de": "node 4.x Test entfernt"
-      },
-      "0.0.32": {
-        "en": "fix node 4.x problem",
-        "de": "node 4.x Problem behoben"
-      },
-      "0.0.31": {
-        "en": "some bug fixes",
-        "de": "einige Fehlerbehebungen"
-      },
-      "0.0.28": {
-        "en": "generating cookie by user/password",
-        "de": "Cookie wird nun mit User/Passwort erstellt"
-      },
-      "0.0.15": {
-        "en": "detecting csrf in cookie changed",
-        "de": "Ermitteln der csrf geändert"
-      },
-      "0.0.14": {
-        "en": "package.json of alexa-remote fixed",
-        "de": "Fehler in package.json von alexa-remote behoben"
-      },
-      "0.0.12": {
-        "en": "working on...",
-        "de": "Weiterentwicklung..."
-      },
-      "0.0.2": {
-        "en": "working on...",
-        "de": "Weiterentwicklung..."
-      },
-      "0.0.1": {
-        "en": "initial commit",
-        "de": "Erstmalig Veröffentlichung"
-      }
+    "common": {
+        "name": "alexa2",
+        "version": "3.9.3",
+        "title": "Alexa2 (Amazon Echo)",
+        "titleLang": {
+            "en": "Alexa2 (Amazon Echo)",
+            "de": "Alexa2 (Amazon Echo)",
+            "ru": "Alexa2 (Amazon Echo)",
+            "pt": "Alexa2 (Amazon Echo)",
+            "nl": "Alexa2 (Amazon Echo)",
+            "fr": "Alexa2 (Amazon Echo)",
+            "it": "Alexa2 (Amazon Echo)",
+            "es": "Alexa2 (eco de Amazon)",
+            "pl": "Alexa2 (Amazon Echo)",
+            "zh-cn": "Alexa2（Amazon回声）"
+        },
+        "desc": {
+            "en": "Remote control for Alexa (Amazon Echo)",
+            "de": "Steuerung von Alexa (Amazon Echo)",
+            "ru": "Управление Alexa (Amazon Echo)",
+            "pt": "Controle remoto para Alexa (Amazon Echo)",
+            "nl": "Afstandsbediening voor Alexa (Amazon Echo)",
+            "fr": "Télécommande pour Alexa (Amazon Echo)",
+            "it": "Telecomando per Alexa (Amazon Echo)",
+            "es": "Control remoto para Alexa (Amazon Echo)",
+            "pl": "Pilot do Alexa (Amazon Echo)",
+            "zh-cn": "Alexa（Amazon Echo）的遥控器"
+        },
+        "platform": "Javascript/Node.js",
+        "news": {
+            "3.9.3": {
+                "en": "Try to fix setting targetTemperature for ThermostatCOntroller",
+                "de": "Versuchen Sie, die Einstellung der Zieltemperatur für ThermostatCOntroller zu korrigieren",
+                "ru": "Попытайтесь исправить настройку целевой температуры для ThermostatCOntroller",
+                "pt": "Tente corrigir a configuração targetTemperature para ThermostatCOntroller",
+                "nl": "Probeer de instelling targetTemperature voor ThermostatCONtroller te herstellen",
+                "fr": "Essayez de corriger le réglage de targetTemperature pour ThermostatCOntroller",
+                "it": "Prova a correggere l'impostazione della temperatura target per ThermostatCOntroller",
+                "es": "Intente fijar la temperatura objetivo de ajuste para el controlador del termostato",
+                "pl": "Spróbuj naprawić ustawienie docelowej temperatury dla termostatu",
+                "zh-cn": "尝试修复 ThermostatCONtroller 的设置 targetTemperature"
+            },
+            "3.9.2": {
+                "en": "Only ignore empty history entries if both, summary and alexaResponse is empty",
+                "de": "Ignorieren Sie leere Verlaufseinträge nur, wenn Zusammenfassung und alexaResponse leer sind",
+                "ru": "Игнорировать пустые записи истории только в том случае, если и summary, и alexaResponse пусты.",
+                "pt": "Ignore entradas de histórico vazias apenas se sumário e alexaResponse estiverem vazios",
+                "nl": "Negeer alleen lege geschiedenisvermeldingen als zowel samenvatting als alexaResponse leeg is",
+                "fr": "Ignorer uniquement les entrées d'historique vides si les deux, summary et alexaResponse sont vides",
+                "it": "Ignora solo le voci della cronologia vuote se entrambi, sommario e alexaResponse sono vuoti",
+                "es": "Solo ignore las entradas del historial vacías si ambos, resumen y alexaResponse están vacíos",
+                "pl": "Ignoruj tylko puste wpisy historii, jeśli zarówno podsumowanie, jak i alexaResponse są puste",
+                "zh-cn": "如果 summary 和 alexaResponse 都为空，则仅忽略空的历史条目"
+            },
+            "3.9.1": {
+                "en": "Fix cookie exchange and cookie validation checks",
+                "de": "Behebung von Cookie-Austausch- und Cookie-Validierungsprüfungen",
+                "ru": "Исправить обмен файлами cookie и проверки проверки файлов cookie",
+                "pt": "Corrigir trocas de cookies e verificações de validação de cookies",
+                "nl": "Herstel cookie-uitwisseling en cookie-validatiecontroles",
+                "fr": "Correction de l'échange de cookies et des contrôles de validation des cookies",
+                "it": "Correggi lo scambio di cookie e i controlli di convalida dei cookie",
+                "es": "Corregir el intercambio de cookies y las comprobaciones de validación de cookies",
+                "pl": "Napraw wymianę plików cookie i sprawdzanie poprawności plików cookie",
+                "zh-cn": "修复 cookie 交换和 cookie 验证检查"
+            },
+            "3.9.0": {
+                "en": "Add some new devices\nAlways recognize \"alexa\" as wakeword to handle commands via the apps correctly",
+                "de": "Fügen Sie einige neue Geräte hinzu\nErkennen Sie \"alexa\" immer als Wakeword, um Befehle über die Apps korrekt zu verarbeiten",
+                "ru": "Добавить новые устройства\nВсегда распознавайте alexa как wakeword для правильной обработки команд через приложения.",
+                "pt": "Adicione alguns novos dispositivos\nSempre reconheça \"alexa\" como wakeword para lidar com os comandos por meio dos aplicativos corretamente",
+                "nl": "Voeg een paar nieuwe apparaten toe\nHerken \"alexa\" altijd als wakewoord om opdrachten via de apps correct af te handelen",
+                "fr": "Ajouter de nouveaux appareils\nReconnaissez toujours \"alexa\" comme mot de réveil pour gérer correctement les commandes via les applications",
+                "it": "Aggiungi alcuni nuovi dispositivi\nRiconosci sempre \"alexa\" come wakeword per gestire correttamente i comandi tramite le app",
+                "es": "Agregar algunos dispositivos nuevos\nReconozca siempre \"alexa\" como wakeword para manejar los comandos a través de las aplicaciones correctamente",
+                "pl": "Dodaj nowe urządzenia\nZawsze rozpoznawaj „alexa” jako wakeword, aby poprawnie obsługiwać polecenia w aplikacjach",
+                "zh-cn": "添加一些新设备\n始终将“ alexa”识别为唤醒词，以通过应用程序正确处理命令"
+            },
+            "3.8.4": {
+                "en": "Optimize Cookie refresh handling\nFix warnings from js-controller 3.3 and optimize",
+                "de": "Optimieren Sie die Handhabung der Cookie-Aktualisierung\nKorrigieren Sie Warnungen von js-controller 3.3 und optimieren Sie",
+                "ru": "Оптимизация обработки обновления файлов cookie\nИсправить предупреждения от js-controller 3.3 и оптимизировать",
+                "pt": "Otimize o manuseio da atualização de cookies\nCorrija os avisos do js-controller 3.3 e otimize",
+                "nl": "Optimaliseer de afhandeling van het vernieuwen van cookies\nHerstel waarschuwingen van js-controller 3.3 en optimaliseer",
+                "fr": "Optimiser la gestion de l'actualisation des cookies\nCorrection des avertissements de js-controller 3.3 et optimisation",
+                "it": "Ottimizza la gestione dell'aggiornamento dei cookie\nCorreggi gli avvisi da js-controller 3.3 e ottimizza",
+                "es": "Optimizar el manejo de la actualización de cookies\nCorrija las advertencias de js-controller 3.3 y optimice",
+                "pl": "Zoptymalizuj obsługę odświeżania plików cookie\nNapraw ostrzeżenia z js-controller 3.3 i zoptymalizuj",
+                "zh-cn": "优化Cookie刷新处理\n修复来自js-controller 3.3的警告并进行优化"
+            },
+            "3.8.2": {
+                "en": "Adjust automatic Cookie Refresh interval from 7 to 4 days",
+                "de": "Passen Sie das automatische Cookie-Aktualisierungsintervall von 7 bis 4 Tagen an",
+                "ru": "Установите интервал автоматического обновления файлов cookie с 7 до 4 дней.",
+                "pt": "Ajuste o intervalo de atualização automática de cookies de 7 a 4 dias",
+                "nl": "Pas het interval voor het automatisch vernieuwen van cookies aan van 7 tot 4 dagen",
+                "fr": "Ajuster l'intervalle d'actualisation automatique des cookies de 7 à 4 jours",
+                "it": "Regola l'intervallo di aggiornamento automatico dei cookie da 7 a 4 giorni",
+                "es": "Ajustar el intervalo de actualización automática de cookies de 7 a 4 días",
+                "pl": "Dostosuj interwał automatycznego odświeżania plików cookie z 7 do 4 dni",
+                "zh-cn": "将自动刷新Cookie的间隔从7天调整为4天"
+            },
+            "3.8.1": {
+                "en": "Initialize volume for all devices on start",
+                "de": "Initialisieren Sie die Lautstärke für alle Geräte beim Start",
+                "ru": "Инициализировать громкость для всех устройств при запуске",
+                "pt": "Inicializar o volume para todos os dispositivos ao iniciar",
+                "nl": "Initialiseer het volume voor alle apparaten bij het opstarten",
+                "fr": "Initialiser le volume pour tous les appareils au démarrage",
+                "it": "Inizializza il volume per tutti i dispositivi all'avvio",
+                "es": "Inicializar el volumen para todos los dispositivos al iniciar",
+                "pl": "Zainicjuj wolumin dla wszystkich urządzeń przy starcie",
+                "zh-cn": "启动时初始化所有设备的音量"
+            },
+            "3.8.0": {
+                "en": "Add configuration option to not write history entries where no command text was recognized",
+                "de": "Fügen Sie die Konfigurationsoption hinzu, um keine Verlaufseinträge zu schreiben, bei denen kein Befehlstext erkannt wurde",
+                "ru": "Добавить параметр конфигурации, чтобы не записывать записи в историю, где текст команды не был распознан",
+                "pt": "Adicionar opção de configuração para não gravar entradas de histórico onde nenhum texto de comando foi reconhecido",
+                "nl": "Voeg een configuratieoptie toe om geen geschiedenisitems te schrijven waar geen commandotekst werd herkend",
+                "fr": "Ajouter une option de configuration pour ne pas écrire les entrées d'historique où aucun texte de commande n'a été reconnu",
+                "it": "Aggiungere un'opzione di configurazione per non scrivere voci della cronologia in cui non è stato riconosciuto alcun testo di comando",
+                "es": "Agregue la opción de configuración para no escribir entradas del historial donde no se reconoció el texto del comando",
+                "pl": "Dodaj opcję konfiguracji, aby nie zapisywać wpisów historii, w których nie rozpoznano żadnego tekstu polecenia",
+                "zh-cn": "添加配置选项以不写入无法识别命令文本的历史记录条目"
+            },
+            "3.7.1": {
+                "en": "add some more detected text into summary and answerText states (textCommand commands should be in history back again)",
+                "de": "Fügen Sie etwas mehr erkannten Text zu den Zuständen \"Zusammenfassung\" und \"Antworttext\" hinzu (textCommand-Befehle sollten wieder im Verlauf sein).",
+                "ru": "добавить еще немного обнаруженного текста в состояния Summary и answerText (команды textCommand должны снова вернуться в историю)",
+                "pt": "adicione um pouco mais de texto detectado nos estados de resumo e answerText (os comandos textCommand devem estar no histórico novamente)",
+                "nl": "voeg wat meer gedetecteerde tekst toe aan samenvattings- en answerText-staten (textCommand-opdrachten zouden weer in de geschiedenis moeten staan)",
+                "fr": "ajouter un peu plus de texte détecté dans les états summary et answerText (les commandes textCommand devraient être à nouveau dans l'historique)",
+                "it": "aggiungere altro testo rilevato negli stati di riepilogo e answerText (i comandi textCommand dovrebbero essere di nuovo nella cronologia)",
+                "es": "agregue más texto detectado en los estados de resumen y answerText (los comandos textCommand deberían estar en el historial nuevamente)",
+                "pl": "dodaj więcej wykrytego tekstu do podsumowania i odpowiedzi Stany tekstu (polecenia textCommand powinny ponownie znaleźć się w historii)",
+                "zh-cn": "将更多检测到的文本添加到summary和answerText状态中（textCommand命令应再次回到历史记录中）"
+            },
+            "3.7.0": {
+                "en": "IMPORTANT: History entries are now requested via a different data source because Amazon seems to tun off the old option. History.status is for this no longer filled, but new states were added. Only voice commands are reported ( textCommand entries not longer)\nother optimizations in communications and prevent hammering amazon with requests in error cases",
+                "de": "WICHTIG: Verlaufseinträge werden jetzt über eine andere Datenquelle angefordert, da Amazon die alte Option anscheinend deaktiviert. History.status ist dafür nicht mehr gefüllt, aber neue Zustände wurden hinzugefügt. Es werden nur Sprachbefehle gemeldet (textCommand-Einträge nicht mehr)\nandere Optimierungen in der Kommunikation und verhindern, dass Amazon mit Anfragen in Fehlerfällen hämmert",
+                "ru": "ВАЖНО: записи истории теперь запрашиваются через другой источник данных, потому что Amazon, похоже, отключает старую опцию. History.status для этого больше не заполняется, но были добавлены новые состояния. Сообщаются только голосовые команды (записи textCommand не длиннее)\nдругие оптимизации в коммуникации и предотвращение забивания amazon запросами в случаях ошибок",
+                "pt": "IMPORTANTE: As entradas de histórico agora são solicitadas por meio de uma fonte de dados diferente porque a Amazon parece desligar a opção antiga. History.status não é mais preenchido, mas novos estados foram adicionados. Apenas comandos de voz são relatados (entradas textCommand não mais)\noutras otimizações nas comunicações e evita martelar amazon com requisições em casos de erro",
+                "nl": "BELANGRIJK: geschiedenisinvoeren worden nu opgevraagd via een andere gegevensbron omdat Amazon de oude optie lijkt af te stemmen. History.status wordt hiervoor niet meer gevuld, maar er zijn nieuwe statussen toegevoegd. Alleen spraakopdrachten worden gerapporteerd (tekstcommando's niet langer)\nandere optimalisaties in communicatie en voorkomen dat amazon wordt gehamerd met verzoeken in foutgevallen",
+                "fr": "IMPORTANT: les entrées d'historique sont désormais demandées via une autre source de données, car Amazon semble désactiver l'ancienne option. History.status n'est plus rempli pour cela, mais de nouveaux états ont été ajoutés. Seules les commandes vocales sont signalées (les entrées textCommand ne sont pas plus longues)\nd'autres optimisations dans les communications et éviter de marteler Amazon avec des requêtes en cas d'erreur",
+                "it": "IMPORTANTE: le voci della cronologia ora vengono richieste tramite un'origine dati diversa perché Amazon sembra disattivare la vecchia opzione. History.status non è più compilato, ma sono stati aggiunti nuovi stati. Vengono riportati solo i comandi vocali (le voci textCommand non sono più lunghe)\naltre ottimizzazioni nelle comunicazioni e prevenire il martellamento di Amazon con richieste in casi di errore",
+                "es": "IMPORTANTE: Las entradas del historial ahora se solicitan a través de una fuente de datos diferente porque Amazon parece desconectar la opción anterior. History.status ya no se completa, pero se agregaron nuevos estados. Solo se informan los comandos de voz (las entradas de textCommand ya no)\notras optimizaciones en las comunicaciones y evitar golpear a Amazon con solicitudes en casos de error",
+                "pl": "WAŻNE: Wpisy historii są teraz żądane za pośrednictwem innego źródła danych, ponieważ Amazon wydaje się wyłączać starą opcję. History.status nie jest już wypełniony, ale dodano nowe stany. Zgłaszane są tylko polecenia głosowe (wpisy TextCommand nie są już dostępne)\ninne optymalizacje w komunikacji i zapobiegają obciążaniu Amazon żądaniami w przypadkach błędów",
+                "zh-cn": "重要信息：现在，通过另一个数据源来请求历史记录条目，因为Amazon似乎已淘汰了旧选项。为此，History.status不再填充，但是添加了新的状态。仅报告语音命令（不再输入textCommand条目）\n通讯方面的其他优化，并防止在错误情况下因请求而影响亚马逊"
+            },
+            "3.6.1": {
+                "en": "Add and adjust some known devices\nOptimize object deletion",
+                "de": "Fügen Sie einige bekannte Geräte hinzu und passen Sie sie an\nObjektlöschung optimieren",
+                "ru": "Добавить и настроить некоторые известные устройства\nОптимизировать удаление объекта",
+                "pt": "Adicione e ajuste alguns dispositivos conhecidos\nOtimize a exclusão de objetos",
+                "nl": "Voeg enkele bekende apparaten toe en pas ze aan\nOptimaliseer het verwijderen van objecten",
+                "fr": "Ajouter et ajuster certains appareils connus\nOptimiser la suppression des objets",
+                "it": "Aggiungi e modifica alcuni dispositivi noti\nOttimizza l'eliminazione degli oggetti",
+                "es": "Agregar y ajustar algunos dispositivos conocidos\nOptimizar la eliminación de objetos",
+                "pl": "Dodaj i dostosuj niektóre znane urządzenia\nZoptymalizuj usuwanie obiektów",
+                "zh-cn": "添加和调整一些已知设备\n优化对象删除"
+            },
+            "3.6.0": {
+                "en": "Update Routines API because of amazon changes",
+                "de": "Aktualisieren Sie die Routines-API aufgrund von Amazon-Änderungen",
+                "ru": "Обновить Routines API из-за изменений Amazon",
+                "pt": "Atualizar API de Rotinas por causa das mudanças do Amazon",
+                "nl": "Update Routines API vanwege amazon-wijzigingen",
+                "fr": "Mettre à jour l'API des routines en raison des modifications d'Amazon",
+                "it": "Aggiorna l'API delle routine a causa delle modifiche di Amazon",
+                "es": "Actualizar la API de rutinas debido a los cambios de Amazon",
+                "pl": "Zaktualizuj interfejs API procedur z powodu zmian w Amazon",
+                "zh-cn": "由于亚马逊更改而更新例程API"
+            },
+            "3.5.6": {
+                "en": "Catch error when deleting objects",
+                "de": "Catch-Fehler beim Löschen von Objekten",
+                "ru": "Выловить ошибку при удалении объектов",
+                "pt": "Detectar erro ao excluir objetos",
+                "nl": "Vang een fout op bij het verwijderen van objecten",
+                "fr": "Erreur de capture lors de la suppression d'objets",
+                "it": "Errore di rilevamento durante l'eliminazione di oggetti",
+                "es": "Detectar error al eliminar objetos",
+                "pl": "Błąd podczas usuwania obiektów",
+                "zh-cn": "删除对象时捕获错误"
+            },
+            "3.5.4": {
+                "en": "restart adapter when no initial cookie could be requested",
+                "de": "Starten Sie den Adapter neu, wenn kein erstes Cookie angefordert werden konnte",
+                "ru": "перезапустите адаптер, когда не удалось запросить начальный файл cookie",
+                "pt": "reinicie o adaptador quando nenhum cookie inicial puder ser solicitado",
+                "nl": "herstart adapter wanneer geen initiële cookie kon worden aangevraagd",
+                "fr": "redémarrer l'adaptateur lorsqu'aucun cookie initial n'a pu être demandé",
+                "it": "riavviare l'adattatore quando non è stato possibile richiedere alcun cookie iniziale",
+                "es": "reinicie el adaptador cuando no se pueda solicitar ninguna cookie inicial",
+                "pl": "zrestartuj adapter, gdy nie można zażądać początkowego pliku cookie",
+                "zh-cn": "当没有初始Cookie的请求时重启适配器"
+            },
+            "3.5.2": {
+                "en": "Prevent to write non-existing state values\nAdd and adjust some known devices",
+                "de": "Verhindern Sie das Schreiben nicht vorhandener Statuswerte\nFügen Sie einige bekannte Geräte hinzu und passen Sie sie an",
+                "ru": "Запретить запись несуществующих значений состояния\nДобавить и настроить некоторые известные устройства",
+                "pt": "Impedir a gravação de valores de estado não existentes\nAdicione e ajuste alguns dispositivos conhecidos",
+                "nl": "Voorkom dat niet-bestaande statuswaarden worden geschreven\nVoeg enkele bekende apparaten toe en pas ze aan",
+                "fr": "Empêcher d'écrire des valeurs d'état non existantes\nAjouter et ajuster certains appareils connus",
+                "it": "Impedisci di scrivere valori di stato non esistenti\nAggiungi e modifica alcuni dispositivi noti",
+                "es": "Evitar escribir valores de estado no existentes\nAgregar y ajustar algunos dispositivos conocidos",
+                "pl": "Zapobiegaj zapisywaniu nieistniejących wartości stanu\nDodaj i dostosuj niektóre znane urządzenia",
+                "zh-cn": "防止写入不存在的状态值\n添加和调整一些已知设备"
+            },
+            "3.5.1": {
+                "en": "Prevent to write non-existing state values\nAdd and adjust some known devices",
+                "de": "Verhindern Sie das Schreiben nicht vorhandener Statuswerte\nFügen Sie einige bekannte Geräte hinzu und passen Sie sie an",
+                "ru": "Запретить запись несуществующих значений состояния\nДобавить и настроить некоторые известные устройства",
+                "pt": "Impedir a gravação de valores de estado não existentes\nAdicione e ajuste alguns dispositivos conhecidos",
+                "nl": "Voorkom dat niet-bestaande statuswaarden worden geschreven\nVoeg enkele bekende apparaten toe en pas ze aan",
+                "fr": "Empêcher d'écrire des valeurs d'état non existantes\nAjouter et ajuster certains appareils connus",
+                "it": "Impedisci di scrivere valori di stato non esistenti\nAggiungi e modifica alcuni dispositivi noti",
+                "es": "Evitar escribir valores de estado no existentes\nAgregar y ajustar algunos dispositivos conocidos",
+                "pl": "Zapobiegaj zapisywaniu nieistniejących wartości stanu\nDodaj i dostosuj niektóre znane urządzenia",
+                "zh-cn": "防止写入不存在的状态值\n添加和调整一些已知设备"
+            },
+            "3.5.0": {
+                "en": "Remove bespoken because textCommand is more flexible\nAdd and adjust some known devices, add Echo 4 image",
+                "de": "Entfernen Sie das Bespoken, da textCommand flexibler ist\nFügen Sie einige bekannte Geräte hinzu und passen Sie sie an. Fügen Sie das Echo 4-Bild hinzu",
+                "ru": "Удалите заказ, потому что textCommand более гибок\nДобавьте и настройте некоторые известные устройства, добавьте изображение Echo 4",
+                "pt": "Remova bespoken porque textCommand é mais flexível\nAdicione e ajuste alguns dispositivos conhecidos, adicione a imagem Echo 4",
+                "nl": "Verwijder op maat gemaakte omdat textCommand flexibeler is\nVoeg enkele bekende apparaten toe en pas ze aan, voeg Echo 4-afbeelding toe",
+                "fr": "Supprimer bespoken car textCommand est plus flexible\nAjouter et ajuster certains appareils connus, ajouter une image Echo 4",
+                "it": "Rimuovi bespoken perché textCommand è più flessibile\nAggiungi e regola alcuni dispositivi noti, aggiungi l'immagine Echo 4",
+                "es": "Eliminar personalizado porque textCommand es más flexible\nAgregue y ajuste algunos dispositivos conocidos, agregue la imagen de Echo 4",
+                "pl": "Usuń bespoken, ponieważ textCommand jest bardziej elastyczny\nDodaj i dostosuj niektóre znane urządzenia, dodaj obraz Echo 4",
+                "zh-cn": "因为textCommand更灵活，所以删除了预定的\n添加并调整一些已知设备，添加Echo 4图像"
+            },
+            "3.4.0": {
+                "en": "add support for textCommand - tell an Alexa device a text as you would speak it\nmake sure discovery of devices is still possible also after deleting all devices before",
+                "de": "Unterstützung für textCommand hinzufügen - Teilen Sie einem Alexa-Gerät einen Text so mit, wie Sie ihn sprechen würden\nStellen Sie sicher, dass die Erkennung von Geräten auch nach dem Löschen aller Geräte weiterhin möglich ist",
+                "ru": "добавить поддержку textCommand - сообщить устройству Alexa текст, как если бы вы его произносили\nубедитесь, что обнаружение устройств по-прежнему возможно даже после удаления всех устройств перед",
+                "pt": "adicionar suporte para textCommand - diga a um dispositivo Alexa um texto como você falaria\ncertifique-se de que a descoberta de dispositivos ainda seja possível depois de excluir todos os dispositivos antes",
+                "nl": "ondersteuning toevoegen voor textCommand - vertel een Alexa-apparaat een tekst zoals je die zou uitspreken\nzorg ervoor dat het vinden van apparaten nog steeds mogelijk is, ook nadat alle apparaten eerder zijn verwijderd",
+                "fr": "ajouter la prise en charge de textCommand - dites à un appareil Alexa un texte comme vous le diriez\nassurez-vous que la découverte des périphériques est toujours possible après la suppression de tous les périphériques avant",
+                "it": "aggiungi il supporto per textCommand: comunica a un dispositivo Alexa un testo come lo pronunceresti\nassicurarsi che il rilevamento dei dispositivi sia ancora possibile anche dopo aver eliminato tutti i dispositivi prima",
+                "es": "agregue soporte para textCommand: dígale a un dispositivo Alexa un texto como lo diría\nasegúrese de que el descubrimiento de dispositivos aún sea posible también después de eliminar todos los dispositivos antes",
+                "pl": "dodaj obsługę textCommand - powiedz urządzeniu Alexa tekst tak, jakbyś go wymawiał\nupewnij się, że wykrywanie urządzeń jest nadal możliwe również po wcześniejszym usunięciu wszystkich urządzeń",
+                "zh-cn": "添加对textCommand的支持-像说的那样告诉Alexa设备文本\n确保在删除所有设备之后仍可以发现设备"
+            },
+            "3.3.5": {
+                "en": "make sure music providers with empty names do not produce errors",
+                "de": "Stellen Sie sicher, dass Musikanbieter mit leeren Namen keine Fehler verursachen",
+                "ru": "убедитесь, что поставщики музыки с пустыми именами не вызывают ошибок",
+                "pt": "certifique-se de que os provedores de música com nomes vazios não produzam erros",
+                "nl": "zorg ervoor dat muziekaanbieders met lege namen geen fouten produceren",
+                "fr": "assurez-vous que les fournisseurs de musique avec des noms vides ne produisent pas d'erreurs",
+                "it": "assicurati che i fornitori di musica con nomi vuoti non producano errori",
+                "es": "asegúrese de que los proveedores de música con nombres vacíos no produzcan errores",
+                "pl": "upewnij się, że dostawcy muzyki z pustymi nazwami nie powodują błędów",
+                "zh-cn": "确保带有空名称的音乐提供者不会产生错误"
+            },
+            "3.3.2": {
+                "en": "prevent crash cases and optimize reconnection handling",
+                "de": "Verhindern Sie Absturzfälle und optimieren Sie die Handhabung der Wiederverbindung",
+                "ru": "предотвращение сбоев и оптимизация обработки повторного подключения",
+                "pt": "evitar casos de acidente e otimizar o manuseio de reconexão",
+                "nl": "voorkom crashgevallen en optimaliseer de afhandeling van herverbinden",
+                "fr": "éviter les cas de crash et optimiser la gestion des reconnexions",
+                "it": "prevenire i casi di crash e ottimizzare la gestione della riconnessione",
+                "es": "prevenir casos de accidentes y optimizar el manejo de la reconexión",
+                "pl": "zapobiegaj przypadkom awarii i optymalizuj obsługę ponownego łączenia",
+                "zh-cn": "防止发生崩溃情况并优化重新连接处理"
+            }
+        },
+        "keywords": [
+            "alexa",
+            "amazon",
+            "amazon echo",
+            "echo dot",
+            "echo show"
+        ],
+        "authors": [
+            "Apollon77 <iobroker@fischer-ka.de>"
+        ],
+        "mode": "daemon",
+        "icon": "alexa.png",
+        "materialize": true,
+        "extIcon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
+        "readme": "https://github.com/Apollon77/ioBroker.alexa2/blob/master/README.md",
+        "loglevel": "info",
+        "type": "iot-systems",
+        "enabled": true,
+        "messagebox": true,
+        "license": "MIT",
+        "localLink": "https://alexa.amazon.com",
+        "connectionType": "cloud",
+        "dataSource": "push",
+        "tier": 2,
+        "compact": true,
+        "dependencies": [
+            {
+                "js-controller": ">=2.0.0"
+            }
+        ],
+        "plugins": {
+            "sentry": {
+                "dsn": "https://e9ac55f23fe149e78b1eab9ed4bf26ad@sentry.iobroker.net/8",
+                "pathWhitelist": [
+                    "@apollon",
+                    "alexa-cookie2",
+                    "alexa-remote2"
+                ],
+                "errorBlacklist": [
+                    "SyntaxError"
+                ]
+            }
+        }
     },
-    "keywords": [
-      "alexa",
-      "amazon",
-      "amazon echo",
-      "echo dot",
-      "echo show"
-    ],
-    "mode": "daemon",
-    "icon": "alexa.png",
-    "extIcon": "https://raw.githubusercontent.com/soef/iobroker.alexa/master/admin/alexa.png",
-    "readme": "https://github.com/soef/iobroker.alexa/blob/master/README.md",
-    "loglevel": "info",
-    "type": "script",
-    "enabled": true,
-    "messagebox": true
-  },
-  "native": {
-    "cookie": "",
-    "baseUrl": "",
-    "csrf": ""
-  },
-  "objects": [
-  ]
+    "native": {
+        "cookie": "",
+        "csrf": "",
+        "cookieData": null,
+        "alexaServiceHost": "",
+        "email": "",
+        "password": "",
+        "userAgent": "",
+        "acceptLanguage": "",
+        "cookieLoginUrl": "",
+        "proxyOwnIp": "",
+        "proxyPort": 0,
+        "proxyListenBind": "",
+        "updateStateInterval": 300,
+        "updateHistoryInterval": 300,
+        "usePushConnection": true,
+        "proxyOverrideIp": "",
+        "resetCookies": false,
+        "historyIgnoreEmptySummary": false
+    },
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "If communication with alexa works",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.cookie",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Alexa Cookie",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.csrf",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Alexa CSRF",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        }
+    ]
 }
