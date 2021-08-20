@@ -2055,6 +2055,9 @@ function createNotificationStates(serialOrName) {
                 setOrUpdateObject(notiId + '.time', {common: {type: 'mixed', role: 'state', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Time'}}, time, noti.set);
                 setOrUpdateObject(notiId + '.enabled', {common: {type: 'boolean', role: 'switch.enable', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Enabled'}}, (noti.status === 'ON'), noti.set);
                 setOrUpdateObject(notiId + '.triggered', {common: {type: 'boolean', read: true, write: false, role: 'indicator', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Triggered'}}, false);
+                let recPat='0';
+                if (noti.recurringPattern) recPat=noti.recurringPattern;
+                setOrUpdateObject(notiId + '.recurringPattern', {common: {type: 'string', role: 'state', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' RecurringPattern'}}, recPat, noti.set);     
                 if (noti.status === 'ON' && (noti.alarmTime || (noti.originalDate && noti.originalTime))) {
                     const alarmTime = new Date((noti.originalDate + ' ' + noti.originalTime).replace(/-/g,"/"));
                     const alarmDelay = alarmTime - new Date().getTime();
