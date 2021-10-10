@@ -2568,9 +2568,10 @@ function main() {
 
     let options = {
         cookie: adapter.config.cookieData || adapter.config.cookie, // cookie if there is already one
+        macDms: adapter.config.macDms,
         email: '', // Amazon email for login
         password: '', // Amazon password for Login
-        bluetooth: true, // fetch uetooth devices
+        bluetooth: true, // fetch Bluetooth devices
         notifications: true, // fetch notifications (false because not works so far)
         userAgent: adapter.config.userAgent, // overwrite userAgent
         acceptLanguage: adapter.config.acceptLanguage, // overwrite acceptLanguage
@@ -2798,7 +2799,7 @@ function main() {
         scheduleNotificationUpdate(data.deviceSerialNumber, 2000);
     });
 
-    alexa.on('cookie', (cookie, csrf) => {
+    alexa.on('cookie', (cookie, csrf, macDms) => {
         adapter.setState('info.cookie', alexa.cookie, true);
         adapter.setState('info.csrf', alexa.csrf, true);
 
@@ -2808,6 +2809,7 @@ function main() {
                 native: {
                     cookie: alexa.cookie,
                     csrf: alexa.csrf,
+                    macDms: macDms,
                     cookieData: alexa.cookieData,
                     email: "",
                     password: "",
