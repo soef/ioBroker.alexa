@@ -2775,6 +2775,13 @@ function main() {
             delete list.listIds;
             delete list.itemId;
 
+            if (payload.eventType === 'listDeleted') {
+                let node = 'Lists.' + list.id;
+                deleteObject(node);
+                delete listsInProgress[payload.listId];
+                return;
+            }
+
             // always update list
             updateListItems(list, () => {
                 processObjectQueue(() => {
