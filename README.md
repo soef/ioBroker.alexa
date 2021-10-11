@@ -294,7 +294,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### __WORK IN PROGRESS__
 * IMPORTANT: Node.js 10 support is dropped, supports LTS versions of Node.js starting with 12.x
-* (Apollon77) Update Push Connection to new Amazon way
+* (Apollon77) Update Push Connection
 
 ### 3.9.3 (2021-07-11)
 * (Apollon77) Try to fix setting targetTemperature for ThermostatCOntroller
