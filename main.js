@@ -2299,7 +2299,7 @@ function getLists(listId, callback) {
 
 		if (Array.isArray(lists)) {
             lists.forEach(list => {
-                if (listId && list.id !== listId) return;
+                if (listId && list.itemId !== listId) return;
                 // modify states
                 list.name = list.name || list.type;
                 list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
