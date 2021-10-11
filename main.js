@@ -177,6 +177,7 @@ let automationRoutines;
 let routineTriggerUtterances;
 const playerDevices = {};
 const appDevices = {};
+const listMap =  {};
 
 const lastPlayerState = {};
 const notificationTimer = {};
@@ -2307,6 +2308,7 @@ function getLists(listId, callback) {
                 delete list.listIds;
                 delete list.itemId;
 
+                listMap[list.listId] = list.id;
                 // create channel
                 setOrUpdateObject(node + '.' + list.id, {
                     type: 'channel',
@@ -2751,12 +2753,12 @@ function main() {
 
     let listsInProgress = {};
     alexa.on('ws-todo-change', (payload) => {
-        adapter.log.debug('Received updated list: ' + JSON.stringify(payload));
+        adapter.log.debug('Received updated list (' + listsInProgress[payload.listId] + '): ' + JSON.stringify(payload));
 
         if (listsInProgress[payload.listId]) return;
         listsInProgress[payload.listId] = true;
 
-        if (payload.eventType === 'listCreated') {
+        if (payload.eventType === 'listCreated' || payload.eventType === 'listUpdated') {
             getLists(payload.listId, () => {
                 processObjectQueue(() => {
                     delete listsInProgress[payload.listId];
@@ -2765,22 +2767,30 @@ function main() {
             return;
         }
 
+        if (payload.eventType === 'listDeleted') {
+            if (listMap[payload.listId]) {
+                let node = 'Lists.' + listMap[payload.listId];
+                deleteObject(node);
+            }
+            delete listsInProgress[payload.listId];
+            return;
+        }
+
         alexa.getList(payload.listId, (err, list) => {
-            if (!list || typeof list !== 'object') return;
+            if (!list || typeof list !== 'object') {
+                delete listsInProgress[payload.listId];
+                return;
+            }
             // modify states
             list.name = list.name || list.type;
-            if (!list.name) return;
+            if (!list.name) {
+                delete listsInProgress[payload.listId];
+                return;
+            }
             list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
             list.listId = list.itemId;
             delete list.listIds;
             delete list.itemId;
-
-            if (payload.eventType === 'listDeleted') {
-                let node = 'Lists.' + list.id;
-                deleteObject(node);
-                delete listsInProgress[payload.listId];
-                return;
-            }
 
             // always update list
             updateListItems(list, () => {
