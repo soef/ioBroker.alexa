@@ -332,7 +332,8 @@
         "usePushConnection": true,
         "proxyOverrideIp": "",
         "resetCookies": false,
-        "historyIgnoreEmptySummary": false
+        "historyIgnoreEmptySummary": false,
+        "macDms": null
     },
     "objects": [],
     "instanceObjects": [

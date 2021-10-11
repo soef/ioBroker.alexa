@@ -2585,7 +2585,7 @@ function main() {
 
     let options = {
         cookie: adapter.config.cookieData || adapter.config.cookie, // cookie if there is already one
-        macDms: adapter.config.macDms,
+        macDms: adapter.config.macDms || adapter.config.cookieData.macDms,
         email: '', // Amazon email for login
         password: '', // Amazon password for Login
         bluetooth: true, // fetch Bluetooth devices
@@ -2614,7 +2614,7 @@ function main() {
         scheduleHistoryUpdate(2000);
         scheduleStatesUpdate(2000);
         wsMqttConnected = true;
-        adapter.log.info('Alexa-Push-Connection (macDms = ' + (!!adapter.config.macDms) + ') established. Disable Polling');
+        adapter.log.info('Alexa-Push-Connection (macDms = ' + (!!options.macDms) + ') established. Disable Polling');
     });
 
     alexa.on('ws-disconnect', (retries, msg) => {
