@@ -297,7 +297,7 @@ When the adapter crashes or an other Code error happens, this error message that
 * (Apollon77) Update Push Connection
 
 ### 3.9.3 (2021-07-11)
-* (Apollon77) Try to fix setting targetTemperature for ThermostatCOntroller
+* (Apollon77) Try to fix setting targetTemperature for ThermostatController
 
 ### 3.9.2 (2021-07-05)
 * (Apollon77) Only ignore empty history entries if both, summary and alexaResponse is empty
