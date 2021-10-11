@@ -291,7 +291,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 
 ## Changelog
-### __WORK IN PROGRESS__
+### 3.10.3 (2021-10-11)
 * IMPORTANT: Node.js 10 support is dropped, supports LTS versions of Node.js starting with 12.x
 * (Apollon77) Update Push Connection
 
