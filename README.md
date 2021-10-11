@@ -291,6 +291,11 @@ When the adapter crashes or an other Code error happens, this error message that
 
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Add support for Multi Utterance Routines
+* (Apollon77) Try to fix object deletion for lists
+
 ### 3.10.4 (2021-10-11)
 * IMPORTANT: Node.js 10 support is dropped, supports LTS versions of Node.js starting with 12.x
 * (Apollon77) Update Push Connection

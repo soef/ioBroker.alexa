@@ -84,7 +84,7 @@ const commands = {
 const knownDeviceType = {
     'A10A33FOX2NUBK':   {name: 'Echo Spot', commandSupport: true, icon: 'icons/spot.png'},
     'A10L5JEZTKKCZ8':   {name: 'Vobot-Clock', commandSupport: true}, // REMINDERS,VOLUME_SETTING,TUNE_IN,MUSIC_SKILL,TIMERS_AND_ALARMS,I_HEART_RADIO,PEONY,AUDIO_PLAYER,DEREGISTER_DEVICE,SLEEP,CHANGE_NAME,GOLDFISH,AUDIBLE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,KINDLE_BOOKS,PERSISTENT_CONNECTION,MICROPHONE,DREAM_TRAINING,AMAZON_MUSIC
-    'A12GXV8XMS007S':   {name: 'FireTV', commandSupport: false, icon: 'icons/firetv.png'}, //? CHANGE_NAME,MICROPHONE,SUPPORTS_SOFTWARE_VERSION,ARTHUR_TARGET,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,ACTIVE_AFTER_FRO,FLASH_BRIEFING,VOLUME_SETTING
+    'A12GXV8XMS007S':   {name: 'FireTV', commandSupport: true, icon: 'icons/firetv.png'}, // ARTHUR_TARGET,BT_PAIRING_FLOW_V2,REMINDERS,CHANGE_NAME,ACTIVE_AFTER_FRO,SUPPORTS_LOCALE,FLASH_BRIEFING,ASCENDING_ALARM_VOLUME,TIMERS_AND_ALARMS,PAIR_BT_SINK,PERSISTENT_CONNECTION,SOUND_SETTINGS,SUPPORTS_SOFTWARE_VERSION,MULTI_WAKEWORDS_SUPPORTED,SHARKNADO,SPEECH_RECOGNIZER_USS,CUSTOM_ALARM_TONE,EARCONS,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,SUPPORTS_LOCALE_SWITCH,VOLUME_SETTING,MICROPHONE,DIALOG_INTERFACE_VERSION
     'A15ERDAKK5HQQG':   {name: 'Sonos', commandSupport: false, icon: 'icons/sonos.png'}, //? AUDIO_PLAYER,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AMAZON_MUSIC,TUNE_IN,PANDORA,REMINDERS,I_HEART_RADIO,CHANGE_NAME,VOLUME_SETTING,PEONY
     'A17LGWINFBUTZZ':   {name: 'Anker Roav Viva Alexa', commandSupport: false}, // PERSISTENT_CONNECTION,PEONY,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,VOLUME_SETTING,MICROPHONE,AUDIO_PLAYER,AMAZON_MUSIC,TUNE_IN,I_HEART_RADIO,KINDLE_BOOKS,GOLDFISH,TIMERS_AND_ALARMS,DREAM_TRAINING,DEREGISTER_DEVICE,REMINDERS,SLEEP,AUDIBLE,CHANGE_NAME
     'A18O6U1UQFJ0XK':   {name: 'Echo Plus 2.Gen', commandSupport: true, icon: 'icons/echo_plus2.png'}, // PERSISTENT_CONNECTION,ACTIVE_AFTER_FRO,PAIR_BT_SINK,GADGETS,ASCENDING_ALARM_VOLUME,SET_LOCALE,MICROPHONE,VOLUME_SETTING,AUDIBLE,PAIR_BT_SOURCE,AUDIO_PLAYER,DREAM_TRAINING,FAR_FIELD_WAKE_WORD,UPDATE_WIFI,TUPLE,CUSTOM_ALARM_TONE,REQUIRES_OOBE_FOR_SETUP,EARCONS,KINDLE_BOOKS,SUPPORTS_SOFTWARE_VERSION,ALLOW_LOG_UPLOAD,POPTART,GOLDFISH,DEREGISTER_DEVICE,SLEEP,TAHOE_BYOD,VOICE_TRAINING,SOUND_SETTINGS,CHANGE_NAME,FLASH_BRIEFING,AUX_SETTINGS,REMINDERS,LEMUR_ALPHA,PAIR_REMOTE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TUPLE_CATEGORY_A,TIMERS_AND_ALARMS
@@ -150,6 +150,7 @@ const knownDeviceType = {
     'A8DM4FYR6D3HT':     {name: 'LG WebOS TV', commandSupport: true}, // CHANGE_NAME,AUDIBLE,ASCENDING_ALARM_VOLUME,REMINDERS,DIALOG_INTERFACE_VERSION,DEREGISTER_DEVICE,MUSIC_SKILL,I_HEART_RADIO,SET_LOCALE,CUSTOM_ALARM_TONE,SET_TIME_ZONE,MULTI_WAKEWORDS_SUPPORTED,TUNE_IN,MICROPHONE,KINDLE_BOOKS,DREAM_TRAINING,SOUND_SETTINGS,GOLDFISH,VOLUME_SETTING,SUPPORTS_LOCALE_SWITCH,SLEEP,TIMERS_AND_ALARMS,AUDIO_PLAYER,SUPPORTS_LOCALE,AMAZON_MUSIC,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,PERSISTENT_CONNECTION
     'AB72C64C86AW2':    {name: 'Echo', commandSupport: true, icon: 'icons/echo.png'}, // PAIR_BT_SINK,CUSTOM_ALARM_TONE,PAIR_REMOTE,TIMERS_AND_ALARMS,SUPPORTS_CONNECTED_HOME,TUNE_IN,SOUND_SETTINGS,DEREGISTER_DEVICE,SET_LOCALE,SLEEP,EARCONS,UPDATE_WIFI,PAIR_BT_SOURCE,SUPPORTS_SOFTWARE_VERSION,REQUIRES_OOBE_FOR_SETUP,TUPLE_CATEGORY_B,MICROPHONE,SALMON,TAHOE_BYOD,CHANGE_NAME,FAR_FIELD_WAKE_WORD,VOLUME_SETTING,AUDIO_PLAYER,I_HEART_RADIO,REMINDERS,ASCENDING_ALARM_VOLUME,PERSISTENT_CONNECTION,AUDIBLE,GADGETS,SUPPORTS_CONNECTED_HOME_ALL,AMAZON_MUSIC,VOICE_TRAINING,FLASH_BRIEFING,DEREGISTER_FACTORY_RESET,GOLDFISH,TUPLE,PANDORA,ACTIVE_AFTER_FRO,DREAM_TRAINING,LEMUR_ALPHA,POPTART,KINDLE_BOOKS
     'ADVBD696BHNV5':    {name: 'Fire TV Stick V1', commandSupport: true, icon: 'icons/firetv.png'}, // REMINDERS,CUSTOM_ALARM_TONE,VOLUME_SETTING,SUPPORTS_LOCALE_SWITCH,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,DIALOG_INTERFACE_VERSION,SUPPORTS_SOFTWARE_VERSION,SOUND_SETTINGS,PERSISTENT_CONNECTION,MICROPHONE,SUPPORTS_LOCALE,FLASH_BRIEFING,ACTIVE_AFTER_FRO,ARTHUR_TARGET,ASCENDING_ALARM_VOLUME,CHANGE_NAME,TIMERS_AND_ALARMS
+    'AHJYKVA63YCAQ':     {name: 'Sonos Roam', commandSupport: true, icon: 'icons/sonos.png'}, // SIRIUSXM,PERSISTENT_CONNECTION,TIDAL,SUPPORTS_LOCALE_SWITCH,DIALOG_INTERFACE_VERSION,DREAM_TRAINING,CUSTOM_ALARM_TONE,APPLE_MUSIC,GOLDFISH,KINDLE_BOOKS,CHANGE_NAME,SET_LOCALE,AUDIO_PLAYER,AUDIBLE,TUNE_IN,DEREGISTER_DEVICE,SPEECH_RECOGNIZER_USS,TIMERS_AND_ALARMS,MULTI_WAKEWORDS_SUPPORTED,EARCONS,MICROPHONE,DEEZER,ASCENDING_ALARM_VOLUME,MUSIC_SKILL,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,SLEEP,SOUND_SETTINGS,SUPPORTS_LOCALE,I_HEART_RADIO,REMINDERS,AMAZON_MUSIC,SET_TIME_ZONE,VOLUME_SETTING
     'AILBSA2LNTOYL':    {name: 'reverb App', commandSupport: false, icon: 'icons/reverb.png'},
     'AINRG27IL8AS0':    {name: 'Megablast Speaker', commandSupport: false}, // (TUNE_IN,KINDLE_BOOKS,PAIR_BT_SINK,TIMERS_AND_ALARMS,MICROPHONE,AUDIBLE,CHANGE_NAME,GOLDFISH,REMINDERS,VOLUME_SETTING,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,DREAM_TRAINING,SLEEP,PERSISTENT_CONNECTION,AMAZON_MUSIC,I_HEART_RADIO,MUSIC_SKILL,PEONY,AUDIO_PLAYER,DEREGISTER_DEVICE)
     'AKOAGQTKAS9YB':    {name: 'Echo Connect', commandSupport: false}, // VOLUME_SETTING,PEONY,BLOWER,DEREGISTER_DEVICE,PERSISTENT_CONNECTION,NO_UNITS_AND_TIMEZONES,SUPPORTS_SOFTWARE_VERSION,UPDATE_WIFI,CHANGE_NAME,MICROPHONE
@@ -294,6 +295,9 @@ function deleteObject(id) {
                 delete adapterObjects[id];
             }
         });
+    }
+    else {
+        adapter.log.info('Try to delete unknown object ' + id);
     }
 }
 
@@ -513,7 +517,7 @@ function startAdapter(options) {
         if (!state || state.ack) return;
         id = id.substr(adapter.namespace.length + 1);
 
-        if (state && state.from && state.from.startsWith('system.adapter.cloud') && id.endsWith('.Commands.speak')) {
+        if (state && state.val && state.from && state.from.startsWith('system.adapter.cloud') && id.endsWith('.Commands.speak')) {
             state.val = state.val.replace(/<[^>]+>/g, '').replace('/  /g', ' ');
         }
 
@@ -1820,7 +1824,10 @@ function createStates(callback) {
                     setOrUpdateObject(devId + '.Routines.' + automationRoutines[i].friendlyAutomationId, {common: { type: 'boolean', role: 'indicator', read: true, write: true, name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
                     if (automationRoutines[i].utteranceWords) {
                         if (!routineTriggerUtterances[device.serialNumber]) routineTriggerUtterances[device.serialNumber] = {};
-                        routineTriggerUtterances[device.serialNumber][automationRoutines[i].utteranceWords.toLowerCase()] = devId + '.Routines.' + automationRoutines[i].friendlyAutomationId;
+                        automationRoutines[i].utteranceWords.forEach(utterance => {
+                            if (!utterance) return;
+                            routineTriggerUtterances[device.serialNumber][utterance.toLowerCase()] = devId + '.Routines.' + automationRoutines[i].friendlyAutomationId;
+                        });
                     }
                 }
             }
@@ -2419,10 +2426,10 @@ function initRoutines(callback) {
                     continue;
                 }
                 let name = routine.name;
-                let utteranceWords = null;
+                let utteranceWords = [];
                 if (routine.triggers && routine.triggers[0].payload && routine.triggers[0].payload.utterance) {
                     name = name  || routine.triggers[0].payload.utterance;
-                    utteranceWords = routine.triggers[0].payload.utterance;
+                    utteranceWords = routine.triggers[0].payload.utterances || [routine.triggers[0].payload.utterance];
                 }
                 else if (routine.triggers && routine.triggers[0].payload && routine.triggers[0].payload.schedule && routine.triggers[0].payload.schedule.triggerTime) {
                     if (!name) {
@@ -2752,26 +2759,30 @@ function main() {
             delete list.itemId;
 
             // always update list
-            updateListItems(list, processObjectQueue);
+            updateListItems(list, () => {
+                processObjectQueue(() => {
 
-            // eventType: deleted
-            if (payload.eventType === 'itemDeleted') {
+                    // eventType: deleted
+                    if (payload.eventType === 'itemDeleted') {
 
-                // delete objects
-                let node = adapter.namespace + '.Lists.' + list.id + '.items.' + payload.listItemId;
-                listsInProgress[payload.listId] = true;
-                /*adapter.getObjectList({startkey: node, endkey: node + '.\u9999'}, (err, objects) => {
+                        // delete objects
+                        let node = adapter.namespace + '.Lists.' + list.id + '.items.' + payload.listItemId;
+                        listsInProgress[payload.listId] = true;
+                        /*adapter.getObjectList({startkey: node, endkey: node + '.\u9999'}, (err, objects) => {
 
-                    adapter.log.debug('Object list for delete for ' + node + '* : ' + JSON.stringify(objects));
-                    if (objects && objects.rows) {
-                        objects.rows.forEach(object => deleteObject(object.id));
+                            adapter.log.debug('Object list for delete for ' + node + '* : ' + JSON.stringify(objects));
+                            if (objects && objects.rows) {
+                                objects.rows.forEach(object => deleteObject(object.id));
+                            }
+                            delete listsInProgress[payload.listId];
+                        });*/
+                        deleteObject(node);
+                    } else {
+                        delete listsInProgress[payload.listId];
                     }
-                    delete listsInProgress[payload.listId];
-                });*/
-                deleteObject(node);
-            } else {
-                delete listsInProgress[payload.listId];
-            }
+
+                });
+            });
         });
     });
 
