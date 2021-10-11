@@ -272,6 +272,9 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
 }
 
 function deleteObject(id) {
+    if (id.startsWith(adapter.namespace)) {
+        id = id.substr(adapter.namespace.length + 1);
+    }
     const obj = adapterObjects[id];
     if (obj && obj.type) {
         if (obj.type !== 'state') {
@@ -2766,7 +2769,7 @@ function main() {
                     if (payload.eventType === 'itemDeleted') {
 
                         // delete objects
-                        let node = adapter.namespace + '.Lists.' + list.id + '.items.' + payload.listItemId;
+                        let node = 'Lists.' + list.id + '.items.' + payload.listItemId;
                         listsInProgress[payload.listId] = true;
                         /*adapter.getObjectList({startkey: node, endkey: node + '.\u9999'}, (err, objects) => {
 
