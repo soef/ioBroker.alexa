@@ -2770,7 +2770,6 @@ function main() {
 
                         // delete objects
                         let node = 'Lists.' + list.id + '.items.' + payload.listItemId;
-                        listsInProgress[payload.listId] = true;
                         /*adapter.getObjectList({startkey: node, endkey: node + '.\u9999'}, (err, objects) => {
 
                             adapter.log.debug('Object list for delete for ' + node + '* : ' + JSON.stringify(objects));
@@ -2780,10 +2779,8 @@ function main() {
                             delete listsInProgress[payload.listId];
                         });*/
                         deleteObject(node);
-                    } else {
-                        delete listsInProgress[payload.listId];
                     }
-
+                    delete listsInProgress[payload.listId];
                 });
             });
         });
