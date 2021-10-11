@@ -2614,7 +2614,7 @@ function main() {
         scheduleHistoryUpdate(2000);
         scheduleStatesUpdate(2000);
         wsMqttConnected = true;
-        adapter.log.info('Alexa-Push-Connection established. Disable Polling');
+        adapter.log.info('Alexa-Push-Connection (macDms = ' + (!!adapter.config.macDms) + ') established. Disable Polling');
     });
 
     alexa.on('ws-disconnect', (retries, msg) => {
