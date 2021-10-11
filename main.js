@@ -2286,15 +2286,20 @@ function updatePlayerStatus(serialOrName, callback) {
     })();
 }
 
-function getLists(callback) {
+function getLists(listId, callback) {
+    if (typeof listId === 'function') {
+        callback = listId;
+        listId = null;
+    }
+
 	let allListItems = [];
 	let node = 'Lists';
 	alexa.getLists((err, lists) => {
-		setOrUpdateObject(node, {type: 'device', common: { 'name': 'Lists' }});
+		!listId && setOrUpdateObject(node, {type: 'device', common: { 'name': 'Lists' }});
 
 		if (Array.isArray(lists)) {
             lists.forEach(list => {
-
+                if (listId && list.id !== listId) return;
                 // modify states
                 list.name = list.name || list.type;
                 list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
@@ -2319,7 +2324,7 @@ function getLists(callback) {
                 }, '', (value) => {
                     if (value) {
                         adapter.setState(node + '.' + list.id + '.#New', '', true);
-                        addListItem(list, typeof value == 'string' ? {'value': value} : JSON.parse(value))
+                        addListItem(list, typeof value === 'string' ? {'value': value} : JSON.parse(value))
                     }
                 });
 
@@ -2749,8 +2754,17 @@ function main() {
         adapter.log.debug('Received updated list: ' + JSON.stringify(payload));
 
         if (listsInProgress[payload.listId]) return;
-
         listsInProgress[payload.listId] = true;
+
+        if (payload.eventType === 'listCreated') {
+            getLists(payload.listId, () => {
+                processObjectQueue(() => {
+                    delete listsInProgress[payload.listId];
+                });
+            });
+            return;
+        }
+
         alexa.getList(payload.listId, (err, list) => {
             if (!list || typeof list !== 'object') return;
             // modify states
