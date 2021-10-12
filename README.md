@@ -291,6 +291,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Fix crash case (Sentry IOBROKER-ALEXA2-AT)
+
 ### 3.11.1 (2021-10-12)
 * (Apollon77) Prevent warnings with js-controller 3.3
 
