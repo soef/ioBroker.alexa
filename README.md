@@ -296,6 +296,8 @@ When the adapter crashes or an other Code error happens, this error message that
 * (Apollon77) Add support for Multi Utterance Routines
 * (Apollon77) Fix object deletion for lists
 * (Apollon77) Fix Creation of new Lists and add deletion support
+* (Apollon77) Allow Commands for Stereo Pairs
+* (Apollon77) Optimize Push Connection and History retrieval
 
 ### 3.10.4 (2021-10-11)
 * IMPORTANT: Node.js 10 support is dropped, supports LTS versions of Node.js starting with 12.x
