@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.11.1",
+    "version": "3.11.2",
     "title": "Alexa2 (Amazon Echo)",
     "titleLang": {
       "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.11.2": {
+        "en": "Fix crash case (Sentry IOBROKER-ALEXA2-AT)",
+        "de": "Crashfall beheben (Sentry IOBROKER-ALEXA2-AT)",
+        "ru": "Исправить сбой (Sentry IOBROKER-ALEXA2-AT)",
+        "pt": "Corrigir caso de falha (Sentry IOBROKER-ALEXA2-AT)",
+        "nl": "Crashgeval repareren (Sentry IOBROKER-ALEXA2-AT)",
+        "fr": "Correction du crash (Sentry IOBROKER-ALEXA2-AT)",
+        "it": "Risolto il caso di crash (Sentry IOBROKER-ALEXA2-AT)",
+        "es": "Reparar caso de accidente (Sentry IOBROKER-ALEXA2-AT)",
+        "pl": "Napraw przypadek awarii (Sentry IOBROKER-ALEXA2-AT)",
+        "zh-cn": "修复崩溃案例（Sentry IOBROKER-ALEXA2-AT）"
+      },
       "3.11.1": {
         "en": "Prevent warnings with js-controller 3.3",
         "de": "Warnungen verhindern mit js-controller 3.3",
@@ -100,18 +112,6 @@
         "es": "Corregir el intercambio de cookies y las comprobaciones de validación de cookies",
         "pl": "Napraw wymianę plików cookie i sprawdzanie poprawności plików cookie",
         "zh-cn": "修复 cookie 交换和 cookie 验证检查"
-      },
-      "3.9.0": {
-        "en": "Add some new devices\nAlways recognize \"alexa\" as wakeword to handle commands via the apps correctly",
-        "de": "Fügen Sie einige neue Geräte hinzu\nErkennen Sie \"alexa\" immer als Wakeword, um Befehle über die Apps korrekt zu verarbeiten",
-        "ru": "Добавить новые устройства\nВсегда распознавайте alexa как wakeword для правильной обработки команд через приложения.",
-        "pt": "Adicione alguns novos dispositivos\nSempre reconheça \"alexa\" como wakeword para lidar com os comandos por meio dos aplicativos corretamente",
-        "nl": "Voeg een paar nieuwe apparaten toe\nHerken \"alexa\" altijd als wakewoord om opdrachten via de apps correct af te handelen",
-        "fr": "Ajouter de nouveaux appareils\nReconnaissez toujours \"alexa\" comme mot de réveil pour gérer correctement les commandes via les applications",
-        "it": "Aggiungi alcuni nuovi dispositivi\nRiconosci sempre \"alexa\" come wakeword per gestire correttamente i comandi tramite le app",
-        "es": "Agregar algunos dispositivos nuevos\nReconozca siempre \"alexa\" como wakeword para manejar los comandos a través de las aplicaciones correctamente",
-        "pl": "Dodaj nowe urządzenia\nZawsze rozpoznawaj „alexa” jako wakeword, aby poprawnie obsługiwać polecenia w aplikacjach",
-        "zh-cn": "添加一些新设备\n始终将“ alexa”识别为唤醒词，以通过应用程序正确处理命令"
       }
     },
     "keywords": [
