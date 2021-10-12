@@ -291,8 +291,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.11.1 (2021-10-12)
 * (Apollon77) Prevent warnings with js-controller 3.3
 
 ### 3.11.0 (2021-10-12)
