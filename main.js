@@ -2585,7 +2585,7 @@ function main() {
 
     let options = {
         cookie: adapter.config.cookieData || adapter.config.cookie, // cookie if there is already one
-        macDms: adapter.config.macDms || adapter.config.cookieData.macDms,
+        macDms: adapter.config.macDms || (adapter.config.cookieData && adapter.config.cookieData.macDms) || undefined,
         email: '', // Amazon email for login
         password: '', // Amazon password for Login
         bluetooth: true, // fetch Bluetooth devices
