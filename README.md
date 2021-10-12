@@ -291,8 +291,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.11.0 (2021-10-12)
 * (Apollon77) Add support for Multi Utterance Routines
 * (Apollon77) Fix object deletion for lists
 * (Apollon77) Fix Creation of new Lists and add deletion support
