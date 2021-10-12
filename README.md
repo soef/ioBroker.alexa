@@ -291,6 +291,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Prevent warnings with js-controller 3.3
+
 ### 3.11.0 (2021-10-12)
 * (Apollon77) Add support for Multi Utterance Routines
 * (Apollon77) Fix object deletion for lists

@@ -1170,7 +1170,7 @@ function createSmarthomeStates(callback) {
                                                 });
                                             }
 
-                                            setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.' + obj.common.name, obj, false, function (entityId, paramName, applianceId, value) {
+                                            setOrUpdateObject('Smart-Home-Devices.' + shDevice.entityId + '.' + obj.common.name, obj, null, function (entityId, paramName, applianceId, value) {
                                                 if (!obj.common.write) return;
                                                 const parameters = buildSmartHomeControlParameters(entityId, shObjects.capabilityObjects[cap.interfaceName], capProp.name, paramName, value);
                                                 if (!parameters.action || !behaviours[entityId] || ! behaviours[entityId].supportedOperations || !behaviours[entityId].supportedOperations.includes(parameters.action)) {
