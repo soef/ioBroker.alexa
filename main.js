@@ -107,6 +107,7 @@ const knownDeviceType = {
     'A265XOI9586NML':   {name: 'FireTV Strick v3', commandSupport: true, icon: 'icons/firetv.png'}, // VOLUME_SETTING,CHANGE_NAME,ARTHUR_TARGET,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,REMINDERS,SPEECH_RECOGNIZER_USS,TIMERS_AND_ALARMS,CUSTOM_ALARM_TONE,SUPPORTS_LOCALE_SWITCH,EARCONS,PAIR_BT_SINK,ASCENDING_ALARM_VOLUME,ACTIVE_AFTER_FRO,SUPPORTS_SOFTWARE_VERSION,FLASH_BRIEFING,PERSISTENT_CONNECTION,DIALOG_INTERFACE_VERSION,MULTI_WAKEWORDS_SUPPORTED,SOUND_SETTINGS,SUPPORTS_LOCALE,MICROPHONE
     'A2825NDLA7WDZV':   {name: 'Apps', commandSupport: false, icon: 'icons/apps.png'}, // PEONY,VOLUME_SETTING
     'A2E0SNTXJVT7WK':   {name: 'Fire TV V1', commandSupport: false, icon: 'icons/firetv.png'},
+    'A2EZ3TS0L1S2KV':   {name: 'Sonos Beam Gen 2', commandSupport: true, icon: 'icons/sonos.png'}, // AUDIO_PLAYER,DEREGISTER_DEVICE,APPLE_MUSIC,SUPPORTS_LOCALE,DIALOG_INTERFACE_VERSION,TIDAL,SIRIUSXM,DREAM_TRAINING,ADAPTIVE_LISTENING,DEEZER,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,AUDIO_CONTROLS,TIMERS_AND_ALARMS,AMAZON_MUSIC,EQUALIZER_CONTROLLER_TREBLE,SET_LOCALE,VOLUME_SETTING,KINDLE_BOOKS,TUNE_IN,SET_TIME_ZONE,AUDIBLE,EQUALIZER_CONTROLLER_BASS,MULTI_WAKEWORDS_SUPPORTED,REMINDERS,CUSTOM_ALARM_TONE,SUPPORTS_LOCALE_SWITCH,I_HEART_RADIO,EARCONS,MUSIC_SKILL,CHANGE_NAME,GOLDFISH,PERSISTENT_CONNECTION,EQUALIZER_CONTROLLER_MIDRANGE,MICROPHONE,ASCENDING_ALARM_VOLUME,SOUND_SETTINGS,SLEEP,SPEECH_RECOGNIZER_USS
     'A2GFL5ZMWNE0PX':   {name: 'Fire TV', commandSupport: true, icon: 'icons/firetv.png'}, // SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,VOLUME_SETTING,SUPPORTS_SOFTWARE_VERSION,CHANGE_NAME,ACTIVE_AFTER_FRO,ARTHUR_TARGET,FLASH_BRIEFING
     'A2H4LV5GIZ1JFT':     {name: 'Echo 4 Clock', commandSupport: true, icon: 'icons/echo4.png'}, // ACTIVE_AFTER_FRO,SLEEP,TAHOE_BYOD,DISPLAY_ADAPTIVE_BRIGHTNESS,EQUALIZER_CONTROLLER_MIDRANGE,SALMON,VOLUME_SETTING,GOLDFISH,MULTI_WAKEWORDS_SUPPORTED,ALEXA_PRESENCE,PERSISTENT_CONNECTION,KINDLE_BOOKS,SET_LOCALE,APPLE_MUSIC,AUDIO_PLAYER,AMAZON_MUSIC,DS_VOLUME_SETTING,SUPPORTS_LOCALE,MOTION_DETECTION,EQUALIZER_CONTROLLER_BASS,SIRIUSXM,MICROPHONE,MUSIC_SKILL,DEEZER,AUDIO_CONTROLS,POPTART,CUSTOM_ALARM_TONE,SUPPORTS_LOCALE_SWITCH,PAIR_BT_SINK,DREAM_TRAINING,EARCONS,DIALOG_INTERFACE_VERSION,BT_PAIRING_FLOW_V2,DEREGISTER_DEVICE,EFDCARDS,TIMERS_AND_ALARMS,REQUIRES_OOBE_FOR_SETUP,EQUALIZER_CONTROLLER_TREBLE,TIMERS_ALARMS_NOTIFICATIONS_VOLUME,SUPPORT_CALENDAR_ALERT,CLOCK_FORMAT_24_HR,TUNE_IN,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TUPLE,ALEXA_GESTURES,DISPLAY_BRIGHTNESS_ADJUST,UPDATE_WIFI,TUPLE_CATEGORY_A,SET_TIME_ZONE,ASCENDING_ALARM_VOLUME,PAIR_BT_SOURCE,GADGETS,CHANGE_NAME,VOICE_TRAINING,REMINDERS,SOUND_SETTINGS,I_HEART_RADIO,DISPLAY_POWER_TOGGLE,AUDIBLE,FLASH_BRIEFING,GUARD_EARCON,SUPPORTS_SOFTWARE_VERSION,FAR_FIELD_WAKE_WORD,PANDORA,TIDAL,LEMUR_ALPHA
     'A2IVLV5VM2W81':    {name: 'Apps', commandSupport: false, icon: 'icons/apps.png'}, // VOLUME_SETTING,MICROPHONE
@@ -252,9 +253,9 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
     if (existingStates[id]) delete(existingStates[id]);
     if (adapterObjects[id] && isEquivalent(obj, adapterObjects[id])) {
         //adapter.log.debug('Object unchanged for ' + id + ': ' + JSON.stringify(adapterObjects[id]) + ' - update only: ' + JSON.stringify(value));
-        if (value !== undefined) adapter.setState(id, value, true);
-        if (stateChangeCallback) stateChangeTrigger[id] = stateChangeCallback;
-        return;
+        //if (value !== undefined) adapter.setState(id, value, true);
+        //if (stateChangeCallback) stateChangeTrigger[id] = stateChangeCallback;
+        obj = null;
     }
     //adapter.log.debug('Add Object for ' + id + ': ' + JSON.stringify(adapterObjects[id]) + '/' + JSON.stringify(obj));
 
@@ -2066,9 +2067,7 @@ function createNotificationStates(serialOrName) {
                 setOrUpdateObject(notiId + '.time', {common: {type: 'mixed', role: 'state', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Time'}}, time, noti.set);
                 setOrUpdateObject(notiId + '.enabled', {common: {type: 'boolean', role: 'switch.enable', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Enabled'}}, (noti.status === 'ON'), noti.set);
                 setOrUpdateObject(notiId + '.triggered', {common: {type: 'boolean', read: true, write: false, role: 'indicator', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Triggered'}}, false);
-                let recPat='0';
-                if (noti.recurringPattern) recPat=noti.recurringPattern;
-                setOrUpdateObject(notiId + '.recurringPattern', {common: {type: 'string', read: true, write: false, role: 'state', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' RecurringPattern'}}, recPat);     
+                setOrUpdateObject(notiId + '.recurringPattern', {common: {type: 'string', read: true, write: false, role: 'state', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' RecurringPattern'}}, noti.recurringPattern || '0');
                 if (noti.status === 'ON' && (noti.alarmTime || (noti.originalDate && noti.originalTime))) {
                     const alarmTime = new Date((noti.originalDate + ' ' + noti.originalTime).replace(/-/g,"/"));
                     const alarmDelay = alarmTime - new Date().getTime();
