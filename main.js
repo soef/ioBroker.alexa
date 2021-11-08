@@ -364,6 +364,7 @@ function processObjectQueue(callback) {
             handleValue(queueEntry, () => {
                 return callback && callback();
             });
+            return;
         }
         adapter.getObject(queueEntry.id, (err, obj) => {
             if (!err && obj) {
@@ -1636,12 +1637,12 @@ function createStates(callback) {
                         alexa.sendCommand(device, 'volume', value, (err, res) => {
                             // on unavailability {"message":"No routes found","userFacingMessage":null}
                             if (res && res.message === 'No routes found') {
-                                iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, 'volume', value, nextCallback));
+                                iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, 'volume', value, alexa.ownerCustomerId, nextCallback));
                             }
                         });
                     }
                     else {
-                        alexa.sendSequenceCommand(device, 'volume', value);
+                        alexa.sendSequenceCommand(device, 'volume', value, alexa.ownerCustomerId);
                     }
                 }.bind(alexa, device));
             }
@@ -1722,7 +1723,7 @@ function createStates(callback) {
                 if (c === 'notification' && device.isMultiroomDevice) continue;
                 const obj = JSON.parse (JSON.stringify (commands[c]));
                 setOrUpdateObject(devId + '.Commands.' + c, {common: obj.common}, obj.val, function (device, command, value) {
-                    iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, command, value, nextCallback));
+                    iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, command, value, alexa.ownerCustomerId, nextCallback));
                 }.bind(alexa, device, c));
             }
             setOrUpdateObject(devId + '.Commands.speak', {common: { role: 'media.tts'}}, '', function (device, value) {
@@ -1745,7 +1746,7 @@ function createStates(callback) {
                             speakCommands.push({command: 'speak', value: v.trim()});
                         });
                         if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakCommands.push({command: 'volume', value: speakVolumeReset});
-                        alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, nextCallback);
+                        alexa.sendMultiSequenceCommand(iteratorDevice, speakCommands, null, alexa.ownerCustomerId, nextCallback);
                     });
                 });
             }.bind(alexa, device));
@@ -1777,7 +1778,7 @@ function createStates(callback) {
                     });
                     volResetCommands.forEach((cmd) => speakCommands.push(cmd));
 
-                    alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, speakCommands);
+                    alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, speakCommands, null, alexa.ownerCustomerId);
                 });
             }.bind(alexa, device));
             setOrUpdateObject(devId + '.Commands.ssml', {common: { role: 'media.tts'}}, '', function (device, value) {
@@ -1800,7 +1801,7 @@ function createStates(callback) {
                     speakCommands.push({command: 'ssml', value: value.trim()});
                     volResetCommands.forEach((cmd) => speakCommands.push(cmd));
 
-                    alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, speakCommands);
+                    alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, speakCommands, null, alexa.ownerCustomerId);
                 });
             }.bind(alexa, device));
             if (!device.isMultiroomDevice) {
