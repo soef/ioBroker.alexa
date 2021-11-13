@@ -1,12 +1,4 @@
-﻿/* jshint -W097 */
-/* jshint -W030 */
-/* jshint -W083 */
-/* jshint strict: false */
-/* jslint node: true */
-/* jslint esversion: 6 */
-'use strict';
-
-const Alexa = require('alexa-remote2');
+﻿const Alexa = require('alexa-remote2');
 const path = require('path');
 const os = require('os');
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
