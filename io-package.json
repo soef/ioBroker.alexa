@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.11.2",
+    "version": "3.12.0",
     "title": "Alexa2 (Amazon Echo)",
     "titleLang": {
       "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.12.0": {
+        "en": "SequenceNodes created for a device are now bound to the \"deviceOwnCustomer\" - should help in mixed owner groups\nAdd recurringPattern for Notifications (see Readme)\nFix crash case\nMake sure states are not set too early before objects are created",
+        "de": "SequenceNodes, die für ein Gerät erstellt wurden, sind jetzt an den \"deviceOwnCustomer\" gebunden - sollte in gemischten Besitzergruppen helfen\nRecurringPattern für Benachrichtigungen hinzufügen (siehe Readme)\nCrash-Fall beheben\nStellen Sie sicher, dass Zustände nicht zu früh gesetzt werden, bevor Objekte erstellt werden",
+        "ru": "SequenceNodes, созданные для устройства, теперь привязаны к «deviceOwnCustomer» - должны помочь в смешанных группах владельцев.\nДобавить повторяющийся шаблон для уведомлений (см. Readme)\nИсправить случай сбоя\nУбедитесь, что состояния не установлены слишком рано до создания объектов.",
+        "pt": "SequenceNodes criados para um dispositivo agora estão vinculados ao \"deviceOwnCustomer\" - devem ajudar em grupos mistos de proprietários\nAdicionar padrão recorrente para notificações (consulte o Leiame)\nCorrigir caso de falha\nCertifique-se de que os estados não sejam definidos muito cedo antes que os objetos sejam criados",
+        "nl": "SequenceNodes die voor een apparaat zijn gemaakt, zijn nu gebonden aan de \"deviceOwnCustomer\" - zou moeten helpen in gemengde eigenaarsgroepen\nRecurrentPattern voor meldingen toevoegen (zie Readme)\nCrashgeval repareren\nZorg ervoor dat statussen niet te vroeg worden ingesteld voordat objecten worden gemaakt",
+        "fr": "Les SequenceNodes créés pour un appareil sont désormais liés au \"deviceOwnCustomer\" - devraient aider dans les groupes de propriétaires mixtes\nAjouter un motif récurrent pour les notifications (voir Lisez-moi)\nRéparer le cas de crash\nAssurez-vous que les états ne sont pas définis trop tôt avant la création des objets",
+        "it": "I SequenceNodes creati per un dispositivo sono ora associati a \"deviceOwnCustomer\" - dovrebbero aiutare in gruppi di proprietari misti\nAggiungi pattern ricorrente per le notifiche (vedi Leggimi)\nRisolto il caso di crash\nAssicurati che gli stati non siano impostati troppo presto prima della creazione degli oggetti",
+        "es": "Los SequenceNodes creados para un dispositivo ahora están vinculados al \"deviceOwnCustomer\" - deberían ayudar en grupos de propietarios mixtos\nAgregar patrón recurrente para notificaciones (ver Léame)\nReparar caso de accidente\nAsegúrese de que los estados no se establezcan demasiado pronto antes de que se creen los objetos",
+        "pl": "SequenceNodes utworzone dla urządzenia są teraz powiązane z \"deviceOwnCustomer\" - powinno pomóc w mieszanych grupach właścicieli\nDodaj powtarzający się wzorzec powiadomień (zobacz Readme)\nNapraw przypadek awarii\nUpewnij się, że stany nie są ustawiane zbyt wcześnie przed utworzeniem obiektów",
+        "zh-cn": "为设备创建的 SequenceNodes 现在绑定到“deviceOwnCustomer” - 应该有助于混合所有者组\n为通知添加 recurringPattern（请参阅自述文件）\n修复崩溃案例\n确保在创建对象之前不会过早设置状态"
+      },
       "3.11.2": {
         "en": "Fix crash case (Sentry IOBROKER-ALEXA2-AT)",
         "de": "Crashfall beheben (Sentry IOBROKER-ALEXA2-AT)",
@@ -100,18 +112,6 @@
         "es": "Solo ignore las entradas del historial vacías si ambos, resumen y alexaResponse están vacíos",
         "pl": "Ignoruj tylko puste wpisy historii, jeśli zarówno podsumowanie, jak i alexaResponse są puste",
         "zh-cn": "如果 summary 和 alexaResponse 都为空，则仅忽略空的历史条目"
-      },
-      "3.9.1": {
-        "en": "Fix cookie exchange and cookie validation checks",
-        "de": "Behebung von Cookie-Austausch- und Cookie-Validierungsprüfungen",
-        "ru": "Исправить обмен файлами cookie и проверки проверки файлов cookie",
-        "pt": "Corrigir trocas de cookies e verificações de validação de cookies",
-        "nl": "Herstel cookie-uitwisseling en cookie-validatiecontroles",
-        "fr": "Correction de l'échange de cookies et des contrôles de validation des cookies",
-        "it": "Correggi lo scambio di cookie e i controlli di convalida dei cookie",
-        "es": "Corregir el intercambio de cookies y las comprobaciones de validación de cookies",
-        "pl": "Napraw wymianę plików cookie i sprawdzanie poprawności plików cookie",
-        "zh-cn": "修复 cookie 交换和 cookie 验证检查"
       }
     },
     "keywords": [
