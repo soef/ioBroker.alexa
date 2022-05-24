@@ -1,5 +1,5 @@
 {
-    "Email": "用户/电子邮件",
+    "Email": "电子邮件",
     "Password": "密码",
     "Please wait while loading Adapter-Status ...": "在等待Adapter-Status时请稍候......",
     "ProxyInfo": "请单击此处<a href=\"%s\" target=\"_blank\">登录您的Amazon帐户一次，</a>以激活与Alexa设备的适配器连接。",
