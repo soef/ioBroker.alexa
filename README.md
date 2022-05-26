@@ -47,6 +47,7 @@ Alarm (Wecker) settings for each device, if available.
 | State name | meaning | value |
 | - | - | - |
 | enabled | Shows status of alarm and allows to change it: Activate alarm with true - Deactivate alarm with false | true / false |
+| date | Shows date of alarm, may also depend on recurringPattern | Date Output |
 | time | Time for alarm. Overwrite the time for existing alarm to set a new time for this alarm. In case you have an existing alarm you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set | Time Input |
 | triggered | true if alarm is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the alarm time is reached | true / false |
 | recurringPattern | Shows the recurring pattern of alarm | 0 = one time, no recurring <br> P1D = daily <br> XXXX-WD = on weekdays <br> XXXX-WE = on weekends <br> XXXX-WXX-1 = every monday <br> XXXX-WXX-2 = every tuesday <br> XXXX-WXX-3 = every wednesday <br> XXXX-WXX-4 = every thursday <br> XXXX-WXX-5 = every friday <br> XXXX-WXX-6 = every saturday <br> XXXX-WXX-7 = every sunday |
