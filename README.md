@@ -16,6 +16,10 @@ This adapter allows you to remote control your Alexa (Amazon Echo) devices.
 Big thanks go to soef for the version 1 of the adapter and to Hauke and ruhr70 for ideas in their scripts from ioBroker-Forum (especially the media progress updates)!
 Also big thanks to to meicker for support in documenting all of this and numerous users from ioBroker Forum for their testing support!
 
+## Disclaimer
+**All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal.**
+**ALEXA is a trademark of AMAZON TECHNOLOGIES, INC.**
+
 ## States and their meanings:
 
 In the adapter namespace (e.g. alexa2.0) some channels are created
