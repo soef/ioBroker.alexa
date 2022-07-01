@@ -94,6 +94,7 @@
             if (settings.usePushConnection === undefined) settings.usePushConnection = false;
             if (settings.resetCookies === undefined) settings.resetCookies = false;
             if (settings.historyIgnoreEmptySummary === undefined) settings.historyIgnoreEmptySummary = false;
+            if (settings.includeAppDevices === undefined) settings.includeAppDevices = false;
 
             for (var key in settings) {
                 if (!settings.hasOwnProperty(key)) continue;
@@ -256,6 +257,18 @@
                         <div class="input-field col s12 m6">
                             <input id="historyIgnoreEmptySummary" type="checkbox" class="value" />
                             <span for="historyIgnoreEmptySummary" class="translate">historyIgnoreEmptySummary</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <p class="translate title">device_settings</p>
+                        <p class="translate">device_settings_info</p>
+
+                        <div class="input-field col s12 m6">
+                            <input id="includeAppDevices" type="checkbox" class="value" />
+                            <span for="includeAppDevices" class="translate">includeAppDevices</span>
                         </div>
                     </div>
                 </div>

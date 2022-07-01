@@ -1,232 +1,233 @@
 {
-  "common": {
-    "name": "alexa2",
-    "version": "3.12.1",
-    "title": "Alexa2 (Amazon Echo)",
-    "titleLang": {
-      "en": "Alexa2 (Amazon Echo)",
-      "de": "Alexa2 (Amazon Echo)",
-      "ru": "Alexa2 (Amazon Echo)",
-      "pt": "Alexa2 (Amazon Echo)",
-      "nl": "Alexa2 (Amazon Echo)",
-      "fr": "Alexa2 (Amazon Echo)",
-      "it": "Alexa2 (Amazon Echo)",
-      "es": "Alexa2 (eco de Amazon)",
-      "pl": "Alexa2 (Amazon Echo)",
-      "zh-cn": "Alexa2（Amazon回声）"
-    },
-    "desc": {
-      "en": "Remote control for Alexa (Amazon Echo)",
-      "de": "Steuerung von Alexa (Amazon Echo)",
-      "ru": "Управление Alexa (Amazon Echo)",
-      "pt": "Controle remoto para Alexa (Amazon Echo)",
-      "nl": "Afstandsbediening voor Alexa (Amazon Echo)",
-      "fr": "Télécommande pour Alexa (Amazon Echo)",
-      "it": "Telecomando per Alexa (Amazon Echo)",
-      "es": "Control remoto para Alexa (Amazon Echo)",
-      "pl": "Pilot do Alexa (Amazon Echo)",
-      "zh-cn": "Alexa（Amazon Echo）的遥控器"
-    },
-    "platform": "Javascript/Node.js",
-    "news": {
-      "3.12.0": {
-        "en": "SequenceNodes created for a device are now bound to the \"deviceOwnCustomer\" - should help in mixed owner groups\nAdd recurringPattern for Notifications (see Readme)\nFix crash case\nMake sure states are not set too early before objects are created",
-        "de": "SequenceNodes, die für ein Gerät erstellt wurden, sind jetzt an den \"deviceOwnCustomer\" gebunden - sollte in gemischten Besitzergruppen helfen\nRecurringPattern für Benachrichtigungen hinzufügen (siehe Readme)\nCrash-Fall beheben\nStellen Sie sicher, dass Zustände nicht zu früh gesetzt werden, bevor Objekte erstellt werden",
-        "ru": "SequenceNodes, созданные для устройства, теперь привязаны к «deviceOwnCustomer» - должны помочь в смешанных группах владельцев.\nДобавить повторяющийся шаблон для уведомлений (см. Readme)\nИсправить случай сбоя\nУбедитесь, что состояния не установлены слишком рано до создания объектов.",
-        "pt": "SequenceNodes criados para um dispositivo agora estão vinculados ao \"deviceOwnCustomer\" - devem ajudar em grupos mistos de proprietários\nAdicionar padrão recorrente para notificações (consulte o Leiame)\nCorrigir caso de falha\nCertifique-se de que os estados não sejam definidos muito cedo antes que os objetos sejam criados",
-        "nl": "SequenceNodes die voor een apparaat zijn gemaakt, zijn nu gebonden aan de \"deviceOwnCustomer\" - zou moeten helpen in gemengde eigenaarsgroepen\nRecurrentPattern voor meldingen toevoegen (zie Readme)\nCrashgeval repareren\nZorg ervoor dat statussen niet te vroeg worden ingesteld voordat objecten worden gemaakt",
-        "fr": "Les SequenceNodes créés pour un appareil sont désormais liés au \"deviceOwnCustomer\" - devraient aider dans les groupes de propriétaires mixtes\nAjouter un motif récurrent pour les notifications (voir Lisez-moi)\nRéparer le cas de crash\nAssurez-vous que les états ne sont pas définis trop tôt avant la création des objets",
-        "it": "I SequenceNodes creati per un dispositivo sono ora associati a \"deviceOwnCustomer\" - dovrebbero aiutare in gruppi di proprietari misti\nAggiungi pattern ricorrente per le notifiche (vedi Leggimi)\nRisolto il caso di crash\nAssicurati che gli stati non siano impostati troppo presto prima della creazione degli oggetti",
-        "es": "Los SequenceNodes creados para un dispositivo ahora están vinculados al \"deviceOwnCustomer\" - deberían ayudar en grupos de propietarios mixtos\nAgregar patrón recurrente para notificaciones (ver Léame)\nReparar caso de accidente\nAsegúrese de que los estados no se establezcan demasiado pronto antes de que se creen los objetos",
-        "pl": "SequenceNodes utworzone dla urządzenia są teraz powiązane z \"deviceOwnCustomer\" - powinno pomóc w mieszanych grupach właścicieli\nDodaj powtarzający się wzorzec powiadomień (zobacz Readme)\nNapraw przypadek awarii\nUpewnij się, że stany nie są ustawiane zbyt wcześnie przed utworzeniem obiektów",
-        "zh-cn": "为设备创建的 SequenceNodes 现在绑定到“deviceOwnCustomer” - 应该有助于混合所有者组\n为通知添加 recurringPattern（请参阅自述文件）\n修复崩溃案例\n确保在创建对象之前不会过早设置状态"
-      },
-      "3.11.2": {
-        "en": "Fix crash case (Sentry IOBROKER-ALEXA2-AT)",
-        "de": "Crashfall beheben (Sentry IOBROKER-ALEXA2-AT)",
-        "ru": "Исправить сбой (Sentry IOBROKER-ALEXA2-AT)",
-        "pt": "Corrigir caso de falha (Sentry IOBROKER-ALEXA2-AT)",
-        "nl": "Crashgeval repareren (Sentry IOBROKER-ALEXA2-AT)",
-        "fr": "Correction du crash (Sentry IOBROKER-ALEXA2-AT)",
-        "it": "Risolto il caso di crash (Sentry IOBROKER-ALEXA2-AT)",
-        "es": "Reparar caso de accidente (Sentry IOBROKER-ALEXA2-AT)",
-        "pl": "Napraw przypadek awarii (Sentry IOBROKER-ALEXA2-AT)",
-        "zh-cn": "修复崩溃案例（Sentry IOBROKER-ALEXA2-AT）"
-      },
-      "3.11.1": {
-        "en": "Prevent warnings with js-controller 3.3",
-        "de": "Warnungen verhindern mit js-controller 3.3",
-        "ru": "Предотвращение предупреждений с помощью js-controller 3.3",
-        "pt": "Evite avisos com js-controller 3.3",
-        "nl": "Voorkom waarschuwingen met js-controller 3.3",
-        "fr": "Empêcher les avertissements avec js-controller 3.3",
-        "it": "Previeni gli avvisi con js-controller 3.3",
-        "es": "Prevenir advertencias con js-controller 3.3",
-        "pl": "Zapobiegaj ostrzeżeniom za pomocą kontrolera js 3.3",
-        "zh-cn": "使用 js-controller 3.3 防止警告"
-      },
-      "3.11.0": {
-        "en": "Add support for Multi Utterance Routines\nFix object deletion for lists\nFix Creation of new Lists and add deletion support\nAllow Commands for Stereo Pairs\nOptimize Push Connection and History retrieval",
-        "de": "Unterstützung für Multi-Utterance-Routinen hinzufügen\nObjektlöschung für Listen korrigiert\nBeheben Sie die Erstellung neuer Listen und fügen Sie Löschunterstützung hinzu\nBefehle für Stereopaare zulassen\nOptimieren Sie die Push-Verbindung und den Abruf des Verlaufs",
-        "ru": "Добавить поддержку подпрограмм с несколькими высказываниями\nИсправить удаление объекта для списков\nИсправить создание новых списков и добавить поддержку удаления\nРазрешить команды для стереопар\nОптимизация push-соединения и извлечения истории",
-        "pt": "Adicionar suporte para multi-rotinas de locução\nCorrigir exclusão de objetos para listas\nCorrigir a criação de novas listas e adicionar suporte para exclusão\nPermitir comandos para pares estéreo\nOtimize a conexão push e a recuperação do histórico",
-        "nl": "Ondersteuning toevoegen voor Multi Utterance-routines\nVerwijdering van objecten voor lijsten repareren\nFix Maken van nieuwe lijsten en ondersteuning voor verwijderen toevoegen\nOpdrachten voor stereoparen toestaan\nOptimaliseer push-verbinding en ophalen van geschiedenis",
-        "fr": "Ajout de la prise en charge des routines multi-énoncés\nCorrection de la suppression d'objets pour les listes\nCorrection de la création de nouvelles listes et ajout de la prise en charge de la suppression\nAutoriser les commandes pour les paires stéréo\nOptimiser la connexion Push et la récupération de l'historique",
-        "it": "Aggiungi il supporto per le routine multi pronuncia\nCorreggi l'eliminazione degli oggetti per gli elenchi\nCorreggi la creazione di nuovi elenchi e aggiungi il supporto per l'eliminazione\nConsenti comandi per coppie stereo\nOttimizza la connessione push e il recupero della cronologia",
-        "es": "Agregar soporte para rutinas de expresiones múltiples\nCorregir la eliminación de objetos para listas\nCorrija la creación de nuevas listas y agregue soporte de eliminación\nPermitir comandos para pares estéreo\nOptimice la conexión push y la recuperación del historial",
-        "pl": "Dodaj obsługę procedur z wieloma wypowiedziami\nNapraw usuwanie obiektów dla list\nNapraw tworzenie nowych list i dodaj obsługę usuwania\nZezwalaj na polecenia dla par stereo\nZoptymalizuj połączenie Push i pobieranie historii",
-        "zh-cn": "添加对 Multi Utterance Routines 的支持\n修复列表的对象删除\n修复创建新列表并添加删除支持\n允许立体声对的命令\n优化推送连接和历史检索"
-      },
-      "3.10.4": {
-        "en": "IMPORTANT: Node.js 10 support is dropped, supports LTS versions of Node.js starting with 12.x\nUpdate Push Connection",
-        "de": "WICHTIG: Die Unterstützung für Node.js 10 wird eingestellt, unterstützt LTS-Versionen von Node.js ab 12.x\nPush-Verbindung aktualisieren",
-        "ru": "ВАЖНО: поддержка Node.js 10 прекращена, поддерживаются LTS-версии Node.js, начиная с 12.x\nОбновить push-соединение",
-        "pt": "IMPORTANTE: o suporte a Node.js 10 foi eliminado, ele oferece suporte a versões LTS de Node.js começando com 12.x\nAtualizar conexão push",
-        "nl": "BELANGRIJK: ondersteuning voor Node.js 10 is vervallen, ondersteunt LTS-versies van Node.js beginnend met 12.x\nPush-verbinding bijwerken",
-        "fr": "IMPORTANT : la prise en charge de Node.js 10 est abandonnée, prend en charge les versions LTS de Node.js à partir de 12.x\nMettre à jour la connexion push",
-        "it": "IMPORTANTE: il supporto per Node.js 10 è stato eliminato, supporta le versioni LTS di Node.js che iniziano con 12.x\nAggiorna connessione push",
-        "es": "IMPORTANTE: la compatibilidad con Node.js 10 se ha eliminado, admite versiones LTS de Node.js que comienzan con 12.x\nActualizar conexión push",
-        "pl": "WAŻNE: odrzucono obsługę Node.js 10, obsługuje wersje LTS Node.js zaczynające się od 12.x\nZaktualizuj połączenie push",
-        "zh-cn": "重要提示：Node.js 10 支持被删除，支持从 12.x 开始的 Node.js LTS 版本\n更新推送连接"
-      },
-      "3.9.3": {
-        "en": "Try to fix setting targetTemperature for ThermostatCOntroller",
-        "de": "Versuchen Sie, die Einstellung der Zieltemperatur für ThermostatCOntroller zu korrigieren",
-        "ru": "Попытайтесь исправить настройку целевой температуры для ThermostatCOntroller",
-        "pt": "Tente corrigir a configuração targetTemperature para ThermostatCOntroller",
-        "nl": "Probeer de instelling targetTemperature voor ThermostatCONtroller te herstellen",
-        "fr": "Essayez de corriger le réglage de targetTemperature pour ThermostatCOntroller",
-        "it": "Prova a correggere l'impostazione della temperatura target per ThermostatCOntroller",
-        "es": "Intente fijar la temperatura objetivo de ajuste para el controlador del termostato",
-        "pl": "Spróbuj naprawić ustawienie docelowej temperatury dla termostatu",
-        "zh-cn": "尝试修复 ThermostatCONtroller 的设置 targetTemperature"
-      },
-      "3.9.2": {
-        "en": "Only ignore empty history entries if both, summary and alexaResponse is empty",
-        "de": "Ignorieren Sie leere Verlaufseinträge nur, wenn Zusammenfassung und alexaResponse leer sind",
-        "ru": "Игнорировать пустые записи истории только в том случае, если и summary, и alexaResponse пусты.",
-        "pt": "Ignore entradas de histórico vazias apenas se sumário e alexaResponse estiverem vazios",
-        "nl": "Negeer alleen lege geschiedenisvermeldingen als zowel samenvatting als alexaResponse leeg is",
-        "fr": "Ignorer uniquement les entrées d'historique vides si les deux, summary et alexaResponse sont vides",
-        "it": "Ignora solo le voci della cronologia vuote se entrambi, sommario e alexaResponse sono vuoti",
-        "es": "Solo ignore las entradas del historial vacías si ambos, resumen y alexaResponse están vacíos",
-        "pl": "Ignoruj tylko puste wpisy historii, jeśli zarówno podsumowanie, jak i alexaResponse są puste",
-        "zh-cn": "如果 summary 和 alexaResponse 都为空，则仅忽略空的历史条目"
-      }
-    },
-    "keywords": [
-      "alexa",
-      "amazon",
-      "amazon echo",
-      "echo dot",
-      "echo show"
-    ],
-    "authors": [
-      "Apollon77 <iobroker@fischer-ka.de>"
-    ],
-    "mode": "daemon",
-    "icon": "alexa.png",
-    "materialize": true,
-    "extIcon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
-    "readme": "https://github.com/Apollon77/ioBroker.alexa2/blob/master/README.md",
-    "loglevel": "info",
-    "type": "iot-systems",
-    "enabled": true,
-    "messagebox": true,
-    "license": "MIT",
-    "localLink": "https://alexa.amazon.com",
-    "connectionType": "cloud",
-    "dataSource": "push",
-    "tier": 2,
-    "compact": true,
-    "dependencies": [
-      {
-        "js-controller": ">=2.0.0"
-      }
-    ],
-    "plugins": {
-      "sentry": {
-        "dsn": "https://e9ac55f23fe149e78b1eab9ed4bf26ad@sentry.iobroker.net/8",
-        "pathWhitelist": [
-          "@apollon",
-          "alexa-cookie2",
-          "alexa-remote2"
+    "common": {
+        "name": "alexa2",
+        "version": "3.12.1",
+        "title": "Alexa2 (Amazon Echo)",
+        "titleLang": {
+            "en": "Alexa2 (Amazon Echo)",
+            "de": "Alexa2 (Amazon Echo)",
+            "ru": "Alexa2 (Amazon Echo)",
+            "pt": "Alexa2 (Amazon Echo)",
+            "nl": "Alexa2 (Amazon Echo)",
+            "fr": "Alexa2 (Amazon Echo)",
+            "it": "Alexa2 (Amazon Echo)",
+            "es": "Alexa2 (eco de Amazon)",
+            "pl": "Alexa2 (Amazon Echo)",
+            "zh-cn": "Alexa2（Amazon回声）"
+        },
+        "desc": {
+            "en": "Remote control for Alexa (Amazon Echo)",
+            "de": "Steuerung von Alexa (Amazon Echo)",
+            "ru": "Управление Alexa (Amazon Echo)",
+            "pt": "Controle remoto para Alexa (Amazon Echo)",
+            "nl": "Afstandsbediening voor Alexa (Amazon Echo)",
+            "fr": "Télécommande pour Alexa (Amazon Echo)",
+            "it": "Telecomando per Alexa (Amazon Echo)",
+            "es": "Control remoto para Alexa (Amazon Echo)",
+            "pl": "Pilot do Alexa (Amazon Echo)",
+            "zh-cn": "Alexa（Amazon Echo）的遥控器"
+        },
+        "platform": "Javascript/Node.js",
+        "news": {
+            "3.12.0": {
+                "en": "SequenceNodes created for a device are now bound to the \"deviceOwnCustomer\" - should help in mixed owner groups\nAdd recurringPattern for Notifications (see Readme)\nFix crash case\nMake sure states are not set too early before objects are created",
+                "de": "SequenceNodes, die für ein Gerät erstellt wurden, sind jetzt an den \"deviceOwnCustomer\" gebunden - sollte in gemischten Besitzergruppen helfen\nRecurringPattern für Benachrichtigungen hinzufügen (siehe Readme)\nCrash-Fall beheben\nStellen Sie sicher, dass Zustände nicht zu früh gesetzt werden, bevor Objekte erstellt werden",
+                "ru": "SequenceNodes, созданные для устройства, теперь привязаны к «deviceOwnCustomer» - должны помочь в смешанных группах владельцев.\nДобавить повторяющийся шаблон для уведомлений (см. Readme)\nИсправить случай сбоя\nУбедитесь, что состояния не установлены слишком рано до создания объектов.",
+                "pt": "SequenceNodes criados para um dispositivo agora estão vinculados ao \"deviceOwnCustomer\" - devem ajudar em grupos mistos de proprietários\nAdicionar padrão recorrente para notificações (consulte o Leiame)\nCorrigir caso de falha\nCertifique-se de que os estados não sejam definidos muito cedo antes que os objetos sejam criados",
+                "nl": "SequenceNodes die voor een apparaat zijn gemaakt, zijn nu gebonden aan de \"deviceOwnCustomer\" - zou moeten helpen in gemengde eigenaarsgroepen\nRecurrentPattern voor meldingen toevoegen (zie Readme)\nCrashgeval repareren\nZorg ervoor dat statussen niet te vroeg worden ingesteld voordat objecten worden gemaakt",
+                "fr": "Les SequenceNodes créés pour un appareil sont désormais liés au \"deviceOwnCustomer\" - devraient aider dans les groupes de propriétaires mixtes\nAjouter un motif récurrent pour les notifications (voir Lisez-moi)\nRéparer le cas de crash\nAssurez-vous que les états ne sont pas définis trop tôt avant la création des objets",
+                "it": "I SequenceNodes creati per un dispositivo sono ora associati a \"deviceOwnCustomer\" - dovrebbero aiutare in gruppi di proprietari misti\nAggiungi pattern ricorrente per le notifiche (vedi Leggimi)\nRisolto il caso di crash\nAssicurati che gli stati non siano impostati troppo presto prima della creazione degli oggetti",
+                "es": "Los SequenceNodes creados para un dispositivo ahora están vinculados al \"deviceOwnCustomer\" - deberían ayudar en grupos de propietarios mixtos\nAgregar patrón recurrente para notificaciones (ver Léame)\nReparar caso de accidente\nAsegúrese de que los estados no se establezcan demasiado pronto antes de que se creen los objetos",
+                "pl": "SequenceNodes utworzone dla urządzenia są teraz powiązane z \"deviceOwnCustomer\" - powinno pomóc w mieszanych grupach właścicieli\nDodaj powtarzający się wzorzec powiadomień (zobacz Readme)\nNapraw przypadek awarii\nUpewnij się, że stany nie są ustawiane zbyt wcześnie przed utworzeniem obiektów",
+                "zh-cn": "为设备创建的 SequenceNodes 现在绑定到“deviceOwnCustomer” - 应该有助于混合所有者组\n为通知添加 recurringPattern（请参阅自述文件）\n修复崩溃案例\n确保在创建对象之前不会过早设置状态"
+            },
+            "3.11.2": {
+                "en": "Fix crash case (Sentry IOBROKER-ALEXA2-AT)",
+                "de": "Crashfall beheben (Sentry IOBROKER-ALEXA2-AT)",
+                "ru": "Исправить сбой (Sentry IOBROKER-ALEXA2-AT)",
+                "pt": "Corrigir caso de falha (Sentry IOBROKER-ALEXA2-AT)",
+                "nl": "Crashgeval repareren (Sentry IOBROKER-ALEXA2-AT)",
+                "fr": "Correction du crash (Sentry IOBROKER-ALEXA2-AT)",
+                "it": "Risolto il caso di crash (Sentry IOBROKER-ALEXA2-AT)",
+                "es": "Reparar caso de accidente (Sentry IOBROKER-ALEXA2-AT)",
+                "pl": "Napraw przypadek awarii (Sentry IOBROKER-ALEXA2-AT)",
+                "zh-cn": "修复崩溃案例（Sentry IOBROKER-ALEXA2-AT）"
+            },
+            "3.11.1": {
+                "en": "Prevent warnings with js-controller 3.3",
+                "de": "Warnungen verhindern mit js-controller 3.3",
+                "ru": "Предотвращение предупреждений с помощью js-controller 3.3",
+                "pt": "Evite avisos com js-controller 3.3",
+                "nl": "Voorkom waarschuwingen met js-controller 3.3",
+                "fr": "Empêcher les avertissements avec js-controller 3.3",
+                "it": "Previeni gli avvisi con js-controller 3.3",
+                "es": "Prevenir advertencias con js-controller 3.3",
+                "pl": "Zapobiegaj ostrzeżeniom za pomocą kontrolera js 3.3",
+                "zh-cn": "使用 js-controller 3.3 防止警告"
+            },
+            "3.11.0": {
+                "en": "Add support for Multi Utterance Routines\nFix object deletion for lists\nFix Creation of new Lists and add deletion support\nAllow Commands for Stereo Pairs\nOptimize Push Connection and History retrieval",
+                "de": "Unterstützung für Multi-Utterance-Routinen hinzufügen\nObjektlöschung für Listen korrigiert\nBeheben Sie die Erstellung neuer Listen und fügen Sie Löschunterstützung hinzu\nBefehle für Stereopaare zulassen\nOptimieren Sie die Push-Verbindung und den Abruf des Verlaufs",
+                "ru": "Добавить поддержку подпрограмм с несколькими высказываниями\nИсправить удаление объекта для списков\nИсправить создание новых списков и добавить поддержку удаления\nРазрешить команды для стереопар\nОптимизация push-соединения и извлечения истории",
+                "pt": "Adicionar suporte para multi-rotinas de locução\nCorrigir exclusão de objetos para listas\nCorrigir a criação de novas listas e adicionar suporte para exclusão\nPermitir comandos para pares estéreo\nOtimize a conexão push e a recuperação do histórico",
+                "nl": "Ondersteuning toevoegen voor Multi Utterance-routines\nVerwijdering van objecten voor lijsten repareren\nFix Maken van nieuwe lijsten en ondersteuning voor verwijderen toevoegen\nOpdrachten voor stereoparen toestaan\nOptimaliseer push-verbinding en ophalen van geschiedenis",
+                "fr": "Ajout de la prise en charge des routines multi-énoncés\nCorrection de la suppression d'objets pour les listes\nCorrection de la création de nouvelles listes et ajout de la prise en charge de la suppression\nAutoriser les commandes pour les paires stéréo\nOptimiser la connexion Push et la récupération de l'historique",
+                "it": "Aggiungi il supporto per le routine multi pronuncia\nCorreggi l'eliminazione degli oggetti per gli elenchi\nCorreggi la creazione di nuovi elenchi e aggiungi il supporto per l'eliminazione\nConsenti comandi per coppie stereo\nOttimizza la connessione push e il recupero della cronologia",
+                "es": "Agregar soporte para rutinas de expresiones múltiples\nCorregir la eliminación de objetos para listas\nCorrija la creación de nuevas listas y agregue soporte de eliminación\nPermitir comandos para pares estéreo\nOptimice la conexión push y la recuperación del historial",
+                "pl": "Dodaj obsługę procedur z wieloma wypowiedziami\nNapraw usuwanie obiektów dla list\nNapraw tworzenie nowych list i dodaj obsługę usuwania\nZezwalaj na polecenia dla par stereo\nZoptymalizuj połączenie Push i pobieranie historii",
+                "zh-cn": "添加对 Multi Utterance Routines 的支持\n修复列表的对象删除\n修复创建新列表并添加删除支持\n允许立体声对的命令\n优化推送连接和历史检索"
+            },
+            "3.10.4": {
+                "en": "IMPORTANT: Node.js 10 support is dropped, supports LTS versions of Node.js starting with 12.x\nUpdate Push Connection",
+                "de": "WICHTIG: Die Unterstützung für Node.js 10 wird eingestellt, unterstützt LTS-Versionen von Node.js ab 12.x\nPush-Verbindung aktualisieren",
+                "ru": "ВАЖНО: поддержка Node.js 10 прекращена, поддерживаются LTS-версии Node.js, начиная с 12.x\nОбновить push-соединение",
+                "pt": "IMPORTANTE: o suporte a Node.js 10 foi eliminado, ele oferece suporte a versões LTS de Node.js começando com 12.x\nAtualizar conexão push",
+                "nl": "BELANGRIJK: ondersteuning voor Node.js 10 is vervallen, ondersteunt LTS-versies van Node.js beginnend met 12.x\nPush-verbinding bijwerken",
+                "fr": "IMPORTANT : la prise en charge de Node.js 10 est abandonnée, prend en charge les versions LTS de Node.js à partir de 12.x\nMettre à jour la connexion push",
+                "it": "IMPORTANTE: il supporto per Node.js 10 è stato eliminato, supporta le versioni LTS di Node.js che iniziano con 12.x\nAggiorna connessione push",
+                "es": "IMPORTANTE: la compatibilidad con Node.js 10 se ha eliminado, admite versiones LTS de Node.js que comienzan con 12.x\nActualizar conexión push",
+                "pl": "WAŻNE: odrzucono obsługę Node.js 10, obsługuje wersje LTS Node.js zaczynające się od 12.x\nZaktualizuj połączenie push",
+                "zh-cn": "重要提示：Node.js 10 支持被删除，支持从 12.x 开始的 Node.js LTS 版本\n更新推送连接"
+            },
+            "3.9.3": {
+                "en": "Try to fix setting targetTemperature for ThermostatCOntroller",
+                "de": "Versuchen Sie, die Einstellung der Zieltemperatur für ThermostatCOntroller zu korrigieren",
+                "ru": "Попытайтесь исправить настройку целевой температуры для ThermostatCOntroller",
+                "pt": "Tente corrigir a configuração targetTemperature para ThermostatCOntroller",
+                "nl": "Probeer de instelling targetTemperature voor ThermostatCONtroller te herstellen",
+                "fr": "Essayez de corriger le réglage de targetTemperature pour ThermostatCOntroller",
+                "it": "Prova a correggere l'impostazione della temperatura target per ThermostatCOntroller",
+                "es": "Intente fijar la temperatura objetivo de ajuste para el controlador del termostato",
+                "pl": "Spróbuj naprawić ustawienie docelowej temperatury dla termostatu",
+                "zh-cn": "尝试修复 ThermostatCONtroller 的设置 targetTemperature"
+            },
+            "3.9.2": {
+                "en": "Only ignore empty history entries if both, summary and alexaResponse is empty",
+                "de": "Ignorieren Sie leere Verlaufseinträge nur, wenn Zusammenfassung und alexaResponse leer sind",
+                "ru": "Игнорировать пустые записи истории только в том случае, если и summary, и alexaResponse пусты.",
+                "pt": "Ignore entradas de histórico vazias apenas se sumário e alexaResponse estiverem vazios",
+                "nl": "Negeer alleen lege geschiedenisvermeldingen als zowel samenvatting als alexaResponse leeg is",
+                "fr": "Ignorer uniquement les entrées d'historique vides si les deux, summary et alexaResponse sont vides",
+                "it": "Ignora solo le voci della cronologia vuote se entrambi, sommario e alexaResponse sono vuoti",
+                "es": "Solo ignore las entradas del historial vacías si ambos, resumen y alexaResponse están vacíos",
+                "pl": "Ignoruj tylko puste wpisy historii, jeśli zarówno podsumowanie, jak i alexaResponse są puste",
+                "zh-cn": "如果 summary 和 alexaResponse 都为空，则仅忽略空的历史条目"
+            }
+        },
+        "keywords": [
+            "alexa",
+            "amazon",
+            "amazon echo",
+            "echo dot",
+            "echo show"
         ],
-        "errorBlacklist": [
-          "SyntaxError"
-        ]
-      }
-    }
-  },
-  "native": {
-    "cookie": "",
-    "csrf": "",
-    "cookieData": null,
-    "alexaServiceHost": "",
-    "email": "",
-    "password": "",
-    "userAgent": "",
-    "acceptLanguage": "",
-    "cookieLoginUrl": "",
-    "proxyOwnIp": "",
-    "proxyPort": 0,
-    "proxyListenBind": "",
-    "updateStateInterval": 300,
-    "updateHistoryInterval": 300,
-    "usePushConnection": true,
-    "proxyOverrideIp": "",
-    "resetCookies": false,
-    "historyIgnoreEmptySummary": false,
-    "macDms": null
-  },
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": "Information"
-      },
-      "native": {}
+        "authors": [
+            "Apollon77 <iobroker@fischer-ka.de>"
+        ],
+        "mode": "daemon",
+        "icon": "alexa.png",
+        "materialize": true,
+        "extIcon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
+        "readme": "https://github.com/Apollon77/ioBroker.alexa2/blob/master/README.md",
+        "loglevel": "info",
+        "type": "iot-systems",
+        "enabled": true,
+        "messagebox": true,
+        "license": "MIT",
+        "localLink": "https://alexa.amazon.com",
+        "connectionType": "cloud",
+        "dataSource": "push",
+        "tier": 2,
+        "compact": true,
+        "dependencies": [
+            {
+                "js-controller": ">=2.0.0"
+            }
+        ],
+        "plugins": {
+            "sentry": {
+                "dsn": "https://e9ac55f23fe149e78b1eab9ed4bf26ad@sentry.iobroker.net/8",
+                "pathWhitelist": [
+                    "@apollon",
+                    "alexa-cookie2",
+                    "alexa-remote2"
+                ],
+                "errorBlacklist": [
+                    "SyntaxError"
+                ]
+            }
+        }
     },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.connected",
-        "name": "If communication with alexa works",
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
+    "native": {
+        "cookie": "",
+        "csrf": "",
+        "cookieData": null,
+        "alexaServiceHost": "",
+        "email": "",
+        "password": "",
+        "userAgent": "",
+        "acceptLanguage": "",
+        "cookieLoginUrl": "",
+        "proxyOwnIp": "",
+        "proxyPort": 0,
+        "proxyListenBind": "",
+        "updateStateInterval": 300,
+        "updateHistoryInterval": 300,
+        "usePushConnection": true,
+        "proxyOverrideIp": "",
+        "resetCookies": false,
+        "historyIgnoreEmptySummary": false,
+        "macDms": null,
+        "includeAppDevices": false
     },
-    {
-      "_id": "info.cookie",
-      "type": "state",
-      "common": {
-        "role": "text",
-        "name": "Alexa Cookie",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "def": ""
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.csrf",
-      "type": "state",
-      "common": {
-        "role": "text",
-        "name": "Alexa CSRF",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "def": ""
-      },
-      "native": {}
-    }
-  ]
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "If communication with alexa works",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.cookie",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Alexa Cookie",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.csrf",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Alexa CSRF",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        }
+    ]
 }
