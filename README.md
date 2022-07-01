@@ -296,6 +296,9 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ### __WORK IN PROGRESS__
 * (Apollon77) Fix command sending in multi owner environments (e.g. Family shared devices)
+* (Apollon77) Add some new devices
+* (ammawel) Add the date of an alarm as state, not only time
+
 
 ### 3.12.0 (2021-11-13)
 * (Apollon77) SequenceNodes created for a device are now bound to the "deviceOwnCustomer" - should help in mixed owner groups
