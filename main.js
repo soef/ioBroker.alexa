@@ -1719,11 +1719,11 @@ function createStates(callback) {
                 }.bind(alexa, device, c));
             }
             setOrUpdateObject(devId + '.Commands.speak', {common: { role: 'media.tts'}}, '', function (device, value) {
-                if (value === '') return;
+                if (!value) return;
                 iterateMultiroom(device, (iteratorDevice, nextCallback) => {
                     let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
                     if (!valueArr) valueArr= [];
-                    let speakVolume = valueArr[4] || iteratorDevice.speakVolume;
+                    const speakVolume = valueArr[4] || iteratorDevice.speakVolume;
                     value = valueArr[5] || value;
                     if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
                     adapter.getState('Echo-Devices.' + iteratorDevice.serialNumber + '.Player.volume', (err, state) => {
@@ -1731,7 +1731,7 @@ function createStates(callback) {
                         if (!err && state && state.val !== false && state.val !== null) {
                             speakVolumeReset = state.val;
                         }
-                        let speakCommands = [];
+                        const speakCommands = [];
                         if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume});
                         value.split(';').forEach((v) => {
                             if (!v || !v.length) return;
@@ -1743,14 +1743,14 @@ function createStates(callback) {
                 });
             }.bind(alexa, device));
             setOrUpdateObject(devId + '.Commands.announcement', {common: { role: 'media.tts'}}, '', function (device, value) {
-                if (value === '') return;
+                if (!value) return;
                 const speakCommands = [];
                 const volResetCommands = [];
                 let speakValue = '';
                 iterateMultiroom(device, (iteratorDevice, nextCallback) => {
                     let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
                     if (!valueArr) valueArr= [];
-                    let speakVolume = valueArr[4] || iteratorDevice.speakVolume;
+                    const speakVolume = valueArr[4] || iteratorDevice.speakVolume;
                     value = valueArr[5] || value;
                     if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
                     adapter.getState('Echo-Devices.' + iteratorDevice.serialNumber + '.Player.volume', (err, state) => {
@@ -1774,11 +1774,11 @@ function createStates(callback) {
                 });
             }.bind(alexa, device));
             setOrUpdateObject(devId + '.Commands.ssml', {common: { role: 'media.tts'}}, '', function (device, value) {
-                if (value === '') return;
+                if (!value) return;
                 const speakCommands = [];
                 const volResetCommands = [];
                 iterateMultiroom(device, (iteratorDevice, nextCallback) => {
-                    let speakVolume = iteratorDevice.speakVolume;
+                    const speakVolume = iteratorDevice.speakVolume;
                     adapter.getState('Echo-Devices.' + iteratorDevice.serialNumber + '.Player.volume', (err, state) => {
                         let speakVolumeReset = 0;
                         if (!err && state && state.val !== false && state.val !== null) {
@@ -2894,7 +2894,7 @@ function main() {
             }
 
             initRoutines(() => {
-				getLists(() => {
+                getLists(() => {
                     alexa.getAllDeviceVolumes((err, deviceVolumes) => {
                         if (!err && deviceVolumes && deviceVolumes.volumes) {
                             deviceVolumes.volumes.forEach(vol => initialDeviceVolumes[vol.dsn] = vol);
