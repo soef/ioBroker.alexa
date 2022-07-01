@@ -2058,7 +2058,7 @@ function createNotificationStates(serialOrName) {
                 const displayTime = noti.originalTime.substr(0, noti.originalTime.length - 4);
                 setOrUpdateObject(notiId, {type: 'channel', common: {name: noti.reminderLabel || displayTime}});
                 setOrUpdateObject(notiId + '.date', {common: {type: 'mixed', read: true, write: false, role: 'state', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Date'}}, noti.originalDate);
-		setOrUpdateObject(notiId + '.time', {common: {type: 'mixed', role: 'state', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Time'}}, time, noti.set);
+                setOrUpdateObject(notiId + '.time', {common: {type: 'mixed', role: 'state', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Time'}}, time, noti.set);
                 setOrUpdateObject(notiId + '.enabled', {common: {type: 'boolean', role: 'switch.enable', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Enabled'}}, (noti.status === 'ON'), noti.set);
                 setOrUpdateObject(notiId + '.triggered', {common: {type: 'boolean', read: true, write: false, role: 'indicator', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' Triggered'}}, false);
                 setOrUpdateObject(notiId + '.recurringPattern', {common: {type: 'string', read: true, write: false, role: 'state', name: noti.reminderLabel ? noti.reminderLabel : displayTime + ' RecurringPattern'}}, noti.recurringPattern || '0');
