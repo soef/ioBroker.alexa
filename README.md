@@ -296,6 +296,9 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ### __WORK IN PROGRESS__
 * IMPORTANT List Names are now checked for invalid characters and replaced. Might change the name of objects in ioBroker. Old ones need to be deleted manually!
+* see Changelog for the full list of changes
+
+### 3.12.1
 * (Apollon77) Fix command sending in multi owner environments (e.g. Family shared devices)
 * (Apollon77) Add some new devices
 * (ammawel) Add the date of an alarm as state, not only time
