@@ -295,13 +295,19 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* IMPORTANT List Names are now checked for invalid characters and replaced. Might change the name of objects in ioBroker. Old ones need to be deleted manually!
 * (Apollon77) Fix command sending in multi owner environments (e.g. Family shared devices)
 * (Apollon77) Add some new devices
 * (ammawel) Add the date of an alarm as state, not only time
 * (Apollon77) Add option to also query the App Devices to allow to send commands to them
-* (Apollon77) Rework Multiroom for commands
+* (Apollon77) Rework Multiroom for commands to prevent rate limiting issues!
 * (Apollon77) Fix Routine Naming if triggers were used
-* (Apollon77) Sort out History entries als when "Ziggy" is used as wakeword
+* (Apollon77) Support devices with "Ziggy" as wake word
+* (Apollon77) All commands with voice output respect the defined speak-volume now
+* (Apollon77) Allow again to directly enter TuneIn station Ids (s*) and topicIds (t*)
+* (Apollon77) Add media states to show remaining time of media playback
+* (simatec) Adjust link color im Admin configuration
+* (Apollon77) Some requests are automatically retried with a slight delay if Amazon responds with error 503
 
 ### 3.12.0 (2021-11-13)
 * (Apollon77) SequenceNodes created for a device are now bound to the "deviceOwnCustomer" - should help in mixed owner groups

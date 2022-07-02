@@ -8,8 +8,6 @@ const shObjects = require(path.join(__dirname, 'lib', 'smarthomedevices.js'));
 let Sentry;
 let SentryIntegrations;
 
-const forbiddenCharacters = /[\][*,;'"`<>\\\s?]/g;
-
 let alexa;
 let adapter;
 
@@ -605,15 +603,6 @@ process.on('uncaughtException', err => {
     }
 });
 
-
-function decrypt(key, value) {
-    let result = '';
-    for (let i = 0; i < value.length; ++i) {
-        result += String.fromCharCode(key[i % key.length].charCodeAt(0) ^ value.charCodeAt(i));
-    }
-    return result;
-}
-
 function processMessage(msg) {
     adapter.log.debug(`Message: ${JSON.stringify(msg)}`);
     switch (msg.command) {
@@ -704,8 +693,6 @@ function scheduleStatesUpdate(delay) {
 }
 
 function updateStates(callback) {
-    const i = 0;
-
     if (updateStateTimer) {
         clearTimeout(updateStateTimer);
         updateStateTimer = null;
@@ -753,12 +740,16 @@ function updateMediaProgress(serialNumber) {
 
         // Nun mediaProgress und mediaProgressPercent neu berechnen
         let mediaProgressPercent = 0;
+        let mediaRemaining = 0;
         if (mediaLength > 0) {
             mediaProgressPercent = Math.round((((mediaProgressNew) * 100) / mediaLength));
+            mediaRemaining = mediaLength - mediaProgressNew;
         }
         adapter.setState(`${devId}.Player.mediaProgressPercent`, mediaProgressPercent, true);
         adapter.setState(`${devId}.Player.mediaProgress`, mediaProgressNew, true);
         adapter.setState(`${devId}.Player.mediaProgressStr`, sec2HMS(mediaProgressNew), true);
+        adapter.setState(`${devId}.Player.mediaRemaining`, mediaRemaining, true);
+        adapter.setState(`${devId}.Player.mediaLengthStr`, sec2HMS(mediaRemaining), true);
 
         lastPlayerState[serialNumber].timeout = setTimeout( () => {
             lastPlayerState[serialNumber].timeout = null;
@@ -773,8 +764,7 @@ function updateMediaProgress(serialNumber) {
 function queryAllSmartHomeDevices(initial, callback) {
     const reqArr = [];
     const blocked = [];
-    for (const applianceId in shApplianceEntityMap) {
-        if (!shApplianceEntityMap.hasOwnProperty(applianceId)) continue;
+    for (const applianceId of Object.keys(shApplianceEntityMap)) {
         if (shApplianceEntityMap[applianceId].readable) {
             if (shQueryBlocker[applianceId]) {
                 blocked.push(applianceId);
@@ -1401,8 +1391,7 @@ function createSmarthomeStates(callback) {
                         adapter.deleteChannel('Smart-Home-Devices', groupIdShort);
                     }.bind(alexa, i));
 
-                    for (const param in groupParamData.parameters) {
-                        if (!groupParamData.parameters.hasOwnProperty(param)) continue;
+                    for (const param of Object.keys(groupParamData.parameters)) {
                         const obj = groupParamData.parameters[param];
                         if (obj.native && obj.native.hideInGroups) continue;
                         //obj.common.read = false;
@@ -1635,9 +1624,10 @@ function createStates(callback) {
             setOrUpdateObject(`${devId}.Player.mediaProgress`,  {common: {name:'active media progress', type:'number', role:'media.elapsed', def: 0}});
             setOrUpdateObject(`${devId}.Player.mediaProgressStr`, {common: {name:'active media progress as (HH:)MM:SS', type:'string', role:'media.elapsed.text', def: ''}});
             setOrUpdateObject(`${devId}.Player.mediaProgressPercent`, {common: {name:'active media progress as percent', type:'number', role:'media.elapsed.percent', def: 0}});
+            setOrUpdateObject(`${devId}.Player.mediaRemaining`,  {common: {name:'active media remaining time', type:'number', role:'value', def: 0}});
+            setOrUpdateObject(`${devId}.Player.mediaRemainingStr`, {common: {name:'active media remaining time as (HH:)MM:SS', type:'string', role:'value', def: ''}});
 
-            for (const c in playerControls) {
-                if (!playerControls.hasOwnProperty(c)) continue;
+            for (const c of Object.keys(playerControls)) {
                 const obj = JSON.parse (JSON.stringify (playerControls[c]));
                 setOrUpdateObject(`${devId}.Player.${c}`, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
             }
@@ -1649,7 +1639,17 @@ function createStates(callback) {
                         alexa.sendCommand(device, 'volume', value, (err, res) => {
                             // on unavailability {"message":"No routes found","userFacingMessage":null}
                             if (res && res.message === 'No routes found') {
-                                iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, 'volume', value, alexa.ownerCustomerId, nextCallback));
+                                const volumeCommands = [];
+                                iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                                    volumeCommands.push({
+                                        command: 'volume',
+                                        value,
+                                        device: iteratorDevice.serialNumber
+                                    });
+                                    nextCallback && nextCallback();
+                                }, () => {
+                                    alexa.sendMultiSequenceCommand(device.serialNumber, volumeCommands, 'ParallelNode', alexa.ownerCustomerId);
+                                });
                             }
                         });
                     }
@@ -1660,8 +1660,7 @@ function createStates(callback) {
             }
 
             if (device.hasMusicPlayer) {
-                for (const c in musicControls) {
-                    if (!musicControls.hasOwnProperty(c)) continue;
+                for (const c of Object.keys(musicControls)) {
                     const obj = JSON.parse (JSON.stringify (musicControls[c]));
                     setOrUpdateObject(`${devId}.Player.${c}`, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
                 }
@@ -1669,7 +1668,7 @@ function createStates(callback) {
                 for (const p in musicProviders) {
                     if (musicProviders[p].availability !== 'AVAILABLE') continue;
                     if (!musicProviders[p].supportedOperations.includes('Alexa.Music.PlaySearchPhrase')) continue;
-                    const displayName = musicProviders[p].displayName.replace(forbiddenCharacters, '-');
+                    const displayName = musicProviders[p].displayName.replace(adapter.FORBIDDEN_CHARS, '-').replace(/\./g, '_');
                     if (!displayName.length) {
                         musicProviders[p].id !== 'DEFAULT' && adapter.log.warn(`Music Provider has no name, ignoring! (${JSON.stringify(musicProviders[p])})`);
                         continue;
@@ -1692,13 +1691,13 @@ function createStates(callback) {
                                 schedulePlayerUpdate(device, 5000);
                             }
                         });
-                    } else if (query.match(/^p[0-9]+$/)) {
+                    /*} else if (query.match(/^p[0-9]+$/)) {
                         device.setTunein(query, 'show', (err, ret) => {
                             if (!err) {
                                 adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
                                 schedulePlayerUpdate(device, 5000);
                             }
-                        });
+                        });*/
                     } else if (query.match(/^t[0-9]+$/)) {
                         device.setTunein(query, 'topic', (err, ret) => {
                             if (!err) {
@@ -1730,16 +1729,58 @@ function createStates(callback) {
 
         if (device.deviceTypeDetails.commandSupport) {
             setOrUpdateObject(`${devId}.Commands`, {type: 'channel'});
-            for (const c in commands) {
-                if (!commands.hasOwnProperty(c)) continue;
+            for (const c of Object.keys(commands)) {
                 if (c === 'notification' && device.isMultiroomDevice) continue;
                 const obj = JSON.parse (JSON.stringify (commands[c]));
                 setOrUpdateObject(`${devId}.Commands.${c}`, {common: obj.common}, obj.val, function (device, command, value) {
-                    iterateMultiroom(device, (iteratorDevice, nextCallback) => alexa.sendSequenceCommand(iteratorDevice, command, value, alexa.ownerCustomerId, nextCallback));
+                    const commands = [];
+                    const speakVolumeCommands = [];
+                    const speakVolumeResetCommands = [];
+
+                    iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                        const speakVolume = iteratorDevice.speakVolume;
+                        adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
+                            let speakVolumeReset = 0;
+                            if (!err && state && state.val !== false && state.val !== null) {
+                                speakVolumeReset = state.val;
+                            }
+                            if (speakVolume && speakVolume > 0) {
+                                speakVolumeCommands.push({
+                                    command: 'volume',
+                                    value: speakVolume,
+                                    device: iteratorDevice.serialNumber
+                                });
+                            }
+                            commands.push({
+                                command,
+                                value,
+                                device: iteratorDevice.serialNumber
+                            });
+                            if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakVolumeResetCommands.push({
+                                command: 'volume',
+                                value: speakVolumeReset,
+                                device: iteratorDevice.serialNumber
+                            });
+                            nextCallback && nextCallback();
+                        });
+                    }, () => {
+                        if (!commands.length) return;
+                        if (command === 'deviceStop') {
+                            alexa.sendMultiSequenceCommand(device.serialNumber, commands, 'ParallelNode', alexa.ownerCustomerId);
+                        } else {
+                            const allCommands = [];
+                            speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
+                            allCommands.push({sequenceType: 'ParallelNode', nodes: commands});
+                            speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
+                            alexa.sendMultiSequenceCommand(device.serialNumber, allCommands, null, alexa.ownerCustomerId);
+                        }
+                    });
                 }.bind(alexa, device, c));
             }
             setOrUpdateObject(`${devId}.Commands.speak`, {common: { role: 'media.tts'}}, '', function (device, value) {
+                if (typeof value !== 'string') return;
                 if (!value) return;
+
                 const speakVolumeCommands = [];
                 const speakCommands = [];
                 const speakVolumeResetCommands = [];
@@ -1755,17 +1796,20 @@ function createStates(callback) {
                         if (!err && state && state.val !== false && state.val !== null) {
                             speakVolumeReset = state.val;
                         }
-                        if (speakVolume && speakVolume > 0) speakVolumeCommands.push({
-                            command: 'volume',
-                            value: speakVolume,
-                            device: iteratorDevice.serialNumber
-                        });
+                        if (speakVolume && speakVolume > 0) {
+                            speakVolumeCommands.push({
+                                command: 'volume',
+                                value: speakVolume,
+                                device: iteratorDevice.serialNumber
+                            });
+                        }
                         const speakCommandsFromValue = [];
                         value.split(';').forEach((v) => {
-                            if (!v || !v.length) return;
+                            const value = v.trim();
+                            if (!value || !value.length) return;
                             speakCommandsFromValue.push({
                                 command: 'speak',
-                                value: v.trim(),
+                                value,
                                 device: iteratorDevice.serialNumber
                             });
                         });
@@ -1779,17 +1823,21 @@ function createStates(callback) {
                     });
                 }, () => {
                     // Done
+                    if (!speakCommands.length) return;
                     const allCommands = [];
                     speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
-                    speakCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakCommands});
+                    allCommands.push({sequenceType: 'ParallelNode', nodes: speakCommands});
                     speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
                     alexa.sendMultiSequenceCommand(device.serialNumber, allCommands, null, alexa.ownerCustomerId);
                 });
             }.bind(alexa, device));
             setOrUpdateObject(`${devId}.Commands.announcement`, {common: { role: 'media.tts'}}, '', function (device, value) {
+                if (typeof value !== 'string') return;
                 if (!value) return;
-                const speakCommands = [];
-                const volResetCommands = [];
+
+                const speakVolumeCommands = [];
+                const speakVolumeResetCommands = [];
+
                 let speakValue = '';
                 iterateMultiroom(device, (iteratorDevice, nextCallback) => {
                     let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
@@ -1802,25 +1850,49 @@ function createStates(callback) {
                         if (!err && state && state.val !== false && state.val !== null) {
                             speakVolumeReset = state.val;
                         }
-                        if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume, device: iteratorDevice});
+                        if (speakVolume && speakVolume > 0) {
+                            speakVolumeCommands.push({
+                                command: 'volume',
+                                value: speakVolume,
+                                device: iteratorDevice.serialNumber
+                            });
+                        }
                         if (!speakValue) speakValue = value;
-                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) volResetCommands.push({command: 'volume', value: speakVolumeReset, device: iteratorDevice});
-                        nextCallback();
+                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakVolumeResetCommands.push({
+                            command: 'volume',
+                            value: speakVolumeReset,
+                            device: iteratorDevice.serialNumber
+                        });
+                        nextCallback && nextCallback();
                     });
                 }, () => {
+                    const announceCommands = [];
                     speakValue.split(';').forEach((v) => {
-                        if (!v || !v.length) return;
-                        speakCommands.push({command: 'announcement', value: v.trim()});
+                        const value = v.trim();
+                        if (!value || !value.length) return;
+                        announceCommands.push({command: 'announcement', value});
                     });
-                    volResetCommands.forEach((cmd) => speakCommands.push(cmd));
+                    if (!announceCommands.length) return;
 
-                    alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, speakCommands, null, alexa.ownerCustomerId);
+                    const allCommands = [];
+                    speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
+                    if (announceCommands.length === 1) {
+                        allCommands.push(announceCommands[0]);
+                    } else {
+                        allCommands.push({sequenceType: 'SerialNode', nodes: announceCommands});
+                    }
+                    speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
+                    alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, allCommands, null, alexa.ownerCustomerId);
                 });
             }.bind(alexa, device));
             setOrUpdateObject(`${devId}.Commands.ssml`, {common: { role: 'media.tts'}}, '', function (device, value) {
+                if (typeof value !== 'string') return;
+                value = value.trim();
                 if (!value) return;
-                const speakCommands = [];
-                const volResetCommands = [];
+
+                const speakVolumeCommands = [];
+                const speakVolumeResetCommands = [];
+
                 iterateMultiroom(device, (iteratorDevice, nextCallback) => {
                     const speakVolume = iteratorDevice.speakVolume;
                     adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
@@ -1828,16 +1900,27 @@ function createStates(callback) {
                         if (!err && state && state.val !== false && state.val !== null) {
                             speakVolumeReset = state.val;
                         }
-                        if (speakVolume && speakVolume > 0) speakCommands.push({command: 'volume', value: speakVolume, device: iteratorDevice});
-
-                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) volResetCommands.push({command: 'volume', value: speakVolumeReset, device: iteratorDevice});
-                        nextCallback();
+                        if (speakVolume && speakVolume > 0) {
+                            speakVolumeCommands.push({
+                                command: 'volume',
+                                value: speakVolume,
+                                device: iteratorDevice.serialNumber
+                            });
+                        }
+                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakVolumeResetCommands.push({
+                            command: 'volume',
+                            value: speakVolumeReset,
+                            device: iteratorDevice.serialNumber
+                        });
+                        nextCallback && nextCallback();
                     });
                 }, () => {
-                    speakCommands.push({command: 'ssml', value: value.trim()});
-                    volResetCommands.forEach((cmd) => speakCommands.push(cmd));
+                    const allCommands = [];
+                    speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
+                    allCommands.push({command: 'ssml', value});
+                    speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
+                    alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, allCommands, null, alexa.ownerCustomerId);
 
-                    alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, speakCommands, null, alexa.ownerCustomerId);
                 });
             }.bind(alexa, device));
             if (!device.isMultiroomDevice) {
@@ -1861,8 +1944,7 @@ function createStates(callback) {
         if (!device.isMultiroomDevice && device.deviceTypeDetails.commandSupport) {
             if (automationRoutines) {
                 setOrUpdateObject(`${devId}.Routines`, {type: 'channel'});
-                for (const i in automationRoutines) {
-                    if (!automationRoutines.hasOwnProperty(i)) continue;
+                for (const i of Object.keys(automationRoutines)) {
                     setOrUpdateObject(`${devId}.Routines.${automationRoutines[i].friendlyAutomationId}`, {common: { type: 'boolean', role: 'indicator', read: true, write: true, name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
                     if (automationRoutines[i].utteranceWords) {
                         if (!routineTriggerUtterances[device.serialNumber]) routineTriggerUtterances[device.serialNumber] = {};
@@ -1919,13 +2001,6 @@ function createDeviceStates(serialOrName) {
     const device = alexa.find(serialOrName);
     const devId = `Echo-Devices.${device.serialNumber}`;
 
-    /*if (device.appDeviceList.length) {
-        device.appDeviceList.forEach((app) => {
-            appDevices[app.serialNumber] = app;
-            appDevices[app.serialNumber].ownerDevice = device.serialNumber;
-        });
-    }*/
-
     if (device.deviceType === 'A2IVLV5VM2W81') {
         if (device.parentDeviceSerialNumber && adapter.config.includeAppDevices) {
             // App device, add it but adjust name
@@ -1935,6 +2010,13 @@ function createDeviceStates(serialOrName) {
             adapter.log.debug(`Ignore Device ${device.serialNumber} because is App-Type`);
             device.ignore = true;
             device.deviceTypeDetails = {name: 'App', commandSupport: false};
+
+            if (device.appDeviceList.length) {
+                device.appDeviceList.forEach((app) => {
+                    appDevices[app.serialNumber] = app;
+                    appDevices[app.serialNumber].ownerDevice = device.serialNumber;
+                });
+            }
             return;
         }
     }
@@ -2241,12 +2323,15 @@ function updatePlayerStatus(serialOrName, callback) {
                     playerData.miniArtUrl = resPlayer.playerInfo.miniArt.url;
                 }
 
+                let mediaRemaining = 0;
                 if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.progress) {
                     playerData.mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength || '0', 10);
                     playerData.mediaProgress = parseInt(resPlayer.playerInfo.progress.mediaProgress, 10);
                     if (playerData.mediaLength > 0) {
                         playerData.mediaProgressPercent = Math.round(((playerData.mediaProgress * 100) / playerData.mediaLength));
+                        mediaRemaining = playerData.mediaLength - playerData.mediaProgress;
                     }
+
                 }
 
                 playerData.controlPause = resPlayer.playerInfo.state === 'PAUSED';
@@ -2286,6 +2371,8 @@ function updatePlayerStatus(serialOrName, callback) {
                 adapter.setState(`${devId}.Player.mediaProgress`, playerData.mediaProgress, true);
                 adapter.setState(`${devId}.Player.mediaProgressStr`, sec2HMS(playerData.mediaProgress), true);
                 adapter.setState(`${devId}.Player.mediaProgressPercent`, playerData.mediaProgressPercent, true);
+                adapter.setState(`${devId}.Player.mediaRemaining`, mediaRemaining, true);
+                adapter.setState(`${devId}.Player.mediaLengthStr`, sec2HMS(mediaRemaining), true);
 
                 // Check Progress
                 if (resPlayer.playerInfo.state === 'PLAYING') {
@@ -2320,7 +2407,7 @@ function updatePlayerStatus(serialOrName, callback) {
                     playerData.muted = !!resMedia.muted;
                     playerData.providerId = resMedia.providerId || ''; // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
                     playerData.radioStationId = resMedia.radioStationId || ''; // 's24885' | null
-                    playerData.service = resMedia.service || '', true; // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
+                    playerData.service = resMedia.service || ''; // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
                     if (resMedia && resMedia.volume !== undefined && resMedia.volume !== null) {
                         playerData.volume = ~~resMedia.volume;
                     }
@@ -2349,7 +2436,7 @@ function getLists(listId, callback) {
                 if (listId && list.itemId !== listId) return;
                 // modify states
                 list.name = list.name || list.type;
-                list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
+                list.id = list.name.replace(adapter.FORBIDDEN_CHARS, '-').replace(/ /g, '_');
                 list.listId = list.itemId;
                 delete list.listIds;
                 delete list.itemId;
@@ -2605,8 +2692,7 @@ function loadExistingAccessories(callback) {
 function main() {
     if (!adapter.config.proxyOwnIp) {
         const ifaces = os.networkInterfaces();
-        for (const eth in ifaces) {
-            if (!ifaces.hasOwnProperty(eth)) continue;
+        for (const eth of Object.keys(ifaces)) {
             for (let num = 0; num < ifaces[eth].length; num++) {
                 if (ifaces[eth][num].family !== 'IPv6' && ifaces[eth][num].address !== '127.0.0.1' && ifaces[eth][num].address !== '0.0.0.0') {
                     adapter.config.proxyOwnIp = ifaces[eth][num].address;
@@ -2833,7 +2919,7 @@ function main() {
                 delete listsInProgress[payload.listId];
                 return;
             }
-            list.id = list.name.replace(forbiddenCharacters, '-').replace(/ /g, '_');
+            list.id = list.name.replace(adapter.FORBIDDEN_CHARS, '-').replace(/ /g, '_').replace(/\./g, '_');
             list.listId = list.itemId;
             delete list.listIds;
             delete list.itemId;
