@@ -293,8 +293,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.13.0 (2022-07-02)
 * IMPORTANT List Names are now checked for invalid characters and replaced. Might change the name of objects in ioBroker. Old ones need to be deleted manually!
 * see Changelog for the full list of changes
 
