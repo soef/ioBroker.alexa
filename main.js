@@ -1078,7 +1078,7 @@ function updateSmarthomeDeviceStates(res) {
                         }
                     }
                 }
-                if (colorDataIncluded && capValues.colorRgb && (!capValues.colorName || capValues.colorName.startsWith('{'))) {
+                if (colorDataIncluded && capValues.colorRgb && capValues.colorName === null) {
                     capValues.colorName = null;
                     const colorRgbSearch = hsvToRgb(capValues['color-hue'], capValues['color-saturation'], 1.0);
                     const nearestColor = shObjects.nearestColor(colorRgbSearch);
