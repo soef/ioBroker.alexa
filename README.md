@@ -248,14 +248,106 @@ With #brightness you can adjust the brightness of your light, #colorName is to p
 | csrf | Alexa CSRF, use with several external scripts that also want to access Alexa APIs | Information |
 
 
-## Missing features
-* how to update initial status for volume, shuffle or repeat and doNotDisturb?! Or unneeded?
-* add fields to show playing-info like JS version
-* self deactivation if cookie/csrf invalid
-
 ## Installation
 As usual using stable repository, latest repository or use the ioBroker "Install" options from GitHub
 
+## Send Alexa Device Command sequences via messages
+All commands to the alexa devices can be send via the adapter to single devices or to groups. The adapter supports sending of these commands and - if needed - also combines them to set a specific volume before a voince output and restore the original volume afterwards.
+
+When you want to send custom sequences to alexa devices you can create a Routine and trigger the routine also via the states.
+
+If this is not flexible enough the adapter offers since version 3.14.0 a way to send commands via messages.
+
+You provide an array structure which will be converted to commands. There are two types of options for one array element:
+
+**A command**
+```json
+{
+    "command": "speak", // command like the state name in Commands states
+    "value": "This is a test speak.", // value like value you set on state
+    "device": "..." // optional: serialNumber of the device to send this command to
+}
+```
+
+**A sequence definition**
+
+```json
+{
+    "sequenceType": "...", // "SerialNode" or "ParallelNode"
+    "nodes": [...] // array of commands or sequences
+}
+```
+
+Sending the message e.g. using JavaScript adapter looks like this:
+
+```javascript
+adapter.sendTo(
+    "alexa.0", // target
+    "sendSequenceCommand", // command
+    { // value
+        "deviceSerialNumber": "...", // Serial number of one device to get Meta data which will be used if no device is pecified on the commands
+        "sequenceNodes": [...], // list of sequences or commands
+        "sequenceType": "SerialNode" // "SerialNode" or "ParallelNode" for the provided sequenceNodes on main level. Default is "SerialNode"
+    }, (err, res) => {
+        console.log(err);
+        console.log(JSON.stringify(res));
+    }
+);
+```
+
+When commands are executed as "ParallelNode" in parallel which mainly makes sense tosend commands to different devices. Commands as "SerialNode" are executed one after the other - **Amazon takes care about this and handles this, not the adapter!** 
+
+A structure like the following is possible:
+
+```json
+... // use ParallelNode on main level
+"sequenceNodes": [
+    {
+        "sequenceType": "SerialNode",
+        "nodes": [
+            {
+                "command": "speak",
+                "value": "This is a test speak.",
+                "device": "DeviceA"
+            },
+            {
+                "command": "speak",
+                "value": "This is a second test speak.",
+                "device": "DeviceA"
+            }
+        ]
+    },
+    {
+        "sequenceType": "SerialNode",
+        "nodes": [
+            {
+                "command": "speak",
+                "value": "This is a test speak.",
+                "device": "DeviceB"
+            },
+            {
+                "command": "speak",
+                "value": "This is a second test speak.",
+                "device": "DeviceB"
+            },
+            {
+                "sequenceType": "ParallelNode",
+                "nodes": [
+                    {
+                        "command": "flashbriefing",
+                        "device": "DeviceC"
+                    },
+                    {
+                        "command": "flashbriefing",
+                        "device": "Device B"
+                    }
+                ]
+            }
+        ]
+    }
+]
+
+```
 
 ## Troubleshooting
 
@@ -297,6 +389,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ### __WORK IN PROGRESS__
 * (Apollon77) Enhance Smart Home Device support by adding various controllers and states. If in your Alexa App something is configurable which is not in ioBroker please send a debug log!
 * (Apollon77) Re-Introduce the ability to poll smart home device states in intervals, but only devices are queried that report their status proactively to Amazon-Cloud to prevent Skill developer costs! ioBroker (and OpenHab) devices are NOT queried! The interval can be configured but must not be lower than 60s! Querying is disabled by default.
+* (Apollon77) Add message to send out sequences of commands to alexa devices
 * (Apollon77) Add more devices
 
 ### 3.13.0 (2022-07-02)

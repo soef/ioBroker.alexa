@@ -619,6 +619,9 @@ function processMessage(msg) {
         case 'getStatusInfo':
             getStatusInfo(msg);
             break;
+        case 'sendSequenceCommand':
+            sendSequenceCommand(msg);
+            break;
     }
 }
 
@@ -633,6 +636,35 @@ function getStatusInfo(msg) {
     }, msg.callback);
 }
 
+function sendSequenceCommand(msg) {
+    if (!msg.message.sequenceNodes) {
+        adapter.sendTo(msg.from, msg.command, {
+            result: null,
+            error: 'No sequenceNodes given'
+        }, msg.callback);
+        return;
+    }
+    if (!msg.message.deviceSerialNumber) {
+        adapter.sendTo(msg.from, msg.command, {
+            result: null,
+            error: 'No deviceId given'
+        }, msg.callback);
+        return;
+    }
+    if (!alexa) {
+        adapter.sendTo(msg.from, msg.command, {
+            result: null,
+            error: 'Alexa connection not initialized'
+        }, msg.callback);
+        return;
+    }
+    alexa.sendMultiSequenceCommand(msg.message.deviceSerialNumber, msg.message.sequenceNodes, msg.message.sequenceType, alexa.ownerCustomerId, (err, res) => {
+        adapter.sendTo(msg.from, msg.command, {
+            result: res,
+            error: err
+        }, msg.callback);
+    });
+}
 
 function setRequestResult(err, res) {
     if (!err) return;
