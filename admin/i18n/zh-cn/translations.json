@@ -41,6 +41,8 @@
     "resetCookie": "重置Amazon Cookies",
     "s (0 = disabled)": "s（0 =禁用）",
     "updateHistoryInterval": "历史记录更新间隔",
+    "updateSmartHomeDevicesInterval": "智能家居设备更新间隔",
+    "updateSmartHomeDevicesInterval_info": "只更新了积极汇报亚马逊系统状况的智能家装置,以确保不会在技能发展方面产生问题和费用! 由于其他亚马逊可能阻碍你! 最低限度是60个,或规定为0.至0.1%的更新。.",
     "updateStateInterval": "数据更新间隔（玩家信息...）",
     "usePushConnection": "使用推送连接",
     "userAgent": "自定义用户代理"

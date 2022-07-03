@@ -41,6 +41,8 @@
     "resetCookie": "Reset Amazon Cookies",
     "s (0 = disabled)": "s (0 = disabled)",
     "updateHistoryInterval": "History update interval",
+    "updateSmartHomeDevicesInterval": "Smart Home devices update interval",
+    "updateSmartHomeDevicesInterval_info": "Only the smart home devices that actively report their status to Amazon systems are updated to make sure to not create issues and costs on the skill developer side! Do not set this too low because else Amazon might block you! The Minimum is 60s or set to 0 to disable the update.",
     "updateStateInterval": "Data update interval (player info …)",
     "usePushConnection": "Use push connection",
     "userAgent": "Custom User-Agent"

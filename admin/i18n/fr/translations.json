@@ -41,6 +41,8 @@
     "resetCookie": "Réinitialiser les cookies Amazon",
     "s (0 = disabled)": "s (0 = désactivé)",
     "updateHistoryInterval": "Intervalle de mise à",
+    "updateSmartHomeDevicesInterval": "Intervalle de mise à jour des appareils Smart Home",
+    "updateSmartHomeDevicesInterval_info": "Seuls les appareils smart home qui signalent activement leur statut aux systèmes Amazon sont mis à jour pour s'assurer de ne pas créer de problèmes et de coûts du côté développeur de compétences! Ne le mettez pas trop bas parce que d'autres Amazon pourraient vous bloquer! Le minimum est de 60 ou de 0 pour désactiver la mise à jour.",
     "updateStateInterval": "Intervalle de mise à jour des données (Player-Info ...)",
     "usePushConnection": "Utiliser la connexion push",
     "userAgent": "User-Agent personnalisé"

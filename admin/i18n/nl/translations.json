@@ -41,6 +41,8 @@
     "resetCookie": "Reset Amazon-cookies",
     "s (0 = disabled)": "s (0 = uitgeschakeld)",
     "updateHistoryInterval": "Historisch update-interval",
+    "updateSmartHomeDevicesInterval": "Update-interval voor Smart Home-apparaten",
+    "updateSmartHomeDevicesInterval_info": "Alleen de slimme thuis apparaten die actief hun status aan Amazon systemen rapporteren, zijn geüpdateerd om geen problemen te creëren en kosten aan de vaardige ontwikkelaar kant. Zet dit niet te laag, want anders blokkeert Amazone je. Het Minimum is 60 of klaar om de update uit te schakelen.",
     "updateStateInterval": "Gegevensbijwerkingsinterval (Player-Info ...)",
     "usePushConnection": "Gebruik een push-verbinding",
     "userAgent": "Aangepaste User-Agent"

@@ -41,6 +41,8 @@
     "resetCookie": "Zresetuj ciasteczka Amazon",
     "s (0 = disabled)": "s (0 = wyłączone)",
     "updateHistoryInterval": "Interwał aktualizacji historii",
+    "updateSmartHomeDevicesInterval": "Interwał aktualizacji urządzeń Smart Home",
+    "updateSmartHomeDevicesInterval_info": "Jedynie inteligentne urządzenia domowe, które aktywnie informują o ich statusie w systemach Amazon, są aktualizowane, aby nie tworzyć problemów i kosztować po stronie producenta. Nie ustalono tego zbyt niskiego, ponieważ inna Amazonka może blokować Ciebie. Minimum jest 60 lub ustawiony do 0, aby złagodzić aktualizację.",
     "updateStateInterval": "Interwał aktualizacji danych (Player-Info ...)",
     "usePushConnection": "Użyj połączenia push",
     "userAgent": "Niestandardowy User-Agent"
