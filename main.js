@@ -262,7 +262,10 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
         //adapter.log.debug('Object unchanged for ' + id + ': ' + JSON.stringify(adapterObjects[id]) + ' - update only: ' + JSON.stringify(value));
         //if (value !== undefined) adapter.setState(id, value, true);
         //if (stateChangeCallback) stateChangeTrigger[id] = stateChangeCallback;
+        adapterObjects[id] = JSON.parse(JSON.stringify(obj));
         obj = null;
+    } else {
+        adapterObjects[id] = JSON.parse(JSON.stringify(obj));
     }
     //adapter.log.debug('Add Object for ' + id + ': ' + JSON.stringify(adapterObjects[id]) + '/' + JSON.stringify(obj));
 
@@ -272,7 +275,6 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
         obj: obj,
         stateChangeCallback: stateChangeCallback
     });
-    adapterObjects[id] = JSON.parse(JSON.stringify(obj));
     //adapter.log.debug('Create object for ' + id + ': ' + JSON.stringify(obj) + ' with value: ' + JSON.stringify(value));
 
     if (createNow) {
