@@ -392,7 +392,10 @@ But be aware: The Cookie will time out after several time and then the adapter w
 * (Apollon77) Add message to send out sequences of commands to alexa devices
 * (Apollon77) Do not set the speak-volume when executing textCommand
 * (Apollon77) Do not set speak-volume if the volume is already as wanted
+* (Apollon77) Detect Rate limit exceeded response and do one automatic request retry 10s later (plus a random part)
+* (Apollon77) Slow down the update of player status to prevent rate limit exceeded errors. initial update of the player states is delayed on startup of the adapter
 * (Apollon77) Add more devices
+* (Apollon77) Optimize startup and unload handling
 
 ### 3.13.0 (2022-07-02)
 * IMPORTANT List Names are now checked for invalid characters and replaced. Might change the name of objects in ioBroker. Old ones need to be deleted manually!

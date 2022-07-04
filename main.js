@@ -10,6 +10,7 @@ let SentryIntegrations;
 
 let alexa;
 let adapter;
+let stopped = false;
 
 const playerControls = {
     controlPlay: { command: 'play', val: false, common: { type: 'boolean', read: false, write: true, role: 'button.play'}},
@@ -525,6 +526,7 @@ function startAdapter(options) {
     adapter = new utils.Adapter(options);
 
     adapter.on('unload', (callback) => {
+        stopped = true;
         updateSmartHomeDevicesTimer && clearTimeout(updateSmartHomeDevicesTimer);
         updateStateTimer && clearTimeout(updateStateTimer);
         updateHistoryTimer && clearTimeout(updateHistoryTimer);
@@ -729,6 +731,7 @@ function scheduleStatesUpdate(delay) {
         if (wsMqttConnected) delay = 60 * 60 * 1000; // 1h
     }
     updateStateTimer = setTimeout(() => {
+        if (stopped) return;
         updateStateTimer = null;
         updateStates();
     }, delay);
@@ -739,10 +742,11 @@ function updateStates(callback) {
         clearTimeout(updateStateTimer);
         updateStateTimer = null;
     }
+    if (stopped) return;
 
     updateDeviceStatus(() => {
         updateBluetoothStatus(() => {
-            updatePlayerStatus();
+            updatePlayerStatus(callback);
         });
     });
 }
@@ -845,8 +849,10 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
                 clearTimeout(updateSmartHomeDevicesTimer);
                 updateSmartHomeDevicesTimer = null;
             }
+            if (stopped) return;
             updateSmartHomeDevicesTimer = setTimeout(() => {
                 updateSmartHomeDevicesTimer = null;
+                if (stopped) return;
                 queryAllSmartHomeDevices(true, true);
             }, adapter.config.updateSmartHomeDevicesInterval * 1000);
         }
@@ -1143,9 +1149,11 @@ function createSmarthomeStates(callback) {
     shGroupDetails = {};
 
     alexa.getSmarthomeBehaviourActionDefinitions((err, resProperties) => {
+        if (stopped) return;
         if (!err && resProperties) shObjects.patchProperties(resProperties);
 
         alexa.getSmarthomeDevices((err, res) => {
+            if (stopped) return;
             setOrUpdateObject('Smart-Home-Devices', {type: 'device', common: {name: 'Smart Home Devices'}});
 
             setOrUpdateObject('Smart-Home-Devices.deleteAll', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, (val) => {
@@ -1166,6 +1174,7 @@ function createSmarthomeStates(callback) {
             }
 
             alexa.getSmarthomeEntities((err, res2) => {
+                if (stopped) return;
                 const behaviours = {};
                 if (res2 && Array.isArray(res2)) {
                     res2.forEach((behaviour) => {
@@ -1582,8 +1591,10 @@ function scheduleHistoryUpdate(delay) {
         clearTimeout(updateHistoryTimer);
     }
     if (wsMqttConnected) return;
+    if (stopped) return;
     updateHistoryTimer = setTimeout(() => {
         updateHistoryTimer = null;
+        if (stopped) return;
         updateHistory();
     }, delay);
 }
@@ -1593,7 +1604,9 @@ function updateHistory(callback) {
         clearTimeout(updateHistoryTimer);
         updateHistoryTimer = null;
     }
+    if (stopped) return;
     alexa.getCustomerHistoryRecords({maxRecordSize: 3, filter: true}, (err, res) => {
+        if (stopped) return;
         if (err || !res || !Array.isArray(res)) {
             if (adapter.config.updateHistoryInterval > 0) {
                 scheduleHistoryUpdate();
@@ -2127,12 +2140,7 @@ function createStates(callback) {
     setOrUpdateObject('History.domain', {common: {role: 'text', write: false}}, '');
     setOrUpdateObject('History.intent', {common: {role: 'text', write: false}}, '');
 
-    processObjectQueue(() => {
-        scheduleStatesUpdate();
-        updatePlayerStatus(() => {
-            updateHistory(callback);
-        });
-    });
+    processObjectQueue(callback);
 }
 
 function playMusicProvider(device, providerId, value) {
@@ -2246,10 +2254,12 @@ function createBluetoothStates(serialOrName) {
 }
 
 function updateBluetoothStatus(serialOrName, callback) {
-    if (!alexa._options.bluetooth) return callback && callback();
     if (typeof serialOrName === 'function') {
         callback = serialOrName;
         serialOrName = null;
+    }
+    if (!alexa._options.bluetooth) {
+        return callback && callback();
     }
     if (serialOrName) serialOrName = alexa.find(serialOrName);
 
@@ -2362,11 +2372,11 @@ function createNotificationStates(serialOrName) {
 }
 
 function updateNotificationStates(serialOrName, callback) {
-    if (!alexa._options.notifications) return callback && callback();
     if (typeof serialOrName === 'function') {
         callback = serialOrName;
         serialOrName = null;
     }
+    if (!alexa._options.notifications) return callback && callback();
     if (serialOrName) serialOrName = alexa.find(serialOrName);
 
     alexa.initNotifications(() => {
@@ -2413,7 +2423,8 @@ function updatePlayerStatus(serialOrName, callback) {
         const devId = `Echo-Devices.${device.serialNumber}`;
 
         alexa.getPlayerInfo(device , (err, resPlayer) => {
-            if (err || !resPlayer || !resPlayer.playerInfo) return doIt();
+            if (stopped) return;
+            if (err || !resPlayer || !resPlayer.playerInfo) return setTimeout(doIt, Math.floor(Math.random() * 2000) + 500);
 
             const playerData = {
                 providerName: '',
@@ -2530,7 +2541,7 @@ function updatePlayerStatus(serialOrName, callback) {
                         updateMediaProgress(device.serialNumber);
                     }, 2000);
                 }
-                doIt();
+                setTimeout(doIt, Math.floor(Math.random() * 2000) + 500);
             }
 
             if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.provider) {
@@ -2546,7 +2557,8 @@ function updatePlayerStatus(serialOrName, callback) {
 
             if (playerData.providerName !== 'Spotify' && playerData.providerName !== '') { // Spotify Podcast -> empty providerName
                 alexa.getMedia(device, (err, resMedia) => {
-                    if (err || !resMedia) return doIt();
+                    if (stopped) return;
+                    if (err || !resMedia) return setTimeout(doIt, Math.floor(Math.random() * 2000) + 500);
 
                     if (resMedia.shuffling !== undefined) playerData.controlShuffle = resMedia.shuffling;
                     if (resMedia.looping !== undefined) playerData.controlRepeat = resMedia.looping;
@@ -2578,6 +2590,7 @@ function getLists(listId, callback) {
     const allListItems = [];
     const node = 'Lists';
     alexa.getLists((err, lists) => {
+        if (stopped) return;
         !listId && setOrUpdateObject(node, {type: 'device', common: { 'name': 'Lists' }});
 
         if (Array.isArray(lists)) {
@@ -2648,6 +2661,7 @@ function updateListItems(list, callback) {
     let node = `Lists.${list.id}`;
     return new Promise(resolve => {
         alexa.getListItems(list.listId, (err, items) => {
+            if (stopped) return;
             setOrUpdateObject(`${node}.json`, {common: {name: 'List as json', role: 'json'}}, JSON.stringify(items));
 
             node = `${node}.items`;
@@ -2704,6 +2718,7 @@ function updateListItems(list, callback) {
 
 function initRoutines(callback) {
     alexa.getAutomationRoutines((err, routines) => {
+        if (stopped) return;
         automationRoutines = [];
         routineTriggerUtterances = {};
         if (!err && routines && Array.isArray(routines)) {
@@ -2751,6 +2766,7 @@ function initRoutines(callback) {
 function initCommUsers(callback) {
     alexa.getAccount((err, commOwnAccount) => {
         alexa.getHomeGroup((err, commHomeGroup) => {
+            if (stopped) return;
             if (commHomeGroup && commHomeGroup.commsId) {
                 alexa.commsId = commHomeGroup.commsId;
             }
@@ -2759,6 +2775,7 @@ function initCommUsers(callback) {
                 return;
             }
             alexa.getContacts({homeGroupId: commHomeGroup.homeGroupId}, (err, commContacts) => {
+                if (stopped) return;
                 if (err || !commContacts || !Array.isArray(commContacts)) {
                     processObjectQueue(callback);
                     return;
@@ -2797,6 +2814,7 @@ function initCommUsers(callback) {
                     if (comEntry.commsId[0] === alexa.commsId) {
                         setOrUpdateObject(`Contacts.${contactId}.#clearOwnMessages`, {common: {role: 'button', type: 'boolean', read: false, write: true, def: false}}, false, function (value) {
                             alexa.getConversations((err, res) => {
+                                if (stopped) return;
                                 if (!err && res && res.conversations && Array.isArray(res.conversations)) {
                                     res.conversations.forEach((conversation) => {
                                         if (!conversation.participants || !conversation.participants.length || conversation.participants[0] !== alexa.commsId) return;
@@ -2897,16 +2915,20 @@ function main() {
     alexa = new Alexa();
 
     alexa.on('ws-connect', () => {
-        scheduleHistoryUpdate(2000);
-        scheduleStatesUpdate(2000);
+        if (initDone) {
+            scheduleHistoryUpdate(2000);
+            scheduleStatesUpdate(2000);
+        }
         wsMqttConnected = true;
         adapter.log.info(`Alexa-Push-Connection (macDms = ${!!options.macDms}) established. Disable Polling`);
     });
 
     alexa.on('ws-disconnect', (retries, msg) => {
         adapter.log.info(`Alexa-Push-Connection disconnected${retries ? ' - retry' : ' - fallback to poll data'}: ${msg}`);
-        scheduleHistoryUpdate(2000);
-        scheduleStatesUpdate(2000);
+        if (initDone) {
+            scheduleHistoryUpdate(2000);
+            scheduleStatesUpdate(2000);
+        }
     });
 
     alexa.on('ws-error', (error) => {
@@ -3063,6 +3085,7 @@ function main() {
         }
 
         alexa.getList(payload.listId, (err, list) => {
+            if (stopped) return;
             if (!list || typeof list !== 'object') {
                 delete listsInProgress[payload.listId];
                 return;
@@ -3200,6 +3223,10 @@ function main() {
                                             adapter.subscribeObjects('*');
                                             initDone = true;
 
+                                            scheduleStatesUpdate();
+                                            updateHistory(() => {
+                                                updatePlayerStatus();
+                                            });
                                             const delIds = Object.keys(existingStates);
                                             if (delIds.length) {
                                                 adapter.log.info(`Deleting the following states: ${JSON.stringify(delIds)}`);
