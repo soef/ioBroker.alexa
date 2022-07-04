@@ -138,7 +138,7 @@ const knownDeviceType = {
     'A3R8XIAIU4HJAX':   {name: 'Echo Show', commandSupport: true, icon: 'icons/echo_show.png'}, // AMAZON_MUSIC,MUSIC_SKILL,CHANGE_NAME,I_HEART_RADIO,TUNE_IN,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,PEONY,REMINDERS,AUDIO_PLAYER,PANDORA,VOLUME_SETTING,LAMBDA_DOWNCHANNEL
     'A3R9S4ZZECZ6YL':   {name: 'Fire Tab HD 10', commandSupport: true, icon: 'icons/firetab.png'}, // ASX_TIME_ZONE,PEONY,VOLUME_SETTING,SUPPORTS_SOFTWARE_VERSION
     'A3RBAYBE7VM004':   {name: 'Echo Studio', commandSupport: true, icon: 'icons/echo_studio.png'}, // TUNE_IN,AUDIBLE,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,LEMUR_ALPHA,GADGETS,FLASH_BRIEFING,SHARKNADO,PAIR_BT_SINK,PERSISTENT_CONNECTION,CHANGE_NAME,CUSTOM_ALARM_TONE,TUPLE_CATEGORY_B,EARCONS,I_HEART_RADIO,REMINDERS,SET_LOCALE,DREAM_TRAINING,POPTART,AMAZON_MUSIC,KINDLE_BOOKS,SALMON,FACTORY_RESET_DEVICE,SLEEP,GOLDFISH,ASCENDING_ALARM_VOLUME,SOUND_SETTINGS,ALLOW_LOG_UPLOAD,FAR_FIELD_WAKE_WORD,AUDIO_PLAYER,VOLUME_SETTING,VOICE_TRAINING,TUPLE,TIMERS_AND_ALARMS,SUPPORTS_SOFTWARE_VERSION,PANDORA,MICROPHONE
-    'A3RMGO6LYLH7YN':   {name: 'Echo 4 Bridge', commandSupport: true, icon: 'icons/echo4.png'}, // PANDORA,PAIR_BT_SINK,FAR_FIELD_WAKE_WORD,GADGETS,DS_VOLUME_SETTING,TUNE_IN,EQUALIZER_CONTROLLER_BASS,DIALOG_INTERFACE_VERSION,MOTION_DETECTION,SALMON,TIMERS_AND_ALARMS,TIDAL,AUDIO_PROCESSING,TUPLE,EARCONS,POPTART,EQUALIZER_CONTROLLER_MIDRANGE,ALEXA_GESTURES,SUPPORTS_LOCALE,UPDATE_WIFI,TAHOE_BYOD,MUSIC_SKILL,ASCENDING_ALARM_VOLUME,ALEXA_PRESENCE,BT_PAIRING_FLOW_V2,EQUALIZER_CONTROLLER_TREBLE,ACTIVE_AFTER_FRO,DREAM_TRAINING,DEEZER,DEREGISTER_DEVICE,AUDIBLE,REQUIRES_OOBE_FOR_SETUP,VOICE_TRAINING,AUDIO_CONTROLS,SUPPORTS_SOFTWARE_VERSION,SOUND_SETTINGS,CUSTOM_ALARM_TONE,FLASH_BRIEFING,I_HEART_RADIO,SUPPORT_CALENDAR_ALERT,SET_LOCALE,LEMUR_ALPHA,APPLE_MUSIC,MICROPHONE,REMINDERS,GOLDFISH,SUPPORTS_LOCALE_SWITCH,MULTI_WAKEWORDS_SUPPORTED,SLEEP,KINDLE_BOOKS,TEMPERATURE_SENSOR,SIRIUSXM,GUARD_EARCON,AUDIO_PLAYER,PERSISTENT_CONNECTION,TIMERS_ALARMS_NOTIFICATIONS_VOLUME,EFDCARDS,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TUPLE_CATEGORY_A,CHANGE_NAME,VOLUME_SETTING,PAIR_BT_SOURCE,AUX_SETTINGS,SET_TIME_ZONE,AMAZON_MUSIC
+    'A3RMGO6LYLH7YN':   {name: 'Echo Plus 4.Gen', commandSupport: true, icon: 'icons/echo4.png'}, // PANDORA,PAIR_BT_SINK,FAR_FIELD_WAKE_WORD,GADGETS,DS_VOLUME_SETTING,TUNE_IN,EQUALIZER_CONTROLLER_BASS,DIALOG_INTERFACE_VERSION,MOTION_DETECTION,SALMON,TIMERS_AND_ALARMS,TIDAL,AUDIO_PROCESSING,TUPLE,EARCONS,POPTART,EQUALIZER_CONTROLLER_MIDRANGE,ALEXA_GESTURES,SUPPORTS_LOCALE,UPDATE_WIFI,TAHOE_BYOD,MUSIC_SKILL,ASCENDING_ALARM_VOLUME,ALEXA_PRESENCE,BT_PAIRING_FLOW_V2,EQUALIZER_CONTROLLER_TREBLE,ACTIVE_AFTER_FRO,DREAM_TRAINING,DEEZER,DEREGISTER_DEVICE,AUDIBLE,REQUIRES_OOBE_FOR_SETUP,VOICE_TRAINING,AUDIO_CONTROLS,SUPPORTS_SOFTWARE_VERSION,SOUND_SETTINGS,CUSTOM_ALARM_TONE,FLASH_BRIEFING,I_HEART_RADIO,SUPPORT_CALENDAR_ALERT,SET_LOCALE,LEMUR_ALPHA,APPLE_MUSIC,MICROPHONE,REMINDERS,GOLDFISH,SUPPORTS_LOCALE_SWITCH,MULTI_WAKEWORDS_SUPPORTED,SLEEP,KINDLE_BOOKS,TEMPERATURE_SENSOR,SIRIUSXM,GUARD_EARCON,AUDIO_PLAYER,PERSISTENT_CONNECTION,TIMERS_ALARMS_NOTIFICATIONS_VOLUME,EFDCARDS,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TUPLE_CATEGORY_A,CHANGE_NAME,VOLUME_SETTING,PAIR_BT_SOURCE,AUX_SETTINGS,SET_TIME_ZONE,AMAZON_MUSIC
     'A3S5BH2HU6VAYF':   {name: 'Echo Dot 2.Gen', commandSupport: true, icon: 'icons/echo_dot.png'}, // PAIR_BT_SINK,CUSTOM_ALARM_TONE,PAIR_REMOTE,TIMERS_AND_ALARMS,SUPPORTS_CONNECTED_HOME,TUNE_IN,SOUND_SETTINGS,DEREGISTER_DEVICE,SET_LOCALE,SLEEP,EARCONS,UPDATE_WIFI,PAIR_BT_SOURCE,SUPPORTS_SOFTWARE_VERSION,REQUIRES_OOBE_FOR_SETUP,MICROPHONE,SALMON,TAHOE_BYOD,CHANGE_NAME,FAR_FIELD_WAKE_WORD,VOLUME_SETTING,AUDIO_PLAYER,I_HEART_RADIO,REMINDERS,PERSISTENT_CONNECTION,AUDIBLE,GADGETS,SUPPORTS_CONNECTED_HOME_ALL,AMAZON_MUSIC,VOICE_TRAINING,FLASH_BRIEFING,DEREGISTER_FACTORY_RESET,GOLDFISH,PANDORA,ACTIVE_AFTER_FRO,DREAM_TRAINING,LEMUR_ALPHA,POPTART,KINDLE_BOOKS
     'A3SSG6GR8UU7SN':   {name: 'Echo Sub', commandSupport: true, icon: 'icons/echo_sub.png'}, // PERSISTENT_CONNECTION,ACTIVE_AFTER_FRO,SET_LOCALE,MICROPHONE,VOLUME_SETTING,AUDIBLE,AUDIO_PLAYER,UPDATE_WIFI,TUPLE,CUSTOM_ALARM_TONE,REQUIRES_OOBE_FOR_SETUP,EARCONS,KINDLE_BOOKS,TUPLE_CATEGORY_C,SUPPORTS_SOFTWARE_VERSION,ALLOW_LOG_UPLOAD,DEREGISTER_DEVICE,SLEEP,SOUND_SETTINGS,CHANGE_NAME,FLASH_BRIEFING,REMINDERS,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,TIMERS_AND_ALARMS
     'A3TCJ8RTT3NVI7':   {name: 'Listens for Alexa', commandSupport: false, icon: 'icons/microphone.png'}, // (AUDIBLE,DEREGISTER_DEVICE,MICROPHONE,GOLDFISH,CHANGE_NAME,PERSISTENT_CONNECTION,TUNE_IN,SLEEP,AUDIO_PLAYER,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,KINDLE_BOOKS,VOLUME_SETTING,I_HEART_RADIO,DREAM_TRAINING,MUSIC_SKILL,PEONY,AMAZON_MUSIC,TIMERS_AND_ALARMS)
@@ -1876,13 +1876,16 @@ function createStates(callback) {
                     const speakVolumeResetCommands = [];
 
                     iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                        if (command === 'deviceStop' || command === 'textCommand') {
+                            return nextCallback && nextCallback();
+                        }
                         const speakVolume = iteratorDevice.speakVolume;
                         adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
                             let speakVolumeReset = 0;
                             if (!err && state && state.val !== false && state.val !== null) {
                                 speakVolumeReset = state.val;
                             }
-                            if (speakVolume && speakVolume > 0) {
+                            if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
                                 speakVolumeCommands.push({
                                     command: 'volume',
                                     value: speakVolume,
@@ -1894,16 +1897,18 @@ function createStates(callback) {
                                 value,
                                 device: iteratorDevice.serialNumber
                             });
-                            if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakVolumeResetCommands.push({
-                                command: 'volume',
-                                value: speakVolumeReset,
-                                device: iteratorDevice.serialNumber
-                            });
+                            if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
+                                speakVolumeResetCommands.push({
+                                    command: 'volume',
+                                    value: speakVolumeReset,
+                                    device: iteratorDevice.serialNumber
+                                });
+                            }
                             nextCallback && nextCallback();
                         });
                     }, () => {
                         if (!commands.length) return;
-                        if (command === 'deviceStop') {
+                        if (command === 'deviceStop' || command === 'textCommand') {
                             alexa.sendMultiSequenceCommand(device.serialNumber, commands, 'ParallelNode', alexa.ownerCustomerId);
                         } else {
                             const allCommands = [];
@@ -1934,7 +1939,7 @@ function createStates(callback) {
                         if (!err && state && state.val !== false && state.val !== null) {
                             speakVolumeReset = state.val;
                         }
-                        if (speakVolume && speakVolume > 0) {
+                        if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
                             speakVolumeCommands.push({
                                 command: 'volume',
                                 value: speakVolume,
@@ -1952,11 +1957,13 @@ function createStates(callback) {
                             });
                         });
                         speakCommands.push({sequenceType: 'SerialNode', nodes: speakCommandsFromValue});
-                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakVolumeResetCommands.push({
-                            command: 'volume',
-                            value: speakVolumeReset,
-                            device: iteratorDevice.serialNumber
-                        });
+                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
+                            speakVolumeResetCommands.push({
+                                command: 'volume',
+                                value: speakVolumeReset,
+                                device: iteratorDevice.serialNumber
+                            });
+                        }
                         nextCallback && nextCallback();
                     });
                 }, () => {
@@ -1988,7 +1995,7 @@ function createStates(callback) {
                         if (!err && state && state.val !== false && state.val !== null) {
                             speakVolumeReset = state.val;
                         }
-                        if (speakVolume && speakVolume > 0) {
+                        if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
                             speakVolumeCommands.push({
                                 command: 'volume',
                                 value: speakVolume,
@@ -1996,11 +2003,13 @@ function createStates(callback) {
                             });
                         }
                         if (!speakValue) speakValue = value;
-                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakVolumeResetCommands.push({
-                            command: 'volume',
-                            value: speakVolumeReset,
-                            device: iteratorDevice.serialNumber
-                        });
+                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
+                            speakVolumeResetCommands.push({
+                                command: 'volume',
+                                value: speakVolumeReset,
+                                device: iteratorDevice.serialNumber
+                            });
+                        }
                         nextCallback && nextCallback();
                     });
                 }, () => {
@@ -2038,18 +2047,20 @@ function createStates(callback) {
                         if (!err && state && state.val !== false && state.val !== null) {
                             speakVolumeReset = state.val;
                         }
-                        if (speakVolume && speakVolume > 0) {
+                        if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
                             speakVolumeCommands.push({
                                 command: 'volume',
                                 value: speakVolume,
                                 device: iteratorDevice.serialNumber
                             });
                         }
-                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0) speakVolumeResetCommands.push({
-                            command: 'volume',
-                            value: speakVolumeReset,
-                            device: iteratorDevice.serialNumber
-                        });
+                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
+                            speakVolumeResetCommands.push({
+                                command: 'volume',
+                                value: speakVolumeReset,
+                                device: iteratorDevice.serialNumber
+                            });
+                        }
                         nextCallback && nextCallback();
                     });
                 }, () => {

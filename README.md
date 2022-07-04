@@ -390,6 +390,8 @@ But be aware: The Cookie will time out after several time and then the adapter w
 * (Apollon77) Enhance Smart Home Device support by adding various controllers and states. If in your Alexa App something is configurable which is not in ioBroker please send a debug log!
 * (Apollon77) Re-Introduce the ability to poll smart home device states in intervals, but only devices are queried that report their status proactively to Amazon-Cloud to prevent Skill developer costs! ioBroker (and OpenHab) devices are NOT queried! The interval can be configured but must not be lower than 60s! Querying is disabled by default.
 * (Apollon77) Add message to send out sequences of commands to alexa devices
+* (Apollon77) Do not set the speak-volume when executing textCommand
+* (Apollon77) Do not set speak-volume if the volume is already as wanted
 * (Apollon77) Add more devices
 
 ### 3.13.0 (2022-07-02)
