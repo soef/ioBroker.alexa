@@ -1892,6 +1892,11 @@ function createStates(callback) {
 
                     iterateMultiroom(device, (iteratorDevice, nextCallback) => {
                         if (command === 'deviceStop' || command === 'textCommand') {
+                            commands.push({
+                                command,
+                                value,
+                                device: iteratorDevice.serialNumber
+                            });
                             return nextCallback && nextCallback();
                         }
                         const speakVolume = iteratorDevice.speakVolume;
