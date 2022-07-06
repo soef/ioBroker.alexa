@@ -407,8 +407,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.14.0 (2022-07-06)
 * many feature enhancements for Player and Smart Home Devices states and more, see Changelog in GitHub for all details!
 * Allow to define if Lists and Smart home devices are synced by the adapter with the Amazon Cloud at all
 

@@ -1,277 +1,277 @@
 {
-    "common": {
-        "name": "alexa2",
-        "version": "3.13.1",
-        "title": "Alexa2 (Amazon Echo)",
-        "titleLang": {
-            "en": "Alexa2 (Amazon Echo)",
-            "de": "Alexa2 (Amazon Echo)",
-            "ru": "Alexa2 (Amazon Echo)",
-            "pt": "Alexa2 (Amazon Echo)",
-            "nl": "Alexa2 (Amazon Echo)",
-            "fr": "Alexa2 (Amazon Echo)",
-            "it": "Alexa2 (Amazon Echo)",
-            "es": "Alexa2 (eco de Amazon)",
-            "pl": "Alexa2 (Amazon Echo)",
-            "zh-cn": "Alexa2（Amazon回声）"
-        },
-        "desc": {
-            "en": "Remote control for Alexa (Amazon Echo)",
-            "de": "Steuerung von Alexa (Amazon Echo)",
-            "ru": "Управление Alexa (Amazon Echo)",
-            "pt": "Controle remoto para Alexa (Amazon Echo)",
-            "nl": "Afstandsbediening voor Alexa (Amazon Echo)",
-            "fr": "Télécommande pour Alexa (Amazon Echo)",
-            "it": "Telecomando per Alexa (Amazon Echo)",
-            "es": "Control remoto para Alexa (Amazon Echo)",
-            "pl": "Pilot do Alexa (Amazon Echo)",
-            "zh-cn": "Alexa（Amazon Echo）的遥控器"
-        },
-        "platform": "Javascript/Node.js",
-        "news": {
-            "3.13.0": {
-                "en": "IMPORTANT List Names are now checked for invalid characters and replaced. Might change the name of objects in ioBroker. Old ones need to be deleted manually!\nsee Changelog for the full list of changes",
-                "de": "EINFUHR Listennamen werden nun auf ungültige Zeichen geprüft und ersetzt. Könnte den Namen von Objekten in ioBroker ändern. Alte müssen manuell gelöscht werden!\nsiehe Changelog für die vollständige Liste der Änderungen",
-                "ru": "ВАЖНО Список названий теперь проверены для недействительных персонажей и заменены. Могут изменить название объектов в ioBroker. Старые должны быть удалены вручную!\nувидеть Changelog для полного списка изменений",
-                "pt": "IMPORTANTE Os nomes da lista são agora verificados para caracteres inválidos e substituídos. Pode mudar o nome dos objetos no ioBroker. Os antigos precisam ser excluídos manualmente!\nver Changelog para a lista completa de alterações",
-                "nl": "IMPORT List Namen worden nu gecontroleerd op invalide personages en vervangen. Kan de naam van objecten veranderen in ioBroker. Ouden moeten handmatig verwijderd worden!\nvertaling:",
-                "fr": "IMPORTANT Les noms des listes sont désormais vérifiés pour les caractères invalides et remplacés. Peut-être changer le nom des objets dans ioBroker. Les vieux doivent être supprimés manuellement !\nvoir Changelog pour la liste complète des changements",
-                "it": "IMPORTANTE I nomi delle liste sono ora controllati per i caratteri non validi e sostituiti. Potrebbe cambiare il nome di oggetti in ioBroker. I vecchi devono essere eliminati manualmente!\nvedi Changelog per l'elenco completo delle modifiche",
-                "es": "IMPORTANTE Los nombres de lista ahora se verifican para caracteres inválidos y reemplazados. Podría cambiar el nombre de los objetos en ioBroker. Los viejos necesitan ser eliminados manualmente!\nver Changelog para la lista completa de cambios",
-                "pl": "IMPORTANT Nazwy są obecnie sprawdzane dla nieprawidłowych postaci i zastąpione. Might zmienia nazwę obiektów w ioBroker. Stare osoby muszą być usuwane ręcznie!\nzmiany na pełną listę zmian",
-                "zh-cn": "IMPORTA 名单现按无效性质进行检查并替换。 明文改变了OioBroker的物体名称。 老年人需要用手工删除。!\n见对全面变化清单的修改"
-            },
-            "3.12.0": {
-                "en": "SequenceNodes created for a device are now bound to the \"deviceOwnCustomer\" - should help in mixed owner groups\nAdd recurringPattern for Notifications (see Readme)\nFix crash case\nMake sure states are not set too early before objects are created",
-                "de": "SequenceNodes, die für ein Gerät erstellt wurden, sind jetzt an den \"deviceOwnCustomer\" gebunden - sollte in gemischten Besitzergruppen helfen\nRecurringPattern für Benachrichtigungen hinzufügen (siehe Readme)\nCrash-Fall beheben\nStellen Sie sicher, dass Zustände nicht zu früh gesetzt werden, bevor Objekte erstellt werden",
-                "ru": "SequenceNodes, созданные для устройства, теперь привязаны к «deviceOwnCustomer» - должны помочь в смешанных группах владельцев.\nДобавить повторяющийся шаблон для уведомлений (см. Readme)\nИсправить случай сбоя\nУбедитесь, что состояния не установлены слишком рано до создания объектов.",
-                "pt": "SequenceNodes criados para um dispositivo agora estão vinculados ao \"deviceOwnCustomer\" - devem ajudar em grupos mistos de proprietários\nAdicionar padrão recorrente para notificações (consulte o Leiame)\nCorrigir caso de falha\nCertifique-se de que os estados não sejam definidos muito cedo antes que os objetos sejam criados",
-                "nl": "SequenceNodes die voor een apparaat zijn gemaakt, zijn nu gebonden aan de \"deviceOwnCustomer\" - zou moeten helpen in gemengde eigenaarsgroepen\nRecurrentPattern voor meldingen toevoegen (zie Readme)\nCrashgeval repareren\nZorg ervoor dat statussen niet te vroeg worden ingesteld voordat objecten worden gemaakt",
-                "fr": "Les SequenceNodes créés pour un appareil sont désormais liés au \"deviceOwnCustomer\" - devraient aider dans les groupes de propriétaires mixtes\nAjouter un motif récurrent pour les notifications (voir Lisez-moi)\nRéparer le cas de crash\nAssurez-vous que les états ne sont pas définis trop tôt avant la création des objets",
-                "it": "I SequenceNodes creati per un dispositivo sono ora associati a \"deviceOwnCustomer\" - dovrebbero aiutare in gruppi di proprietari misti\nAggiungi pattern ricorrente per le notifiche (vedi Leggimi)\nRisolto il caso di crash\nAssicurati che gli stati non siano impostati troppo presto prima della creazione degli oggetti",
-                "es": "Los SequenceNodes creados para un dispositivo ahora están vinculados al \"deviceOwnCustomer\" - deberían ayudar en grupos de propietarios mixtos\nAgregar patrón recurrente para notificaciones (ver Léame)\nReparar caso de accidente\nAsegúrese de que los estados no se establezcan demasiado pronto antes de que se creen los objetos",
-                "pl": "SequenceNodes utworzone dla urządzenia są teraz powiązane z \"deviceOwnCustomer\" - powinno pomóc w mieszanych grupach właścicieli\nDodaj powtarzający się wzorzec powiadomień (zobacz Readme)\nNapraw przypadek awarii\nUpewnij się, że stany nie są ustawiane zbyt wcześnie przed utworzeniem obiektów",
-                "zh-cn": "为设备创建的 SequenceNodes 现在绑定到“deviceOwnCustomer” - 应该有助于混合所有者组\n为通知添加 recurringPattern（请参阅自述文件）\n修复崩溃案例\n确保在创建对象之前不会过早设置状态"
-            },
-            "3.11.2": {
-                "en": "Fix crash case (Sentry IOBROKER-ALEXA2-AT)",
-                "de": "Crashfall beheben (Sentry IOBROKER-ALEXA2-AT)",
-                "ru": "Исправить сбой (Sentry IOBROKER-ALEXA2-AT)",
-                "pt": "Corrigir caso de falha (Sentry IOBROKER-ALEXA2-AT)",
-                "nl": "Crashgeval repareren (Sentry IOBROKER-ALEXA2-AT)",
-                "fr": "Correction du crash (Sentry IOBROKER-ALEXA2-AT)",
-                "it": "Risolto il caso di crash (Sentry IOBROKER-ALEXA2-AT)",
-                "es": "Reparar caso de accidente (Sentry IOBROKER-ALEXA2-AT)",
-                "pl": "Napraw przypadek awarii (Sentry IOBROKER-ALEXA2-AT)",
-                "zh-cn": "修复崩溃案例（Sentry IOBROKER-ALEXA2-AT）"
-            },
-            "3.11.1": {
-                "en": "Prevent warnings with js-controller 3.3",
-                "de": "Warnungen verhindern mit js-controller 3.3",
-                "ru": "Предотвращение предупреждений с помощью js-controller 3.3",
-                "pt": "Evite avisos com js-controller 3.3",
-                "nl": "Voorkom waarschuwingen met js-controller 3.3",
-                "fr": "Empêcher les avertissements avec js-controller 3.3",
-                "it": "Previeni gli avvisi con js-controller 3.3",
-                "es": "Prevenir advertencias con js-controller 3.3",
-                "pl": "Zapobiegaj ostrzeżeniom za pomocą kontrolera js 3.3",
-                "zh-cn": "使用 js-controller 3.3 防止警告"
-            },
-            "3.11.0": {
-                "en": "Add support for Multi Utterance Routines\nFix object deletion for lists\nFix Creation of new Lists and add deletion support\nAllow Commands for Stereo Pairs\nOptimize Push Connection and History retrieval",
-                "de": "Unterstützung für Multi-Utterance-Routinen hinzufügen\nObjektlöschung für Listen korrigiert\nBeheben Sie die Erstellung neuer Listen und fügen Sie Löschunterstützung hinzu\nBefehle für Stereopaare zulassen\nOptimieren Sie die Push-Verbindung und den Abruf des Verlaufs",
-                "ru": "Добавить поддержку подпрограмм с несколькими высказываниями\nИсправить удаление объекта для списков\nИсправить создание новых списков и добавить поддержку удаления\nРазрешить команды для стереопар\nОптимизация push-соединения и извлечения истории",
-                "pt": "Adicionar suporte para multi-rotinas de locução\nCorrigir exclusão de objetos para listas\nCorrigir a criação de novas listas e adicionar suporte para exclusão\nPermitir comandos para pares estéreo\nOtimize a conexão push e a recuperação do histórico",
-                "nl": "Ondersteuning toevoegen voor Multi Utterance-routines\nVerwijdering van objecten voor lijsten repareren\nFix Maken van nieuwe lijsten en ondersteuning voor verwijderen toevoegen\nOpdrachten voor stereoparen toestaan\nOptimaliseer push-verbinding en ophalen van geschiedenis",
-                "fr": "Ajout de la prise en charge des routines multi-énoncés\nCorrection de la suppression d'objets pour les listes\nCorrection de la création de nouvelles listes et ajout de la prise en charge de la suppression\nAutoriser les commandes pour les paires stéréo\nOptimiser la connexion Push et la récupération de l'historique",
-                "it": "Aggiungi il supporto per le routine multi pronuncia\nCorreggi l'eliminazione degli oggetti per gli elenchi\nCorreggi la creazione di nuovi elenchi e aggiungi il supporto per l'eliminazione\nConsenti comandi per coppie stereo\nOttimizza la connessione push e il recupero della cronologia",
-                "es": "Agregar soporte para rutinas de expresiones múltiples\nCorregir la eliminación de objetos para listas\nCorrija la creación de nuevas listas y agregue soporte de eliminación\nPermitir comandos para pares estéreo\nOptimice la conexión push y la recuperación del historial",
-                "pl": "Dodaj obsługę procedur z wieloma wypowiedziami\nNapraw usuwanie obiektów dla list\nNapraw tworzenie nowych list i dodaj obsługę usuwania\nZezwalaj na polecenia dla par stereo\nZoptymalizuj połączenie Push i pobieranie historii",
-                "zh-cn": "添加对 Multi Utterance Routines 的支持\n修复列表的对象删除\n修复创建新列表并添加删除支持\n允许立体声对的命令\n优化推送连接和历史检索"
-            },
-            "3.10.4": {
-                "en": "IMPORTANT: Node.js 10 support is dropped, supports LTS versions of Node.js starting with 12.x\nUpdate Push Connection",
-                "de": "WICHTIG: Die Unterstützung für Node.js 10 wird eingestellt, unterstützt LTS-Versionen von Node.js ab 12.x\nPush-Verbindung aktualisieren",
-                "ru": "ВАЖНО: поддержка Node.js 10 прекращена, поддерживаются LTS-версии Node.js, начиная с 12.x\nОбновить push-соединение",
-                "pt": "IMPORTANTE: o suporte a Node.js 10 foi eliminado, ele oferece suporte a versões LTS de Node.js começando com 12.x\nAtualizar conexão push",
-                "nl": "BELANGRIJK: ondersteuning voor Node.js 10 is vervallen, ondersteunt LTS-versies van Node.js beginnend met 12.x\nPush-verbinding bijwerken",
-                "fr": "IMPORTANT : la prise en charge de Node.js 10 est abandonnée, prend en charge les versions LTS de Node.js à partir de 12.x\nMettre à jour la connexion push",
-                "it": "IMPORTANTE: il supporto per Node.js 10 è stato eliminato, supporta le versioni LTS di Node.js che iniziano con 12.x\nAggiorna connessione push",
-                "es": "IMPORTANTE: la compatibilidad con Node.js 10 se ha eliminado, admite versiones LTS de Node.js que comienzan con 12.x\nActualizar conexión push",
-                "pl": "WAŻNE: odrzucono obsługę Node.js 10, obsługuje wersje LTS Node.js zaczynające się od 12.x\nZaktualizuj połączenie push",
-                "zh-cn": "重要提示：Node.js 10 支持被删除，支持从 12.x 开始的 Node.js LTS 版本\n更新推送连接"
-            },
-            "3.9.3": {
-                "en": "Try to fix setting targetTemperature for ThermostatCOntroller",
-                "de": "Versuchen Sie, die Einstellung der Zieltemperatur für ThermostatCOntroller zu korrigieren",
-                "ru": "Попытайтесь исправить настройку целевой температуры для ThermostatCOntroller",
-                "pt": "Tente corrigir a configuração targetTemperature para ThermostatCOntroller",
-                "nl": "Probeer de instelling targetTemperature voor ThermostatCONtroller te herstellen",
-                "fr": "Essayez de corriger le réglage de targetTemperature pour ThermostatCOntroller",
-                "it": "Prova a correggere l'impostazione della temperatura target per ThermostatCOntroller",
-                "es": "Intente fijar la temperatura objetivo de ajuste para el controlador del termostato",
-                "pl": "Spróbuj naprawić ustawienie docelowej temperatury dla termostatu",
-                "zh-cn": "尝试修复 ThermostatCONtroller 的设置 targetTemperature"
-            }
-        },
-        "keywords": [
-            "alexa",
-            "amazon",
-            "amazon echo",
-            "echo dot",
-            "echo show"
+  "common": {
+    "name": "alexa2",
+    "version": "3.14.0",
+    "title": "Alexa2 (Amazon Echo)",
+    "titleLang": {
+      "en": "Alexa2 (Amazon Echo)",
+      "de": "Alexa2 (Amazon Echo)",
+      "ru": "Alexa2 (Amazon Echo)",
+      "pt": "Alexa2 (Amazon Echo)",
+      "nl": "Alexa2 (Amazon Echo)",
+      "fr": "Alexa2 (Amazon Echo)",
+      "it": "Alexa2 (Amazon Echo)",
+      "es": "Alexa2 (eco de Amazon)",
+      "pl": "Alexa2 (Amazon Echo)",
+      "zh-cn": "Alexa2（Amazon回声）"
+    },
+    "desc": {
+      "en": "Remote control for Alexa (Amazon Echo)",
+      "de": "Steuerung von Alexa (Amazon Echo)",
+      "ru": "Управление Alexa (Amazon Echo)",
+      "pt": "Controle remoto para Alexa (Amazon Echo)",
+      "nl": "Afstandsbediening voor Alexa (Amazon Echo)",
+      "fr": "Télécommande pour Alexa (Amazon Echo)",
+      "it": "Telecomando per Alexa (Amazon Echo)",
+      "es": "Control remoto para Alexa (Amazon Echo)",
+      "pl": "Pilot do Alexa (Amazon Echo)",
+      "zh-cn": "Alexa（Amazon Echo）的遥控器"
+    },
+    "platform": "Javascript/Node.js",
+    "news": {
+      "3.14.0": {
+        "en": "many feature enhancements for Player and Smart Home Devices states and more, see Changelog in GitHub for all details!\nAllow to define if Lists and Smart home devices are synced by the adapter with the Amazon Cloud at all",
+        "de": "viele Features Verbesserungen für Player und Smart Home Devices Zustände und mehr, siehe Changelog in GitHub für alle Details!\nErlauben Sie zu definieren, ob Listen und Smart Home-Geräte von dem Adapter mit der Amazon Cloud überhaupt synchronisiert werden",
+        "ru": "много улучшений функции для состояния устройств Player и Smart Home, см. Changelog в GitHub для всех деталей!\nРазрешить определить, если списки и умные домашние устройства синхронизированы адаптером с Amazon Cloud на всех",
+        "pt": "muitos aprimoramentos de recursos para estados do Player e Smart Home Devices e muito mais, veja Changelog no GitHub para todos os detalhes!\nPermitir definir se listas e dispositivos domésticos inteligentes são sincronizados pelo adaptador com a Amazon Cloud em tudo",
+        "nl": "veel verbeteringen voor Player en Smart Home Devices staat en meer, zie Changelog in GitHub voor alle details!\nSta toe te definiëren of Lists en Smart thuis apparatuur gesynchroniseerd zijn door de adapter met de Amazone Cloud",
+        "fr": "de nombreuses améliorations de fonctionnalités pour les états Player et Smart Home Devices et plus encore, voir Changelog dans GitHub pour tous les détails!\nPermet de définir si Lists et Smart home appareils sont synchronisés par l'adaptateur avec Amazon Cloud",
+        "it": "molti miglioramenti di funzionalità per gli stati e più dispositivi Smart Home, vedere Changelog in GitHub per tutti i dettagli!\nConsentire di definire se Lists e Smart home device sono sincronizzati dall'adattatore con Amazon Cloud a tutti",
+        "es": "muchas mejoras de características para los estados de Player y Smart Home Devices y más, vea Changelog en GitHub para todos los detalles!\nPermitir definir si las listas y los dispositivos domésticos inteligentes son sincronizados por el adaptador con el Amazon Cloud en absoluto",
+        "pl": "wiele cech ulepszeń dla graczy i Smart Home Devices jest bardziej widoczne w GitHub dla wszystkich szczegółów!\nAllow do zdefiniowania, jeśli Listy i urządzenia do domu Smart są syndykowane przez adaptatora z chmurą Amazonki",
+        "zh-cn": "许多特点都加强了Player和Smart Home Devices州,更见GitHub的变革口号。!\n允许界定哪种清单和Smart家装置是否由适应者与亚马逊·Cloud合用,而所有这一切都与亚马逊集团混凝土。"
+      },
+      "3.13.0": {
+        "en": "IMPORTANT List Names are now checked for invalid characters and replaced. Might change the name of objects in ioBroker. Old ones need to be deleted manually!\nsee Changelog for the full list of changes",
+        "de": "EINFUHR Listennamen werden nun auf ungültige Zeichen geprüft und ersetzt. Könnte den Namen von Objekten in ioBroker ändern. Alte müssen manuell gelöscht werden!\nsiehe Changelog für die vollständige Liste der Änderungen",
+        "ru": "ВАЖНО Список названий теперь проверены для недействительных персонажей и заменены. Могут изменить название объектов в ioBroker. Старые должны быть удалены вручную!\nувидеть Changelog для полного списка изменений",
+        "pt": "IMPORTANTE Os nomes da lista são agora verificados para caracteres inválidos e substituídos. Pode mudar o nome dos objetos no ioBroker. Os antigos precisam ser excluídos manualmente!\nver Changelog para a lista completa de alterações",
+        "nl": "IMPORT List Namen worden nu gecontroleerd op invalide personages en vervangen. Kan de naam van objecten veranderen in ioBroker. Ouden moeten handmatig verwijderd worden!\nvertaling:",
+        "fr": "IMPORTANT Les noms des listes sont désormais vérifiés pour les caractères invalides et remplacés. Peut-être changer le nom des objets dans ioBroker. Les vieux doivent être supprimés manuellement !\nvoir Changelog pour la liste complète des changements",
+        "it": "IMPORTANTE I nomi delle liste sono ora controllati per i caratteri non validi e sostituiti. Potrebbe cambiare il nome di oggetti in ioBroker. I vecchi devono essere eliminati manualmente!\nvedi Changelog per l'elenco completo delle modifiche",
+        "es": "IMPORTANTE Los nombres de lista ahora se verifican para caracteres inválidos y reemplazados. Podría cambiar el nombre de los objetos en ioBroker. Los viejos necesitan ser eliminados manualmente!\nver Changelog para la lista completa de cambios",
+        "pl": "IMPORTANT Nazwy są obecnie sprawdzane dla nieprawidłowych postaci i zastąpione. Might zmienia nazwę obiektów w ioBroker. Stare osoby muszą być usuwane ręcznie!\nzmiany na pełną listę zmian",
+        "zh-cn": "IMPORTA 名单现按无效性质进行检查并替换。 明文改变了OioBroker的物体名称。 老年人需要用手工删除。!\n见对全面变化清单的修改"
+      },
+      "3.12.0": {
+        "en": "SequenceNodes created for a device are now bound to the \"deviceOwnCustomer\" - should help in mixed owner groups\nAdd recurringPattern for Notifications (see Readme)\nFix crash case\nMake sure states are not set too early before objects are created",
+        "de": "SequenceNodes, die für ein Gerät erstellt wurden, sind jetzt an den \"deviceOwnCustomer\" gebunden - sollte in gemischten Besitzergruppen helfen\nRecurringPattern für Benachrichtigungen hinzufügen (siehe Readme)\nCrash-Fall beheben\nStellen Sie sicher, dass Zustände nicht zu früh gesetzt werden, bevor Objekte erstellt werden",
+        "ru": "SequenceNodes, созданные для устройства, теперь привязаны к «deviceOwnCustomer» - должны помочь в смешанных группах владельцев.\nДобавить повторяющийся шаблон для уведомлений (см. Readme)\nИсправить случай сбоя\nУбедитесь, что состояния не установлены слишком рано до создания объектов.",
+        "pt": "SequenceNodes criados para um dispositivo agora estão vinculados ao \"deviceOwnCustomer\" - devem ajudar em grupos mistos de proprietários\nAdicionar padrão recorrente para notificações (consulte o Leiame)\nCorrigir caso de falha\nCertifique-se de que os estados não sejam definidos muito cedo antes que os objetos sejam criados",
+        "nl": "SequenceNodes die voor een apparaat zijn gemaakt, zijn nu gebonden aan de \"deviceOwnCustomer\" - zou moeten helpen in gemengde eigenaarsgroepen\nRecurrentPattern voor meldingen toevoegen (zie Readme)\nCrashgeval repareren\nZorg ervoor dat statussen niet te vroeg worden ingesteld voordat objecten worden gemaakt",
+        "fr": "Les SequenceNodes créés pour un appareil sont désormais liés au \"deviceOwnCustomer\" - devraient aider dans les groupes de propriétaires mixtes\nAjouter un motif récurrent pour les notifications (voir Lisez-moi)\nRéparer le cas de crash\nAssurez-vous que les états ne sont pas définis trop tôt avant la création des objets",
+        "it": "I SequenceNodes creati per un dispositivo sono ora associati a \"deviceOwnCustomer\" - dovrebbero aiutare in gruppi di proprietari misti\nAggiungi pattern ricorrente per le notifiche (vedi Leggimi)\nRisolto il caso di crash\nAssicurati che gli stati non siano impostati troppo presto prima della creazione degli oggetti",
+        "es": "Los SequenceNodes creados para un dispositivo ahora están vinculados al \"deviceOwnCustomer\" - deberían ayudar en grupos de propietarios mixtos\nAgregar patrón recurrente para notificaciones (ver Léame)\nReparar caso de accidente\nAsegúrese de que los estados no se establezcan demasiado pronto antes de que se creen los objetos",
+        "pl": "SequenceNodes utworzone dla urządzenia są teraz powiązane z \"deviceOwnCustomer\" - powinno pomóc w mieszanych grupach właścicieli\nDodaj powtarzający się wzorzec powiadomień (zobacz Readme)\nNapraw przypadek awarii\nUpewnij się, że stany nie są ustawiane zbyt wcześnie przed utworzeniem obiektów",
+        "zh-cn": "为设备创建的 SequenceNodes 现在绑定到“deviceOwnCustomer” - 应该有助于混合所有者组\n为通知添加 recurringPattern（请参阅自述文件）\n修复崩溃案例\n确保在创建对象之前不会过早设置状态"
+      },
+      "3.11.2": {
+        "en": "Fix crash case (Sentry IOBROKER-ALEXA2-AT)",
+        "de": "Crashfall beheben (Sentry IOBROKER-ALEXA2-AT)",
+        "ru": "Исправить сбой (Sentry IOBROKER-ALEXA2-AT)",
+        "pt": "Corrigir caso de falha (Sentry IOBROKER-ALEXA2-AT)",
+        "nl": "Crashgeval repareren (Sentry IOBROKER-ALEXA2-AT)",
+        "fr": "Correction du crash (Sentry IOBROKER-ALEXA2-AT)",
+        "it": "Risolto il caso di crash (Sentry IOBROKER-ALEXA2-AT)",
+        "es": "Reparar caso de accidente (Sentry IOBROKER-ALEXA2-AT)",
+        "pl": "Napraw przypadek awarii (Sentry IOBROKER-ALEXA2-AT)",
+        "zh-cn": "修复崩溃案例（Sentry IOBROKER-ALEXA2-AT）"
+      },
+      "3.11.1": {
+        "en": "Prevent warnings with js-controller 3.3",
+        "de": "Warnungen verhindern mit js-controller 3.3",
+        "ru": "Предотвращение предупреждений с помощью js-controller 3.3",
+        "pt": "Evite avisos com js-controller 3.3",
+        "nl": "Voorkom waarschuwingen met js-controller 3.3",
+        "fr": "Empêcher les avertissements avec js-controller 3.3",
+        "it": "Previeni gli avvisi con js-controller 3.3",
+        "es": "Prevenir advertencias con js-controller 3.3",
+        "pl": "Zapobiegaj ostrzeżeniom za pomocą kontrolera js 3.3",
+        "zh-cn": "使用 js-controller 3.3 防止警告"
+      },
+      "3.11.0": {
+        "en": "Add support for Multi Utterance Routines\nFix object deletion for lists\nFix Creation of new Lists and add deletion support\nAllow Commands for Stereo Pairs\nOptimize Push Connection and History retrieval",
+        "de": "Unterstützung für Multi-Utterance-Routinen hinzufügen\nObjektlöschung für Listen korrigiert\nBeheben Sie die Erstellung neuer Listen und fügen Sie Löschunterstützung hinzu\nBefehle für Stereopaare zulassen\nOptimieren Sie die Push-Verbindung und den Abruf des Verlaufs",
+        "ru": "Добавить поддержку подпрограмм с несколькими высказываниями\nИсправить удаление объекта для списков\nИсправить создание новых списков и добавить поддержку удаления\nРазрешить команды для стереопар\nОптимизация push-соединения и извлечения истории",
+        "pt": "Adicionar suporte para multi-rotinas de locução\nCorrigir exclusão de objetos para listas\nCorrigir a criação de novas listas e adicionar suporte para exclusão\nPermitir comandos para pares estéreo\nOtimize a conexão push e a recuperação do histórico",
+        "nl": "Ondersteuning toevoegen voor Multi Utterance-routines\nVerwijdering van objecten voor lijsten repareren\nFix Maken van nieuwe lijsten en ondersteuning voor verwijderen toevoegen\nOpdrachten voor stereoparen toestaan\nOptimaliseer push-verbinding en ophalen van geschiedenis",
+        "fr": "Ajout de la prise en charge des routines multi-énoncés\nCorrection de la suppression d'objets pour les listes\nCorrection de la création de nouvelles listes et ajout de la prise en charge de la suppression\nAutoriser les commandes pour les paires stéréo\nOptimiser la connexion Push et la récupération de l'historique",
+        "it": "Aggiungi il supporto per le routine multi pronuncia\nCorreggi l'eliminazione degli oggetti per gli elenchi\nCorreggi la creazione di nuovi elenchi e aggiungi il supporto per l'eliminazione\nConsenti comandi per coppie stereo\nOttimizza la connessione push e il recupero della cronologia",
+        "es": "Agregar soporte para rutinas de expresiones múltiples\nCorregir la eliminación de objetos para listas\nCorrija la creación de nuevas listas y agregue soporte de eliminación\nPermitir comandos para pares estéreo\nOptimice la conexión push y la recuperación del historial",
+        "pl": "Dodaj obsługę procedur z wieloma wypowiedziami\nNapraw usuwanie obiektów dla list\nNapraw tworzenie nowych list i dodaj obsługę usuwania\nZezwalaj na polecenia dla par stereo\nZoptymalizuj połączenie Push i pobieranie historii",
+        "zh-cn": "添加对 Multi Utterance Routines 的支持\n修复列表的对象删除\n修复创建新列表并添加删除支持\n允许立体声对的命令\n优化推送连接和历史检索"
+      },
+      "3.10.4": {
+        "en": "IMPORTANT: Node.js 10 support is dropped, supports LTS versions of Node.js starting with 12.x\nUpdate Push Connection",
+        "de": "WICHTIG: Die Unterstützung für Node.js 10 wird eingestellt, unterstützt LTS-Versionen von Node.js ab 12.x\nPush-Verbindung aktualisieren",
+        "ru": "ВАЖНО: поддержка Node.js 10 прекращена, поддерживаются LTS-версии Node.js, начиная с 12.x\nОбновить push-соединение",
+        "pt": "IMPORTANTE: o suporte a Node.js 10 foi eliminado, ele oferece suporte a versões LTS de Node.js começando com 12.x\nAtualizar conexão push",
+        "nl": "BELANGRIJK: ondersteuning voor Node.js 10 is vervallen, ondersteunt LTS-versies van Node.js beginnend met 12.x\nPush-verbinding bijwerken",
+        "fr": "IMPORTANT : la prise en charge de Node.js 10 est abandonnée, prend en charge les versions LTS de Node.js à partir de 12.x\nMettre à jour la connexion push",
+        "it": "IMPORTANTE: il supporto per Node.js 10 è stato eliminato, supporta le versioni LTS di Node.js che iniziano con 12.x\nAggiorna connessione push",
+        "es": "IMPORTANTE: la compatibilidad con Node.js 10 se ha eliminado, admite versiones LTS de Node.js que comienzan con 12.x\nActualizar conexión push",
+        "pl": "WAŻNE: odrzucono obsługę Node.js 10, obsługuje wersje LTS Node.js zaczynające się od 12.x\nZaktualizuj połączenie push",
+        "zh-cn": "重要提示：Node.js 10 支持被删除，支持从 12.x 开始的 Node.js LTS 版本\n更新推送连接"
+      }
+    },
+    "keywords": [
+      "alexa",
+      "amazon",
+      "amazon echo",
+      "echo dot",
+      "echo show"
+    ],
+    "authors": [
+      "Apollon77 <iobroker@fischer-ka.de>"
+    ],
+    "mode": "daemon",
+    "icon": "alexa.png",
+    "materialize": true,
+    "extIcon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
+    "readme": "https://github.com/Apollon77/ioBroker.alexa2/blob/master/README.md",
+    "loglevel": "info",
+    "type": "iot-systems",
+    "enabled": true,
+    "messagebox": true,
+    "license": "MIT",
+    "localLink": "https://alexa.amazon.com",
+    "connectionType": "cloud",
+    "dataSource": "push",
+    "tier": 2,
+    "compact": true,
+    "dependencies": [
+      {
+        "js-controller": ">=2.0.0"
+      }
+    ],
+    "plugins": {
+      "sentry": {
+        "dsn": "https://e9ac55f23fe149e78b1eab9ed4bf26ad@sentry.iobroker.net/8",
+        "pathWhitelist": [
+          "@apollon",
+          "alexa-cookie2",
+          "alexa-remote2"
         ],
-        "authors": [
-            "Apollon77 <iobroker@fischer-ka.de>"
-        ],
-        "mode": "daemon",
-        "icon": "alexa.png",
-        "materialize": true,
-        "extIcon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
-        "readme": "https://github.com/Apollon77/ioBroker.alexa2/blob/master/README.md",
-        "loglevel": "info",
-        "type": "iot-systems",
-        "enabled": true,
-        "messagebox": true,
-        "license": "MIT",
-        "localLink": "https://alexa.amazon.com",
-        "connectionType": "cloud",
-        "dataSource": "push",
-        "tier": 2,
-        "compact": true,
-        "dependencies": [
-            {
-                "js-controller": ">=2.0.0"
-            }
-        ],
-        "plugins": {
-            "sentry": {
-                "dsn": "https://e9ac55f23fe149e78b1eab9ed4bf26ad@sentry.iobroker.net/8",
-                "pathWhitelist": [
-                    "@apollon",
-                    "alexa-cookie2",
-                    "alexa-remote2"
-                ],
-                "errorBlacklist": [
-                    "SyntaxError"
-                ]
-            }
-        },
-        "messages": [
-            {
-                "condition": {
-                    "operand": "and",
-                    "rules": [
-                        "oldVersion<3.13.0",
-                        "newVersion>=3.13.0"
-                    ]
-                },
-                "title": {
-                    "en": "Important notice!",
-                    "de": "Wichtiger Hinweis!",
-                    "ru": "Важное замечание!",
-                    "pt": "Notícia importante!",
-                    "nl": "Belangrijke mededeling!",
-                    "fr": "Avis important!",
-                    "it": "Avviso IMPORTANTE!",
-                    "es": "Noticia importante!",
-                    "pl": "Ważna uwaga!",
-                    "zh-cn": "重要通知!"
-                },
-                "text": {
-                    "en": "The new version 1.2.x will potentially change the Names of List Objects when special characters (including \".\") are used! Please delete the old objects manually if needed.",
-                    "de": "Die neue Version 1.2.x wird die Namen der Listenobjekte möglicherweise ändern, wenn Sonderzeichen (einschließlich \".\") verwendet werden! Bitte löschen Sie die alten Objekte bei Bedarf manuell.",
-                    "ru": "Новая версия 1.2.x потенциально изменит имена объектов списка, когда используются специальные символы (включая \".\")! Пожалуйста, удалите старые объекты вручную, если это необходимо.",
-                    "pt": "A nova versão 1.2.x irá potencialmente alterar os nomes dos objetos de lista quando caracteres especiais (incluindo \".\") são usados! Por favor, exclua os objetos antigos manualmente, se necessário.",
-                    "nl": "De nieuwe versie 1.2.x zal mogelijk de Namen van List Objects veranderen als speciale personages (includeren) worden gebruikt. Verwijder de oude objecten handmatig als het nodig is.",
-                    "fr": "La nouvelle version 1.2.x modifiera potentiellement les Noms des objets de la liste lorsque des caractères spéciaux (y compris \"). Veuillez supprimer les anciens objets manuellement si nécessaire.",
-                    "it": "La nuova versione 1.2.x cambierà potenzialmente i nomi degli oggetti di elenco quando vengono utilizzati caratteri speciali (inclusi \".\")! Si prega di eliminare i vecchi oggetti manualmente se necessario.",
-                    "es": "La nueva versión 1.2.x potencialmente cambiará los Nombres de Objetos de Lista cuando se utilizan caracteres especiales (incluyendo \"). Por favor, borre los viejos objetos manualmente si es necesario.",
-                    "pl": "Nowa wersja 1.2.x będzie potencjalnie zmieniać nazwę nazw obiektów listowych, kiedy używa się specjalnych postaci (w tym „.”). Okazuje się, że stare obiekty ręcznie będą potrzebne.",
-                    "zh-cn": "新版本1.2.x将有可能改变名单所列物品的名称(包括“......”)。 请在必要时删除旧物体。."
-                },
-                "level": "warn",
-                "buttons": [
-                    "agree",
-                    "cancel"
-                ]
-            }
+        "errorBlacklist": [
+          "SyntaxError"
         ]
+      }
     },
-    "native": {
-        "cookie": "",
-        "csrf": "",
-        "cookieData": null,
-        "alexaServiceHost": "",
-        "email": "",
-        "password": "",
-        "userAgent": "",
-        "acceptLanguage": "",
-        "cookieLoginUrl": "",
-        "proxyOwnIp": "",
-        "proxyPort": 0,
-        "proxyListenBind": "",
-        "updateConfigurationInterval": 3600,
-        "updateStateInterval": 300,
-        "updateHistoryInterval": 300,
-        "updateSmartHomeDevicesInterval": 0,
-        "usePushConnection": true,
-        "proxyOverrideIp": "",
-        "resetCookies": false,
-        "historyIgnoreEmptySummary": false,
-        "macDms": null,
-        "includeAppDevices": false,
-        "synchronizeLists": true,
-        "synchronizeSmartHomeDevices": true
-    },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
+    "messages": [
+      {
+        "condition": {
+          "operand": "and",
+          "rules": [
+            "oldVersion<3.13.0",
+            "newVersion>=3.13.0"
+          ]
         },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "If communication with alexa works",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
+        "title": {
+          "en": "Important notice!",
+          "de": "Wichtiger Hinweis!",
+          "ru": "Важное замечание!",
+          "pt": "Notícia importante!",
+          "nl": "Belangrijke mededeling!",
+          "fr": "Avis important!",
+          "it": "Avviso IMPORTANTE!",
+          "es": "Noticia importante!",
+          "pl": "Ważna uwaga!",
+          "zh-cn": "重要通知!"
         },
-        {
-            "_id": "info.cookie",
-            "type": "state",
-            "common": {
-                "role": "text",
-                "name": "Alexa Cookie",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "def": ""
-            },
-            "native": {}
+        "text": {
+          "en": "The new version 1.2.x will potentially change the Names of List Objects when special characters (including \".\") are used! Please delete the old objects manually if needed.",
+          "de": "Die neue Version 1.2.x wird die Namen der Listenobjekte möglicherweise ändern, wenn Sonderzeichen (einschließlich \".\") verwendet werden! Bitte löschen Sie die alten Objekte bei Bedarf manuell.",
+          "ru": "Новая версия 1.2.x потенциально изменит имена объектов списка, когда используются специальные символы (включая \".\")! Пожалуйста, удалите старые объекты вручную, если это необходимо.",
+          "pt": "A nova versão 1.2.x irá potencialmente alterar os nomes dos objetos de lista quando caracteres especiais (incluindo \".\") são usados! Por favor, exclua os objetos antigos manualmente, se necessário.",
+          "nl": "De nieuwe versie 1.2.x zal mogelijk de Namen van List Objects veranderen als speciale personages (includeren) worden gebruikt. Verwijder de oude objecten handmatig als het nodig is.",
+          "fr": "La nouvelle version 1.2.x modifiera potentiellement les Noms des objets de la liste lorsque des caractères spéciaux (y compris \"). Veuillez supprimer les anciens objets manuellement si nécessaire.",
+          "it": "La nuova versione 1.2.x cambierà potenzialmente i nomi degli oggetti di elenco quando vengono utilizzati caratteri speciali (inclusi \".\")! Si prega di eliminare i vecchi oggetti manualmente se necessario.",
+          "es": "La nueva versión 1.2.x potencialmente cambiará los Nombres de Objetos de Lista cuando se utilizan caracteres especiales (incluyendo \"). Por favor, borre los viejos objetos manualmente si es necesario.",
+          "pl": "Nowa wersja 1.2.x będzie potencjalnie zmieniać nazwę nazw obiektów listowych, kiedy używa się specjalnych postaci (w tym „.”). Okazuje się, że stare obiekty ręcznie będą potrzebne.",
+          "zh-cn": "新版本1.2.x将有可能改变名单所列物品的名称(包括“......”)。 请在必要时删除旧物体。."
         },
-        {
-            "_id": "info.csrf",
-            "type": "state",
-            "common": {
-                "role": "text",
-                "name": "Alexa CSRF",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "def": ""
-            },
-            "native": {}
-        }
+        "level": "warn",
+        "buttons": [
+          "agree",
+          "cancel"
+        ]
+      }
     ]
+  },
+  "native": {
+    "cookie": "",
+    "csrf": "",
+    "cookieData": null,
+    "alexaServiceHost": "",
+    "email": "",
+    "password": "",
+    "userAgent": "",
+    "acceptLanguage": "",
+    "cookieLoginUrl": "",
+    "proxyOwnIp": "",
+    "proxyPort": 0,
+    "proxyListenBind": "",
+    "updateConfigurationInterval": 3600,
+    "updateStateInterval": 300,
+    "updateHistoryInterval": 300,
+    "updateSmartHomeDevicesInterval": 0,
+    "usePushConnection": true,
+    "proxyOverrideIp": "",
+    "resetCookies": false,
+    "historyIgnoreEmptySummary": false,
+    "macDms": null,
+    "includeAppDevices": false,
+    "synchronizeLists": true,
+    "synchronizeSmartHomeDevices": true
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "If communication with alexa works",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.cookie",
+      "type": "state",
+      "common": {
+        "role": "text",
+        "name": "Alexa Cookie",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.csrf",
+      "type": "state",
+      "common": {
+        "role": "text",
+        "name": "Alexa CSRF",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "def": ""
+      },
+      "native": {}
+    }
+  ]
 }
