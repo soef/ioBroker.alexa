@@ -408,10 +408,6 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 ### 3.14.0 (2022-07-06)
-* many feature enhancements for Player and Smart Home Devices states and more, see Changelog in GitHub for all details!
-* Allow to define if Lists and Smart home devices are synced by the adapter with the Amazon Cloud at all
-
-### 3.14.0
 * (Apollon77) Allow to define if Lists and Smart home devices are synced by the adapter with the Amazon Cloud at all
 * (Apollon77) Enhance Smart Home Device support by adding various controllers and states. If in your Alexa App something is configurable which is not in ioBroker please send a debug log!
 * (Apollon77) Re-Introduce the ability to poll smart home device states in intervals, but only devices are queried that report their status proactively to Amazon-Cloud to prevent Skill developer costs! ioBroker (and OpenHab) devices are NOT queried! The interval can be configured but must not be lower than 60s! Querying is disabled by default.
