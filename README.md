@@ -71,7 +71,7 @@ With Commands you can trigger some actions on your Alexa-Device. If you use thes
 
 | State name | meaning | value |
 | - | - | - |
-| doNotDisturb | Switch on/off Do not Disturb for this device| true/false |
+| doNotDisturb | Switch on/off Do not Disturb for this device. Value is updated with Device Configuration updates from Cloud too| true/false |
 | flashbriefing | Briefing in 100 seconds - news etc.pp| Button |
 | goodmorning | Good morning from Alexa ...| Button |
 | funfact | Fun fact from Alexa ... (Only USA at the moment)| Button |
@@ -85,10 +85,11 @@ With Commands you can trigger some actions on your Alexa-Device. If you use thes
 | traffic | Traffic news | Button |
 | weather | Weather news | Button |
 | deviceStop | Stop all actions on device | Button |
-| notification | Send text notifcation to customer of the device | Text |
+| notification | Send text notification to customer of the device | Text, optionally specify title "title;text" |
 | announcement | Play announcement (like speak but with Bing before text) | Text |
 | ssml | Speak SSML XML string | Text |
-| textcommand | Send a Text command to Alexa, only USA at the moment! | Text |
+| textcommand | Send a Text command to Alexa | Text |
+| sound | Play a sound on the device. | Text |
 
 Detailed information Speak and Announcement: Type in here what you want Alexa to say. You can also adjust the volume of Alexa by giving a percentage before your text.
 Example: 10;Alexa is saying Alexa with 10% volume, while 100;Alexa is 100% volume.
@@ -128,7 +129,11 @@ States to control the Playback of the device and to see the current status and m
 
 | State name | meaning | value |
 | - | - | - |
-| TuneIn-Station | text field to put in a Station name to play this station on this device. Also it is possible to type in the station number (s123456...), a show/podcast id (p1234567...) or a topic id (t123456789...) | Text input |
+| allowNext | Is the Next/Forward action allowed? | Information |
+| allowPlayPause | Is the Play/Pause action allowed? | Information |
+| allowPrevious | Is the Previous action allowed? | Information |
+| allowRepeat | Can Repeat function be used? | Information |
+| allowShuffle | Can Shuffle function be used? | Information |
 | ContentType | text field to put in desired content to play on this device | Information |
 | controlForward | Button to trigger player "forward" command (30s) | Button |
 | controlNext | Button to trigger player "next" command | Button |
@@ -144,6 +149,7 @@ States to control the Playback of the device and to see the current status and m
 | currentTitle | Current title actually playing | Information |
 | imageURL | URL to the image of the album | Information |
 | mainArtURL | URL to current main art | Information |
+| mediaId | media ID of the current played media (usually queueID:<number> | String, can be set to jump to the provided media ID |
 | mediaLength | Length of the current title | Information |
 | mediaLengthStr |  active media length as (HH:)MM:SS | Information |
 | mainProgress | active media elapsed time | Information |
@@ -151,11 +157,27 @@ States to control the Playback of the device and to see the current status and m
 | mediaProgressStr |  active media progress as (HH:)MM:SS | Information |
 | miniArtUrl | URL to the art (mini) | Information |
 | muted | state of 'MUTE' | Information, true / false, volume = 0 is considered as muted |
+| playingInGroup | Is the medium played in a group? | Information |
+| playingInGroupId | ID of the playing group | Information |
 | providerID | ID of the current music provider | Information |
 | providerName | Name of the current music provider | Information |
+| quality | quality name of the current medium (might be empty) | Information |
+| qualityCodec | Codec of the current medium (might be empty) | Information |
+| qualityDataRate | data rate (kbps) of the current medium (might be empty) | Information |
+| qualitySampleRate | sample rate (Hz) of the current medium (might be empty) | Information |
+| queueId | queue ID of the current playlist | Information |
 | radioStationId | ID of the TuneIn radio station | Information |
 | service | name of the current music service | Information |
+| TuneIn-Station | text field to put in a Station name to play this station on this device. Also it is possible to type in the station number (s123456...), a show/podcast id (p1234567...) or a topic id (t123456789...) | Text input |
 | volume | Volume of playback. You can enter a value between 0-100% | INPUT Volume |
+
+### alexa2.0.Echo-Devices.Serialnumber.Preferences.*
+Here you find some device preferences.
+
+| State name | meaning |
+| - | - |
+| ringNotificationsEnabled | Shows if the ring notifications are enabled or not and allows to edit it (true/false). Status is updated from cloud with device configuration interval |
+
 
 ### alexa2.0.Echo-Devices.Serialnumber.Reminder.*
 Reminder (Erinnerungen) settings for each device, if available.
@@ -219,11 +241,11 @@ Includes all smart home devices Alexa knows from your skills. States as follows,
 | State name | meaning | value |
 | - | - | - |
 | #delete | delete smart home device from Alexa | Button
-| #enabled | Is the smart home device active ? | Information
+| #enabled | Is the smart home device active? Status and control to enable/disable. State will be synced with the cloud in the same interval as the smarthome deice data. | true / false |
 | #query | query data for this device, only visible when the smart home device/skill supports to retrieve information | Button |
 | active | shown for scenes when they can be activated/deactivated | true / false |
 | powerState | Switch power on / off | changeable, true / false |
-| ... | Many more possible states depending on the type the the smart home device | Information or changeable :-) |
+| ... | Many more possible states depending on the type of the smart home device | Information or changeable :-) |
 
 **-> Special states for color/light devices**
 
@@ -387,13 +409,27 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* many feature enhancements for Player and Smart Home Devices states and more, see Changelog in GitHub for all details!
+* Allow to define if Lists and Smart home devices are synced by the adapter with the Amazon Cloud at all
+
+### 3.14.0
+* (Apollon77) Allow to define if Lists and Smart home devices are synced by the adapter with the Amazon Cloud at all
 * (Apollon77) Enhance Smart Home Device support by adding various controllers and states. If in your Alexa App something is configurable which is not in ioBroker please send a debug log!
 * (Apollon77) Re-Introduce the ability to poll smart home device states in intervals, but only devices are queried that report their status proactively to Amazon-Cloud to prevent Skill developer costs! ioBroker (and OpenHab) devices are NOT queried! The interval can be configured but must not be lower than 60s! Querying is disabled by default.
 * (Apollon77) Add message to send out sequences of commands to alexa devices
-* (Apollon77) Do not set the speak-volume when executing textCommand
-* (Apollon77) Do not set speak-volume if the volume is already as wanted
+* (Apollon77) Add Info states for macAddress and WifiSSID of the Alexa devices
+* (Apollon77) Add several new states for Player for allowed actions, medium quality
+* (Apollon77) Add mediaId and also allow to set it to jump to a defined entry in the playlist
+* (Apollon77) Add Commands.sound to play a sound
+* (Apollon77) Do not set the speak-volume when executing textCommand and deviceStop
+* (Apollon77) Do not set speak-volume if the volume is already as wanted when executing commands
+* (Apollon77) update Do-Not-Disturb status once on start and with device configuration updates
+* (Apollon77) Allow to specify the title in notification commands
+* (Apollon77) When a device plays music in a group then new states in "Player"will indicate this together with the group ID
+* (Apollon77) Allow to enable and disable smart home devices - this will be synced together with the smart home state updates from the cloud if changed in the app!
 * (Apollon77) Detect Rate limit exceeded response and do one automatic request retry 10s later (plus a random part)
 * (Apollon77) Slow down the update of player status to prevent rate limit exceeded errors. initial update of the player states is delayed on startup of the adapter
+* (Apollon77) Restore character replacement for Music providers (space is now again a "-")
 * (Apollon77) Add more devices
 * (Apollon77) Optimize startup and unload handling
 

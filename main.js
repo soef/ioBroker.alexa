@@ -3,7 +3,7 @@ const Alexa = require('alexa-remote2');
 const path = require('path');
 const os = require('os');
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
-const shObjects = require(path.join(__dirname, 'lib', 'smarthomedevices.js'));
+const shObjects = require('./lib/smarthomedevices.js');
 
 let Sentry;
 let SentryIntegrations;
@@ -70,7 +70,8 @@ const commands = {
     'joke': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'cleanup': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'curatedtts': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}},
-    'textCommand': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}}
+    'textCommand': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}},
+    'sound': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}}
 };
 
 const knownDeviceType = {
@@ -171,15 +172,18 @@ let proxyUrl = null;
 
 let updateStateTimer;
 let updateHistoryTimer;
+let updateConfigurationTimer;
 let updateSmartHomeDevicesTimer;
 const updatePlayerTimer = {};
 const updateNotificationTimer = {};
 
 let musicProviders;
+let routineSounds;
 const initialDeviceVolumes = {};
 let automationRoutines;
 let routineTriggerUtterances;
 const playerDevices = {};
+const playingDevices = {};
 const appDevices = {};
 const listMap =  {};
 
@@ -255,7 +259,7 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
         if (obj.common.unit === undefined && adapterObjects[id].common.unit !== undefined) delete adapterObjects[id].common.unit;
         if (obj.common.min === undefined && adapterObjects[id].common.min !== undefined) delete adapterObjects[id].common.min;
         if (obj.common.max === undefined && adapterObjects[id].common.max !== undefined) delete adapterObjects[id].common.max;
-        value = undefined; // when exists and it is first time do not overwrite value!
+        //value = undefined; // when exists and it is first time do not overwrite value!
     }
     if (existingStates[id]) delete(existingStates[id]);
     if (adapterObjects[id] && isEquivalent(obj, adapterObjects[id])) {
@@ -531,6 +535,7 @@ function startAdapter(options) {
         stopped = true;
         updateSmartHomeDevicesTimer && clearTimeout(updateSmartHomeDevicesTimer);
         updateStateTimer && clearTimeout(updateStateTimer);
+        updateConfigurationTimer && clearTimeout(updateConfigurationTimer);
         updateHistoryTimer && clearTimeout(updateHistoryTimer);
         Object.keys(notificationTimer).forEach(timer => notificationTimer[timer] && clearTimeout(notificationTimer[timer]));
         Object.keys(updateNotificationTimer).forEach(timer => updateNotificationTimer[timer] && clearTimeout(updateNotificationTimer[timer]));
@@ -729,6 +734,7 @@ function scheduleStatesUpdate(delay) {
         clearTimeout(updateStateTimer);
     }
     if (delay === undefined) {
+        if (adapter.config.updateStateInterval === 0) return;
         delay = adapter.config.updateStateInterval * 1000;
         if (wsMqttConnected) delay = 60 * 60 * 1000; // 1h
     }
@@ -737,6 +743,45 @@ function scheduleStatesUpdate(delay) {
         updateStateTimer = null;
         updateStates();
     }, delay);
+}
+
+function updateDeviceConfigurationStates(callback) {
+    if (stopped) return;
+    alexa.getDoNotDisturb((err, res) => {
+        if (stopped) return;
+
+        if (!err && res && res.doNotDisturbDeviceStatusList && Array.isArray(res.doNotDisturbDeviceStatusList)) {
+            res.doNotDisturbDeviceStatusList.forEach(status => {
+                const device = alexa.find(status.deviceSerialNumber);
+                if (device && device.deviceTypeDetails.commandSupport) {
+                    adapter.setState(`Echo-Devices.${device.serialNumber}.Commands.doNotDisturb`, status.enabled, true);
+                }
+            });
+        }
+
+        alexa.getDevicePreferences((err, res) => {
+            if (stopped) return;
+            if (!err && res && res.devicePreferences && Array.isArray(res.devicePreferences)) {
+                res.devicePreferences.forEach(pref => {
+                    if (!pref.deviceSerialNumber) return;
+                    const device = alexa.find(pref.deviceSerialNumber);
+                    if (!device) return;
+                    device.preferences = pref;
+
+                    if (pref.notificationEarconEnabled !== undefined) {
+                        adapter.setState(`Echo-Devices.${device.serialNumber}.Preferences.ringNotificationsEnabled`, pref.notificationEarconEnabled, true);
+                    }
+                });
+            }
+
+            if (adapter.config.updateConfigurationInterval > 0) {
+                updateConfigurationTimer = setTimeout(() => {
+                    updateDeviceConfigurationStates();
+                }, adapter.config.updateConfigurationInterval * 1000);
+            }
+            callback && callback();
+        });
+    });
 }
 
 function updateStates(callback) {
@@ -815,6 +860,10 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
         updateSmartHomeDevicesTimer = null;
     }
 
+    if (!adapter.config.synchronizeSmartHomeDevices) {
+        return callback && callback();
+    }
+
     const reqArr = [];
     const blocked = [];
     for (const applianceId of Object.keys(shApplianceEntityMap)) {
@@ -855,7 +904,30 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
             updateSmartHomeDevicesTimer = setTimeout(() => {
                 updateSmartHomeDevicesTimer = null;
                 if (stopped) return;
-                queryAllSmartHomeDevices(true, true);
+
+                alexa.getSmarthomeDevices((err, res) => {
+                    let all = {};
+                    if (
+                        res &&
+                        res.locationDetails &&
+                        res.locationDetails.Default_Location &&
+                        res.locationDetails.Default_Location.amazonBridgeDetails &&
+                        res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails
+                    ) {
+                        all = res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails;
+                    }
+                    for (const i of Object.keys(all)) {
+                        for (const n of Object.keys(all[i].applianceDetails.applianceDetails)) {
+                            const shDevice = all[i].applianceDetails.applianceDetails[n];
+                            if (shApplianceEntityMap[shDevice.applianceId] && shApplianceEntityMap[shDevice.applianceId].entityId) {
+                                adapter.setState(`Smart-Home-Devices.${shDevice.entityId}.#enabled`, shDevice.isEnabled, true);
+                            } else {
+                                adapter.log.info(`It seems that a new smart home device got created, restart the Adapter to use it (${shDevice.applianceId})`);
+                            }
+                        }
+                    }
+                    queryAllSmartHomeDevices(true, true);
+                });
             }, adapter.config.updateSmartHomeDevicesInterval * 1000);
         }
         callback && callback();
@@ -1147,6 +1219,10 @@ function updateSmarthomeDeviceStates(res) {
 }
 
 function createSmarthomeStates(callback) {
+    if (!adapter.config.synchronizeSmartHomeDevices) {
+        return callback && callback();
+    }
+
     shApplianceEntityMap = {};
     shGroupDetails = {};
 
@@ -1222,7 +1298,9 @@ function createSmarthomeStates(callback) {
                                 manufacturerName: shDevice.manufacturerName,
                             }
                         });
-                        setOrUpdateObject(`Smart-Home-Devices.${shDevice.entityId}.#enabled`, {common: {role: 'indicator', write: false}}, shDevice.isEnabled);
+                        setOrUpdateObject(`Smart-Home-Devices.${shDevice.entityId}.#enabled`, {common: {role: 'indicator', write: true}}, shDevice.isEnabled, function (val) {
+                            alexa.setEnablementForSmarthomeDevice(n, val);
+                        }.bind(alexa));
                         setOrUpdateObject(`Smart-Home-Devices.${shDevice.entityId}.#delete`, {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, function (entityId, val) {
                             alexa.deleteSmarthomeDevice(n);
                             adapter.deleteChannel('Smart-Home-Devices', entityId);
@@ -1588,7 +1666,10 @@ function createSmarthomeStates(callback) {
 }
 
 function scheduleHistoryUpdate(delay) {
-    if (delay === undefined) delay = adapter.config.updateHistoryInterval * 1000;
+    if (delay === undefined) {
+        if (adapter.config.updateStateInterval === 0) return;
+        delay = adapter.config.updateHistoryInterval * 1000;
+    }
     if (updateHistoryTimer) {
         clearTimeout(updateHistoryTimer);
     }
@@ -1751,154 +1832,344 @@ function createStates(callback) {
         const device = alexa.serialNumbers[n];
         const devId = `Echo-Devices.${device.serialNumber}`;
 
-        createDeviceStates(device);
-        if (device.ignore) return;
+        createDeviceStates(device, () => {
+            if (device.ignore) return;
 
-        if (device.isControllable) {
-            playerDevices[device.serialNumber] = true;
-            setOrUpdateObject(`${devId}.Player`, {type: 'channel'});
+            if (device.isControllable) {
+                playerDevices[device.serialNumber] = true;
+                setOrUpdateObject(`${devId}.Player`, {type: 'channel'});
 
-            setOrUpdateObject(`${devId}.Player.contentType`, {common: {role: 'text', write: false, def: ''}}); // 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
-            setOrUpdateObject(`${devId}.Player.currentState`, {common: {role: 'media.state', write: false, def: false}}); // 'PAUSED' | 'PLAYING'
-            setOrUpdateObject(`${devId}.Player.imageURL`, {common: {name: 'Huge image', role: 'media.cover.big', write: false, def: ''}});
-            setOrUpdateObject(`${devId}.Player.providerId`, {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
-            setOrUpdateObject(`${devId}.Player.radioStationId`, {common: {role: 'text', write: false, def: ''}}); // 's24885' | null
-            setOrUpdateObject(`${devId}.Player.service`, {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
-            setOrUpdateObject(`${devId}.Player.providerName`, {common: {name: 'active provider', role: 'media.input', write: false, def: ''}}); // 'Amazon Music' | 'TuneIn Live-Radio'
+                setOrUpdateObject(`${devId}.Player.contentType`, {common: {role: 'text', write: false, def: ''}}); // 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
+                setOrUpdateObject(`${devId}.Player.currentState`, {common: {role: 'media.state', write: false, def: false}}); // 'PAUSED' | 'PLAYING'
+                setOrUpdateObject(`${devId}.Player.imageURL`, {common: {name: 'Huge image', role: 'media.cover.big', write: false, def: ''}});
+                setOrUpdateObject(`${devId}.Player.providerId`, {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
+                setOrUpdateObject(`${devId}.Player.radioStationId`, {common: {role: 'text', write: false, def: ''}}); // 's24885' | null
+                setOrUpdateObject(`${devId}.Player.service`, {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
+                setOrUpdateObject(`${devId}.Player.providerName`, {common: {name: 'active provider', role: 'media.input', write: false, def: ''}}); // 'Amazon Music' | 'TuneIn Live-Radio'
 
-            setOrUpdateObject(`${devId}.Player.currentTitle`, {common: {name:'current title', type:'string', role:'media.title', def: ''}});
-            setOrUpdateObject(`${devId}.Player.currentArtist`, {common: {name:'current artist', type:'string', role:'media.artist', def: ''}});
-            setOrUpdateObject(`${devId}.Player.currentAlbum`, {common: {name:'current album', type:'string', role:'media.album', def: ''}});
-            setOrUpdateObject(`${devId}.Player.mainArtUrl`, {common: {name:'current main Art', type:'string', role:'media.cover', def: ''}});
-            setOrUpdateObject(`${devId}.Player.miniArtUrl`, {common: {name:'current mini Art', type:'string', role:'media.cover.small', def: ''}});
+                setOrUpdateObject(`${devId}.Player.currentTitle`, {common: {name:'current title', type:'string', role:'media.title', write: false, def: ''}});
+                setOrUpdateObject(`${devId}.Player.currentArtist`, {common: {name:'current artist', type:'string', role:'media.artist', write: false, def: ''}});
+                setOrUpdateObject(`${devId}.Player.currentAlbum`, {common: {name:'current album', type:'string', role:'media.album', write: false, def: ''}});
+                setOrUpdateObject(`${devId}.Player.mainArtUrl`, {common: {name:'current main Art', type:'string', role:'media.cover', write: false, def: ''}});
+                setOrUpdateObject(`${devId}.Player.miniArtUrl`, {common: {name:'current mini Art', type:'string', role:'media.cover.small', write: false, def: ''}});
 
-            setOrUpdateObject(`${devId}.Player.mediaLength`, {common: {name:'active media length', type:'number', role:'media.duration', def: 0}});
-            setOrUpdateObject(`${devId}.Player.mediaLengthStr`, {common: {name:'active media length as (HH:)MM:SS', type:'string', role:'media.duration.text', def: ''}});
-            setOrUpdateObject(`${devId}.Player.mediaProgress`,  {common: {name:'active media progress', type:'number', role:'media.elapsed', def: 0}});
-            setOrUpdateObject(`${devId}.Player.mediaProgressStr`, {common: {name:'active media progress as (HH:)MM:SS', type:'string', role:'media.elapsed.text', def: ''}});
-            setOrUpdateObject(`${devId}.Player.mediaProgressPercent`, {common: {name:'active media progress as percent', type:'number', role:'media.elapsed.percent', def: 0}});
-            setOrUpdateObject(`${devId}.Player.mediaRemaining`,  {common: {name:'active media remaining time', type:'number', role:'value', def: 0}});
-            setOrUpdateObject(`${devId}.Player.mediaRemainingStr`, {common: {name:'active media remaining time as (HH:)MM:SS', type:'string', role:'value', def: ''}});
-
-            for (const c of Object.keys(playerControls)) {
-                const obj = JSON.parse (JSON.stringify (playerControls[c]));
-                setOrUpdateObject(`${devId}.Player.${c}`, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
-            }
-
-            if (device.capabilities.includes('VOLUME_SETTING')) {
-                setOrUpdateObject(`${devId}.Player.muted`, {common: {type: 'boolean', role: 'media.mute', write: false, def: false}});
-                setOrUpdateObject(`${devId}.Player.volume`, {common: {role: 'level.volume', min: 0, max: 100}}, 0, function (device, value) {
-                    if (device.isMultiroomDevice) {
-                        alexa.sendCommand(device, 'volume', value, (err, res) => {
-                            // on unavailability {"message":"No routes found","userFacingMessage":null}
-                            if (res && res.message === 'No routes found') {
-                                const volumeCommands = [];
-                                iterateMultiroom(device, (iteratorDevice, nextCallback) => {
-                                    volumeCommands.push({
-                                        command: 'volume',
-                                        value,
-                                        device: iteratorDevice.serialNumber
-                                    });
-                                    nextCallback && nextCallback();
-                                }, () => {
-                                    alexa.sendMultiSequenceCommand(device.serialNumber, volumeCommands, 'ParallelNode', alexa.ownerCustomerId);
-                                });
-                            }
-                        });
-                    }
-                    else {
-                        alexa.sendSequenceCommand(device, 'volume', value, alexa.ownerCustomerId);
-                    }
+                setOrUpdateObject(`${devId}.Player.mediaId`, {common: {name:'current mediaId', type:'string', role:'media.playid', write: true, def: ''}}, function (device, value) {
+                    alexa.sendCommand(device, 'jump', value);
                 }.bind(alexa, device));
-            }
+                setOrUpdateObject(`${devId}.Player.queueId`, {common: {name:'current queueId', type:'string', role:'text', write: false, def: ''}});
+                setOrUpdateObject(`${devId}.Player.quality`, {common: {name:'current media quality', type:'string', role:'text', write: false, def: ''}});
+                setOrUpdateObject(`${devId}.Player.qualityCodec`, {common: {name:'current media codec', type:'string', write: false, role:'text', def: ''}});
+                setOrUpdateObject(`${devId}.Player.qualityDataRate`, {common: {name:'current media bitrate', type:'number', write: false, role:'media.bitrate', def: null, unit: 'kbps'}});
+                setOrUpdateObject(`${devId}.Player.qualitySampleRate`, {common: {name:'current media sample rate', type:'number', write: false, role:'value', def: null, unit: 'Hz'}});
+                setOrUpdateObject(`${devId}.Player.allowNext`, {common: {name:'allow action Next', type:'boolean', role:'indicator', write: false, def: false}});
+                setOrUpdateObject(`${devId}.Player.allowPlayPause`, {common: {name:'allow action Play/Pause', type:'boolean', role:'indicator', write: false, def: false}});
+                setOrUpdateObject(`${devId}.Player.allowPrevious`, {common: {name:'allow action Previous', type:'boolean', role:'indicator', write: false, def: false}});
+                setOrUpdateObject(`${devId}.Player.allowRepeat`, {common: {name:'allow action Repeat', type:'boolean', role:'indicator', write: false, def: false}});
+                setOrUpdateObject(`${devId}.Player.allowShuffle`, {common: {name:'allow action Shuffle', type:'boolean', role:'indicator', write: false, def: false}});
+                setOrUpdateObject(`${devId}.Player.playingInGroup`, {common: {name:'is Playing in Group?', type:'boolean', role:'indicator', write: false, def: false}});
+                setOrUpdateObject(`${devId}.Player.playingInGroupId`, {common: {name:'Current playing group ID', type:'string', role:'text', write: false, def: ''}});
 
-            if (device.hasMusicPlayer) {
-                for (const c of Object.keys(musicControls)) {
-                    const obj = JSON.parse (JSON.stringify (musicControls[c]));
+                setOrUpdateObject(`${devId}.Player.mediaLength`, {common: {name:'active media length', type:'number', role:'media.duration', def: 0}});
+                setOrUpdateObject(`${devId}.Player.mediaLengthStr`, {common: {name:'active media length as (HH:)MM:SS', type:'string', role:'media.duration.text', def: ''}});
+                setOrUpdateObject(`${devId}.Player.mediaProgress`,  {common: {name:'active media progress', type:'number', role:'media.elapsed', def: 0}});
+                setOrUpdateObject(`${devId}.Player.mediaProgressStr`, {common: {name:'active media progress as (HH:)MM:SS', type:'string', role:'media.elapsed.text', def: ''}});
+                setOrUpdateObject(`${devId}.Player.mediaProgressPercent`, {common: {name:'active media progress as percent', type:'number', role:'media.elapsed.percent', def: 0}});
+                setOrUpdateObject(`${devId}.Player.mediaRemaining`,  {common: {name:'active media remaining time', type:'number', role:'value', def: 0}});
+                setOrUpdateObject(`${devId}.Player.mediaRemainingStr`, {common: {name:'active media remaining time as (HH:)MM:SS', type:'string', role:'value', def: ''}});
+
+                for (const c of Object.keys(playerControls)) {
+                    const obj = JSON.parse (JSON.stringify (playerControls[c]));
                     setOrUpdateObject(`${devId}.Player.${c}`, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
                 }
-                setOrUpdateObject(`${devId}.Music-Provider`, {type: 'channel'});
-                for (const p in musicProviders) {
-                    if (musicProviders[p].availability !== 'AVAILABLE') continue;
-                    if (!musicProviders[p].supportedOperations.includes('Alexa.Music.PlaySearchPhrase')) continue;
-                    const displayName = musicProviders[p].displayName.replace(adapter.FORBIDDEN_CHARS, '-').replace(/\./g, '_');
-                    if (!displayName.length) {
-                        musicProviders[p].id !== 'DEFAULT' && adapter.log.warn(`Music Provider has no name, ignoring! (${JSON.stringify(musicProviders[p])})`);
-                        continue;
-                    }
 
-                    setOrUpdateObject(`${devId}.Music-Provider.${displayName}`, {common: {name:`Phrase to play with ${musicProviders[p].displayName}`, type:'string', role:'text', def: ''}}, '', playMusicProvider.bind(alexa, device, musicProviders[p].id));
-                    setOrUpdateObject(`${devId}.Music-Provider.${displayName}-Playlist`, {common: {name:`Playlist to play with ${musicProviders[p].displayName}`, type:'string', role:'text', def: ''}}, '', function(device, providerId, value) {
-                        if (value === '') return;
-                        playMusicProvider(device, providerId, `playlist ${value}`);
-                    }.bind(alexa, device, musicProviders[p].id));
+                if (device.capabilities.includes('VOLUME_SETTING')) {
+                    setOrUpdateObject(`${devId}.Player.muted`, {common: {type: 'boolean', role: 'media.mute', write: false, def: false}});
+                    setOrUpdateObject(`${devId}.Player.volume`, {common: {role: 'level.volume', min: 0, max: 100, def: 0}}, null, function (device, value) {
+                        if (device.isMultiroomDevice) {
+                            alexa.sendCommand(device, 'volume', value, (err, res) => {
+                                // on unavailability {"message":"No routes found","userFacingMessage":null}
+                                if (res && res.message === 'No routes found') {
+                                    const volumeCommands = [];
+                                    iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                                        volumeCommands.push({
+                                            command: 'volume',
+                                            value,
+                                            device: iteratorDevice.serialNumber
+                                        });
+                                        nextCallback && nextCallback();
+                                    }, () => {
+                                        alexa.sendMultiSequenceCommand(device.serialNumber, volumeCommands, 'ParallelNode', alexa.ownerCustomerId);
+                                    });
+                                }
+                            });
+                        }
+                        else {
+                            alexa.sendSequenceCommand(device, 'volume', value, alexa.ownerCustomerId);
+                        }
+                    }.bind(alexa, device));
                 }
-            }
 
-            if (device.capabilities.includes ('TUNE_IN')) {
-                setOrUpdateObject(`${devId}.Player.TuneIn-Station`, {common: {role: 'text'}}, '', function (device, query) {
-                    if (query.match(/^s[0-9]+$/)) {
-                        device.setTunein(query, 'station', (err, ret) => {
-                            if (!err) {
-                                adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
-                                schedulePlayerUpdate(device, 5000);
-                            }
-                        });
-                    /*} else if (query.match(/^p[0-9]+$/)) {
-                        device.setTunein(query, 'show', (err, ret) => {
-                            if (!err) {
-                                adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
-                                schedulePlayerUpdate(device, 5000);
-                            }
-                        });*/
-                    } else if (query.match(/^t[0-9]+$/)) {
-                        device.setTunein(query, 'topic', (err, ret) => {
-                            if (!err) {
-                                adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
-                                schedulePlayerUpdate(device, 5000);
-                            }
-                        });
-                    } else {
-                        alexa.tuneinSearch(query, (err, res) => {
-                            setRequestResult(err, res);
-                            if (err || !res || !Array.isArray (res.browseList)) return;
-                            const station = res.browseList[0];
-                            device.setTunein(station.id, station.contentType, (err, ret) => {
+                if (device.hasMusicPlayer) {
+                    for (const c of Object.keys(musicControls)) {
+                        const obj = JSON.parse (JSON.stringify (musicControls[c]));
+                        setOrUpdateObject(`${devId}.Player.${c}`, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
+                    }
+                    setOrUpdateObject(`${devId}.Music-Provider`, {type: 'channel'});
+                    for (const p in musicProviders) {
+                        if (musicProviders[p].availability !== 'AVAILABLE') continue;
+                        if (!musicProviders[p].supportedOperations.includes('Alexa.Music.PlaySearchPhrase')) continue;
+                        const displayName = musicProviders[p].displayName.replace(adapter.FORBIDDEN_CHARS, '-').replace(/\./g, '_').replace(/ /g, '-');
+                        if (!displayName.length) {
+                            musicProviders[p].id !== 'DEFAULT' && adapter.log.warn(`Music Provider has no name, ignoring! (${JSON.stringify(musicProviders[p])})`);
+                            continue;
+                        }
+
+                        setOrUpdateObject(`${devId}.Music-Provider.${displayName}`, {common: {name:`Phrase to play with ${musicProviders[p].displayName}`, type:'string', role:'text', def: ''}}, null, playMusicProvider.bind(alexa, device, musicProviders[p].id));
+                        setOrUpdateObject(`${devId}.Music-Provider.${displayName}-Playlist`, {common: {name:`Playlist to play with ${musicProviders[p].displayName}`, type:'string', role:'text', def: ''}}, null, function(device, providerId, value) {
+                            if (value === '') return;
+                            playMusicProvider(device, providerId, `playlist ${value}`);
+                        }.bind(alexa, device, musicProviders[p].id));
+                    }
+                }
+
+                if (device.capabilities.includes ('TUNE_IN')) {
+                    setOrUpdateObject(`${devId}.Player.TuneIn-Station`, {common: {role: 'text', def: ''}}, null, function (device, query) {
+                        if (query.match(/^s[0-9]+$/)) {
+                            device.setTunein(query, 'station', (err, ret) => {
                                 if (!err) {
-                                    adapter.setState(`Echo-Devices.${device.serialNumber}.Player.TuneIn-Station`, station.name, true);
+                                    adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
                                     schedulePlayerUpdate(device, 5000);
                                 }
                             });
-                        });
-                    }
-                }.bind(alexa, device));
+                            /*} else if (query.match(/^p[0-9]+$/)) {
+                                device.setTunein(query, 'show', (err, ret) => {
+                                    if (!err) {
+                                        adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
+                                        schedulePlayerUpdate(device, 5000);
+                                    }
+                                });*/
+                        } else if (query.match(/^t[0-9]+$/)) {
+                            device.setTunein(query, 'topic', (err, ret) => {
+                                if (!err) {
+                                    adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
+                                    schedulePlayerUpdate(device, 5000);
+                                }
+                            });
+                        } else {
+                            alexa.tuneinSearch(query, (err, res) => {
+                                setRequestResult(err, res);
+                                if (err || !res || !Array.isArray (res.browseList)) return;
+                                const station = res.browseList[0];
+                                device.setTunein(station.id, station.contentType, (err, ret) => {
+                                    if (!err) {
+                                        adapter.setState(`Echo-Devices.${device.serialNumber}.Player.TuneIn-Station`, station.name, true);
+                                        schedulePlayerUpdate(device, 5000);
+                                    }
+                                });
+                            });
+                        }
+                    }.bind(alexa, device));
+                }
             }
-        }
-        createBluetoothStates(device);
+            createBluetoothStates(device);
 
-        if (device.notifications) {
-            createNotificationStates(device);
-        }
+            if (device.notifications) {
+                createNotificationStates(device);
+            }
 
-        if (device.deviceTypeDetails.commandSupport) {
-            setOrUpdateObject(`${devId}.Commands`, {type: 'channel'});
-            for (const c of Object.keys(commands)) {
-                if (c === 'notification' && device.isMultiroomDevice) continue;
-                const obj = JSON.parse (JSON.stringify (commands[c]));
-                setOrUpdateObject(`${devId}.Commands.${c}`, {common: obj.common}, obj.val, function (device, command, value) {
-                    const commands = [];
+            if (device.deviceTypeDetails.commandSupport) {
+                setOrUpdateObject(`${devId}.Commands`, {type: 'channel'});
+                for (const c of Object.keys(commands)) {
+                    if (c === 'notification' && device.isMultiroomDevice) continue;
+                    const obj = JSON.parse (JSON.stringify (commands[c]));
+                    if (c === 'sound') {
+                        obj.common.states = routineSounds;
+                    }
+                    setOrUpdateObject(`${devId}.Commands.${c}`, {common: obj.common}, obj.val, function (device, command, value) {
+                        const commands = [];
+                        const speakVolumeCommands = [];
+                        const speakVolumeResetCommands = [];
+
+                        iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                            if (command === 'notification' && value && typeof value ===  'string' && value.includes(';')) {
+                                const parts = value.split(';');
+                                const title = parts.shift();
+                                value = {
+                                    title,
+                                    text: parts.join(';')
+                                };
+                            }
+
+                            if (command === 'deviceStop' || command === 'textCommand') {
+                                commands.push({
+                                    command,
+                                    value,
+                                    device: iteratorDevice.serialNumber
+                                });
+                                return nextCallback && nextCallback();
+                            }
+                            const speakVolume = iteratorDevice.speakVolume;
+                            adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
+                                let speakVolumeReset = 0;
+                                if (!err && state && state.val !== false && state.val !== null) {
+                                    speakVolumeReset = state.val;
+                                }
+                                if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
+                                    speakVolumeCommands.push({
+                                        command: 'volume',
+                                        value: speakVolume,
+                                        device: iteratorDevice.serialNumber
+                                    });
+                                }
+                                commands.push({
+                                    command,
+                                    value,
+                                    device: iteratorDevice.serialNumber
+                                });
+                                if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
+                                    speakVolumeResetCommands.push({
+                                        command: 'volume',
+                                        value: speakVolumeReset,
+                                        device: iteratorDevice.serialNumber
+                                    });
+                                }
+                                nextCallback && nextCallback();
+                            });
+                        }, () => {
+                            if (!commands.length) return;
+                            if (command === 'deviceStop' || command === 'textCommand') {
+                                alexa.sendMultiSequenceCommand(device.serialNumber, commands, 'ParallelNode', alexa.ownerCustomerId);
+                            } else {
+                                const allCommands = [];
+                                speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
+                                allCommands.push({sequenceType: 'ParallelNode', nodes: commands});
+                                speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
+                                alexa.sendMultiSequenceCommand(device.serialNumber, allCommands, null, alexa.ownerCustomerId);
+                            }
+                        });
+                    }.bind(alexa, device, c));
+                }
+                setOrUpdateObject(`${devId}.Commands.speak`, {common: { role: 'media.tts', def: ''}}, null, function (device, value) {
+                    if (typeof value !== 'string') return;
+                    if (!value) return;
+
+                    const speakVolumeCommands = [];
+                    const speakCommands = [];
+                    const speakVolumeResetCommands = [];
+
+                    iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                        let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
+                        if (!valueArr) valueArr = [];
+                        const speakVolume = valueArr[4] || iteratorDevice.speakVolume;
+                        value = valueArr[5] || value;
+                        if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
+                        adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
+                            let speakVolumeReset = 0;
+                            if (!err && state && state.val !== false && state.val !== null) {
+                                speakVolumeReset = state.val;
+                            }
+                            if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
+                                speakVolumeCommands.push({
+                                    command: 'volume',
+                                    value: speakVolume,
+                                    device: iteratorDevice.serialNumber
+                                });
+                            }
+                            const speakCommandsFromValue = [];
+                            value.split(';').forEach((v) => {
+                                const value = v.trim();
+                                if (!value || !value.length) return;
+                                speakCommandsFromValue.push({
+                                    command: 'speak',
+                                    value,
+                                    device: iteratorDevice.serialNumber
+                                });
+                            });
+                            speakCommands.push({sequenceType: 'SerialNode', nodes: speakCommandsFromValue});
+                            if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
+                                speakVolumeResetCommands.push({
+                                    command: 'volume',
+                                    value: speakVolumeReset,
+                                    device: iteratorDevice.serialNumber
+                                });
+                            }
+                            nextCallback && nextCallback();
+                        });
+                    }, () => {
+                        // Done
+                        if (!speakCommands.length) return;
+                        const allCommands = [];
+                        speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
+                        allCommands.push({sequenceType: 'ParallelNode', nodes: speakCommands});
+                        speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
+                        alexa.sendMultiSequenceCommand(device.serialNumber, allCommands, null, alexa.ownerCustomerId);
+                    });
+                }.bind(alexa, device));
+                setOrUpdateObject(`${devId}.Commands.announcement`, {common: { role: 'media.tts', def: ''}}, null, function (device, value) {
+                    if (typeof value !== 'string') return;
+                    if (!value) return;
+
+                    const speakVolumeCommands = [];
+                    const speakVolumeResetCommands = [];
+
+                    let speakValue = '';
+                    iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                        let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
+                        if (!valueArr) valueArr= [];
+                        const speakVolume = valueArr[4] || iteratorDevice.speakVolume;
+                        value = valueArr[5] || value;
+                        if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
+                        adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
+                            let speakVolumeReset = 0;
+                            if (!err && state && state.val !== false && state.val !== null) {
+                                speakVolumeReset = state.val;
+                            }
+                            if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
+                                speakVolumeCommands.push({
+                                    command: 'volume',
+                                    value: speakVolume,
+                                    device: iteratorDevice.serialNumber
+                                });
+                            }
+                            if (!speakValue) speakValue = value;
+                            if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
+                                speakVolumeResetCommands.push({
+                                    command: 'volume',
+                                    value: speakVolumeReset,
+                                    device: iteratorDevice.serialNumber
+                                });
+                            }
+                            nextCallback && nextCallback();
+                        });
+                    }, () => {
+                        const announceCommands = [];
+                        speakValue.split(';').forEach((v) => {
+                            const value = v.trim();
+                            if (!value || !value.length) return;
+                            announceCommands.push({command: 'announcement', value});
+                        });
+                        if (!announceCommands.length) return;
+
+                        const allCommands = [];
+                        speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
+                        if (announceCommands.length === 1) {
+                            allCommands.push(announceCommands[0]);
+                        } else {
+                            allCommands.push({sequenceType: 'SerialNode', nodes: announceCommands});
+                        }
+                        speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
+                        alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, allCommands, null, alexa.ownerCustomerId);
+                    });
+                }.bind(alexa, device));
+                setOrUpdateObject(`${devId}.Commands.ssml`, {common: { role: 'media.tts', def: ''}}, null, function (device, value) {
+                    if (typeof value !== 'string') return;
+                    value = value.trim();
+                    if (!value) return;
+
                     const speakVolumeCommands = [];
                     const speakVolumeResetCommands = [];
 
                     iterateMultiroom(device, (iteratorDevice, nextCallback) => {
-                        if (command === 'deviceStop' || command === 'textCommand') {
-                            commands.push({
-                                command,
-                                value,
-                                device: iteratorDevice.serialNumber
-                            });
-                            return nextCallback && nextCallback();
-                        }
                         const speakVolume = iteratorDevice.speakVolume;
                         adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
                             let speakVolumeReset = 0;
@@ -1912,11 +2183,6 @@ function createStates(callback) {
                                     device: iteratorDevice.serialNumber
                                 });
                             }
-                            commands.push({
-                                command,
-                                value,
-                                device: iteratorDevice.serialNumber
-                            });
                             if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
                                 speakVolumeResetCommands.push({
                                     command: 'volume',
@@ -1927,204 +2193,54 @@ function createStates(callback) {
                             nextCallback && nextCallback();
                         });
                     }, () => {
-                        if (!commands.length) return;
-                        if (command === 'deviceStop' || command === 'textCommand') {
-                            alexa.sendMultiSequenceCommand(device.serialNumber, commands, 'ParallelNode', alexa.ownerCustomerId);
-                        } else {
-                            const allCommands = [];
-                            speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
-                            allCommands.push({sequenceType: 'ParallelNode', nodes: commands});
-                            speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
-                            alexa.sendMultiSequenceCommand(device.serialNumber, allCommands, null, alexa.ownerCustomerId);
-                        }
+                        const allCommands = [];
+                        speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
+                        allCommands.push({command: 'ssml', value});
+                        speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
+                        alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, allCommands, null, alexa.ownerCustomerId);
+
                     });
-                }.bind(alexa, device, c));
-            }
-            setOrUpdateObject(`${devId}.Commands.speak`, {common: { role: 'media.tts'}}, '', function (device, value) {
-                if (typeof value !== 'string') return;
-                if (!value) return;
-
-                const speakVolumeCommands = [];
-                const speakCommands = [];
-                const speakVolumeResetCommands = [];
-
-                iterateMultiroom(device, (iteratorDevice, nextCallback) => {
-                    let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
-                    if (!valueArr) valueArr = [];
-                    const speakVolume = valueArr[4] || iteratorDevice.speakVolume;
-                    value = valueArr[5] || value;
-                    if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
-                    adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
-                        let speakVolumeReset = 0;
-                        if (!err && state && state.val !== false && state.val !== null) {
-                            speakVolumeReset = state.val;
-                        }
-                        if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
-                            speakVolumeCommands.push({
-                                command: 'volume',
-                                value: speakVolume,
-                                device: iteratorDevice.serialNumber
-                            });
-                        }
-                        const speakCommandsFromValue = [];
-                        value.split(';').forEach((v) => {
-                            const value = v.trim();
-                            if (!value || !value.length) return;
-                            speakCommandsFromValue.push({
-                                command: 'speak',
-                                value,
-                                device: iteratorDevice.serialNumber
-                            });
-                        });
-                        speakCommands.push({sequenceType: 'SerialNode', nodes: speakCommandsFromValue});
-                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
-                            speakVolumeResetCommands.push({
-                                command: 'volume',
-                                value: speakVolumeReset,
-                                device: iteratorDevice.serialNumber
-                            });
-                        }
-                        nextCallback && nextCallback();
-                    });
-                }, () => {
-                    // Done
-                    if (!speakCommands.length) return;
-                    const allCommands = [];
-                    speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
-                    allCommands.push({sequenceType: 'ParallelNode', nodes: speakCommands});
-                    speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
-                    alexa.sendMultiSequenceCommand(device.serialNumber, allCommands, null, alexa.ownerCustomerId);
-                });
-            }.bind(alexa, device));
-            setOrUpdateObject(`${devId}.Commands.announcement`, {common: { role: 'media.tts'}}, '', function (device, value) {
-                if (typeof value !== 'string') return;
-                if (!value) return;
-
-                const speakVolumeCommands = [];
-                const speakVolumeResetCommands = [];
-
-                let speakValue = '';
-                iterateMultiroom(device, (iteratorDevice, nextCallback) => {
-                    let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
-                    if (!valueArr) valueArr= [];
-                    const speakVolume = valueArr[4] || iteratorDevice.speakVolume;
-                    value = valueArr[5] || value;
-                    if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
-                    adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
-                        let speakVolumeReset = 0;
-                        if (!err && state && state.val !== false && state.val !== null) {
-                            speakVolumeReset = state.val;
-                        }
-                        if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
-                            speakVolumeCommands.push({
-                                command: 'volume',
-                                value: speakVolume,
-                                device: iteratorDevice.serialNumber
-                            });
-                        }
-                        if (!speakValue) speakValue = value;
-                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
-                            speakVolumeResetCommands.push({
-                                command: 'volume',
-                                value: speakVolumeReset,
-                                device: iteratorDevice.serialNumber
-                            });
-                        }
-                        nextCallback && nextCallback();
-                    });
-                }, () => {
-                    const announceCommands = [];
-                    speakValue.split(';').forEach((v) => {
-                        const value = v.trim();
-                        if (!value || !value.length) return;
-                        announceCommands.push({command: 'announcement', value});
-                    });
-                    if (!announceCommands.length) return;
-
-                    const allCommands = [];
-                    speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
-                    if (announceCommands.length === 1) {
-                        allCommands.push(announceCommands[0]);
-                    } else {
-                        allCommands.push({sequenceType: 'SerialNode', nodes: announceCommands});
+                }.bind(alexa, device));
+                if (!device.isMultiroomDevice) {
+                    if (existingStates[`${devId}.Commands.speak-volume`]) {
+                        adapter.getState(`${devId}.Commands.speak-volume`, function (device, err, state) {
+                            if (!err && state && state.val && state.val > 0) {
+                                device.speakVolume = state.val;
+                                adapter.log.debug(`Initialize speak-Volume for ${device.serialNumber}: ${state.val}`);
+                            }
+                        }.bind(alexa, device));
                     }
-                    speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
-                    alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, allCommands, null, alexa.ownerCustomerId);
-                });
-            }.bind(alexa, device));
-            setOrUpdateObject(`${devId}.Commands.ssml`, {common: { role: 'media.tts'}}, '', function (device, value) {
-                if (typeof value !== 'string') return;
-                value = value.trim();
-                if (!value) return;
-
-                const speakVolumeCommands = [];
-                const speakVolumeResetCommands = [];
-
-                iterateMultiroom(device, (iteratorDevice, nextCallback) => {
-                    const speakVolume = iteratorDevice.speakVolume;
-                    adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
-                        let speakVolumeReset = 0;
-                        if (!err && state && state.val !== false && state.val !== null) {
-                            speakVolumeReset = state.val;
-                        }
-                        if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
-                            speakVolumeCommands.push({
-                                command: 'volume',
-                                value: speakVolume,
-                                device: iteratorDevice.serialNumber
-                            });
-                        }
-                        if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
-                            speakVolumeResetCommands.push({
-                                command: 'volume',
-                                value: speakVolumeReset,
-                                device: iteratorDevice.serialNumber
-                            });
-                        }
-                        nextCallback && nextCallback();
-                    });
-                }, () => {
-                    const allCommands = [];
-                    speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
-                    allCommands.push({command: 'ssml', value});
-                    speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
-                    alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, allCommands, null, alexa.ownerCustomerId);
-
-                });
-            }.bind(alexa, device));
-            if (!device.isMultiroomDevice) {
-                if (existingStates[`${devId}.Commands.speak-volume`]) {
-                    adapter.getState(`${devId}.Commands.speak-volume`, function (device, err, state) {
-                        if (!err && state && state.val && state.val > 0) {
-                            device.speakVolume = state.val;
-                            adapter.log.debug(`Initialize speak-Volume for ${device.serialNumber}: ${state.val}`);
-                        }
+                    setOrUpdateObject(`${devId}.Commands.speak-volume`, {common: {name: 'Volume to use for speak commands', type: 'number', role: 'level.volume', min: 0, max: 100}}, null, function (device, value) {
+                        device.speakVolume = value;
+                        adapter.log.debug(`Set speak-Volume for ${device.serialNumber}: ${value}`);
+                        adapter.setState(`${devId}.Commands.speak-volume`, value, true);
                     }.bind(alexa, device));
                 }
-                setOrUpdateObject(`${devId}.Commands.speak-volume`, {common: {name: 'Volume to use for speak commands', type: 'number', role: 'level.volume', min: 0, max: 100}}, null, function (device, value) {
-                    device.speakVolume = value;
-                    adapter.log.debug(`Set speak-Volume for ${device.serialNumber}: ${value}`);
-                    adapter.setState(`${devId}.Commands.speak-volume`, value, true);
+                setOrUpdateObject(`${devId}.Commands.doNotDisturb`, {common: {role: 'switch'}}, null, function (device, value) {
+                    device.setDoNotDisturb(device, !!value, (err, res) => {
+                        if (!err) {
+                            adapter.setState(`${devId}.Commands.doNotDisturb`, !!value, true);
+                        }
+                    });
                 }.bind(alexa, device));
             }
-            setOrUpdateObject(`${devId}.Commands.doNotDisturb`, {common: {role: 'switch'}}, false, device.setDoNotDisturb);
-        }
 
-        if (!device.isMultiroomDevice && device.deviceTypeDetails.commandSupport) {
-            if (automationRoutines) {
-                setOrUpdateObject(`${devId}.Routines`, {type: 'channel'});
-                for (const i of Object.keys(automationRoutines)) {
-                    setOrUpdateObject(`${devId}.Routines.${automationRoutines[i].friendlyAutomationId}`, {common: { type: 'boolean', role: 'indicator', read: true, write: true, name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
-                    if (automationRoutines[i].utteranceWords) {
-                        if (!routineTriggerUtterances[device.serialNumber]) routineTriggerUtterances[device.serialNumber] = {};
-                        automationRoutines[i].utteranceWords.forEach(utterance => {
-                            if (!utterance) return;
-                            routineTriggerUtterances[device.serialNumber][utterance.toLowerCase()] = `${devId}.Routines.${automationRoutines[i].friendlyAutomationId}`;
-                        });
+            if (!device.isMultiroomDevice && device.deviceTypeDetails.commandSupport) {
+                if (automationRoutines) {
+                    setOrUpdateObject(`${devId}.Routines`, {type: 'channel'});
+                    for (const i of Object.keys(automationRoutines)) {
+                        setOrUpdateObject(`${devId}.Routines.${automationRoutines[i].friendlyAutomationId}`, {common: { type: 'boolean', role: 'indicator', read: true, write: true, name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
+                        if (automationRoutines[i].utteranceWords) {
+                            if (!routineTriggerUtterances[device.serialNumber]) routineTriggerUtterances[device.serialNumber] = {};
+                            automationRoutines[i].utteranceWords.forEach(utterance => {
+                                if (!utterance) return;
+                                routineTriggerUtterances[device.serialNumber][utterance.toLowerCase()] = `${devId}.Routines.${automationRoutines[i].friendlyAutomationId}`;
+                            });
+                        }
                     }
                 }
             }
-        }
+        });
     });
 
     setOrUpdateObject('History', {type: 'channel', common: {name: 'Last detected commands and devices'}});
@@ -2161,7 +2277,7 @@ function playMusicProvider(device, providerId, value) {
     });
 }
 
-function createDeviceStates(serialOrName) {
+function createDeviceStates(serialOrName, callback) {
     const device = alexa.find(serialOrName);
     const devId = `Echo-Devices.${device.serialNumber}`;
 
@@ -2219,7 +2335,65 @@ function createDeviceStates(serialOrName) {
 
     setOrUpdateObject(`${devId}.Info.deviceTypeString`, {common: {name:'deviceType string', type:'string', role:'text'}}, deviceTypeDetails.name);
     setOrUpdateObject(`${devId}.Info.serialNumber`, {common: {name:'serialNumber', type:'string', role:'text'}}, device.serialNumber);
-    setOrUpdateObject(`${devId}.Info.name`, {common: {name:'name', type:'string', role:'text'}}, device._name);
+    setOrUpdateObject(`${devId}.Info.name`, {common: {name:'name', type:'string', role:'info.name'}}, device._name);
+
+    let numPreferences = 0;
+    if (device.preferences && device.preferences.notificationEarconEnabled !== undefined) {
+        numPreferences++;
+        adapter.log.debug(`${devId} notificationEarconEnabled: ${device.preferences.notificationEarconEnabled}`);
+        setOrUpdateObject(`${devId}.Preferences.ringNotificationsEnabled`, {
+            common: {
+                type: 'boolean',
+                role: 'indicator',
+                write: true
+            }
+        }, device.preferences.notificationEarconEnabled, function (device, value) {
+            device.getDevicePreferences((err, res) => {
+                if (err || !res) {
+                    adapter.log.error(`Error getting preferences for ${device.serialNumber}: ${err.message}`);
+                    return;
+                }
+                res.notificationEarconEnabled = !!value;
+                device.setDevicePreferences(res, (err, res) => {
+                    if (err || !res) {
+                        adapter.log.error(`Error setting preferences for ${device.serialNumber}: ${err.message}`);
+                        return;
+                    }
+                    device.preferences = res;
+                    adapter.setState(`${devId}.Preferences.ringNotificationsEnabled`, res.notificationEarconEnabled, true);
+                });
+            });
+        }.bind(alexa, device));
+    }
+
+    if (numPreferences > 0) {
+        setOrUpdateObject(`${devId}.Preferences`, {type: 'channel'});
+    }
+
+    if (device.deviceType === 'A2IVLV5VM2W81' || device.serialNumber.length === 32) {
+        return processObjectQueue(callback);
+    }
+    alexa.getDeviceWifiDetails(device, (err, res) => {
+        if (!err && res && typeof res.macAddress === 'string' && res.macAddress.length) {
+            setOrUpdateObject(`${devId}.Info.macAddress`, {
+                common: {
+                    name: 'name',
+                    type: 'string',
+                    role: 'info.mac'
+                }
+            }, res.macAddress.toUpperCase().replace(/(.{2})/g, '$1:'));
+        }
+        if (!err && res && res.essid) {
+            setOrUpdateObject(`${devId}.Info.WifiSSID`, {
+                common: {
+                    name: 'name',
+                    type: 'string',
+                    role: 'text'
+                }
+            }, res.essid);
+        }
+        processObjectQueue(callback);
+    });
 }
 
 function updateDeviceStatus(serialOrName, callback) {
@@ -2454,7 +2628,20 @@ function updatePlayerStatus(serialOrName, callback) {
                 miniArtUrl : '',
                 mediaLength : 0,
                 mediaProgress : 0,
-                mediaProgressPercent : 0
+                mediaProgressPercent : 0,
+                mediaId: '',
+                queueId: '',
+                quality: '',
+                qualityCodec: '',
+                qualityDataRate: null,
+                qualitySampleRate: null,
+                allowNext: false,
+                allowPlayPause: false,
+                allowPrevious: false,
+                allowRepeat: false,
+                allowShuffle: false,
+                playingInGroup: false,
+                playingInGroupId: ''
             };
             if (initialDeviceVolumes[device.serialNumber]) {
                 playerData.volume = initialDeviceVolumes[device.serialNumber].speakerVolume;
@@ -2477,32 +2664,54 @@ function updatePlayerStatus(serialOrName, callback) {
 
                 playerData.currentState = resPlayer.playerInfo.state === 'PLAYING';
 
-                if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.infoText) {
-                    playerData.title = resPlayer.playerInfo.infoText.title;
-                    playerData.artist = resPlayer.playerInfo.infoText.subText1;
-                    playerData.album = resPlayer.playerInfo.infoText.subText2;
-                }
-
-                if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.mainArt) {
-                    playerData.mainArtUrl = resPlayer.playerInfo.mainArt.url;
-                }
-                if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.miniArt) {
-                    playerData.miniArtUrl = resPlayer.playerInfo.miniArt.url;
-                }
-
                 let mediaRemaining = 0;
-                if (resPlayer.playerInfo !== undefined && resPlayer.playerInfo.progress) {
-                    playerData.mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength || '0', 10);
-                    playerData.mediaProgress = parseInt(resPlayer.playerInfo.progress.mediaProgress, 10);
-                    if (playerData.mediaLength > 0) {
-                        playerData.mediaProgressPercent = Math.round(((playerData.mediaProgress * 100) / playerData.mediaLength));
-                        mediaRemaining = playerData.mediaLength - playerData.mediaProgress;
+                if (resPlayer.playerInfo) {
+                    if (resPlayer.playerInfo.infoText) {
+                        playerData.title = resPlayer.playerInfo.infoText.title;
+                        playerData.artist = resPlayer.playerInfo.infoText.subText1;
+                        playerData.album = resPlayer.playerInfo.infoText.subText2;
                     }
 
-                }
+                    if (resPlayer.playerInfo.mainArt) {
+                        playerData.mainArtUrl = resPlayer.playerInfo.mainArt.url;
+                    }
+                    if (resPlayer.playerInfo.miniArt) {
+                        playerData.miniArtUrl = resPlayer.playerInfo.miniArt.url;
+                    }
+                    playerData.mediaId = resPlayer.playerInfo.mediaId;
+                    playerData.queueId = resPlayer.playerInfo.queueId;
+                    playerData.playingInGroup = resPlayer.playerInfo.isPlayingInLemur;
+                    playerData.playingInGroupId = resPlayer.playerInfo.playingInLemurId;
 
-                playerData.controlPause = resPlayer.playerInfo.state === 'PAUSED';
-                playerData.controlPlay = resPlayer.playerInfo.state === 'PLAYING';
+                    if (resPlayer.playerInfo.progress) {
+                        playerData.mediaLength = parseInt(resPlayer.playerInfo.progress.mediaLength || '0', 10);
+                        playerData.mediaProgress = parseInt(resPlayer.playerInfo.progress.mediaProgress, 10);
+                        if (playerData.mediaLength > 0) {
+                            playerData.mediaProgressPercent = Math.round(((playerData.mediaProgress * 100) / playerData.mediaLength));
+                            mediaRemaining = playerData.mediaLength - playerData.mediaProgress;
+                        }
+                    }
+
+                    playerData.controlPause = resPlayer.playerInfo.state === 'PAUSED';
+                    playerData.controlPlay = resPlayer.playerInfo.state === 'PLAYING';
+
+                    if (resPlayer.playerInfo.quality) {
+                        playerData.quality = resPlayer.playerInfo.quality.name;
+                        if (resPlayer.playerInfo.quality.stats) {
+                            playerData.qualityCodec = resPlayer.playerInfo.quality.stats.codec;
+                            playerData.qualityDataRate = Math.round(resPlayer.playerInfo.quality.stats.dataRateInBitsPerSecond/1000);
+                            playerData.qualitySampleRate = resPlayer.playerInfo.quality.stats.samplingRateInHertz;
+                        }
+                    }
+
+                    if (resPlayer.playerInfo.transport) {
+                        playerData.allowNext = resPlayer.playerInfo.transport.next === 'ENABLED';
+                        playerData.allowPlayPause = resPlayer.playerInfo.transport.playPause === 'ENABLED';
+                        playerData.allowPrevious = resPlayer.playerInfo.transport.previous === 'ENABLED';
+                        playerData.allowRepeat = resPlayer.playerInfo.transport.repeat === 'ENABLED';
+                        playerData.allowShuffle = resPlayer.playerInfo.transport.shuffle === 'ENABLED';
+                    }
+                }
                 // Set States
                 adapter.setState(`${devId}.Player.providerName`, playerData.providerName, true); // 'Amazon Music' | 'TuneIn Live-Radio'
                 adapter.setState(`${devId}.Player.providerId`, playerData.providerId, true);
@@ -2517,6 +2726,42 @@ function updatePlayerStatus(serialOrName, callback) {
                 adapter.setState(`${devId}.Player.controlPlay`, playerData.controlPlay, true);
 
                 adapter.setState(`${devId}.Player.imageURL`, playerData.imageURL, true);
+
+                adapter.setState(`${devId}.Player.mediaId`, playerData.mediaId, true);
+                adapter.setState(`${devId}.Player.queueId`, playerData.queueId, true);
+                adapter.setState(`${devId}.Player.quality`, playerData.quality, true);
+                adapter.setState(`${devId}.Player.qualityCodec`, playerData.qualityCodec, true);
+                adapter.setState(`${devId}.Player.qualityDataRate`, playerData.qualityDataRate, true);
+                adapter.setState(`${devId}.Player.qualitySampleRate`, playerData.qualitySampleRate, true);
+                adapter.setState(`${devId}.Player.allowNext`, playerData.allowNext, true);
+                adapter.setState(`${devId}.Player.allowPlayPause`, playerData.allowPlayPause, true);
+                adapter.setState(`${devId}.Player.allowPrevious`, playerData.allowPrevious, true);
+                adapter.setState(`${devId}.Player.allowRepeat`, playerData.allowRepeat, true);
+                adapter.setState(`${devId}.Player.allowShuffle`, playerData.allowShuffle, true);
+                adapter.setState(`${devId}.Player.playingInGroup`, playerData.playingInGroup, true);
+                adapter.setState(`${devId}.Player.playingInGroupId`, playerData.playingInGroupId, true);
+
+                if (playerData.playingInGroup && playerData.currentState && playerData.playingInGroupId && device.isMultiroomDevice && device.clusterMembers) {
+                    device.clusterMembers.forEach(member => {
+                        const memberDevice = alexa.find(member);
+                        if (memberDevice && memberDevice.isControllable) {
+                            adapter.setState(`Echo-Devices.${memberDevice.serialNumber}.Player.playingInGroup`, true, true);
+                            adapter.setState(`Echo-Devices.${memberDevice.serialNumber}.Player.playingInGroupId`, playerData.playingInGroupId, true);
+                        }
+                    });
+                } else if ((!playerData.playingInGroup || !playerData.currentState) && device.isMultiroomDevice && device.clusterMembers && playingDevices[device.serialNumber]) { // Played before but now no longer playing in group
+                    device.clusterMembers.forEach(member => {
+                        if (playingDevices[member]) {
+                            return; // Device is updated itself while playing
+                        }
+                        const memberDevice = alexa.find(member);
+                        if (memberDevice && memberDevice.isControllable) {
+                            adapter.setState(`Echo-Devices.${memberDevice.serialNumber}.Player.playingInGroup`, false, true);
+                            adapter.setState(`Echo-Devices.${memberDevice.serialNumber}.Player.playingInGroupId`, null, true);
+                        }
+                    });
+                }
+                playingDevices[device.serialNumber] = playerData.currentState;
 
                 if (device.capabilities.includes('VOLUME_SETTING')) {
                     if (playerData.muted !== null) adapter.setState(`${devId}.Player.muted`, playerData.muted, true);
@@ -2594,6 +2839,9 @@ function getLists(listId, callback) {
         listId = null;
     }
 
+    if (!adapter.config.synchronizeLists) {
+        return callback && callback();
+    }
     const allListItems = [];
     const node = 'Lists';
     alexa.getLists((err, lists) => {
@@ -2605,7 +2853,7 @@ function getLists(listId, callback) {
                 if (listId && list.itemId !== listId) return;
                 // modify states
                 list.name = list.name || list.type;
-                list.id = list.name.replace(adapter.FORBIDDEN_CHARS, '-').replace(/ /g, '_');
+                list.id = list.name.replace(adapter.FORBIDDEN_CHARS, '-').replace(/ /g, '_').replace(/\./g, '_');
                 list.listId = list.itemId;
                 delete list.listIds;
                 delete list.itemId;
@@ -2807,7 +3055,7 @@ function initCommUsers(callback) {
 
                     setOrUpdateObject(`Contacts.${contactId}`, {type: 'channel', common: {name: contactName}});
 
-                    setOrUpdateObject(`Contacts.${contactId}.textMessage`, {common: {role: 'text', def: ''}}, '', function (value) {
+                    setOrUpdateObject(`Contacts.${contactId}.textMessage`, {common: {role: 'text', def: ''}}, null, function (value) {
                         if (value === '') return;
 
                         alexa.sendTextMessage(comEntry.commsId[0], value, (err, res) => {
@@ -2910,11 +3158,36 @@ function main() {
         formerDataStorePath: path.join(__dirname, `formerDataStore${adapter.namespace}.json`)
     };
     adapter.config.updateHistoryInterval = parseInt(adapter.config.updateHistoryInterval, 10);
+    if ((adapter.config.updateHistoryInterval !== 0 || isNaN(adapter.config.updateHistoryInterval)) && adapter.config.updateHistoryInterval < 60) {
+        adapter.config.updateHistoryInterval = 60 + Math.floor(Math.random() * 60);
+        adapter.log.info(`Update History Interval is too low, set to ${adapter.config.updateHistoryInterval}s`);
+    }
     adapter.config.updateStateInterval = parseInt(adapter.config.updateStateInterval, 10);
+    if ((adapter.config.updateStateInterval !== 0 || isNaN(adapter.config.updateStateInterval)) && adapter.config.updateStateInterval < 60) {
+        adapter.config.updateStateInterval = 300 + Math.floor(Math.random() * 60);
+        adapter.log.info(`Update Device State Interval is too low, set to ${adapter.config.updateHistoryInterval}s`);
+    } else {
+        adapter.config.updateStateInterval += Math.floor(Math.random() * 10);
+    }
     adapter.config.updateSmartHomeDevicesInterval = parseInt(adapter.config.updateSmartHomeDevicesInterval, 10);
     if ((adapter.config.updateSmartHomeDevicesInterval !== 0 || isNaN(adapter.config.updateSmartHomeDevicesInterval)) && adapter.config.updateSmartHomeDevicesInterval < 60) {
-        adapter.config.updateSmartHomeDevicesInterval = 60;
-        adapter.log.info(`Update SmartHome Devices Interval is too low, set to 60s`);
+        adapter.config.updateSmartHomeDevicesInterval = 300 + Math.floor(Math.random() * 60);
+        adapter.log.info(`Update SmartHome Devices Interval is too low, set to ${adapter.config.updateHistoryInterval}s`);
+    } else {
+        adapter.config.updateSmartHomeDevicesInterval += Math.floor(Math.random() * 10);
+    }
+    adapter.config.updateConfigurationInterval = parseInt(adapter.config.updateConfigurationInterval, 10);
+    if ((adapter.config.updateConfigurationInterval !== 0 || isNaN(adapter.config.updateConfigurationInterval)) && adapter.config.updateConfigurationInterval < 60) {
+        adapter.config.updateConfigurationInterval = 3600 + Math.floor(Math.random() * 60);
+        adapter.log.info(`Update Devices Configuration Interval is too low, set to ${adapter.config.updateHistoryInterval}s`);
+    } else {
+        adapter.config.updateConfigurationInterval += Math.floor(Math.random() * 10);
+    }
+    if (adapter.config.synchronizeLists === undefined) {
+        adapter.config.synchronizeLists = true;
+    }
+    if (adapter.config.synchronizeSmartHomeDevices === undefined) {
+        adapter.config.synchronizeSmartHomeDevices = true;
     }
 
     let initDone = false;
@@ -3068,6 +3341,7 @@ function main() {
 
     const listsInProgress = {};
     alexa.on('ws-todo-change', (payload) => {
+        if (!adapter.config.synchronizeLists) return;
         adapter.log.debug(`Received updated list (${listsInProgress[payload.listId]}): ${JSON.stringify(payload)}`);
 
         if (listsInProgress[payload.listId]) return;
@@ -3179,6 +3453,7 @@ function main() {
 
     alexa.init(options, err => {
         if (err) {
+            adapter.log.debug(`Error from Alexa init: ${err.message}`);
             let restartAdapter = true;
             if (err.message === 'no csrf found') {
                 adapter.log.error('Error: no csrf found. Check configuration of cookie');
@@ -3220,35 +3495,46 @@ function main() {
                         if (!err && deviceVolumes && deviceVolumes.volumes) {
                             deviceVolumes.volumes.forEach(vol => initialDeviceVolumes[vol.dsn] = vol);
                         }
-                        createStates(() => {
-                            createSmarthomeStates(() => {
-                                queryAllSmartHomeDevices(true, false, () => {
-                                    initCommUsers(() => {
-                                        if (!initDone) {
-                                            adapter.log.info('Subscribing to states...');
-                                            adapter.subscribeStates('*');
-                                            adapter.subscribeObjects('*');
-                                            initDone = true;
+                        alexa.getRoutineSoundList((err, soundList) => {
+                            if (!err && soundList && Array.isArray(soundList)) {
+                                routineSounds = {};
+                                soundList.forEach(sound => {
+                                    if (sound.availability !== 'AVAILABLE') return;
+                                    routineSounds[sound.id] = sound.displayName;
+                                });
+                            }
+                            createStates(() => {
+                                createSmarthomeStates(() => {
+                                    queryAllSmartHomeDevices(true, false, () => {
+                                        initCommUsers(() => {
+                                            if (!initDone) {
+                                                adapter.log.info('Subscribing to states...');
+                                                adapter.subscribeStates('*');
+                                                adapter.subscribeObjects('*');
+                                                initDone = true;
 
-                                            scheduleStatesUpdate();
-                                            updateHistory(() => {
-                                                updatePlayerStatus();
-                                            });
-                                            const delIds = Object.keys(existingStates);
-                                            if (delIds.length) {
-                                                adapter.log.info(`Deleting the following states: ${JSON.stringify(delIds)}`);
-                                                for (let i = 0; i < delIds.length; i++) {
-                                                    try {
-                                                        adapter.delObject(delIds[i], err => {
-                                                            if (err) adapter.log.info(`Can not delete object ${delIds[i]}`);
-                                                        });
-                                                    } catch (err) {
-                                                        adapter.log.info(`Can not delete object ${delIds[i]}`);
+                                                scheduleStatesUpdate();
+                                                updateHistory(() => {
+                                                    updatePlayerStatus( () => {
+                                                        updateDeviceConfigurationStates();
+                                                    });
+                                                });
+                                                const delIds = Object.keys(existingStates);
+                                                if (delIds.length) {
+                                                    adapter.log.info(`Deleting the following states: ${JSON.stringify(delIds)}`);
+                                                    for (let i = 0; i < delIds.length; i++) {
+                                                        try {
+                                                            adapter.delObject(delIds[i], err => {
+                                                                if (err) adapter.log.info(`Can not delete object ${delIds[i]}`);
+                                                            });
+                                                        } catch (err) {
+                                                            adapter.log.info(`Can not delete object ${delIds[i]}`);
+                                                        }
+                                                        delete existingStates[delIds[i]];
                                                     }
-                                                    delete existingStates[delIds[i]];
                                                 }
                                             }
-                                        }
+                                        });
                                     });
                                 });
                             });

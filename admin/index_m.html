@@ -246,10 +246,20 @@
                             <label for="updateStateInterval" class="translate">updateStateInterval</label>
                             <span class="helper-text translate">s (0 = disabled)</span>
                         </div>
+                        <div class="col s12 m6">
+                            <img src="warning.png" width=60 height=60 align="left">
+                            <span class="translate">updateStateInterval_info</span>
+                        </div>
+                    </div>
+                    <div class="col s12">
                         <div class="input-field col s12 m6">
                             <input class="value validate" placeholder="300" id="updateHistoryInterval" type="number" min="0" max="1440">
                             <label for="updateHistoryInterval" class="translate">updateHistoryInterval</label>
                             <span class="helper-text translate">s (0 = disabled)</span>
+                        </div>
+                        <div class="col s12 m6">
+                            <img src="warning.png" width=60 height=60 align="left">
+                            <span class="translate">updateHistoryInterval_info</span>
                         </div>
                     </div>
                     <div class="col s12">
@@ -258,9 +268,20 @@
                             <label for="updateSmartHomeDevicesInterval" class="translate">updateSmartHomeDevicesInterval</label>
                             <span class="helper-text translate">s (0 = disabled)</span>
                         </div>
-                        <div class="input-field col s12 m6">
+                        <div class="col s12 m6">
                             <img src="warning.png" width=60 height=60 align="left">
                             <span class="translate">updateSmartHomeDevicesInterval_info</span>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field col s12 m6">
+                            <input class="value validate" placeholder="300" id="updateConfigurationInterval" type="number" min="0" max="1440">
+                            <label for="updateConfigurationInterval" class="translate">updateConfigurationInterval</label>
+                            <span class="helper-text translate">s (0 = disabled)</span>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <img src="warning.png" width=60 height=60 align="left">
+                            <span class="translate">updateConfigurationInterval_info</span>
                         </div>
                     </div>
                 </div>
@@ -285,6 +306,27 @@
                         <div class="input-field col s12 m6">
                             <input id="includeAppDevices" type="checkbox" class="value" />
                             <span for="includeAppDevices" class="translate">includeAppDevices</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <p class="translate title">sync_settings</p>
+                        <p class="translate">sync_settings_info</p>
+
+                        <div class="input-field col s12 m6">
+                            <input id="synchronizeLists" type="checkbox" class="value" />
+                            <span for="synchronizeLists" class="translate">synchronizeLists</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+                        <div class="input-field col s12 m6">
+                            <input id="synchronizeSmartHomeDevices" type="checkbox" class="value" />
+                            <span for="synchronizeSmartHomeDevices" class="translate">synchronizeSmartHomeDevices</span>
                         </div>
                     </div>
                 </div>
