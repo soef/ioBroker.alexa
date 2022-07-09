@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.15.0",
+    "version": "3.15.1",
     "title": "Alexa2 (Amazon Echo)",
     "titleLang": {
       "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.15.1": {
+        "en": "Convert Smarthome device values if wrong datatype is delivered by device\nAdd handling for two more battery health states for smart home devices\nFix crash case when initializing notifications",
+        "de": "Smarthome-Gerätewerte umrechnen, wenn der falsche Datentyp von Gerät geliefert wird\nHinzufügen von Handling für zwei weitere Batterie-Gesundheitszustände für Smart Home-Geräte\nFehlerbehebung bei der Initialisierung von Benachrichtigungen",
+        "ru": "Преобразуйте значения устройства Smarthome, если неправильный тип данных поставлен устройством\nДобавить обработку для двух других состояния здоровья батареи для умных домашних устройств\nИсправление случай сбоя при инициализации уведомлений",
+        "pt": "Converta valores de dispositivo Smarthome se o tipo de dados errado for entregue pelo dispositivo\nAdicionar manipulação para mais dois estados de saúde da bateria para dispositivos domésticos inteligentes\nCorrigir caso de acidente ao inicializar notificações",
+        "nl": "Convert Smarthome apparaat waarden als verkeerde datatype wordt geleverd door apparaat\nAanpassen voor twee batterijen gezondheidsstaat voor slimme thuis apparaten\nVertaling:",
+        "fr": "Convertir les valeurs de périphérique Smarthome si le type de données incorrect est livré par périphérique\nAjouter la manipulation pour deux autres états de santé de la batterie pour les appareils à domicile intelligents\nCorrection d ' un cas de choc lors de l ' initialisation des notifications",
+        "it": "Convertire i valori del dispositivo Smarthome se il tipo di dati sbagliato viene fornito dal dispositivo\nAggiungere la gestione per altri due stati di salute della batteria per i dispositivi smart home\nFissare caso crash quando inizializzare le notifiche",
+        "es": "Convertir valores de dispositivo Smarthome si el tipo de datos incorrecto es entregado por dispositivo\nAgregar el manejo para dos estados de salud de baterías más para dispositivos inteligentes para el hogar\nCorregir caso de accidente al inicializar notificaciones",
+        "pl": "Przetworzone wartości urządzenia Smarthome, jeśli niewłaściwe dane są dostarczane przez urządzenia\nDostarczanie pomocy dla dwóch dodatkowych stanów na zdrowiu baterii\nSprawa rozbicia Fix, gdy inicjuje powiadomienie",
+        "zh-cn": "如果使用装置提供错误数据,则可对Smarthome装置的数值\n增加两个更电池的保健州的照旧房屋设施\n首次发出通知时发生的事故"
+      },
       "3.15.0": {
         "en": "IMPORTANT: Format to specify multiple Details on \"New\" for Alarms and Reminders changed, see documentation!\nHuge enhancements for Alarms, Reminders and Fixes\nAdd new Commands skill and skillYours to start Skills\nAdd several more Device Preferences\nFix doNotDisturb command broken in 3.14.0\nSlow down the initialization of all data a bit, so startup could take longer",
         "de": "WICHTIG: Format, um mehrere Details zu Neu für Alarme und Erinnerungen geändert, siehe Dokumentation!\nRiesige Verbesserungen für Alarme, Reminders und Fixes\nFügen Sie neue Befehle Geschicklichkeit und Geschicklichkeit zu starten Fähigkeiten\nMehrere weitere Geräteeinstellungen hinzufügen\nFix doNotDisturb Befehl in 3.14.0 gebrochen\nVerlangsamen Sie die Initialisierung aller Daten ein bisschen, so dass Startup länger dauern könnte",
@@ -100,18 +112,6 @@
         "es": "Prevenir advertencias con js-controller 3.3",
         "pl": "Zapobiegaj ostrzeżeniom za pomocą kontrolera js 3.3",
         "zh-cn": "使用 js-controller 3.3 防止警告"
-      },
-      "3.11.0": {
-        "en": "Add support for Multi Utterance Routines\nFix object deletion for lists\nFix Creation of new Lists and add deletion support\nAllow Commands for Stereo Pairs\nOptimize Push Connection and History retrieval",
-        "de": "Unterstützung für Multi-Utterance-Routinen hinzufügen\nObjektlöschung für Listen korrigiert\nBeheben Sie die Erstellung neuer Listen und fügen Sie Löschunterstützung hinzu\nBefehle für Stereopaare zulassen\nOptimieren Sie die Push-Verbindung und den Abruf des Verlaufs",
-        "ru": "Добавить поддержку подпрограмм с несколькими высказываниями\nИсправить удаление объекта для списков\nИсправить создание новых списков и добавить поддержку удаления\nРазрешить команды для стереопар\nОптимизация push-соединения и извлечения истории",
-        "pt": "Adicionar suporte para multi-rotinas de locução\nCorrigir exclusão de objetos para listas\nCorrigir a criação de novas listas e adicionar suporte para exclusão\nPermitir comandos para pares estéreo\nOtimize a conexão push e a recuperação do histórico",
-        "nl": "Ondersteuning toevoegen voor Multi Utterance-routines\nVerwijdering van objecten voor lijsten repareren\nFix Maken van nieuwe lijsten en ondersteuning voor verwijderen toevoegen\nOpdrachten voor stereoparen toestaan\nOptimaliseer push-verbinding en ophalen van geschiedenis",
-        "fr": "Ajout de la prise en charge des routines multi-énoncés\nCorrection de la suppression d'objets pour les listes\nCorrection de la création de nouvelles listes et ajout de la prise en charge de la suppression\nAutoriser les commandes pour les paires stéréo\nOptimiser la connexion Push et la récupération de l'historique",
-        "it": "Aggiungi il supporto per le routine multi pronuncia\nCorreggi l'eliminazione degli oggetti per gli elenchi\nCorreggi la creazione di nuovi elenchi e aggiungi il supporto per l'eliminazione\nConsenti comandi per coppie stereo\nOttimizza la connessione push e il recupero della cronologia",
-        "es": "Agregar soporte para rutinas de expresiones múltiples\nCorregir la eliminación de objetos para listas\nCorrija la creación de nuevas listas y agregue soporte de eliminación\nPermitir comandos para pares estéreo\nOptimice la conexión push y la recuperación del historial",
-        "pl": "Dodaj obsługę procedur z wieloma wypowiedziami\nNapraw usuwanie obiektów dla list\nNapraw tworzenie nowych list i dodaj obsługę usuwania\nZezwalaj na polecenia dla par stereo\nZoptymalizuj połączenie Push i pobieranie historii",
-        "zh-cn": "添加对 Multi Utterance Routines 的支持\n修复列表的对象删除\n修复创建新列表并添加删除支持\n允许立体声对的命令\n优化推送连接和历史检索"
       }
     },
     "keywords": [

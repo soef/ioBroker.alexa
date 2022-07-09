@@ -434,8 +434,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.15.1 (2022-07-09)
 * (Apollon77) Convert Smarthome device values if wrong datatype is delivered by device
 * (Apollon77) Add handling for two more battery health states for smart home devices
 * (Apollon77) Fix crash case when initializing notifications
