@@ -435,7 +435,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 ### 3.15.2 (2022-07-09)
-* (Apollon77) Fix case where initialization of the adapter was never finished and so nothing was controllable
+* (Apollon77) Fix case where initialization of the adapter was never finished and so nothing was controllable when App devices where not synced
 
 ### 3.15.1 (2022-07-09)
 * (Apollon77) Convert Smarthome device values if wrong datatype is delivered by device
