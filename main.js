@@ -1127,6 +1127,10 @@ function updateSmarthomeDeviceStates(res) {
                 value = true;
             } else if (native.valueFalse && native.valueFalse === value) {
                 value = false;
+            } else if (native.valueTrue && !native.valueFalse && native.valueTrue !== value) {
+                value = false;
+            } else if (native.valueFalse && !native.valueTrue && native.valueFalse !== value) {
+                value = true;
             } else if (native.valueMap && Array.isArray(native.valueMap) && native.valueMap.length) {
                 adapter.log.debug(`Get Index for value "${cap.namespace}.${cap.value}" for Smart-Home-Devices.${deviceEntityId}.${stateName}, value=${value} of ${JSON.stringify(native.valueMap)}`);
                 value = native.valueMap.indexOf(value);
