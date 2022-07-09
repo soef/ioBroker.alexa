@@ -434,6 +434,10 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Convert Smarthome device values if wrong datatype is delivered by device
+
 ### 3.15.0 (2022-07-09)
 * (Apollon77) IMPORTANT: Format to specify multiple Details on "New" for Alarms and Reminders changed, see documentation!
 * (Apollon77) Allow to define if Lists and Smart home devices are synced by the adapter with the Amazon Cloud at all

@@ -1133,6 +1133,16 @@ function updateSmarthomeDeviceStates(res) {
                 if (value === -1) return null;
             }
         }
+        if (typeof value !== common.type && common.type !== 'mixed') {
+            if (common.type === 'number') {
+                const convertedValue = parseFloat(value);
+                if (!isNaN(convertedValue)) {
+                    value = convertedValue;
+                }
+            } else if (common.type === 'boolean') {
+                value = !!value;
+            }
+        }
         value = {
             val: value,
             ack: true
