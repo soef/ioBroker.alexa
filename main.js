@@ -2916,7 +2916,7 @@ function createNotificationStates(serialOrName) {
                         });
                     }.bind(alexa, noti));
                 }
-                if (noti.sound !== undefined && noti.sound.id !== undefined) {
+                if (noti.sound !== undefined && noti.sound !== null && noti.sound.id !== undefined) {
                     setOrUpdateObject(`${notiId}.sound`, {common: {type: 'string', read: true, write: true, role: 'state', name: `${displayName} Sound`, states: device.alarmNotificationSoundsStateList}}, noti.sound.id, function(noti, value) {
                         alexa.getNotifications((err, res) => {
                             if (!err && res && res.notifications && Array.isArray(res.notifications)) {
