@@ -195,6 +195,56 @@
           "agree",
           "cancel"
         ]
+      },
+      {
+        "condition": {
+          "operand": "and",
+          "rules": [
+            "oldVersion<3.15.0",
+            "newVersion>=3.15.0"
+          ]
+        },
+        "title": {
+          "en": "Format to create Reminder/Alarms changed!",
+          "de": "Format zum Erstellen von Reminder/Alarms geändert!",
+          "ru": "Формат для создания Reminder/Alarms изменился!",
+          "pt": "Formato para criar lembrete / alarmes alterado!",
+          "nl": "Format om Reminder/Alarms te creëren!",
+          "fr": "Format pour créer Reminder/Alarms changé!",
+          "it": "Formato per creare Reminder/Allarma cambiate!",
+          "es": "Formato para crear Reminder/Alarms cambiado!",
+          "pl": "W celu stworzenia zmian Reminder/Alarms!",
+          "zh-cn": "创建Reminder/Alarms的格局改变了!"
+        },
+        "text": {
+          "en": "The format used in the \"New\" states for Alarms or Reminders has changed and allows now to provide more Details. Please see the Readme for the details!",
+          "de": "Das Format, das in den neuen Zuständen für Alarme oder Reminders verwendet wird, hat sich geändert und ermöglicht nun mehr Details. Die Readme enthält alle Details!",
+          "ru": "Изменен формат, используемый в новых состояниях для тревоги или напоминаний и позволяет теперь предоставить более подробную информацию. Пожалуйста, посмотрите Readme для деталей!",
+          "pt": "O formato usado nos Novos estados para Alarmes ou Lembretes mudou e agora permite fornecer mais detalhes. Por favor, veja o Readme para os detalhes!",
+          "nl": "De formaat gebruikt in de Nieuwe staten voor Alarms of Reminders is veranderd en staat nu toe om meer Details te leveren. Zie de Readme voor de details!",
+          "fr": "Le format utilisé dans les nouveaux états pour les armes ou les rappels a changé et permet maintenant de fournir plus de détails. Veuillez voir le Readme pour les détails!",
+          "it": "Il formato utilizzato nei nuovi stati per gli allarmi o i ripetitori è cambiato e consente ora di fornire ulteriori dettagli. Si prega di vedere il Readme per i dettagli!",
+          "es": "El formato utilizado en los Nuevos estados para Alarmas o Recordatorios ha cambiado y permite ahora proporcionar más detalles. Por favor, vea el Readme para los detalles!",
+          "pl": "Format używany w nowych stanach dla Alarmsa lub Remindersa został zmieniony i pozwala obecnie na dostarczenie większej liczby dekatów. Wyglądaj na szczegóły!",
+          "zh-cn": "新州用于申报或递解剂的格式已经改变,现在可以提供更多的细节。 请见详细!"
+        },
+        "level": "warn",
+        "buttons": [
+          "agree",
+          "cancel"
+        ],
+        "link": "https://github.com/Apollon77/ioBroker.alexa2#alexa20echo-devicesserialnumberalarm",
+        "linkText": {
+          "en": "Readme",
+          "de": "Reader",
+          "ru": "Читать",
+          "pt": "Readme",
+          "nl": "Lees",
+          "fr": "Readme",
+          "it": "Readme",
+          "es": "Readme",
+          "pl": "Ready",
+          "zh-cn": "阅读摘要"
       }
     ]
   },

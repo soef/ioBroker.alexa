@@ -444,6 +444,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 * (Apollon77) Slow down the initialization of all data a bit, so startup could take longer
 
 ### 3.15
+* (Apollon77) IMPORTANT: Format to specify multiple Details on "New" for Alarms and Reminders changed, see documentation!
 * (Apollon77) Add Alarm/Reminder triggered state per device which will contain the ID of the alarm that got triggered when it is triggered
 * (Apollon77) Add several more fields for Alarms and Reminders to show better the details of the alarm
 * (Apollon77) Allow to cancel Reminders and Alarms as in the Alexa App
