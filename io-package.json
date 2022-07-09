@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.15.1",
+    "version": "3.15.2",
     "title": "Alexa2 (Amazon Echo)",
     "titleLang": {
       "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.15.2": {
+        "en": "Fix case where initialization of the adapter was never finished and so nothing was controllable",
+        "de": "Fix-Fall, wo die Initialisierung des Adapters noch nie beendet wurde und so nichts steuerbar war",
+        "ru": "Исправление дела, где инициализация адаптера никогда не была закончена и поэтому ничего не было управляемым",
+        "pt": "Corrigir caso onde a inicialização do adaptador nunca foi concluída e assim nada foi controlável",
+        "nl": "De eerste zaak waar de aanmelding van de adapter nooit klaar was, dus niets was beheersbaar",
+        "fr": "Cas fixe où l'initialisation de l'adaptateur n'a jamais été terminée et donc rien n'a été contrôlable",
+        "it": "Fissa caso in cui l'inizializzazione dell'adattatore non è mai stata terminata e quindi nulla è stato controllabile",
+        "es": "Caso fijo donde la inicialización del adaptador nunca fue terminada y nada fue controlable",
+        "pl": "Sprawa Fix, w której inicjacja adaptatora nigdy nie została ukończona i tak nic nie było sterowane",
+        "zh-cn": "变通者的初始化从未完成,因此无法控制的混合案件。"
+      },
       "3.15.1": {
         "en": "Convert Smarthome device values if wrong datatype is delivered by device\nAdd handling for two more battery health states for smart home devices\nFix crash case when initializing notifications",
         "de": "Smarthome-Gerätewerte umrechnen, wenn der falsche Datentyp von Gerät geliefert wird\nHinzufügen von Handling für zwei weitere Batterie-Gesundheitszustände für Smart Home-Geräte\nFehlerbehebung bei der Initialisierung von Benachrichtigungen",
@@ -100,18 +112,6 @@
         "es": "Reparar caso de accidente (Sentry IOBROKER-ALEXA2-AT)",
         "pl": "Napraw przypadek awarii (Sentry IOBROKER-ALEXA2-AT)",
         "zh-cn": "修复崩溃案例（Sentry IOBROKER-ALEXA2-AT）"
-      },
-      "3.11.1": {
-        "en": "Prevent warnings with js-controller 3.3",
-        "de": "Warnungen verhindern mit js-controller 3.3",
-        "ru": "Предотвращение предупреждений с помощью js-controller 3.3",
-        "pt": "Evite avisos com js-controller 3.3",
-        "nl": "Voorkom waarschuwingen met js-controller 3.3",
-        "fr": "Empêcher les avertissements avec js-controller 3.3",
-        "it": "Previeni gli avvisi con js-controller 3.3",
-        "es": "Prevenir advertencias con js-controller 3.3",
-        "pl": "Zapobiegaj ostrzeżeniom za pomocą kontrolera js 3.3",
-        "zh-cn": "使用 js-controller 3.3 防止警告"
       }
     },
     "keywords": [
