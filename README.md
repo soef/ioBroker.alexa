@@ -434,28 +434,12 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.15.0 (2022-07-09)
 * (Apollon77) IMPORTANT: Format to specify multiple Details on "New" for Alarms and Reminders changed, see documentation!
 * (Apollon77) Huge enhancements for Alarms, Reminders and Fixes
 * (Apollon77) Add new Commands skill and skillYours to start Skills
 * (Apollon77) Add several more Device Preferences
 * (Apollon77) Fix doNotDisturb command broken in 3.14.0
-* (Apollon77) Slow down the initialization of all data a bit, so startup could take longer
-
-### 3.15
-* (Apollon77) IMPORTANT: Format to specify multiple Details on "New" for Alarms and Reminders changed, see documentation!
-* (Apollon77) Add Alarm/Reminder triggered state per device which will contain the ID of the alarm that got triggered when it is triggered
-* (Apollon77) Add several more fields for Alarms and Reminders to show better the details of the alarm
-* (Apollon77) Allow to cancel Reminders and Alarms as in the Alexa App
-* (Apollon77) Allow to also edit Alarm/Reminder Dates additionally to the times
-* (Apollon77) Allow to set a custom Volume for Reminders and Alarms - it will be set 2s before the expected trigger and restored afterwards
-* (Apollon77) Calculate the "nextTriggerDate" as Timestamp of next expected triggering
-* (Apollon77) Add a JSON-Array with all running timers and the "next id" as state
-* (Apollon77) Allow to stop a timer by ID
-* (Apollon77) Add the days-list of Alarms when configured for recurrency
-* (Apollon77) Add new Commands skill and skillYours to start Skills
-* (Apollon77) Add Notification volume, Ascending Alarm setting and default notification sounds as preferences
 * (Apollon77) Slow down the initialization of all data a bit, so startup could take longer
 
 ### 3.14.0 (2022-07-06)
