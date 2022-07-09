@@ -2045,7 +2045,7 @@ function createStatesForDevice(device, additionalDeviceData) {
                                             const speakVolumeResetCommands = [];
 
                                             iterateMultiroom(device, (iteratorDevice, nextCallback) => {
-                                                if (command === 'notification' && value && typeof value ===  'string' && value.includes(';')) {
+                                                if (command === 'notification' && value && typeof value === 'string' && value.includes(';')) {
                                                     const parts = value.split(';');
                                                     const title = parts.shift();
                                                     value = {
@@ -2386,7 +2386,7 @@ function createDeviceStates(serialOrName, additionalDeviceData, callback) {
                     appDevices[app.serialNumber].ownerDevice = device.serialNumber;
                 });
             }
-            return;
+            return callback && callback();
         }
     }
 
