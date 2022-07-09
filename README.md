@@ -50,12 +50,19 @@ Alarm (Wecker) settings for each device, if available.
 
 | State name | meaning | value |
 | - | - | - |
-| enabled | Shows status of alarm and allows to change it: Activate alarm with true - Deactivate alarm with false | true / false |
-| date | Shows date of alarm, may also depend on recurringPattern | Date Output |
-| time | Time for alarm. Overwrite the time for existing alarm to set a new time for this alarm. In case you have an existing alarm you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set | Time Input |
-| triggered | true if alarm is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the alarm time is reached | true / false |
-| recurringPattern | Shows the recurring pattern of alarm | 0 = one time, no recurring <br> P1D = daily <br> XXXX-WD = on weekdays <br> XXXX-WE = on weekends <br> XXXX-WXX-1 = every monday <br> XXXX-WXX-2 = every tuesday <br> XXXX-WXX-3 = every wednesday <br> XXXX-WXX-4 = every thursday <br> XXXX-WXX-5 = every friday <br> XXXX-WXX-6 = every saturday <br> XXXX-WXX-7 = every sunday |
-| new | time for new alarm for this device. If you put a value here a new alarm will be created | Time Input (hh:mm:ss, seconds are not needed) |
+| <id>.customVolume | Set a custom Volume for this Reminder. The volume is set 2s before the reminder triggers and re-set to the value before as soon as the timer is (or adapter thinks!) stopped - latest after 120s! When custom volumes and trigger times overlap it will be restored at the end once!| Number 0..100 |
+| <id>.date | Overwrite the date for existing alarm to set a new date for this alarm. In case you have an existing alarm you can change the date here by simply overwrite the time in format YYYY-MM-DD. Might have no effect when multiple-times-per-day recurring settings were used! | Date Output |
+| <id>.delete | Button to delete the Alarm | delete with true |
+| <id>.enabled | Shows status of alarm and allows to change it: Activate alarm with true - Deactivate alarm with false | true / false |
+| <id>.nextTriggerDate | Contains the timepoint of the next expected triggering as unix epoch in ms | Number |
+| <id>.recurringDays | Shows the list of days configured if the Alarm has recurring settings | US notation of weekdays (e.g. MO,TU,WE,TH,FR,SA,SU) |
+| <id>.recurringPattern | Shows the recurring pattern of alarm | 0 = one time, no recurring <br> P1D = daily <br> XXXX-WD = on weekdays <br> XXXX-WE = on weekends <br> XXXX-WXX-1 = every monday <br> XXXX-WXX-2 = every tuesday <br> XXXX-WXX-3 = every wednesday <br> XXXX-WXX-4 = every thursday <br> XXXX-WXX-5 = every friday <br> XXXX-WXX-6 = every saturday <br> XXXX-WXX-7 = every sunday |
+| <id>.snoozed | true if the Alarm is snoozed at the moment | true/false |
+| <id>.sound | Contains the set sound for this alarm. Can be adjusted | ID from list |
+| <id>.time | Time for alarm. Overwrite the time for existing alarm to set a new time for this alarm. In case you have an existing alarm you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set. Might have no effect when multiple-times-per-day recurring settings were used! | Time Input |
+| <id>.triggered | true if alarm is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the alarm time is reached | true / false |
+| New | Data to create a new Reminder as String in following format separated by ; as "timestamp;[label];[sound];[recurring]. timestamp as unix timestamp in ms, label as Text, sound as sound ID, recurring either empty for once, "DAILY" for daily or "WEEKLY=MO,TU,WE,TH,FR,SA,SU" with comma separated weekly day list | String |
+| triggered | ID of the Alarm that triggered last on this device | ID |
 
 ### alexa2.0.Echo-Devices.Serialnumber.Bluetooth.*
 Here you find all connected or known bluetooth device(s) with MAC address(es). The states of each device:
@@ -81,6 +88,8 @@ With Commands you can trigger some actions on your Alexa-Device. If you use thes
 | singasong | Alexa sings a song ...| Button |
 | speak | Alexa says what you type in here ...| Text Input |
 | speakvolume | Adjust the speak volume of Alexa, this volume is set before the speak and reset afterwards| 0-100 |
+| skill | Launch a defined Skill | Skill-ID as String |
+| skillYours | launch a defined Skill - is prefilled with "Your Skills" as displayed in Alexa App too | Skill-ID as String |
 | tellstory | Alexa tells a story | Button |
 | traffic | Traffic news | Button |
 | weather | Weather news | Button |
@@ -174,9 +183,13 @@ States to control the Playback of the device and to see the current status and m
 ### alexa2.0.Echo-Devices.Serialnumber.Preferences.*
 Here you find some device preferences.
 
-| State name | meaning |
+| State name | meaning | value |
 | - | - |
 | ringNotificationsEnabled | Shows if the ring notifications are enabled or not and allows to edit it (true/false). Status is updated from cloud with device configuration interval |
+| notificationVolume | The notification volume set for the device. The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | number 0..100 |
+| ascendingAlarmState | The ascending alarm state set for the device. The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | Boolean |
+| defaultAlarmNotificationSound | The default alarm sound set for the device. The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | ID from list |
+| defaultTimerNotificationSound | The default timer sound set for the device. The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | ID from list |
 
 
 ### alexa2.0.Echo-Devices.Serialnumber.Reminder.*
@@ -184,10 +197,20 @@ Reminder (Erinnerungen) settings for each device, if available.
 
 | State name | meaning | value |
 | - | - | - |
-| enabled | Shows status of reminder and allows to change it: Activate reminder with true - Deactivate reminder with false, will be deleted some time after it automatically when disabled | true / false |
-| time| Time for reminder. Overwrite the time for existing reminder to set a new time | Time Input | In case you have an existing reminder you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set |
-| triggered | true if reminder is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the reminder time is reached | true / false |
-| new | Add a new reminder in the format <br> time(hh:mm),text<br> | Text Input <br>12:00,Remind me
+| <id>.customVolume | Set a custom Volume for this Reminder. The volume is set 2s before the reminder triggers and re-set to the value before as soon as the timer is (or adapter thinks!) stopped - latest after 120s! When custom volumes and trigger times overlap it will be restored at the end once!| Number 0..100 |
+| <id>.date | Overwrite the date for existing alarm to set a new date for this alarm. In case you have an existing alarm you can change the date here by simply overwrite the time in format YYYY-MM-DD. Might have no effect when multiple-times-per-day recurring settings were used! | Date Output |
+| <id>.delete | Button to delete the Alarm | delete with true |
+| <id>.enabled | Shows status of alarm and allows to change it: Activate alarm with true - Deactivate alarm with false | true / false |
+| <id>.nextTriggerDate | Contains the timepoint of the next expected triggering as unix epoch in ms | Number |
+| <id>.recurringDays | Shows the list of days configured if the Alarm has recurring settings | US notation of weekdays (e.g. MO,TU,WE,TH,FR,SA,SU) |
+| <id>.recurringPattern | Shows the recurring pattern of alarm | 0 = one time, no recurring <br> P1D = daily <br> XXXX-WD = on weekdays <br> XXXX-WE = on weekends <br> XXXX-WXX-1 = every monday <br> XXXX-WXX-2 = every tuesday <br> XXXX-WXX-3 = every wednesday <br> XXXX-WXX-4 = every thursday <br> XXXX-WXX-5 = every friday <br> XXXX-WXX-6 = every saturday <br> XXXX-WXX-7 = every sunday |
+| <id>.snoozed | true if the Alarm is snoozed at the moment | true/false |
+| <id>.sound | Contains the set sound for this alarm. Can be adjusted | ID from list |
+| <id>.time | Time for alarm. Overwrite the time for existing alarm to set a new time for this alarm. In case you have an existing alarm you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set. Might have no effect when multiple-times-per-day recurring settings were used! | Time Input |
+| <id>.triggered | true if alarm is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the alarm time is reached | true / false |
+| New | Data to create a new Reminder as String in following format separated by ; as "timestamp;[label];[sound];[recurring]. timestamp as unix timestamp in ms, label as Text, sound as sound ID, recurring either empty for once, "DAILY" for daily or "WEEKLY=MO,TU,WE,TH,FR,SA,SU" with comma separated weekly day list. For full flexibility recurring can also be a JSONified object with all data which is passed through.  | String |
+| triggered | ID of the Alarm that triggered last on this device | ID |
+
 
 ### alexa2.0.Echo-Devices.Serialnumber.Routines.*
 Overview of routines set up in Alexa App. Self created routines have a serial number, Amazon shows as 'preconfigured:...' Each routine can be triggered with a button to run once.
@@ -201,9 +224,13 @@ You can have one or more timer running on each Alexa device. Because of the very
 
 | State name | meaning | value |
 | - | - | - |
-| triggered | A timer got triggered | Information
+| activeTimerList | JSON array with the list of active timers containing ID, label and trigger timepoint as unix timestamp in ms | JSON array
+| nextTimeDate | Contains the timepoint of the next expected triggering as unix epoch in ms | Number | Number
+| nextTimerId | ID of the next timer to trigger | String
+| stopTimerId | Control with a timer ID to stop the timer (also stops if the timer is currently ringing!) | String
+| triggered | A timer got triggered - in fact it is the "nextTimerId" one | true/false
 
-**Please note that it is important that the timezone of the ipbroker host is set to match your local timezone, else the triggered time detection might be wrong!**
+**Please note that it is important that the timezone of the iobroker host is set to match your local timezone, else the triggered time detection might be wrong!**
 
 ### alexa2.0.Echo-Devices.Serialnumber.online
 Is this Alexa device online and connected to the Amazon cloud ?
@@ -407,6 +434,29 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) IMPORTANT: Format to specify multiple Details on "New" for Alarms and Reminders changed, see documentation!
+* (Apollon77) Huge enhancements for Alarms, Reminders and Fixes
+* (Apollon77) Add new Commands skill and skillYours to start Skills
+* (Apollon77) Add several more Device Preferences
+* (Apollon77) Fix doNotDisturb command broken in 3.14.0
+* (Apollon77) Slow down the initialization of all data a bit, so startup could take longer
+
+### 3.15
+* (Apollon77) Add Alarm/Reminder triggered state per device which will contain the ID of the alarm that got triggered when it is triggered
+* (Apollon77) Add several more fields for Alarms and Reminders to show better the details of the alarm
+* (Apollon77) Allow to cancel Reminders and Alarms as in the Alexa App
+* (Apollon77) Allow to also edit Alarm/Reminder Dates additionally to the times
+* (Apollon77) Allow to set a custom Volume for Reminders and Alarms - it will be set 2s before the expected trigger and restored afterwards
+* (Apollon77) Calculate the "nextTriggerDate" as Timestamp of next expected triggering
+* (Apollon77) Add a JSON-Array with all running timers and the "next id" as state
+* (Apollon77) Allow to stop a timer by ID
+* (Apollon77) Add the days-list of Alarms when configured for recurrency
+* (Apollon77) Add new Commands skill and skillYours to start Skills
+* (Apollon77) Add Notification volume, Ascending Alarm setting and default notification sounds as preferences
+* (Apollon77) Slow down the initialization of all data a bit, so startup could take longer
+
 ### 3.14.0 (2022-07-06)
 * (Apollon77) Allow to define if Lists and Smart home devices are synced by the adapter with the Amazon Cloud at all
 * (Apollon77) Enhance Smart Home Device support by adding various controllers and states. If in your Alexa App something is configurable which is not in ioBroker please send a debug log!

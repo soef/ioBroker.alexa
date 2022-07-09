@@ -4,6 +4,7 @@ const path = require('path');
 const os = require('os');
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const shObjects = require('./lib/smarthomedevices.js');
+const { rrulestr } = require('rrule');
 
 let Sentry;
 let SentryIntegrations;
@@ -71,7 +72,9 @@ const commands = {
     'cleanup': { val: false, common: { type: 'boolean', read: false, write: true, role: 'button'}},
     'curatedtts': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}},
     'textCommand': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}},
-    'sound': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}}
+    'sound': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}},
+    'skill': { val: '', common: { type: 'string', read: false, write: true, role: 'text'}},
+    'skillYours': { command: 'skill', val: '', common: { type: 'string', read: false, write: true, role: 'text'}}
 };
 
 const knownDeviceType = {
@@ -179,6 +182,8 @@ const updateNotificationTimer = {};
 
 let musicProviders;
 let routineSounds;
+let routineSkills;
+const rememberedNotificationVolumeRestoreCallbacks = {};
 const initialDeviceVolumes = {};
 let automationRoutines;
 let routineTriggerUtterances;
@@ -405,7 +410,7 @@ function processObjectQueue(callback) {
     }
 
     function handleValue(queueEntry, callback) {
-        if (queueEntry.value === null || queueEntry.value === undefined) {
+        if (queueEntry.value === undefined) {
             stateChangeTrigger[queueEntry.id] = queueEntry.stateChangeCallback;
             return callback && callback();
         }
@@ -768,7 +773,7 @@ function updateDeviceConfigurationStates(callback) {
                     if (!device) return;
                     device.preferences = pref;
 
-                    if (pref.notificationEarconEnabled !== undefined) {
+                    if (pref.notificationEarconEnabled !== undefined && adapterObjects[`Echo-Devices.${device.serialNumber}.Preferences.ringNotificationsEnabled`]) {
                         adapter.setState(`Echo-Devices.${device.serialNumber}.Preferences.ringNotificationsEnabled`, pref.notificationEarconEnabled, true);
                     }
                 });
@@ -1824,446 +1829,515 @@ function iterateMultiroom(device, commandCallback, doneCallback, counter) {
     return commandCallback(currDevice, () => iterateMultiroom(device, commandCallback, doneCallback, counter));
 }
 
-function createStates(callback) {
-    setOrUpdateObject('requestResult', {common: {name: 'Request Result', write: false, role: 'text'}}, '');
-    setOrUpdateObject('Echo-Devices', {type: 'device', common: {name: 'Echo devices'}});
-
-    Object.keys (alexa.serialNumbers).forEach ((n) => {
-        const device = alexa.serialNumbers[n];
+function createStatesForDevice(device, additionalDeviceData) {
+    return new Promise(resolve => {
         const devId = `Echo-Devices.${device.serialNumber}`;
 
-        createDeviceStates(device, () => {
-            if (device.ignore) return;
+        device.getNotificationSounds('Alarm', (err, res) => {
+            if (!err && res && res.notificationSounds && Array.isArray(res.notificationSounds)) {
+                device.alarmNotificationSounds = res.notificationSounds;
+                device.alarmNotificationSoundsStateList = {};
+                res.notificationSounds.forEach((n) => {
+                    device.alarmNotificationSoundsStateList[n.id] = n.displayName;
+                });
+            }
 
-            if (device.isControllable) {
-                playerDevices[device.serialNumber] = true;
-                setOrUpdateObject(`${devId}.Player`, {type: 'channel'});
-
-                setOrUpdateObject(`${devId}.Player.contentType`, {common: {role: 'text', write: false, def: ''}}); // 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
-                setOrUpdateObject(`${devId}.Player.currentState`, {common: {role: 'media.state', write: false, def: false}}); // 'PAUSED' | 'PLAYING'
-                setOrUpdateObject(`${devId}.Player.imageURL`, {common: {name: 'Huge image', role: 'media.cover.big', write: false, def: ''}});
-                setOrUpdateObject(`${devId}.Player.providerId`, {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
-                setOrUpdateObject(`${devId}.Player.radioStationId`, {common: {role: 'text', write: false, def: ''}}); // 's24885' | null
-                setOrUpdateObject(`${devId}.Player.service`, {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
-                setOrUpdateObject(`${devId}.Player.providerName`, {common: {name: 'active provider', role: 'media.input', write: false, def: ''}}); // 'Amazon Music' | 'TuneIn Live-Radio'
-
-                setOrUpdateObject(`${devId}.Player.currentTitle`, {common: {name:'current title', type:'string', role:'media.title', write: false, def: ''}});
-                setOrUpdateObject(`${devId}.Player.currentArtist`, {common: {name:'current artist', type:'string', role:'media.artist', write: false, def: ''}});
-                setOrUpdateObject(`${devId}.Player.currentAlbum`, {common: {name:'current album', type:'string', role:'media.album', write: false, def: ''}});
-                setOrUpdateObject(`${devId}.Player.mainArtUrl`, {common: {name:'current main Art', type:'string', role:'media.cover', write: false, def: ''}});
-                setOrUpdateObject(`${devId}.Player.miniArtUrl`, {common: {name:'current mini Art', type:'string', role:'media.cover.small', write: false, def: ''}});
-
-                setOrUpdateObject(`${devId}.Player.mediaId`, {common: {name:'current mediaId', type:'string', role:'media.playid', write: true, def: ''}}, function (device, value) {
-                    alexa.sendCommand(device, 'jump', value);
-                }.bind(alexa, device));
-                setOrUpdateObject(`${devId}.Player.queueId`, {common: {name:'current queueId', type:'string', role:'text', write: false, def: ''}});
-                setOrUpdateObject(`${devId}.Player.quality`, {common: {name:'current media quality', type:'string', role:'text', write: false, def: ''}});
-                setOrUpdateObject(`${devId}.Player.qualityCodec`, {common: {name:'current media codec', type:'string', write: false, role:'text', def: ''}});
-                setOrUpdateObject(`${devId}.Player.qualityDataRate`, {common: {name:'current media bitrate', type:'number', write: false, role:'media.bitrate', def: null, unit: 'kbps'}});
-                setOrUpdateObject(`${devId}.Player.qualitySampleRate`, {common: {name:'current media sample rate', type:'number', write: false, role:'value', def: null, unit: 'Hz'}});
-                setOrUpdateObject(`${devId}.Player.allowNext`, {common: {name:'allow action Next', type:'boolean', role:'indicator', write: false, def: false}});
-                setOrUpdateObject(`${devId}.Player.allowPlayPause`, {common: {name:'allow action Play/Pause', type:'boolean', role:'indicator', write: false, def: false}});
-                setOrUpdateObject(`${devId}.Player.allowPrevious`, {common: {name:'allow action Previous', type:'boolean', role:'indicator', write: false, def: false}});
-                setOrUpdateObject(`${devId}.Player.allowRepeat`, {common: {name:'allow action Repeat', type:'boolean', role:'indicator', write: false, def: false}});
-                setOrUpdateObject(`${devId}.Player.allowShuffle`, {common: {name:'allow action Shuffle', type:'boolean', role:'indicator', write: false, def: false}});
-                setOrUpdateObject(`${devId}.Player.playingInGroup`, {common: {name:'is Playing in Group?', type:'boolean', role:'indicator', write: false, def: false}});
-                setOrUpdateObject(`${devId}.Player.playingInGroupId`, {common: {name:'Current playing group ID', type:'string', role:'text', write: false, def: ''}});
-
-                setOrUpdateObject(`${devId}.Player.mediaLength`, {common: {name:'active media length', type:'number', role:'media.duration', def: 0}});
-                setOrUpdateObject(`${devId}.Player.mediaLengthStr`, {common: {name:'active media length as (HH:)MM:SS', type:'string', role:'media.duration.text', def: ''}});
-                setOrUpdateObject(`${devId}.Player.mediaProgress`,  {common: {name:'active media progress', type:'number', role:'media.elapsed', def: 0}});
-                setOrUpdateObject(`${devId}.Player.mediaProgressStr`, {common: {name:'active media progress as (HH:)MM:SS', type:'string', role:'media.elapsed.text', def: ''}});
-                setOrUpdateObject(`${devId}.Player.mediaProgressPercent`, {common: {name:'active media progress as percent', type:'number', role:'media.elapsed.percent', def: 0}});
-                setOrUpdateObject(`${devId}.Player.mediaRemaining`,  {common: {name:'active media remaining time', type:'number', role:'value', def: 0}});
-                setOrUpdateObject(`${devId}.Player.mediaRemainingStr`, {common: {name:'active media remaining time as (HH:)MM:SS', type:'string', role:'value', def: ''}});
-
-                for (const c of Object.keys(playerControls)) {
-                    const obj = JSON.parse (JSON.stringify (playerControls[c]));
-                    setOrUpdateObject(`${devId}.Player.${c}`, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
+            device.getNotificationSounds('Timer', (err, res) => {
+                if (!err && res && res.notificationSounds && Array.isArray(res.notificationSounds)) {
+                    device.timerNotificationSounds = res.notificationSounds;
+                    device.timerNotificationSoundsStateList = {};
+                    res.notificationSounds.forEach((n) => {
+                        device.timerNotificationSoundsStateList[n.id] = n.displayName;
+                    });
                 }
 
-                if (device.capabilities.includes('VOLUME_SETTING')) {
-                    setOrUpdateObject(`${devId}.Player.muted`, {common: {type: 'boolean', role: 'media.mute', write: false, def: false}});
-                    setOrUpdateObject(`${devId}.Player.volume`, {common: {role: 'level.volume', min: 0, max: 100, def: 0}}, null, function (device, value) {
-                        if (device.isMultiroomDevice) {
-                            alexa.sendCommand(device, 'volume', value, (err, res) => {
-                                // on unavailability {"message":"No routes found","userFacingMessage":null}
-                                if (res && res.message === 'No routes found') {
-                                    const volumeCommands = [];
-                                    iterateMultiroom(device, (iteratorDevice, nextCallback) => {
-                                        volumeCommands.push({
-                                            command: 'volume',
-                                            value,
-                                            device: iteratorDevice.serialNumber
+                device.getDeviceNotificationState((err, res) => {
+                    if (!err && res && res.volumeLevel !== undefined) {
+                        additionalDeviceData.notificationVolume = res.volumeLevel;
+                    }
+
+                    device.getDeviceNotificationDefaultSound('Alarm', (err, res) => {
+                        if (!err && res && res.defaultNotificationSound !== undefined) {
+                            additionalDeviceData.defaultAlarmNotificationSound = res.defaultNotificationSound;
+                        }
+
+                        device.getDeviceNotificationDefaultSound('Timer', (err, res) => {
+                            if (!err && res && res.defaultNotificationSound !== undefined) {
+                                additionalDeviceData.defaultTimerNotificationSound = res.defaultNotificationSound;
+                            }
+
+                            createDeviceStates(device, additionalDeviceData, () => {
+                                if (device.ignore) {
+                                    return resolve();
+                                }
+
+                                if (device.isControllable) {
+                                    playerDevices[device.serialNumber] = true;
+                                    setOrUpdateObject(`${devId}.Player`, {type: 'channel'});
+
+                                    setOrUpdateObject(`${devId}.Player.contentType`, {common: {role: 'text', write: false, def: ''}}); // 'LIVE_STATION' | 'TRACKS' | 'CUSTOM_STATION'
+                                    setOrUpdateObject(`${devId}.Player.currentState`, {common: {role: 'media.state', write: false, def: false}}); // 'PAUSED' | 'PLAYING'
+                                    setOrUpdateObject(`${devId}.Player.imageURL`, {common: {name: 'Huge image', role: 'media.cover.big', write: false, def: ''}});
+                                    setOrUpdateObject(`${devId}.Player.providerId`, {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'ROBIN'
+                                    setOrUpdateObject(`${devId}.Player.radioStationId`, {common: {role: 'text', write: false, def: ''}}); // 's24885' | null
+                                    setOrUpdateObject(`${devId}.Player.service`, {common: {role: 'text', write: false, def: ''}}); // 'TUNE_IN' | 'CLOUD_PLAYER' | 'PRIME_STATION'
+                                    setOrUpdateObject(`${devId}.Player.providerName`, {common: {name: 'active provider', role: 'media.input', write: false, def: ''}}); // 'Amazon Music' | 'TuneIn Live-Radio'
+
+                                    setOrUpdateObject(`${devId}.Player.currentTitle`, {common: {name:'current title', type:'string', role:'media.title', write: false, def: ''}});
+                                    setOrUpdateObject(`${devId}.Player.currentArtist`, {common: {name:'current artist', type:'string', role:'media.artist', write: false, def: ''}});
+                                    setOrUpdateObject(`${devId}.Player.currentAlbum`, {common: {name:'current album', type:'string', role:'media.album', write: false, def: ''}});
+                                    setOrUpdateObject(`${devId}.Player.mainArtUrl`, {common: {name:'current main Art', type:'string', role:'media.cover', write: false, def: ''}});
+                                    setOrUpdateObject(`${devId}.Player.miniArtUrl`, {common: {name:'current mini Art', type:'string', role:'media.cover.small', write: false, def: ''}});
+
+                                    setOrUpdateObject(`${devId}.Player.mediaId`, {common: {name:'current mediaId', type:'string', role:'media.playid', write: true, def: ''}}, function (device, value) {
+                                        alexa.sendCommand(device, 'jump', value);
+                                    }.bind(alexa, device));
+                                    setOrUpdateObject(`${devId}.Player.queueId`, {common: {name:'current queueId', type:'string', role:'text', write: false, def: ''}});
+                                    setOrUpdateObject(`${devId}.Player.quality`, {common: {name:'current media quality', type:'string', role:'text', write: false, def: ''}});
+                                    setOrUpdateObject(`${devId}.Player.qualityCodec`, {common: {name:'current media codec', type:'string', write: false, role:'text', def: ''}});
+                                    setOrUpdateObject(`${devId}.Player.qualityDataRate`, {common: {name:'current media bitrate', type:'number', write: false, role:'media.bitrate', def: null, unit: 'kbps'}});
+                                    setOrUpdateObject(`${devId}.Player.qualitySampleRate`, {common: {name:'current media sample rate', type:'number', write: false, role:'value', def: null, unit: 'Hz'}});
+                                    setOrUpdateObject(`${devId}.Player.allowNext`, {common: {name:'allow action Next', type:'boolean', role:'indicator', write: false, def: false}});
+                                    setOrUpdateObject(`${devId}.Player.allowPlayPause`, {common: {name:'allow action Play/Pause', type:'boolean', role:'indicator', write: false, def: false}});
+                                    setOrUpdateObject(`${devId}.Player.allowPrevious`, {common: {name:'allow action Previous', type:'boolean', role:'indicator', write: false, def: false}});
+                                    setOrUpdateObject(`${devId}.Player.allowRepeat`, {common: {name:'allow action Repeat', type:'boolean', role:'indicator', write: false, def: false}});
+                                    setOrUpdateObject(`${devId}.Player.allowShuffle`, {common: {name:'allow action Shuffle', type:'boolean', role:'indicator', write: false, def: false}});
+                                    setOrUpdateObject(`${devId}.Player.playingInGroup`, {common: {name:'is Playing in Group?', type:'boolean', role:'indicator', write: false, def: false}});
+                                    setOrUpdateObject(`${devId}.Player.playingInGroupId`, {common: {name:'Current playing group ID', type:'string', role:'text', write: false, def: ''}});
+
+                                    setOrUpdateObject(`${devId}.Player.mediaLength`, {common: {name:'active media length', type:'number', role:'media.duration', def: 0}});
+                                    setOrUpdateObject(`${devId}.Player.mediaLengthStr`, {common: {name:'active media length as (HH:)MM:SS', type:'string', role:'media.duration.text', def: ''}});
+                                    setOrUpdateObject(`${devId}.Player.mediaProgress`,  {common: {name:'active media progress', type:'number', role:'media.elapsed', def: 0}});
+                                    setOrUpdateObject(`${devId}.Player.mediaProgressStr`, {common: {name:'active media progress as (HH:)MM:SS', type:'string', role:'media.elapsed.text', def: ''}});
+                                    setOrUpdateObject(`${devId}.Player.mediaProgressPercent`, {common: {name:'active media progress as percent', type:'number', role:'media.elapsed.percent', def: 0}});
+                                    setOrUpdateObject(`${devId}.Player.mediaRemaining`,  {common: {name:'active media remaining time', type:'number', role:'value', def: 0}});
+                                    setOrUpdateObject(`${devId}.Player.mediaRemainingStr`, {common: {name:'active media remaining time as (HH:)MM:SS', type:'string', role:'value', def: ''}});
+
+                                    for (const c of Object.keys(playerControls)) {
+                                        const obj = JSON.parse (JSON.stringify (playerControls[c]));
+                                        setOrUpdateObject(`${devId}.Player.${c}`, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
+                                    }
+
+                                    if (device.capabilities.includes('VOLUME_SETTING')) {
+                                        setOrUpdateObject(`${devId}.Player.muted`, {common: {type: 'boolean', role: 'media.mute', write: false, def: false}});
+                                        setOrUpdateObject(`${devId}.Player.volume`, {common: {role: 'level.volume', min: 0, max: 100, def: 0}}, null, function (device, value) {
+                                            if (device.isMultiroomDevice) {
+                                                alexa.sendCommand(device, 'volume', value, (err, res) => {
+                                                    // on unavailability {"message":"No routes found","userFacingMessage":null}
+                                                    if (res && res.message === 'No routes found') {
+                                                        const volumeCommands = [];
+                                                        iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                                                            volumeCommands.push({
+                                                                command: 'volume',
+                                                                value,
+                                                                device: iteratorDevice.serialNumber
+                                                            });
+                                                            nextCallback && nextCallback();
+                                                        }, () => {
+                                                            alexa.sendMultiSequenceCommand(device.serialNumber, volumeCommands, 'ParallelNode', alexa.ownerCustomerId);
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                alexa.sendSequenceCommand(device, 'volume', value, alexa.ownerCustomerId);
+                                            }
+                                        }.bind(alexa, device));
+                                    }
+
+                                    if (device.hasMusicPlayer) {
+                                        for (const c of Object.keys(musicControls)) {
+                                            const obj = JSON.parse (JSON.stringify (musicControls[c]));
+                                            setOrUpdateObject(`${devId}.Player.${c}`, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
+                                        }
+                                        setOrUpdateObject(`${devId}.Music-Provider`, {type: 'channel'});
+                                        for (const p in musicProviders) {
+                                            if (musicProviders[p].availability !== 'AVAILABLE') continue;
+                                            if (!musicProviders[p].supportedOperations.includes('Alexa.Music.PlaySearchPhrase')) continue;
+                                            const displayName = musicProviders[p].displayName.replace(adapter.FORBIDDEN_CHARS, '-').replace(/\./g, '_').replace(/ /g, '-');
+                                            if (!displayName.length) {
+                                                musicProviders[p].id !== 'DEFAULT' && adapter.log.warn(`Music Provider has no name, ignoring! (${JSON.stringify(musicProviders[p])})`);
+                                                continue;
+                                            }
+
+                                            setOrUpdateObject(`${devId}.Music-Provider.${displayName}`, {common: {name:`Phrase to play with ${musicProviders[p].displayName}`, type:'string', role:'text', def: ''}}, null, playMusicProvider.bind(alexa, device, musicProviders[p].id));
+                                            setOrUpdateObject(`${devId}.Music-Provider.${displayName}-Playlist`, {common: {name:`Playlist to play with ${musicProviders[p].displayName}`, type:'string', role:'text', def: ''}}, null, function(device, providerId, value) {
+                                                if (value === '') return;
+                                                playMusicProvider(device, providerId, `playlist ${value}`);
+                                            }.bind(alexa, device, musicProviders[p].id));
+                                        }
+                                    }
+
+                                    if (device.capabilities.includes ('TUNE_IN')) {
+                                        setOrUpdateObject(`${devId}.Player.TuneIn-Station`, {common: {role: 'text', def: ''}}, null, function (device, query) {
+                                            if (query.match(/^s[0-9]+$/)) {
+                                                device.setTunein(query, 'station', (err, ret) => {
+                                                    if (!err) {
+                                                        adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
+                                                        schedulePlayerUpdate(device, 5000);
+                                                    }
+                                                });
+                                                /*} else if (query.match(/^p[0-9]+$/)) {
+                                                    device.setTunein(query, 'show', (err, ret) => {
+                                                        if (!err) {
+                                                            adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
+                                                            schedulePlayerUpdate(device, 5000);
+                                                        }
+                                                    });*/
+                                            } else if (query.match(/^t[0-9]+$/)) {
+                                                device.setTunein(query, 'topic', (err, ret) => {
+                                                    if (!err) {
+                                                        adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
+                                                        schedulePlayerUpdate(device, 5000);
+                                                    }
+                                                });
+                                            } else {
+                                                alexa.tuneinSearch(query, (err, res) => {
+                                                    setRequestResult(err, res);
+                                                    if (err || !res || !Array.isArray (res.browseList)) return;
+                                                    const station = res.browseList[0];
+                                                    device.setTunein(station.id, station.contentType, (err, ret) => {
+                                                        if (!err) {
+                                                            adapter.setState(`Echo-Devices.${device.serialNumber}.Player.TuneIn-Station`, station.name, true);
+                                                            schedulePlayerUpdate(device, 5000);
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                        }.bind(alexa, device));
+                                    }
+                                }
+                                createBluetoothStates(device);
+
+                                if (device.notifications) {
+                                    createNotificationStates(device);
+                                }
+
+                                if (device.deviceTypeDetails.commandSupport) {
+                                    setOrUpdateObject(`${devId}.Commands`, {type: 'channel'});
+                                    for (const c of Object.keys(commands)) {
+                                        if (c === 'notification' && device.isMultiroomDevice) continue;
+                                        const obj = JSON.parse (JSON.stringify (commands[c]));
+                                        if (c === 'sound' && routineSounds && Object.keys(routineSounds).length) {
+                                            obj.common.states = routineSounds;
+                                        }
+                                        if (c === 'skillYours' && routineSkills && Object.keys(routineSkills).length) {
+                                            obj.common.states = routineSkills;
+                                        }
+                                        setOrUpdateObject(`${devId}.Commands.${c}`, {common: obj.common}, obj.val, function (device, command, value) {
+                                            command = commands[command].command || command;
+                                            const commandsToExecute = [];
+                                            const speakVolumeCommands = [];
+                                            const speakVolumeResetCommands = [];
+
+                                            iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                                                if (command === 'notification' && value && typeof value ===  'string' && value.includes(';')) {
+                                                    const parts = value.split(';');
+                                                    const title = parts.shift();
+                                                    value = {
+                                                        title,
+                                                        text: parts.join(';')
+                                                    };
+                                                }
+
+                                                if (command === 'deviceStop' || command === 'textCommand' || command.startsWith('skill')) {
+                                                    commandsToExecute.push({
+                                                        command,
+                                                        value,
+                                                        device: iteratorDevice.serialNumber
+                                                    });
+                                                    return nextCallback && nextCallback();
+                                                }
+                                                const speakVolume = iteratorDevice.speakVolume;
+                                                adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
+                                                    let speakVolumeReset = 0;
+                                                    if (!err && state && state.val !== false && state.val !== null) {
+                                                        speakVolumeReset = state.val;
+                                                    }
+                                                    if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
+                                                        speakVolumeCommands.push({
+                                                            command: 'volume',
+                                                            value: speakVolume,
+                                                            device: iteratorDevice.serialNumber
+                                                        });
+                                                    }
+                                                    commandsToExecute.push({
+                                                        command,
+                                                        value,
+                                                        device: iteratorDevice.serialNumber
+                                                    });
+                                                    if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
+                                                        speakVolumeResetCommands.push({
+                                                            command: 'volume',
+                                                            value: speakVolumeReset,
+                                                            device: iteratorDevice.serialNumber
+                                                        });
+                                                    }
+                                                    nextCallback && nextCallback();
+                                                });
+                                            }, () => {
+                                                if (!commandsToExecute.length) return;
+                                                if (command === 'deviceStop' || command === 'textCommand') {
+                                                    alexa.sendMultiSequenceCommand(device.serialNumber, commandsToExecute, 'ParallelNode', alexa.ownerCustomerId);
+                                                } else {
+                                                    const allCommands = [];
+                                                    speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
+                                                    allCommands.push({sequenceType: 'ParallelNode', nodes: commandsToExecute});
+                                                    speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
+                                                    alexa.sendMultiSequenceCommand(device.serialNumber, allCommands, null, alexa.ownerCustomerId);
+                                                }
+                                            });
+                                        }.bind(alexa, device, c));
+                                    }
+                                    setOrUpdateObject(`${devId}.Commands.speak`, {common: { role: 'media.tts', def: ''}}, null, function (device, value) {
+                                        if (typeof value !== 'string') return;
+                                        if (!value) return;
+
+                                        const speakVolumeCommands = [];
+                                        const speakCommands = [];
+                                        const speakVolumeResetCommands = [];
+
+                                        iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                                            let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
+                                            if (!valueArr) valueArr = [];
+                                            const speakVolume = valueArr[4] || iteratorDevice.speakVolume;
+                                            value = valueArr[5] || value;
+                                            if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
+                                            adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
+                                                let speakVolumeReset = 0;
+                                                if (!err && state && state.val !== false && state.val !== null) {
+                                                    speakVolumeReset = state.val;
+                                                }
+                                                if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
+                                                    speakVolumeCommands.push({
+                                                        command: 'volume',
+                                                        value: speakVolume,
+                                                        device: iteratorDevice.serialNumber
+                                                    });
+                                                }
+                                                const speakCommandsFromValue = [];
+                                                value.split(';').forEach((v) => {
+                                                    const value = v.trim();
+                                                    if (!value || !value.length) return;
+                                                    speakCommandsFromValue.push({
+                                                        command: 'speak',
+                                                        value,
+                                                        device: iteratorDevice.serialNumber
+                                                    });
+                                                });
+                                                speakCommands.push({sequenceType: 'SerialNode', nodes: speakCommandsFromValue});
+                                                if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
+                                                    speakVolumeResetCommands.push({
+                                                        command: 'volume',
+                                                        value: speakVolumeReset,
+                                                        device: iteratorDevice.serialNumber
+                                                    });
+                                                }
+                                                nextCallback && nextCallback();
+                                            });
+                                        }, () => {
+                                            // Done
+                                            if (!speakCommands.length) return;
+                                            const allCommands = [];
+                                            speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
+                                            allCommands.push({sequenceType: 'ParallelNode', nodes: speakCommands});
+                                            speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
+                                            alexa.sendMultiSequenceCommand(device.serialNumber, allCommands, null, alexa.ownerCustomerId);
                                         });
-                                        nextCallback && nextCallback();
-                                    }, () => {
-                                        alexa.sendMultiSequenceCommand(device.serialNumber, volumeCommands, 'ParallelNode', alexa.ownerCustomerId);
-                                    });
-                                }
-                            });
-                        }
-                        else {
-                            alexa.sendSequenceCommand(device, 'volume', value, alexa.ownerCustomerId);
-                        }
-                    }.bind(alexa, device));
-                }
+                                    }.bind(alexa, device));
+                                    setOrUpdateObject(`${devId}.Commands.announcement`, {common: { role: 'media.tts', def: ''}}, null, function (device, value) {
+                                        if (typeof value !== 'string') return;
+                                        if (!value) return;
 
-                if (device.hasMusicPlayer) {
-                    for (const c of Object.keys(musicControls)) {
-                        const obj = JSON.parse (JSON.stringify (musicControls[c]));
-                        setOrUpdateObject(`${devId}.Player.${c}`, {common: obj.common}, obj.val, alexa.sendCommand.bind(alexa, device, obj.command));
-                    }
-                    setOrUpdateObject(`${devId}.Music-Provider`, {type: 'channel'});
-                    for (const p in musicProviders) {
-                        if (musicProviders[p].availability !== 'AVAILABLE') continue;
-                        if (!musicProviders[p].supportedOperations.includes('Alexa.Music.PlaySearchPhrase')) continue;
-                        const displayName = musicProviders[p].displayName.replace(adapter.FORBIDDEN_CHARS, '-').replace(/\./g, '_').replace(/ /g, '-');
-                        if (!displayName.length) {
-                            musicProviders[p].id !== 'DEFAULT' && adapter.log.warn(`Music Provider has no name, ignoring! (${JSON.stringify(musicProviders[p])})`);
-                            continue;
-                        }
+                                        const speakVolumeCommands = [];
+                                        const speakVolumeResetCommands = [];
 
-                        setOrUpdateObject(`${devId}.Music-Provider.${displayName}`, {common: {name:`Phrase to play with ${musicProviders[p].displayName}`, type:'string', role:'text', def: ''}}, null, playMusicProvider.bind(alexa, device, musicProviders[p].id));
-                        setOrUpdateObject(`${devId}.Music-Provider.${displayName}-Playlist`, {common: {name:`Playlist to play with ${musicProviders[p].displayName}`, type:'string', role:'text', def: ''}}, null, function(device, providerId, value) {
-                            if (value === '') return;
-                            playMusicProvider(device, providerId, `playlist ${value}`);
-                        }.bind(alexa, device, musicProviders[p].id));
-                    }
-                }
+                                        let speakValue = '';
+                                        iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                                            let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
+                                            if (!valueArr) valueArr= [];
+                                            const speakVolume = valueArr[4] || iteratorDevice.speakVolume;
+                                            value = valueArr[5] || value;
+                                            if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
+                                            adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
+                                                let speakVolumeReset = 0;
+                                                if (!err && state && state.val !== false && state.val !== null) {
+                                                    speakVolumeReset = state.val;
+                                                }
+                                                if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
+                                                    speakVolumeCommands.push({
+                                                        command: 'volume',
+                                                        value: speakVolume,
+                                                        device: iteratorDevice.serialNumber
+                                                    });
+                                                }
+                                                if (!speakValue) speakValue = value;
+                                                if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
+                                                    speakVolumeResetCommands.push({
+                                                        command: 'volume',
+                                                        value: speakVolumeReset,
+                                                        device: iteratorDevice.serialNumber
+                                                    });
+                                                }
+                                                nextCallback && nextCallback();
+                                            });
+                                        }, () => {
+                                            const announceCommands = [];
+                                            speakValue.split(';').forEach((v) => {
+                                                const value = v.trim();
+                                                if (!value || !value.length) return;
+                                                announceCommands.push({command: 'announcement', value});
+                                            });
+                                            if (!announceCommands.length) return;
 
-                if (device.capabilities.includes ('TUNE_IN')) {
-                    setOrUpdateObject(`${devId}.Player.TuneIn-Station`, {common: {role: 'text', def: ''}}, null, function (device, query) {
-                        if (query.match(/^s[0-9]+$/)) {
-                            device.setTunein(query, 'station', (err, ret) => {
-                                if (!err) {
-                                    adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
-                                    schedulePlayerUpdate(device, 5000);
-                                }
-                            });
-                            /*} else if (query.match(/^p[0-9]+$/)) {
-                                device.setTunein(query, 'show', (err, ret) => {
-                                    if (!err) {
-                                        adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
-                                        schedulePlayerUpdate(device, 5000);
+                                            const allCommands = [];
+                                            speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
+                                            if (announceCommands.length === 1) {
+                                                allCommands.push(announceCommands[0]);
+                                            } else {
+                                                allCommands.push({sequenceType: 'SerialNode', nodes: announceCommands});
+                                            }
+                                            speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
+                                            alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, allCommands, null, alexa.ownerCustomerId);
+                                        });
+                                    }.bind(alexa, device));
+                                    setOrUpdateObject(`${devId}.Commands.ssml`, {common: { role: 'media.tts', def: ''}}, null, function (device, value) {
+                                        if (typeof value !== 'string') return;
+                                        value = value.trim();
+                                        if (!value) return;
+
+                                        const speakVolumeCommands = [];
+                                        const speakVolumeResetCommands = [];
+
+                                        iterateMultiroom(device, (iteratorDevice, nextCallback) => {
+                                            const speakVolume = iteratorDevice.speakVolume;
+                                            adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
+                                                let speakVolumeReset = 0;
+                                                if (!err && state && state.val !== false && state.val !== null) {
+                                                    speakVolumeReset = state.val;
+                                                }
+                                                if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
+                                                    speakVolumeCommands.push({
+                                                        command: 'volume',
+                                                        value: speakVolume,
+                                                        device: iteratorDevice.serialNumber
+                                                    });
+                                                }
+                                                if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
+                                                    speakVolumeResetCommands.push({
+                                                        command: 'volume',
+                                                        value: speakVolumeReset,
+                                                        device: iteratorDevice.serialNumber
+                                                    });
+                                                }
+                                                nextCallback && nextCallback();
+                                            });
+                                        }, () => {
+                                            const allCommands = [];
+                                            speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
+                                            allCommands.push({command: 'ssml', value});
+                                            speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
+                                            alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, allCommands, null, alexa.ownerCustomerId);
+
+                                        });
+                                    }.bind(alexa, device));
+                                    if (!device.isMultiroomDevice) {
+                                        if (existingStates[`${devId}.Commands.speak-volume`]) {
+                                            adapter.getState(`${devId}.Commands.speak-volume`, function (device, err, state) {
+                                                if (!err && state && state.val && state.val > 0) {
+                                                    device.speakVolume = state.val;
+                                                    adapter.log.debug(`Initialize speak-Volume for ${device.serialNumber}: ${state.val}`);
+                                                }
+                                            }.bind(alexa, device));
+                                        }
+                                        setOrUpdateObject(`${devId}.Commands.speak-volume`, {common: {name: 'Volume to use for speak commands', type: 'number', role: 'level.volume', min: 0, max: 100}}, null, function (device, value) {
+                                            device.speakVolume = value;
+                                            adapter.log.debug(`Set speak-Volume for ${device.serialNumber}: ${value}`);
+                                            adapter.setState(`${devId}.Commands.speak-volume`, value, true);
+                                        }.bind(alexa, device));
                                     }
-                                });*/
-                        } else if (query.match(/^t[0-9]+$/)) {
-                            device.setTunein(query, 'topic', (err, ret) => {
-                                if (!err) {
-                                    adapter.setState(`${devId}.Player.TuneIn-Station`, query, true);
-                                    schedulePlayerUpdate(device, 5000);
+                                    setOrUpdateObject(`${devId}.Commands.doNotDisturb`, {common: {role: 'switch'}}, null, function (device, value) {
+                                        device.setDoNotDisturb(!!value, (err, res) => {
+                                            if (!err) {
+                                                adapter.setState(`${devId}.Commands.doNotDisturb`, !!value, true);
+                                            }
+                                        });
+                                    }.bind(alexa, device));
                                 }
-                            });
-                        } else {
-                            alexa.tuneinSearch(query, (err, res) => {
-                                setRequestResult(err, res);
-                                if (err || !res || !Array.isArray (res.browseList)) return;
-                                const station = res.browseList[0];
-                                device.setTunein(station.id, station.contentType, (err, ret) => {
-                                    if (!err) {
-                                        adapter.setState(`Echo-Devices.${device.serialNumber}.Player.TuneIn-Station`, station.name, true);
-                                        schedulePlayerUpdate(device, 5000);
+
+                                if (!device.isMultiroomDevice && device.deviceTypeDetails.commandSupport) {
+                                    if (automationRoutines) {
+                                        setOrUpdateObject(`${devId}.Routines`, {type: 'channel'});
+                                        for (const i of Object.keys(automationRoutines)) {
+                                            setOrUpdateObject(`${devId}.Routines.${automationRoutines[i].friendlyAutomationId}`, {common: { type: 'boolean', role: 'indicator', read: true, write: true, name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
+                                            if (automationRoutines[i].utteranceWords) {
+                                                if (!routineTriggerUtterances[device.serialNumber]) routineTriggerUtterances[device.serialNumber] = {};
+                                                automationRoutines[i].utteranceWords.forEach(utterance => {
+                                                    if (!utterance) return;
+                                                    routineTriggerUtterances[device.serialNumber][utterance.toLowerCase()] = `${devId}.Routines.${automationRoutines[i].friendlyAutomationId}`;
+                                                });
+                                            }
+                                        }
                                     }
-                                });
-                            });
-                        }
-                    }.bind(alexa, device));
-                }
-            }
-            createBluetoothStates(device);
-
-            if (device.notifications) {
-                createNotificationStates(device);
-            }
-
-            if (device.deviceTypeDetails.commandSupport) {
-                setOrUpdateObject(`${devId}.Commands`, {type: 'channel'});
-                for (const c of Object.keys(commands)) {
-                    if (c === 'notification' && device.isMultiroomDevice) continue;
-                    const obj = JSON.parse (JSON.stringify (commands[c]));
-                    if (c === 'sound') {
-                        obj.common.states = routineSounds;
-                    }
-                    setOrUpdateObject(`${devId}.Commands.${c}`, {common: obj.common}, obj.val, function (device, command, value) {
-                        const commands = [];
-                        const speakVolumeCommands = [];
-                        const speakVolumeResetCommands = [];
-
-                        iterateMultiroom(device, (iteratorDevice, nextCallback) => {
-                            if (command === 'notification' && value && typeof value ===  'string' && value.includes(';')) {
-                                const parts = value.split(';');
-                                const title = parts.shift();
-                                value = {
-                                    title,
-                                    text: parts.join(';')
-                                };
-                            }
-
-                            if (command === 'deviceStop' || command === 'textCommand') {
-                                commands.push({
-                                    command,
-                                    value,
-                                    device: iteratorDevice.serialNumber
-                                });
-                                return nextCallback && nextCallback();
-                            }
-                            const speakVolume = iteratorDevice.speakVolume;
-                            adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
-                                let speakVolumeReset = 0;
-                                if (!err && state && state.val !== false && state.val !== null) {
-                                    speakVolumeReset = state.val;
                                 }
-                                if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
-                                    speakVolumeCommands.push({
-                                        command: 'volume',
-                                        value: speakVolume,
-                                        device: iteratorDevice.serialNumber
-                                    });
-                                }
-                                commands.push({
-                                    command,
-                                    value,
-                                    device: iteratorDevice.serialNumber
-                                });
-                                if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
-                                    speakVolumeResetCommands.push({
-                                        command: 'volume',
-                                        value: speakVolumeReset,
-                                        device: iteratorDevice.serialNumber
-                                    });
-                                }
-                                nextCallback && nextCallback();
+
+                                setTimeout(() => !stopped && resolve(), 500);
                             });
-                        }, () => {
-                            if (!commands.length) return;
-                            if (command === 'deviceStop' || command === 'textCommand') {
-                                alexa.sendMultiSequenceCommand(device.serialNumber, commands, 'ParallelNode', alexa.ownerCustomerId);
-                            } else {
-                                const allCommands = [];
-                                speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
-                                allCommands.push({sequenceType: 'ParallelNode', nodes: commands});
-                                speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
-                                alexa.sendMultiSequenceCommand(device.serialNumber, allCommands, null, alexa.ownerCustomerId);
-                            }
                         });
-                    }.bind(alexa, device, c));
-                }
-                setOrUpdateObject(`${devId}.Commands.speak`, {common: { role: 'media.tts', def: ''}}, null, function (device, value) {
-                    if (typeof value !== 'string') return;
-                    if (!value) return;
-
-                    const speakVolumeCommands = [];
-                    const speakCommands = [];
-                    const speakVolumeResetCommands = [];
-
-                    iterateMultiroom(device, (iteratorDevice, nextCallback) => {
-                        let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
-                        if (!valueArr) valueArr = [];
-                        const speakVolume = valueArr[4] || iteratorDevice.speakVolume;
-                        value = valueArr[5] || value;
-                        if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
-                        adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
-                            let speakVolumeReset = 0;
-                            if (!err && state && state.val !== false && state.val !== null) {
-                                speakVolumeReset = state.val;
-                            }
-                            if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
-                                speakVolumeCommands.push({
-                                    command: 'volume',
-                                    value: speakVolume,
-                                    device: iteratorDevice.serialNumber
-                                });
-                            }
-                            const speakCommandsFromValue = [];
-                            value.split(';').forEach((v) => {
-                                const value = v.trim();
-                                if (!value || !value.length) return;
-                                speakCommandsFromValue.push({
-                                    command: 'speak',
-                                    value,
-                                    device: iteratorDevice.serialNumber
-                                });
-                            });
-                            speakCommands.push({sequenceType: 'SerialNode', nodes: speakCommandsFromValue});
-                            if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
-                                speakVolumeResetCommands.push({
-                                    command: 'volume',
-                                    value: speakVolumeReset,
-                                    device: iteratorDevice.serialNumber
-                                });
-                            }
-                            nextCallback && nextCallback();
-                        });
-                    }, () => {
-                        // Done
-                        if (!speakCommands.length) return;
-                        const allCommands = [];
-                        speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
-                        allCommands.push({sequenceType: 'ParallelNode', nodes: speakCommands});
-                        speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
-                        alexa.sendMultiSequenceCommand(device.serialNumber, allCommands, null, alexa.ownerCustomerId);
                     });
-                }.bind(alexa, device));
-                setOrUpdateObject(`${devId}.Commands.announcement`, {common: { role: 'media.tts', def: ''}}, null, function (device, value) {
-                    if (typeof value !== 'string') return;
-                    if (!value) return;
-
-                    const speakVolumeCommands = [];
-                    const speakVolumeResetCommands = [];
-
-                    let speakValue = '';
-                    iterateMultiroom(device, (iteratorDevice, nextCallback) => {
-                        let valueArr = value.match(/^(([^;0-9]+);)?(([0-9]{1,3});)?(.+)$/);
-                        if (!valueArr) valueArr= [];
-                        const speakVolume = valueArr[4] || iteratorDevice.speakVolume;
-                        value = valueArr[5] || value;
-                        if (!valueArr[4] && valueArr[1]) value = valueArr[1] + value;
-                        adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
-                            let speakVolumeReset = 0;
-                            if (!err && state && state.val !== false && state.val !== null) {
-                                speakVolumeReset = state.val;
-                            }
-                            if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
-                                speakVolumeCommands.push({
-                                    command: 'volume',
-                                    value: speakVolume,
-                                    device: iteratorDevice.serialNumber
-                                });
-                            }
-                            if (!speakValue) speakValue = value;
-                            if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
-                                speakVolumeResetCommands.push({
-                                    command: 'volume',
-                                    value: speakVolumeReset,
-                                    device: iteratorDevice.serialNumber
-                                });
-                            }
-                            nextCallback && nextCallback();
-                        });
-                    }, () => {
-                        const announceCommands = [];
-                        speakValue.split(';').forEach((v) => {
-                            const value = v.trim();
-                            if (!value || !value.length) return;
-                            announceCommands.push({command: 'announcement', value});
-                        });
-                        if (!announceCommands.length) return;
-
-                        const allCommands = [];
-                        speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
-                        if (announceCommands.length === 1) {
-                            allCommands.push(announceCommands[0]);
-                        } else {
-                            allCommands.push({sequenceType: 'SerialNode', nodes: announceCommands});
-                        }
-                        speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
-                        alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, allCommands, null, alexa.ownerCustomerId);
-                    });
-                }.bind(alexa, device));
-                setOrUpdateObject(`${devId}.Commands.ssml`, {common: { role: 'media.tts', def: ''}}, null, function (device, value) {
-                    if (typeof value !== 'string') return;
-                    value = value.trim();
-                    if (!value) return;
-
-                    const speakVolumeCommands = [];
-                    const speakVolumeResetCommands = [];
-
-                    iterateMultiroom(device, (iteratorDevice, nextCallback) => {
-                        const speakVolume = iteratorDevice.speakVolume;
-                        adapter.getState(`Echo-Devices.${iteratorDevice.serialNumber}.Player.volume`, (err, state) => {
-                            let speakVolumeReset = 0;
-                            if (!err && state && state.val !== false && state.val !== null) {
-                                speakVolumeReset = state.val;
-                            }
-                            if (speakVolume && speakVolume > 0 && speakVolume !== speakVolumeReset) {
-                                speakVolumeCommands.push({
-                                    command: 'volume',
-                                    value: speakVolume,
-                                    device: iteratorDevice.serialNumber
-                                });
-                            }
-                            if (speakVolume && speakVolume > 0 && speakVolumeReset && speakVolumeReset > 0 && speakVolume !== speakVolumeReset) {
-                                speakVolumeResetCommands.push({
-                                    command: 'volume',
-                                    value: speakVolumeReset,
-                                    device: iteratorDevice.serialNumber
-                                });
-                            }
-                            nextCallback && nextCallback();
-                        });
-                    }, () => {
-                        const allCommands = [];
-                        speakVolumeCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeCommands});
-                        allCommands.push({command: 'ssml', value});
-                        speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
-                        alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, allCommands, null, alexa.ownerCustomerId);
-
-                    });
-                }.bind(alexa, device));
-                if (!device.isMultiroomDevice) {
-                    if (existingStates[`${devId}.Commands.speak-volume`]) {
-                        adapter.getState(`${devId}.Commands.speak-volume`, function (device, err, state) {
-                            if (!err && state && state.val && state.val > 0) {
-                                device.speakVolume = state.val;
-                                adapter.log.debug(`Initialize speak-Volume for ${device.serialNumber}: ${state.val}`);
-                            }
-                        }.bind(alexa, device));
-                    }
-                    setOrUpdateObject(`${devId}.Commands.speak-volume`, {common: {name: 'Volume to use for speak commands', type: 'number', role: 'level.volume', min: 0, max: 100}}, null, function (device, value) {
-                        device.speakVolume = value;
-                        adapter.log.debug(`Set speak-Volume for ${device.serialNumber}: ${value}`);
-                        adapter.setState(`${devId}.Commands.speak-volume`, value, true);
-                    }.bind(alexa, device));
-                }
-                setOrUpdateObject(`${devId}.Commands.doNotDisturb`, {common: {role: 'switch'}}, null, function (device, value) {
-                    device.setDoNotDisturb(device, !!value, (err, res) => {
-                        if (!err) {
-                            adapter.setState(`${devId}.Commands.doNotDisturb`, !!value, true);
-                        }
-                    });
-                }.bind(alexa, device));
-            }
-
-            if (!device.isMultiroomDevice && device.deviceTypeDetails.commandSupport) {
-                if (automationRoutines) {
-                    setOrUpdateObject(`${devId}.Routines`, {type: 'channel'});
-                    for (const i of Object.keys(automationRoutines)) {
-                        setOrUpdateObject(`${devId}.Routines.${automationRoutines[i].friendlyAutomationId}`, {common: { type: 'boolean', role: 'indicator', read: true, write: true, name: automationRoutines[i].friendlyName}}, false, alexa.executeAutomationRoutine.bind(alexa, device, automationRoutines[i]));
-                        if (automationRoutines[i].utteranceWords) {
-                            if (!routineTriggerUtterances[device.serialNumber]) routineTriggerUtterances[device.serialNumber] = {};
-                            automationRoutines[i].utteranceWords.forEach(utterance => {
-                                if (!utterance) return;
-                                routineTriggerUtterances[device.serialNumber][utterance.toLowerCase()] = `${devId}.Routines.${automationRoutines[i].friendlyAutomationId}`;
-                            });
-                        }
-                    }
-                }
-            }
+                });
+            });
         });
     });
+}
 
-    setOrUpdateObject('History', {type: 'channel', common: {name: 'Last detected commands and devices'}});
-    setOrUpdateObject('History.#trigger', {common: { type: 'boolean', read: false, write: true, role: 'button', name: 'Trigger/Rescan', desc: 'Set to true, to start a request'}}, false,
-        (val) => updateHistory());
-    setOrUpdateObject('History.name', {common: {role: 'text', write: false, name: 'Echo Device name', desc: 'Device name of the last detected command'}}, '');
-    let now = new Date();
-    now = now.getTime() - now.getTimezoneOffset();
-    setOrUpdateObject('History.creationTime', {common: {role: 'value.time'}}, now);
-    setOrUpdateObject('History.serialNumber', {common: {role: 'text', write: false}}, '');
-    setOrUpdateObject('History.summary', {common: {role: 'text', write: false}}, '');
-    setOrUpdateObject('History.status', {common: {role: 'text', write: false}}, '');
-    setOrUpdateObject('History.domainApplicationId', {common: {role: 'text', write: false}}, '');
-    setOrUpdateObject('History.domainApplicationName', {common: {role: 'text', write: false}}, '');
-    setOrUpdateObject('History.cardContent', {common: {role: 'text', write: false}}, '');
-    setOrUpdateObject('History.cardJson', {common: {role: 'text', write: false}}, '');
-    setOrUpdateObject('History.utteranceType', {common: {role: 'text', write: false}}, '');
-    setOrUpdateObject('History.answerText', {common: {role: 'text', write: false}}, '');
-    setOrUpdateObject('History.json', {common: {type: 'string', role: 'json', write: false}}, '');
-    setOrUpdateObject('History.domain', {common: {role: 'text', write: false}}, '');
-    setOrUpdateObject('History.intent', {common: {role: 'text', write: false}}, '');
+function createStates(callback) {
 
-    processObjectQueue(callback);
+    alexa.getAscendingAlarmState(async (err, alarmStates) => {
+        const ascendingAlarmStates = {};
+        if (!err && alarmStates && Array.isArray(alarmStates.ascendingAlarmModelList)) {
+            alarmStates.ascendingAlarmModelList.forEach(alarmState => {
+                if (alarmState.serialNumber) {
+                    ascendingAlarmStates[alarmState.deviceSerialNumber] = alarmState.ascendingAlarmEnabled;
+                }
+            });
+        }
+
+        setOrUpdateObject('requestResult', {common: {name: 'Request Result', write: false, role: 'text'}}, '');
+        setOrUpdateObject('Echo-Devices', {type: 'device', common: {name: 'Echo devices'}});
+
+        for (const n of Object.keys(alexa.serialNumbers)) {
+            const device = alexa.serialNumbers[n];
+            const additionalDeviceData = {};
+            if (ascendingAlarmStates[device.serialNumber] !== undefined) {
+                additionalDeviceData.ascendingAlarmState = ascendingAlarmStates[device.serialNumber];
+            }
+
+            await createStatesForDevice(device, additionalDeviceData);
+        }
+
+        setOrUpdateObject('History', {type: 'channel', common: {name: 'Last detected commands and devices'}});
+        setOrUpdateObject('History.#trigger', {common: { type: 'boolean', read: false, write: true, role: 'button', name: 'Trigger/Rescan', desc: 'Set to true, to start a request'}}, false,
+            (val) => updateHistory());
+        setOrUpdateObject('History.name', {common: {role: 'text', write: false, name: 'Echo Device name', desc: 'Device name of the last detected command'}}, '');
+        let now = new Date();
+        now = now.getTime() - now.getTimezoneOffset();
+        setOrUpdateObject('History.creationTime', {common: {role: 'value.time'}}, now);
+        setOrUpdateObject('History.serialNumber', {common: {role: 'text', write: false}}, '');
+        setOrUpdateObject('History.summary', {common: {role: 'text', write: false}}, '');
+        setOrUpdateObject('History.status', {common: {role: 'text', write: false}}, '');
+        setOrUpdateObject('History.domainApplicationId', {common: {role: 'text', write: false}}, '');
+        setOrUpdateObject('History.domainApplicationName', {common: {role: 'text', write: false}}, '');
+        setOrUpdateObject('History.cardContent', {common: {role: 'text', write: false}}, '');
+        setOrUpdateObject('History.cardJson', {common: {role: 'text', write: false}}, '');
+        setOrUpdateObject('History.utteranceType', {common: {role: 'text', write: false}}, '');
+        setOrUpdateObject('History.answerText', {common: {role: 'text', write: false}}, '');
+        setOrUpdateObject('History.json', {common: {type: 'string', role: 'json', write: false}}, '');
+        setOrUpdateObject('History.domain', {common: {role: 'text', write: false}}, '');
+        setOrUpdateObject('History.intent', {common: {role: 'text', write: false}}, '');
+
+        processObjectQueue(callback);
+    });
 }
 
 function playMusicProvider(device, providerId, value) {
@@ -2277,7 +2351,8 @@ function playMusicProvider(device, providerId, value) {
     });
 }
 
-function createDeviceStates(serialOrName, callback) {
+function createDeviceStates(serialOrName, additionalDeviceData, callback) {
+    additionalDeviceData = additionalDeviceData || {};
     const device = alexa.find(serialOrName);
     const devId = `Echo-Devices.${device.serialNumber}`;
 
@@ -2362,6 +2437,106 @@ function createDeviceStates(serialOrName, callback) {
                     device.preferences = res;
                     adapter.setState(`${devId}.Preferences.ringNotificationsEnabled`, res.notificationEarconEnabled, true);
                 });
+            });
+        }.bind(alexa, device));
+    }
+
+    if (additionalDeviceData.notificationVolume !== undefined) {
+        numPreferences++;
+        adapter.log.debug(`${devId} notificationVolume: ${additionalDeviceData.notificationVolume}`);
+        setOrUpdateObject(`${devId}.Preferences.notificationVolume`, {
+            common: {
+                type: 'number',
+                role: 'level.volume',
+                min: 0,
+                max: 100,
+                write: true
+            }
+        }, additionalDeviceData.notificationVolume, function (device, value) {
+            value = parseInt(value, 10);
+            if (isNaN(value) || value < 0 || value > 100) {
+                adapter.log.error(`Invalid alarm volume ${value} for ${device.serialNumber}`);
+                return;
+            }
+            device.setDeviceNotificationVolume(value, (err, res) => {
+                if (err || !res) {
+                    adapter.log.error(`Error setting alarm volume to ${value} for ${device.serialNumber}: ${err.message}`);
+                    return;
+                }
+                adapter.setState(`${devId}.Preferences.notificationVolume`, value, true);
+            });
+        }.bind(alexa, device));
+    }
+
+    if (additionalDeviceData.ascendingAlarmState !== undefined) {
+        numPreferences++;
+        adapter.log.debug(`${devId} ascendingAlarmState: ${additionalDeviceData.ascendingAlarmState}`);
+        setOrUpdateObject(`${devId}.Preferences.ascendingAlarmState`, {
+            common: {
+                type: 'boolean',
+                role: 'switch',
+                write: true
+            }
+        }, additionalDeviceData.ascendingAlarmState, function (device, value) {
+            value = !!value;
+            device.setDeviceAscendingAlarmState(value, (err, res) => {
+                if (err || !res) {
+                    adapter.log.error(`Error setting ascending alarm state to ${value} for ${device.serialNumber}: ${err.message}`);
+                    return;
+                }
+                adapter.setState(`${devId}.Preferences.ascendingAlarmState`, value, true);
+            });
+        }.bind(alexa, device));
+    }
+
+    if (additionalDeviceData.defaultAlarmNotificationSound !== undefined) {
+        numPreferences++;
+        adapter.log.debug(`${devId} defaultAlarmNotificationSound: ${additionalDeviceData.defaultAlarmNotificationSound.id}`);
+        setOrUpdateObject(`${devId}.Preferences.defaultAlarmNotificationSound`, {
+            common: {
+                type: 'string',
+                role: 'text',
+                write: true,
+                states: device.alarmNotificationSoundsStateList
+            }
+        }, additionalDeviceData.defaultAlarmNotificationSound.id, function (device, value) {
+            const soundDef = device.alarmNotificationSounds.find(s => s.id === value);
+            if (!soundDef) {
+                adapter.log.error(`Invalid alarm sound ${value} for ${device.serialNumber}`);
+                return;
+            }
+            device.setDeviceNotificationDefaultSound('Alarm', soundDef.id, (err, res) => {
+                if (err || !res) {
+                    adapter.log.error(`Error setting default notification sound to ${soundDef.id} for ${device.serialNumber}: ${err.message}`);
+                    return;
+                }
+                adapter.setState(`${devId}.Preferences.defaultAlarmNotificationSound`, soundDef.id, true);
+            });
+        }.bind(alexa, device));
+    }
+
+    if (additionalDeviceData.defaultTimerNotificationSound !== undefined) {
+        numPreferences++;
+        adapter.log.debug(`${devId} defaultTimerNotificationSound: ${additionalDeviceData.defaultTimerNotificationSound.id}`);
+        setOrUpdateObject(`${devId}.Preferences.defaultTimerNotificationSound`, {
+            common: {
+                type: 'string',
+                role: 'text',
+                write: true,
+                states: device.alarmNotificationSoundsStateList
+            }
+        }, additionalDeviceData.defaultTimerNotificationSound.id, function (device, value) {
+            const soundDef = device.alarmNotificationSounds.find(s => s.id === value);
+            if (!soundDef) {
+                adapter.log.error(`Invalid alarm sound ${value} for ${device.serialNumber}`);
+                return;
+            }
+            device.setDeviceNotificationDefaultSound('Timer', soundDef.id, (err, res) => {
+                if (err || !res) {
+                    adapter.log.error(`Error setting default notification sound to ${soundDef.id} for ${device.serialNumber}: ${err.message}`);
+                    return;
+                }
+                adapter.setState(`${devId}.Preferences.defaultTimerNotificationSound`, soundDef.id, true);
             });
         }.bind(alexa, device));
     }
@@ -2472,10 +2647,52 @@ function createNotificationStates(serialOrName) {
                     adapter.log.error('Invalid value for new Reminder, please provide a string');
                     return;
                 }
-                const valueArr = value.split(',');
+                const valueArr = value.split(';');
                 let time = valueArr.shift().trim();
                 if (parseInt(time, 10) == time) time = parseInt(time, 10);
-                const notification = alexa.createNotificationObject(device, 'Reminder', valueArr.join(',').trim(), time);
+                let label = valueArr.shift();
+                if (label) label = label.trim();
+                let sound = valueArr.shift();
+                let recurring = valueArr.shift();
+                if (sound) {
+                    sound = sound.trim();
+                    if (sound.startsWith('DAILY') || sound.startsWith('WEEKLY')) {
+                        recurring = sound;
+                        sound = undefined;
+                    }
+                    if (sound && device.alarmNotificationSounds) {
+                        sound = device.alarmNotificationSounds.find(s => s.id === sound);
+                    } else {
+                        sound = undefined;
+                    }
+                }
+                if (recurring) {
+                    recurring = recurring.trim();
+                    if (recurring === 'DAILY') {
+                        recurring = {
+                            freq: 'DAILY',
+                            byDay: [],
+                            interval: 1
+                        };
+                    } else if (recurring.startsWith('WEEKLY=')) {
+                        recurring = {
+                            freq: 'WEEKLY',
+                            byDay: recurring.substring(7).split(',').map(d => d.trim()).filter(d => d.length),
+                            interval: 1
+                        };
+                    } else if (recurring.startsWith('{') && recurring.endsWith('}')) {
+                        try {
+                            recurring = JSON.parse(recurring);
+                        } catch(err) {
+                            adapter.log.error(`Invalid recurring JSON value: ${recurring}`);
+                            recurring = undefined;
+                        }
+                    } else {
+                        recurring = undefined;
+                    }
+                }
+                adapter.log.debug(`New Reminder: ${time} ${label} ${JSON.stringify(sound)} ${JSON.stringify(recurring)}`);
+                const notification = alexa.createNotificationObject(device, 'Reminder', label, time, true, sound, recurring);
                 if (notification) {
                     alexa.createNotification(notification, (err, res) => {
                         scheduleNotificationUpdate(device, 2000);
@@ -2490,20 +2707,71 @@ function createNotificationStates(serialOrName) {
                     adapter.log.error('Invalid value for new Alarm, please provide a string');
                     return;
                 }
-                const valueArr = value.split(',');
+                const valueArr = value.split(';');
                 let time = valueArr.shift().trim();
                 if (parseInt(time, 10) == time) time = parseInt(time, 10);
-                const notification = alexa.createNotificationObject(device, 'Alarm', valueArr.join(',').trim(), time);
+                let label = valueArr.shift();
+                if (label) label = label.trim();
+                let sound = valueArr.shift();
+                let recurring = valueArr.shift();
+                if (sound) {
+                    sound = sound.trim();
+                    if (sound.startsWith('DAILY') || sound.startsWith('WEEKLY') || (recurring.startsWith('{') && recurring.endsWith('}'))) {
+                        recurring = sound;
+                        sound = undefined;
+                    }
+                    if (sound && device.alarmNotificationSounds) {
+                        sound = device.alarmNotificationSounds.find(s => s.id === sound);
+                    } else {
+                        sound = undefined;
+                    }
+                }
+                if (recurring) {
+                    recurring = recurring.trim();
+                    if (recurring === 'DAILY') {
+                        recurring = {
+                            freq: 'DAILY',
+                            byDay: [],
+                            interval: 1
+                        };
+                    } else if (recurring.startsWith('WEEKLY=')) {
+                        recurring = {
+                            freq: 'WEEKLY',
+                            byDay: recurring.substring(7).split(',').map(d => d.trim()).filter(d => d.length),
+                            interval: 1
+                        };
+                    } else if (recurring.startsWith('{') && recurring.endsWith('}')) {
+                        try {
+                            recurring = JSON.parse(recurring);
+                        } catch(err) {
+                            adapter.log.error(`Invalid recurring JSON value: ${recurring}`);
+                            recurring = undefined;
+                        }
+                    } else {
+                        recurring = undefined;
+                    }
+                }
+                adapter.log.debug(`New Alarm: ${time} ${label} ${JSON.stringify(sound)} ${JSON.stringify(recurring)}`);
+                const notification = alexa.createNotificationObject(device, 'Alarm', label, time, true, sound, recurring);
                 if (notification) {
                     alexa.createNotification(notification, (err, res) => {
                         scheduleNotificationUpdate(device, 2000);
                     });
                 }
             }.bind(alexa, device));
+            setOrUpdateObject(`${devId}.Alarm.triggered`, {common: {type: 'string', read: true, write: false, role: 'value', name: 'Alarm ID that got Triggered'}}, null);
+            setOrUpdateObject(`${devId}.Reminder.triggered`, {common: {type: 'string', read: true, write: false, role: 'value', name: 'Reminder ID that got Triggered'}}, null);
             setOrUpdateObject(`${devId}.Timer`, {type: 'device'});
             setOrUpdateObject(`${devId}.Timer.triggered`, {common: {type: 'boolean', read: true, write: false, role: 'indicator', name: 'A timer got Triggered'}}, false);
+
+            if (rememberedNotificationVolumeRestoreCallbacks[device.serialNumber] !== undefined) {
+                adapter.log.debug(`Restoring notification volume for ${device.serialNumber} because triggered flag cleared`);
+                rememberedNotificationVolumeRestoreCallbacks[device.serialNumber]();
+                delete rememberedNotificationVolumeRestoreCallbacks[device.serialNumber];
+            }
         }
         let nextTimerObject = null;
+        const activeTimerList = [];
         for (const noti of device.notifications) {
             if (notificationTimer[noti.id]) {
                 clearTimeout(notificationTimer[noti.id]);
@@ -2512,43 +2780,398 @@ function createNotificationStates(serialOrName) {
             if (noti.type === 'Reminder' && !device.capabilities.includes('REMINDERS')) continue;
             if (noti.type === 'Alarm' && !device.capabilities.includes('TIMERS_AND_ALARMS')) continue;
             if (noti.type === 'Timer' && noti.status === 'ON' && noti.remainingTime > 0) {
-                adapter.log.debug(`${noti.type} ${noti.id} triggered in ${Math.floor(noti.remainingTime / 1000)}s`);
-                if (nextTimerObject === null || nextTimerObject.remainingTime > noti.remainingTime) {
-                    nextTimerObject = noti;
+                let remainingTime = noti.remainingTime;
+                if (noti.triggerTime) {
+                    remainingTime = noti.triggerTime - Date.now();
+                    noti.remainingTime = remainingTime;
                 }
-                notificationTimer[noti.id] = setTimeout(function (noti) {
-                    notificationTimer[noti.id] = null;
-                    adapter.log.debug(`${noti.type} ${noti.id} triggered`);
-                    adapter.setState(`${devId}.Timer.triggered`, true, true);
-                }.bind(alexa, noti), noti.remainingTime);
-            }
-            if (noti.originalTime) {
+                adapter.log.debug(`${noti.type} ${noti.id} triggered in ${Math.floor(remainingTime / 1000)}s`);
+                if (remainingTime > 0) {
+                    if (nextTimerObject === null || nextTimerObject.remainingTime > remainingTime) {
+                        nextTimerObject = noti;
+                    }
+                    activeTimerList.push({
+                        id: noti.notificationIndex,
+                        triggerTime: noti.triggerTime || Date.now() + remainingTime,
+                        label: noti.timerLabel
+                    });
+                    if (notificationTimer[noti.id]) {
+                        clearTimeout(notificationTimer[noti.id]);
+                        notificationTimer[noti.id] = null;
+                    }
+                    notificationTimer[noti.id] = setTimeout(function (noti) {
+                        notificationTimer[noti.id] = null;
+                        adapter.log.debug(`${noti.type} ${noti.id} triggered`);
+                        adapter.setState(`${devId}.Timer.triggered`, true, true);
+
+                        // Check again status after 1min if no stop was arrived
+                        notificationTimer[noti.id] = setTimeout(() => {
+                            notificationTimer[noti.id] = null;
+                            adapter.getState(`${devId}.Timer.triggered`, (err, state) => {
+                                if (!err && state && state.val) {
+                                    updateNotificationStates(device);
+                                }
+                            });
+                        }, 60000);
+                    }.bind(alexa, noti), remainingTime);
+                }
+            } else if (noti.type !== 'Timer') {
                 const id = noti.notificationIndex;
                 const notiId = `${devId}.${noti.type}.${id}`;
+                let displayName = noti.reminderLabel;
                 let time = noti.originalTime;
-                if (time.endsWith('.000')) time = time.substr(0, time.length - 4);
-                const displayTime = noti.originalTime.substr(0, noti.originalTime.length - 4);
-                setOrUpdateObject(notiId, {type: 'channel', common: {name: noti.reminderLabel || displayTime}});
-                setOrUpdateObject(`${notiId}.date`, {common: {type: 'mixed', read: true, write: false, role: 'state', name: noti.reminderLabel ? noti.reminderLabel : `${displayTime} Date`}}, noti.originalDate);
-                setOrUpdateObject(`${notiId}.time`, {common: {type: 'mixed', role: 'state', name: noti.reminderLabel ? noti.reminderLabel : `${displayTime} Time`}}, time, noti.set);
-                setOrUpdateObject(`${notiId}.enabled`, {common: {type: 'boolean', role: 'switch.enable', name: noti.reminderLabel ? noti.reminderLabel : `${displayTime} Enabled`}}, (noti.status === 'ON'), noti.set);
-                setOrUpdateObject(`${notiId}.triggered`, {common: {type: 'boolean', read: true, write: false, role: 'indicator', name: noti.reminderLabel ? noti.reminderLabel : `${displayTime} Triggered`}}, false);
-                setOrUpdateObject(`${notiId}.recurringPattern`, {common: {type: 'string', read: true, write: false, role: 'state', name: noti.reminderLabel ? noti.reminderLabel : `${displayTime} RecurringPattern`}}, noti.recurringPattern || '0');
-                if (noti.status === 'ON' && (noti.alarmTime || (noti.originalDate && noti.originalTime))) {
-                    const alarmTime = new Date((`${noti.originalDate} ${noti.originalTime}`).replace(/-/g,'/'));
-                    const alarmDelay = alarmTime - new Date().getTime();
-                    adapter.log.debug(`${noti.type} ${noti.id} triggered in ${Math.floor(alarmDelay / 1000)}s`);
+                if (time) {
+                    if (typeof time === 'string' && time.endsWith('.000')) {
+                        time = time.substring(0, time.length - 4);
+                    }
+                    displayName = displayName ? `${displayName} ${time}`: time;
+                }
+                if (!displayName) {
+                    displayName = noti.type;
+                }
+
+                let rRuleDaysList = '';
+                if (noti.rRuleData && noti.rRuleData.byWeekDays) {
+                    rRuleDaysList = noti.rRuleData.byWeekDays.join(',');
+                } else if (noti.recurringPattern && noti.recurringPattern.endsWith('-WE')) {
+                    rRuleDaysList = 'SA,SU';
+                } else if (noti.recurringPattern && noti.recurringPattern.endsWith('-WD')) {
+                    rRuleDaysList = 'MO,TU,WE,TH,FR';
+                } else if (noti.recurringPattern && noti.recurringPattern === 'P1D') {
+                    rRuleDaysList = 'MO,TU,WE,TH,FR,SA,SU';
+                } else if (!noti.recurringPattern && noti.rRuleData && noti.rRuleData.recurrenceRules && noti.rRuleData.recurrenceRules.length && noti.rRuleData.recurrenceRules[0].startsWith('FREQ=DAILY;')) {
+                    rRuleDaysList = 'MO,TU,WE,TH,FR,SA,SU';
+                }
+
+                setOrUpdateObject(notiId, {type: 'channel', common: {name: displayName}});
+                setOrUpdateObject(`${notiId}.date`, {common: {type: 'mixed', read: true, write: true, role: 'state', name: `${displayName} Date`}}, noti.originalDate, (value) => {
+                    noti.set(value, (err, res) => {
+
+                    });
+                });
+                setOrUpdateObject(`${notiId}.time`, {common: {type: 'mixed', role: 'state', name: `${displayName} Time`}}, time, noti.set);
+                setOrUpdateObject(`${notiId}.enabled`, {common: {type: 'boolean', role: 'switch.enable', name: `${displayName} Enabled`}}, (noti.status === 'ON' || noti.status === 'SNOOZED'), noti.set);
+                setOrUpdateObject(`${notiId}.snoozed`, {common: {type: 'boolean', role: 'indicator', name: `${displayName} Snoozed`, write: false}}, (noti.status === 'SNOOZED'));
+                setOrUpdateObject(`${notiId}.delete`, {common: {type: 'boolean', role: 'button', read: false, name: `${displayName} Delete`}}, false, noti.delete);
+                setOrUpdateObject(`${notiId}.cancel`, {common: {type: 'boolean', role: 'button', read: false, name: `${displayName} Delete`}}, false, noti.cancel);
+                setOrUpdateObject(`${notiId}.customVolume`, {common: {type: 'number', role: 'level.volume', min: 0, max: 100, read: true, write: true, name: `${displayName} Custom Notification Volume`}}, undefined, value => {
+                    let customVolume = parseInt(value, 10);
+                    if (isNaN(customVolume) || customVolume < 0 || customVolume > 100) {
+                        adapter.log.error(`Invalid custom volume value ${value}`);
+                        customVolume = null;
+                    }
+                    adapter.setState(`${notiId}.customVolume`, customVolume, true);
+                });
+                setOrUpdateObject(`${notiId}.triggered`, {common: {type: 'boolean', read: true, write: false, role: 'indicator', name: `${displayName} Triggered`}}, false);
+                if (noti.recurringPattern !== undefined) {
+                    setOrUpdateObject(`${notiId}.recurringPattern`, {common: {type: 'string', read: true, write: false, role: 'state', name: `${displayName} Recurring pattern`}}, noti.recurringPattern || '0');
+                }
+                if (noti.reminderLabel !== undefined && noti.reminderLabel !== null) {
+                    setOrUpdateObject(`${notiId}.label`, {common: {type: 'string', read: true, write: true, role: 'text', name: `${displayName} Label`}}, noti.reminderLabel, function(noti, value) {
+                        if (!value) {
+                            adapter.log.error(`Label is empty for ${noti.id}`);
+                            return;
+                        }
+                        value = value.toString();
+                        alexa.getNotifications((err, res) => {
+                            if (!err && res && res.notifications && Array.isArray(res.notifications)) {
+                                let notificationData = null;
+                                for (const n of res.notifications) {
+                                    if (n.id === noti.id) {
+                                        notificationData = n;
+                                        break;
+                                    }
+                                }
+                                if (!notificationData) {
+                                    adapter.log.error(`Cannot find notification ${noti.id}`);
+                                    return;
+                                }
+
+                                notificationData.reminderLabel = value;
+
+                                alexa.setNotification(notificationData, (err, res) => {
+                                    if (err) {
+                                        adapter.log.error(`Cannot set label ${value} for notification ${noti.id}: ${err.message}`);
+                                    } else {
+                                        adapter.setState(`${notiId}.label`, value, true);
+                                    }
+                                });
+                            } else {
+                                adapter.log.error(`Cannot get notification to set sound: ${err.message}`);
+                            }
+                        });
+                    }.bind(alexa, noti));
+                }
+                if (noti.sound !== undefined && noti.sound.id !== undefined) {
+                    setOrUpdateObject(`${notiId}.sound`, {common: {type: 'string', read: true, write: true, role: 'state', name: `${displayName} Sound`, states: device.alarmNotificationSoundsStateList}}, noti.sound.id, function(noti, value) {
+                        alexa.getNotifications((err, res) => {
+                            if (!err && res && res.notifications && Array.isArray(res.notifications)) {
+                                let notificationData = null;
+                                for (const n of res.notifications) {
+                                    if (n.id === noti.id) {
+                                        notificationData = n;
+                                        break;
+                                    }
+                                }
+                                if (!notificationData) {
+                                    adapter.log.error(`Cannot find notification ${noti.id}`);
+                                    return;
+                                }
+
+                                let soundData = null;
+                                for (const s of device.alarmNotificationSounds) {
+                                    if (s.id === value) {
+                                        soundData = s;
+                                        break;
+                                    }
+                                }
+                                if (!soundData) {
+                                    adapter.log.error(`Cannot find sound ${value}`);
+                                    return;
+                                }
+                                notificationData.sound = soundData;
+
+                                alexa.setNotification(notificationData, (err, res) => {
+                                    if (err) {
+                                        adapter.log.error(`Cannot set sound ${value} for notification ${noti.id}: ${err.message}`);
+                                    } else {
+                                        adapter.setState(`${notiId}.sound`, value, true);
+                                    }
+                                });
+                            } else {
+                                adapter.log.error(`Cannot get notification to set sound: ${err.message}`);
+                            }
+                        });
+                    }.bind(alexa, noti));
+                }
+                setOrUpdateObject(`${notiId}.recurringDays`, {common: {type: 'string', read: true, write: false, role: 'state', name: `${displayName} RRuleDay List`}}, rRuleDaysList);
+
+                let nextTriggerTime = null;
+
+                if (noti.status === 'ON') {
+                    adapter.log.debug(`Handle notification ${noti.type} ${noti.id} ${noti.status} ${noti.originalDate} ${noti.originalTime}`);
+                    const now = Date.now();
+                    if (noti.originalDate && noti.originalTime) {
+                        const alarmTime = new Date((`${noti.originalDate} ${noti.originalTime}`).replace(/-/g, '/')).getTime();
+                        if ((alarmTime - now) > 0) {
+                            adapter.log.debug(`${noti.type} ${noti.id} set from original Data ${noti.originalDate} ${noti.originalTime} -> (${alarmTime}) ${(alarmTime - now) / 1000}s`);
+                            nextTriggerTime = alarmTime;
+                        }
+                    }
+                    adapter.log.debug(`${noti.type} ${noti.id} ${nextTriggerTime}`);
+                    if (!nextTriggerTime && noti.rRuleData && noti.rRuleData.nextTriggerTimes && Array.isArray(noti.rRuleData.nextTriggerTimes) && noti.rRuleData.nextTriggerTimes.length) {
+
+                        noti.rRuleData.nextTriggerTimes.forEach(rule => {
+                            const alarmDate = new Date(rule);
+                            if (alarmDate) {
+                                const alarmTime = new Date(alarmDate).getTime();
+                                adapter.log.debug(`${noti.type} ${noti.id} Check next trigger time from data: ${alarmDate.toString()} -> ${alarmTime}`);
+                                if (alarmTime && (alarmTime - now) > 0 && (alarmTime < nextTriggerTime || !nextTriggerTime)) {
+                                    adapter.log.debug(`${noti.type} ${noti.id} Set from next trigger time from data: ${alarmDate.toString()} -> (${alarmTime}) ${(alarmTime - now) / 1000}s`);
+                                    nextTriggerTime = alarmTime;
+                                }
+                            }
+                        });
+                    }
+
+                    if (!nextTriggerTime && (noti.recurringPattern !== '0' || noti.rRuleData)) {
+                        adapter.log.debug(`${noti.type} ${noti.id} Try to calculate ourself ...`);
+                        let recurStartDate = noti.originalDate;
+                        let recurStartTime = time || '00:00:00';
+                        let recurEndDate = null;
+                        let recurEndTime = null;
+                        if (noti.rRuleData) {
+                            if (noti.rRuleData.recurStartDate) {
+                                recurStartDate = noti.rRuleData.recurStartDate;
+                            }
+                            if (noti.rRuleData.recurStartTime) {
+                                recurStartTime = noti.rRuleData.recurStartTime;
+                            }
+                            if (noti.rRuleData.recurEndDate) {
+                                recurEndDate = noti.rRuleData.recurEndDate;
+                            }
+                            if (noti.rRuleData.recurEndTime) {
+                                recurEndTime = noti.rRuleData.recurEndTime;
+                            }
+                        }
+
+                        const notificationTimes = noti.rRuleData && Array.isArray(noti.rRuleData.notificationTimes) && noti.rRuleData.notificationTimes || [];
+                        if (!notificationTimes.length && noti.originalTime) {
+                            notificationTimes.push(noti.originalTime);
+                        }
+                        notificationTimes.forEach((time, index) => {
+                            if (typeof time === 'string' && time.endsWith('.000')) {
+                                notificationTimes[index] = time.substring(0, time.length - 4);
+                            }
+                        });
+
+                        adapter.log.debug(`${noti.id} - ${recurStartDate} ${recurStartTime}`);
+                        if (recurStartDate && recurStartTime) {
+                            const recurringStartDate = new Date((`${recurStartDate} ${recurStartTime}`).replace(/-/g,'/'));
+                            const recurringEndDate = (recurEndDate && recurEndTime) ? new Date((`${recurEndDate} ${recurEndTime}`).replace(/-/g,'/')) : null;
+                            const ruleStrAdd = recurringEndDate ? `;UNTIL=${recurringEndDate.toISOString().replace(/[-:]/g, '').replace(/\.[0-9]{3}Z$/, 'Z')}` : '';
+                            const ruleStrBase = `DTSTART:${recurringStartDate.toISOString().replace(/[-:]/g, '').replace(/\.[0-9]{3}Z$/, 'Z')}\nRRULE:`;
+
+                            // We use the provided rules, else we add one ones
+                            const recurRules = noti.rRuleData && noti.rRuleData.recurrenceRules || [];
+                            if (!recurRules.length) {
+                                if (noti.recurringPattern === 'P1D') {
+                                    recurRules.push(`FREQ=DAILY;INTERVAL=1`);
+                                } else {
+                                    recurRules.push(`FREQ=WEEKLY;INTERVAL=1;BYDAY=${rRuleDaysList}`);
+                                }
+                            }
+
+                            const nowDate = new Date(now);
+                            //nowDate.setMinutes(nowDate.getMinutes() + nowDate.getTimezoneOffset());
+                            recurRules.forEach(rule => {
+                                if (rule.endsWith(';')) {
+                                    rule = rule.substring(0, rule.length - 1);
+                                }
+                                const ruleStr = ruleStrBase + rule + ruleStrAdd;
+
+                                adapter.log.debug(`${noti.type} ${noti.id} Check recurring pattern: ${ruleStr}`);
+                                const alarmDate = rrulestr(ruleStr).after(nowDate, false);
+                                if (alarmDate) {
+                                    const alarmTimeDate = new Date(alarmDate);
+                                    // If there was an hour given in the RRule, we need to fix the Timezone
+                                    if (rule.includes(';BYHOUR=') || rule.startsWith('BYHOUR=')) {
+                                        alarmTimeDate.setMinutes(alarmTimeDate.getMinutes() + alarmTimeDate.getTimezoneOffset());
+                                    }
+                                    const alarmTime = alarmTimeDate.getTime();
+                                    adapter.log.debug(`${noti.type} ${noti.id} Check recurring pattern: ${ruleStr} -> ${alarmTimeDate} / ${alarmTime}`);
+                                    if (alarmTime && (alarmTime - now) > 0 && (alarmTime < nextTriggerTime || !nextTriggerTime)) {
+                                        nextTriggerTime = alarmTime;
+                                    }
+                                }
+                            });
+                        }
+                        adapter.log.debug(`${noti.type} ${noti.id} now = ${new Date(now).toString()} / ${now} / next date: ${new Date(nextTriggerTime).toString()} / ${nextTriggerTime}`);
+                    }
+
+                    const alarmDelay = (nextTriggerTime || 0) - now;
+                    adapter.log.debug(`${noti.type} ${noti.id} trigger expected in ${Math.floor(alarmDelay / 1000)}s at ${new Date(nextTriggerTime).toString()}`);
                     if (alarmDelay > 0) {
+                        if (notificationTimer[`${noti.id}-customVolume`]) {
+                            clearTimeout(notificationTimer[`${noti.id}-customVolume`]);
+                            notificationTimer[`${noti.id}-customVolume`] = null;
+                        }
+                        notificationTimer[`${noti.id}-customVolume`] = setTimeout(function (notiId, noti) {
+                            notificationTimer[`${noti.id}-customVolume`] = null;
+
+                            adapter.getState(`${notiId}.customVolume`, (err, state) => {
+                                if (err || !state || state.val === null) return;
+                                const customVolume = parseInt(state.val, 10);
+                                if (isNaN(customVolume) || customVolume < 0 || customVolume > 100) return;
+
+                                device.getDeviceNotificationState((err, origNotificationState) => {
+                                    if (err || !origNotificationState || origNotificationState.volumeLevel === undefined) return;
+
+                                    if (adapterObjects[`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`]) {
+                                        adapter.setState(`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`, origNotificationState.volumeLevel, true);
+                                    }
+                                    device.setDeviceNotificationVolume(customVolume, err => {
+                                        if (err) return;
+                                        if (adapterObjects[`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`]) {
+                                            adapter.setState(`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`, customVolume, true);
+                                        }
+                                        if (rememberedNotificationVolumeRestoreCallbacks[device.serialNumber] === undefined) {
+                                            rememberedNotificationVolumeRestoreCallbacks[device.serialNumber] = function (notiId, noti, volumeToRestore) {
+                                                if (notificationTimer[`${noti.id}-customVolumeReset`]) {
+                                                    clearTimeout(notificationTimer[`${noti.id}-customVolumeReset`]);
+                                                    notificationTimer[`${noti.id}-customVolumeReset`] = null;
+                                                }
+                                                device.setDeviceNotificationVolume(volumeToRestore, err => {
+                                                    if (err) return;
+                                                    if (adapterObjects[`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`]) {
+                                                        adapter.setState(`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`, volumeToRestore, true);
+                                                    }
+                                                    adapter.log.debug(`${noti.type} ${noti.id} - Reset notification volume level: ${volumeToRestore}`);
+                                                    delete rememberedNotificationVolumeRestoreCallbacks[device.serialNumber];
+                                                });
+                                            }.bind(alexa, notiId, noti, origNotificationState.volumeLevel);
+
+                                            adapter.log.debug(`${noti.type} ${noti.id} - Remember notification volume level: ${origNotificationState.volumeLevel}`);
+                                        } else {
+                                            adapter.log.debug(`${noti.type} ${noti.id} - Do not remember notification value because already set!`);
+                                        }
+
+                                        if (notificationTimer[`${noti.id}-customVolumeReset`]) {
+                                            clearTimeout(notificationTimer[`${noti.id}-customVolumeReset`]);
+                                            notificationTimer[`${noti.id}-customVolumeReset`] = null;
+                                        }
+                                        notificationTimer[`${noti.id}-customVolumeReset`] = setTimeout(() => {
+                                            notificationTimer[`${noti.id}-customVolumeReset`] = null;
+                                            if (rememberedNotificationVolumeRestoreCallbacks[device.serialNumber]) {
+                                                rememberedNotificationVolumeRestoreCallbacks[device.serialNumber](notiId, noti, origNotificationState.volumeLevel);
+                                            }
+                                        }, 120000);
+
+                                    });
+                                });
+                            });
+
+                            // Check again status after 1min if no stop was arrived
+                            notificationTimer[noti.id] = setTimeout(() => {
+                                notificationTimer[noti.id] = null;
+                                adapter.getState(`${notiId}.triggered`, (err, state) => {
+                                    if (!err && state && state.val) {
+                                        updateNotificationStates(device);
+                                    }
+                                });
+                            }, 60000);
+                        }.bind(alexa, notiId, noti), alarmDelay > 2000 ? alarmDelay - 2000 : 0);
+
+                        if (notificationTimer[noti.id]) {
+                            clearTimeout(notificationTimer[noti.id]);
+                            notificationTimer[noti.id] = null;
+                        }
                         notificationTimer[noti.id] = setTimeout(function (notiId, noti) {
                             notificationTimer[noti.id] = null;
                             adapter.log.debug(`${noti.type} ${noti.id} triggered`);
                             adapter.setState(`${notiId}.triggered`, true, true);
+                            if (noti.type === 'Alarm') {
+                                adapter.setState(`${devId}.Alarm.triggered`, noti.notificationIndex, true);
+                            } else if (noti.type === 'Reminder') {
+                                adapter.setState(`${devId}.Reminder.triggered`, noti.notificationIndex, true);
+                            }
+                            // Check again status after 1min if no stop was arrived
+                            notificationTimer[noti.id] = setTimeout(() => {
+                                notificationTimer[noti.id] = null;
+                                adapter.getState(`${notiId}.triggered`, (err, state) => {
+                                    if (!err && state && state.val) {
+                                        updateNotificationStates(device);
+                                    }
+                                });
+                            }, 60000);
                         }.bind(alexa, notiId, noti), alarmDelay);
                     }
                 }
+                setOrUpdateObject(`${notiId}.nextTriggerDate`, {common: {type: 'number', role: 'date', name: noti.reminderLabel ? noti.reminderLabel : `${displayName} Trigger Timestamp`}}, nextTriggerTime);
             }
         }
-        setOrUpdateObject(`${devId}.Timer.nextTimerDate`, {common: {type: 'number', role: 'date', name: 'Unix epoch timestamp for next timer'}}, nextTimerObject ? (Date.now() + nextTimerObject.remainingTime) : 0, nextTimerObject ? nextTimerObject.set : null);
+        setOrUpdateObject(`${devId}.Timer.nextTimerDate`, {common: {type: 'number', role: 'date', name: 'Unix epoch timestamp for next timer'}}, nextTimerObject ? (nextTimerObject.triggerTime || (Date.now() + nextTimerObject.remainingTime)) : 0, nextTimerObject ? nextTimerObject.set : null);
+        setOrUpdateObject(`${devId}.Timer.activeTimerList`, {common: {type: 'string', role: 'array', name: 'Array of the active timers'}}, JSON.stringify(activeTimerList));
+        setOrUpdateObject(`${devId}.Timer.nextTimerId`, {common: {type: 'string', role: 'text', name: 'ID of the next triggered timer'}}, nextTimerObject ? nextTimerObject.notificationIndex : null);
+        setOrUpdateObject(`${devId}.Timer.stopTimerId`, {common: {type: 'string', role: 'text', name: 'ID of the next triggered timer'}}, '', function(value) {
+            if (!value) {
+                return;
+            }
+            value = value.toString();
+            const noti = device.notifications.find(n => n.notificationIndex === value);
+
+            if (!noti) {
+                adapter.log.error(`${devId} - Cannot stop timer ${value} - not found`);
+                return;
+            }
+            noti.delete(err => {
+                if (err) {
+                    adapter.log.error(`${devId} - Cannot stop timer ${value} - ${err.message}`);
+                } else {
+                    adapter.setState(`${devId}.Timer.stopTimerId`, '', true);
+                }
+            });
+        }.bind(alexa) );
     }
 }
 
@@ -3496,44 +4119,54 @@ function main() {
                             deviceVolumes.volumes.forEach(vol => initialDeviceVolumes[vol.dsn] = vol);
                         }
                         alexa.getRoutineSoundList((err, soundList) => {
+                            routineSounds = {};
                             if (!err && soundList && Array.isArray(soundList)) {
-                                routineSounds = {};
                                 soundList.forEach(sound => {
                                     if (sound.availability !== 'AVAILABLE') return;
                                     routineSounds[sound.id] = sound.displayName;
                                 });
                             }
-                            createStates(() => {
-                                createSmarthomeStates(() => {
-                                    queryAllSmartHomeDevices(true, false, () => {
-                                        initCommUsers(() => {
-                                            if (!initDone) {
-                                                adapter.log.info('Subscribing to states...');
-                                                adapter.subscribeStates('*');
-                                                adapter.subscribeObjects('*');
-                                                initDone = true;
+                            alexa.getRoutineSkillCatalog('YourSkills', (err, skillCatalog) => {
+                                routineSkills = {};
+                                if (!err && skillCatalog && skillCatalog.catalog && skillCatalog.catalog.catalogItems && Array.isArray(skillCatalog.catalog.catalogItems)) {
+                                    skillCatalog.catalog.catalogItems.forEach(skill => {
+                                        if (skill.itemType !== 'entry' || skill.disabled || skill.catalogType !== 'action') return;
+                                        routineSkills[skill.catalogId] = skill.title;
+                                    });
+                                }
 
-                                                scheduleStatesUpdate();
-                                                updateHistory(() => {
-                                                    updatePlayerStatus( () => {
-                                                        updateDeviceConfigurationStates();
+                                createStates(() => {
+                                    createSmarthomeStates(() => {
+                                        queryAllSmartHomeDevices(true, false, () => {
+                                            initCommUsers(() => {
+                                                if (!initDone) {
+                                                    adapter.log.info('Subscribing to states...');
+                                                    adapter.subscribeStates('*');
+                                                    adapter.subscribeObjects('*');
+                                                    initDone = true;
+
+                                                    scheduleStatesUpdate();
+                                                    updateHistory(() => {
+                                                        updatePlayerStatus( () => {
+                                                            updateDeviceConfigurationStates();
+                                                        });
                                                     });
-                                                });
-                                                const delIds = Object.keys(existingStates);
-                                                if (delIds.length) {
-                                                    adapter.log.info(`Deleting the following states: ${JSON.stringify(delIds)}`);
-                                                    for (let i = 0; i < delIds.length; i++) {
-                                                        try {
-                                                            adapter.delObject(delIds[i], err => {
-                                                                if (err) adapter.log.info(`Can not delete object ${delIds[i]}`);
-                                                            });
-                                                        } catch (err) {
-                                                            adapter.log.info(`Can not delete object ${delIds[i]}`);
+                                                    const delIds = Object.keys(existingStates);
+                                                    if (delIds.length) {
+                                                        adapter.log.info(`Deleting the following states: ${JSON.stringify(delIds)}`);
+                                                        for (let i = 0; i < delIds.length; i++) {
+                                                            try {
+                                                                adapter.delObject(delIds[i], err => {
+                                                                    if (err) adapter.log.info(`Can not delete object ${delIds[i]}`);
+                                                                });
+                                                            } catch (err) {
+                                                                adapter.log.info(`Can not delete object ${delIds[i]}`);
+                                                            }
+                                                            delete existingStates[delIds[i]];
                                                         }
-                                                        delete existingStates[delIds[i]];
                                                     }
                                                 }
-                                            }
+                                            });
                                         });
                                     });
                                 });
