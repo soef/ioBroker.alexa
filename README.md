@@ -440,8 +440,8 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 ### 3.16.0 (2022-07-11)
-* (Apollon77) Add (official) support for Music-Alarms - they are now listed under "Alarms" together with the other Alarms! The "sound" list will contain teh device specific music targets - so you can basically zse the ones that you created at least once via voice commands.
-* (Apollon77) For a Music Alarm the "customVolume" on the aram is used to set the normal device volume 2s before the alarm but do not (!) reset it afterwards
+* (Apollon77) Add (official) support for Music-Alarms - they are now listed under "Alarms" together with the other Alarms! The "sound" list will contain the device specific music targets - so you can basically zse the ones that you created at least once via voice commands.
+* (Apollon77) For a Music Alarm the "customVolume" on the alarm is used to set the normal device volume 2s before the alarm but do not (!) reset it afterwards
 * (Apollon77) Prevent crashes on one time Alarms that just triggered
 
 ### 3.15.2 (2022-07-09)
