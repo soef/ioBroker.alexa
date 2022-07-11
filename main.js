@@ -2871,16 +2871,42 @@ function createNotificationStates(serialOrName) {
                 }
 
                 setOrUpdateObject(notiId, {type: 'channel', common: {name: displayName}});
-                setOrUpdateObject(`${notiId}.date`, {common: {type: 'mixed', read: true, write: true, role: 'state', name: `${displayName} Date`}}, noti.originalDate, (value) => {
+                setOrUpdateObject(`${notiId}.date`, {common: {type: 'mixed', read: true, write: true, role: 'state', name: `${displayName} Date`}}, noti.originalDate, value => {
                     noti.set(value, (err, res) => {
-
+                        if (err || !res) {
+                            adapter.log.warn(`Error setting ${notiId}.date to ${value}: ${err.message}`);
+                        }
                     });
                 });
-                setOrUpdateObject(`${notiId}.time`, {common: {type: 'mixed', role: 'state', name: `${displayName} Time`}}, time, noti.set);
-                setOrUpdateObject(`${notiId}.enabled`, {common: {type: 'boolean', role: 'switch.enable', name: `${displayName} Enabled`}}, (noti.status === 'ON' || noti.status === 'SNOOZED'), noti.set);
+                setOrUpdateObject(`${notiId}.time`, {common: {type: 'mixed', role: 'state', name: `${displayName} Time`}}, time,  value => {
+                    noti.set(value, (err, res) => {
+                        if (err || !res) {
+                            adapter.log.warn(`Error setting ${notiId}.time to ${value}: ${err.message}`);
+                        }
+                    });
+                });
+                setOrUpdateObject(`${notiId}.enabled`, {common: {type: 'boolean', role: 'switch.enable', name: `${displayName} Enabled`}}, (noti.status === 'ON' || noti.status === 'SNOOZED'), value => {
+                    noti.set(value, (err, res) => {
+                        if (err | !res) {
+                            adapter.log.error(`Error setting ${notiId}.enabled to ${value}: ${err.message}`);
+                        }
+                    })
+                });
                 setOrUpdateObject(`${notiId}.snoozed`, {common: {type: 'boolean', role: 'indicator', name: `${displayName} Snoozed`, write: false}}, (noti.status === 'SNOOZED'));
-                setOrUpdateObject(`${notiId}.delete`, {common: {type: 'boolean', role: 'button', read: false, name: `${displayName} Delete`}}, false, noti.delete);
-                setOrUpdateObject(`${notiId}.cancel`, {common: {type: 'boolean', role: 'button', read: false, name: `${displayName} Delete`}}, false, noti.cancel);
+                setOrUpdateObject(`${notiId}.delete`, {common: {type: 'boolean', role: 'button', read: false, name: `${displayName} Delete`}}, false, () => {
+                    noti.delete(err => {
+                        if (err) {
+                            adapter.log.error(`Error deleting ${noti.type} ${noti.id}: ${err.message}`);
+                        }
+                    });
+                });
+                setOrUpdateObject(`${notiId}.cancel`, {common: {type: 'boolean', role: 'button', read: false, name: `${displayName} Delete`}}, false, () => {
+                    noti.cancel((err, res) => {
+                        if (err | !res) {
+                            adapter.log.error(`Error setting ${notiId}.cancel: ${err.message}`);
+                        }
+                    })
+                });
                 setOrUpdateObject(`${notiId}.musicProvider`, {common: {type: 'string', role: 'state', name: `${displayName} Music Provider`}}, noti.provider || null);
                 setOrUpdateObject(`${notiId}.musicEntity`, {common: {type: 'string', role: 'state', name: `${displayName} Music Entity`}}, noti.musicEntity || null);
                 setOrUpdateObject(`${notiId}.customVolume`, {common: {type: 'number', role: 'level.volume', min: 0, max: 100, read: true, write: true, name: `${displayName} Custom Notification Volume`}}, undefined, value => {
@@ -2892,9 +2918,7 @@ function createNotificationStates(serialOrName) {
                     adapter.setState(`${notiId}.customVolume`, customVolume, true);
                 });
                 setOrUpdateObject(`${notiId}.triggered`, {common: {type: 'boolean', read: true, write: false, role: 'indicator', name: `${displayName} Triggered`}}, false);
-                if (noti.recurringPattern !== undefined) {
-                    setOrUpdateObject(`${notiId}.recurringPattern`, {common: {type: 'string', read: true, write: false, role: 'state', name: `${displayName} Recurring pattern`}}, noti.recurringPattern || '0');
-                }
+                setOrUpdateObject(`${notiId}.recurringPattern`, {common: {type: 'string', read: true, write: false, role: 'state', name: `${displayName} Recurring pattern`}}, noti.recurringPattern || '0');
                 if (noti.reminderLabel !== undefined && noti.reminderLabel !== null) {
                     setOrUpdateObject(`${notiId}.label`, {common: {type: 'string', read: true, write: true, role: 'text', name: `${displayName} Label`}}, noti.reminderLabel, function(noti, value) {
                         if (!value) {
