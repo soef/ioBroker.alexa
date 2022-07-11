@@ -439,6 +439,12 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Add support to play Audible books in Music-Providers
+* (Apollon77) Optimize deletion of alarms and reminders
+* (Apollon77) Optimize requesting smart home device data
+
 ### 3.16.1 (2022-07-11)
 * (Apollon77) Fix deletion and cancellation of Alarms and Reminders
 

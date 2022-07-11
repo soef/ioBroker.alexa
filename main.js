@@ -1105,37 +1105,33 @@ function updateSmarthomeDeviceStates(res) {
         const native = adapterObjects[`Smart-Home-Devices.${deviceEntityId}.${stateName}`].native;
         const common = adapterObjects[`Smart-Home-Devices.${deviceEntityId}.${stateName}`].common;
         let value = cap.value;
-        let valueFallbackStringified = false;
         if (typeof value === 'object') {
-            if (value[native.valueSubKey || 'value'] === undefined) {
+            value = value[native.valueSubKey || 'value'];
+            if (value === undefined) {
                 if (!native.noFallbackStringifiedValue) {
                     value = JSON.stringify(value);
-                    valueFallbackStringified = true;
-                } else {
-                    value = undefined;
                 }
-            } else {
-                value = value[native.valueSubKey || 'value'];
             }
+        } else if (native.valueSubKey && native.valueSubKey !== 'value') {
+            // We requested a sub value !== 'value' key but it is a plain value, so value requested not present
+            value = undefined;
         }
         if (value === undefined) {
             adapter.log.debug(`Value not provided in answer for Smart-Home-Devices.${deviceEntityId}.${stateName}`);
             return null;
         }
-        if (!valueFallbackStringified) { // No need to check these
-            if (native.valueTrue && native.valueTrue === value) {
-                value = true;
-            } else if (native.valueFalse && native.valueFalse === value) {
-                value = false;
-            } else if (native.valueTrue && !native.valueFalse && native.valueTrue !== value) {
-                value = false;
-            } else if (native.valueFalse && !native.valueTrue && native.valueFalse !== value) {
-                value = true;
-            } else if (native.valueMap && Array.isArray(native.valueMap) && native.valueMap.length) {
-                adapter.log.debug(`Get Index for value "${cap.namespace}.${cap.value}" for Smart-Home-Devices.${deviceEntityId}.${stateName}, value=${value} of ${JSON.stringify(native.valueMap)}`);
-                value = native.valueMap.indexOf(value);
-                if (value === -1) return null;
-            }
+        if (native.valueTrue && native.valueTrue === value) {
+            value = true;
+        } else if (native.valueFalse && native.valueFalse === value) {
+            value = false;
+        } else if (native.valueTrue && !native.valueFalse && native.valueTrue !== value) {
+            value = false;
+        } else if (native.valueFalse && !native.valueTrue && native.valueFalse !== value) {
+            value = true;
+        } else if (native.valueMap && Array.isArray(native.valueMap) && native.valueMap.length) {
+            adapter.log.debug(`Get Index for value "${cap.namespace}.${cap.value}" for Smart-Home-Devices.${deviceEntityId}.${stateName}, value=${value} of ${JSON.stringify(native.valueMap)}`);
+            value = native.valueMap.indexOf(value);
+            if (value === -1) return null;
         }
         if (typeof value !== common.type && common.type !== 'mixed') {
             if (common.type === 'number') {
@@ -2028,6 +2024,17 @@ function createStatesForDevice(device, additionalDeviceData) {
                                             }
                                         }.bind(alexa, device));
                                     }
+
+                                    if (device.capabilities.includes ('AUDIBLE')) {
+                                        setOrUpdateObject(`${devId}.Music-Provider.Audible`, {common: {role: 'text', def: ''}}, null, function (device, query) {
+                                            device.playAudible(query, (err, ret) => {
+                                                if (!err) {
+                                                    adapter.setState(`${devId}.Music-Provider.Audible`, query, true);
+                                                    schedulePlayerUpdate(device, 5000);
+                                                }
+                                            });
+                                        }.bind(alexa, device));
+                                    }
                                 }
                                 createBluetoothStates(device);
 
@@ -2897,6 +2904,27 @@ function createNotificationStates(serialOrName) {
                     noti.delete(err => {
                         if (err) {
                             adapter.log.error(`Error deleting ${noti.type} ${noti.id}: ${err.message}`);
+                        } else {
+                            if (notificationTimer[noti.id]) {
+                                clearTimeout(notificationTimer[noti.id]);
+                                notificationTimer[noti.id] = null;
+                            }
+                            if (notificationTimer[`${noti.id}-customVolume`]) {
+                                clearTimeout(notificationTimer[`${noti.id}-customVolume`]);
+                                notificationTimer[`${noti.id}-customVolume`] = null;
+                            }
+                            if (notificationTimer[`${noti.id}-customVolumeReset`]) {
+                                clearTimeout(notificationTimer[`${noti.id}-customVolumeReset`]);
+                                notificationTimer[`${noti.id}-customVolumeReset`] = null;
+                                if (rememberedNotificationVolumeRestoreCallbacks[device.serialNumber]) {
+                                    const callback = rememberedNotificationVolumeRestoreCallbacks[device.serialNumber];
+                                    delete rememberedNotificationVolumeRestoreCallbacks[device.serialNumber];
+                                    callback();
+                                }
+                            }
+                            if (adapterObjects[notiId]) {
+                                deleteObject(notiId);
+                            }
                         }
                     });
                 });
@@ -4123,12 +4151,39 @@ function main() {
                         clearTimeout(notificationTimer[data.notificationId]);
                         notificationTimer[data.notificationId] = null;
                     }
+                    if (notificationTimer[`${data.notificationId}-customVolume`]) {
+                        clearTimeout(notificationTimer[`${data.notificationId}-customVolume`]);
+                        notificationTimer[`${data.notificationId}-customVolume`] = null;
+                    }
+                    if (notificationTimer[`${data.notificationId}-customVolumeReset`]) {
+                        clearTimeout(notificationTimer[`${data.notificationId}-customVolumeReset`]);
+                        notificationTimer[`${data.notificationId}-customVolumeReset`] = null;
+                    }
                     if (device.notifications[i].notificationIndex === data.notificationId) {
                         if (notificationTimer[device.notifications[i].id]) { // Remove Timer, will be reset if neeed in 2s
                             clearTimeout(notificationTimer[device.notifications[i].id]);
                             notificationTimer[device.notifications[i].id] = null;
                         }
-                        deleteObject(`Echo-Devices.${data.deviceSerialNumber}.${device.notifications[i].type}.${data.notificationId}`);
+                        if (notificationTimer[`${device.notifications[i].id}-customVolume`]) { // Remove Timer, will be reset if neeed in 2s
+                            clearTimeout(notificationTimer[`${device.notifications[i].id}-customVolume`]);
+                            notificationTimer[`${device.notifications[i].id}-customVolume`] = null;
+                        }
+                        if (notificationTimer[`${device.notifications[i].id}-customVolumeReset`]) { // Remove Timer, will be reset if neeed in 2s
+                            clearTimeout(notificationTimer[`${device.notifications[i].id}-customVolumeReset`]);
+                            notificationTimer[`${device.notifications[i].id}-customVolumeReset`] = null;
+                        }
+                        let type = device.notifications[i].type;
+                        if (type === 'MusicAlarm') {
+                            type = 'Alarm';
+                        }
+                        if (adapterObjects[`Echo-Devices.${data.deviceSerialNumber}.${type}.${data.notificationId}`]) {
+                            if (rememberedNotificationVolumeRestoreCallbacks[device.serialNumber]) {
+                                const callback = rememberedNotificationVolumeRestoreCallbacks[device.serialNumber];
+                                delete rememberedNotificationVolumeRestoreCallbacks[device.serialNumber];
+                                callback();
+                            }
+                            deleteObject(`Echo-Devices.${data.deviceSerialNumber}.${type}.${data.notificationId}`);
+                        }
                         break;
                     }
                 }
