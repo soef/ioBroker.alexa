@@ -66,6 +66,8 @@ Alarm (Wecker) settings for each device, if available.
 | New | Data to create a new Reminder as String in following format separated by ; as "timestamp;[label];[sound];[recurring]. timestamp as unix timestamp in ms, label as Text, sound as sound ID, recurring either empty for once, "DAILY" for daily or "WEEKLY=MO,TU,WE,TH,FR,SA,SU" with comma separated weekly day list | String |
 | triggered | ID of the Alarm that triggered last on this device | ID |
 
+When changing an Alarm does not work please make sure tha the Alarm timepoint is in the future - so changing e.g. "sound" on an Alarm in the past will _not_ work!
+
 ### alexa2.0.Echo-Devices.Serialnumber.Bluetooth.*
 Here you find all connected or known bluetooth device(s) with MAC address(es). The states of each device:
 
@@ -213,6 +215,7 @@ Reminder (Erinnerungen) settings for each device, if available.
 | New | Data to create a new Reminder as String in following format separated by ; as "timestamp;[label];[sound];[recurring]. timestamp as unix timestamp in ms, label as Text, sound as sound ID, recurring either empty for once, "DAILY" for daily or "WEEKLY=MO,TU,WE,TH,FR,SA,SU" with comma separated weekly day list. For full flexibility recurring can also be a JSONified object with all data which is passed through.  | String |
 | triggered | ID of the Alarm that triggered last on this device | ID |
 
+When changing a Reminder does not work please make sure tha the Reminder timepoint is in the future - so changing e.g. "sound" on an Reminder in the past will _not_ work!
 
 ### alexa2.0.Echo-Devices.Serialnumber.Routines.*
 Overview of routines set up in Alexa App. Self created routines have a serial number, Amazon shows as 'preconfigured:...' Each routine can be triggered with a button to run once.
