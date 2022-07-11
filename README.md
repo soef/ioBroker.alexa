@@ -54,6 +54,8 @@ Alarm (Wecker) settings for each device, if available.
 | <id>.date | Overwrite the date for existing alarm to set a new date for this alarm. In case you have an existing alarm you can change the date here by simply overwrite the time in format YYYY-MM-DD. Might have no effect when multiple-times-per-day recurring settings were used! | Date Output |
 | <id>.delete | Button to delete the Alarm | delete with true |
 | <id>.enabled | Shows status of alarm and allows to change it: Activate alarm with true - Deactivate alarm with false | true / false |
+| <id>.musicEntity | Shows the track info if this alarm is a music alarm | String or null |
+| <id>.musicProvider | Shows the provider of the music  if this alarm is a music alarm | String or null |
 | <id>.nextTriggerDate | Contains the timepoint of the next expected triggering as unix epoch in ms | Number |
 | <id>.recurringDays | Shows the list of days configured if the Alarm has recurring settings | US notation of weekdays (e.g. MO,TU,WE,TH,FR,SA,SU) |
 | <id>.recurringPattern | Shows the recurring pattern of alarm | 0 = one time, no recurring <br> P1D = daily <br> XXXX-WD = on weekdays <br> XXXX-WE = on weekends <br> XXXX-WXX-1 = every monday <br> XXXX-WXX-2 = every tuesday <br> XXXX-WXX-3 = every wednesday <br> XXXX-WXX-4 = every thursday <br> XXXX-WXX-5 = every friday <br> XXXX-WXX-6 = every saturday <br> XXXX-WXX-7 = every sunday |
@@ -434,6 +436,12 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Add (official) support for Music-Alarms - they are now listed under "Alarms" together with the other Alarms! The "sound" list will contain teh device specific music targets - so you can basically zse the ones that you created at least once via voice commands.
+* (Apollon77) For a Music Alarm the "customVolume" on the aram is used to set the normal device volume 2s before the alarm but do not (!) reset it afterwards
+* (Apollon77) Prevent crashes on one time Alarms that just triggered
+
 ### 3.15.2 (2022-07-09)
 * (Apollon77) Fix case where initialization of the adapter was never finished and so nothing was controllable when App devices where not synced
 

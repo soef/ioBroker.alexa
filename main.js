@@ -1851,8 +1851,16 @@ function createStatesForDevice(device, additionalDeviceData) {
             if (!err && res && res.notificationSounds && Array.isArray(res.notificationSounds)) {
                 device.alarmNotificationSounds = res.notificationSounds;
                 device.alarmNotificationSoundsStateList = {};
-                res.notificationSounds.forEach((n) => {
-                    device.alarmNotificationSoundsStateList[n.id] = n.displayName;
+                device.alarmNotificationSounds.forEach((n) => {
+                    let soundId = n.id;
+                    let displayName = n.displayName;
+                    if (n.providerId !== 'ECHO') {
+                        const folder = n.folder.replace(/^FOLDER_/, '');
+                        soundId = `${folder}-${n.id}`;
+                        displayName = `${n.providerId}: ${displayName}`;
+                        device.alarmNotificationSounds.push(Object.assign({}, n, {id: soundId, origId: n.id}));
+                    }
+                    device.alarmNotificationSoundsStateList[soundId] = displayName;
                 });
             }
 
@@ -1860,7 +1868,7 @@ function createStatesForDevice(device, additionalDeviceData) {
                 if (!err && res && res.notificationSounds && Array.isArray(res.notificationSounds)) {
                     device.timerNotificationSounds = res.notificationSounds;
                     device.timerNotificationSoundsStateList = {};
-                    res.notificationSounds.forEach((n) => {
+                    device.timerNotificationSounds.forEach((n) => {
                         device.timerNotificationSoundsStateList[n.id] = n.displayName;
                     });
                 }
@@ -2791,6 +2799,11 @@ function createNotificationStates(serialOrName) {
                 clearTimeout(notificationTimer[noti.id]);
                 notificationTimer[noti.id] = null;
             }
+            let isMusicAlarm = false;
+            if (noti.type === 'MusicAlarm') {
+                noti.type = 'Alarm';
+                isMusicAlarm = true;
+            }
             if (noti.type === 'Reminder' && !device.capabilities.includes('REMINDERS')) continue;
             if (noti.type === 'Alarm' && !device.capabilities.includes('TIMERS_AND_ALARMS')) continue;
             if (noti.type === 'Timer' && noti.status === 'ON' && noti.remainingTime > 0) {
@@ -2868,6 +2881,8 @@ function createNotificationStates(serialOrName) {
                 setOrUpdateObject(`${notiId}.snoozed`, {common: {type: 'boolean', role: 'indicator', name: `${displayName} Snoozed`, write: false}}, (noti.status === 'SNOOZED'));
                 setOrUpdateObject(`${notiId}.delete`, {common: {type: 'boolean', role: 'button', read: false, name: `${displayName} Delete`}}, false, noti.delete);
                 setOrUpdateObject(`${notiId}.cancel`, {common: {type: 'boolean', role: 'button', read: false, name: `${displayName} Delete`}}, false, noti.cancel);
+                setOrUpdateObject(`${notiId}.musicProvider`, {common: {type: 'string', role: 'state', name: `${displayName} Music Provider`}}, noti.provider || null);
+                setOrUpdateObject(`${notiId}.musicEntity`, {common: {type: 'string', role: 'state', name: `${displayName} Music Entity`}}, noti.musicEntity || null);
                 setOrUpdateObject(`${notiId}.customVolume`, {common: {type: 'number', role: 'level.volume', min: 0, max: 100, read: true, write: true, name: `${displayName} Custom Notification Volume`}}, undefined, value => {
                     let customVolume = parseInt(value, 10);
                     if (isNaN(customVolume) || customVolume < 0 || customVolume > 100) {
@@ -2917,7 +2932,8 @@ function createNotificationStates(serialOrName) {
                     }.bind(alexa, noti));
                 }
                 if (noti.sound !== undefined && noti.sound !== null && noti.sound.id !== undefined) {
-                    setOrUpdateObject(`${notiId}.sound`, {common: {type: 'string', read: true, write: true, role: 'state', name: `${displayName} Sound`, states: device.alarmNotificationSoundsStateList}}, noti.sound.id, function(noti, value) {
+                    const soundId = isMusicAlarm ? `MUSIC-${noti.musicAlarmId}`: noti.sound.id;
+                    setOrUpdateObject(`${notiId}.sound`, {common: {type: 'string', read: true, write: true, role: 'state', name: `${displayName} Sound`, states: device.alarmNotificationSoundsStateList}}, soundId, function(noti, value) {
                         alexa.getNotifications((err, res) => {
                             if (!err && res && res.notifications && Array.isArray(res.notifications)) {
                                 let notificationData = null;
@@ -2943,15 +2959,35 @@ function createNotificationStates(serialOrName) {
                                     adapter.log.error(`Cannot find sound ${value}`);
                                     return;
                                 }
-                                notificationData.sound = soundData;
+                                if (soundData.providerId === 'ECHO') {
+                                    notificationData.sound = soundData;
+                                    notificationData.musicEntity = null;
+                                    notificationData.musicAlarmId = null;
+                                    notificationData.provider = null;
+                                } else {
+                                    notificationData.musicEntity = soundData.displayName;
+                                    notificationData.musicAlarmId = soundData.origId;
+                                    notificationData.provider = soundData.providerID;
+                                }
 
-                                alexa.setNotification(notificationData, (err, res) => {
-                                    if (err) {
-                                        adapter.log.error(`Cannot set sound ${value} for notification ${noti.id}: ${err.message}`);
-                                    } else {
-                                        adapter.setState(`${notiId}.sound`, value, true);
-                                    }
-                                });
+                                if (notificationData.type === 'Reminder') {
+                                    alexa.setNotification(notificationData, (err, res) => {
+                                        if (err) {
+                                            adapter.log.error(`Cannot set sound ${value} for notification ${noti.id}: ${err.message}`);
+                                        } else {
+                                            adapter.setState(`${notiId}.sound`, value, true);
+                                        }
+                                    });
+                                } else {
+                                    const finalNotification = alexa.convertNotificationToV2(notificationData);
+                                    alexa.setNotificationV2(notificationData.notificationIndex, finalNotification, (err, res) => {
+                                        if (err) {
+                                            adapter.log.error(`Cannot set sound ${value} for notification ${noti.id}: ${err.message}`);
+                                        } else {
+                                            adapter.setState(`${notiId}.sound`, value, true);
+                                        }
+                                    });
+                                }
                             } else {
                                 adapter.log.error(`Cannot get notification to set sound: ${err.message}`);
                             }
@@ -3031,7 +3067,7 @@ function createNotificationStates(serialOrName) {
                             if (!recurRules.length) {
                                 if (noti.recurringPattern === 'P1D') {
                                     recurRules.push(`FREQ=DAILY;INTERVAL=1`);
-                                } else {
+                                } else if (rRuleDaysList.length) {
                                     recurRules.push(`FREQ=WEEKLY;INTERVAL=1;BYDAY=${rRuleDaysList}`);
                                 }
                             }
@@ -3045,7 +3081,12 @@ function createNotificationStates(serialOrName) {
                                 const ruleStr = ruleStrBase + rule + ruleStrAdd;
 
                                 adapter.log.debug(`${noti.type} ${noti.id} Check recurring pattern: ${ruleStr}`);
-                                const alarmDate = rrulestr(ruleStr).after(nowDate, false);
+                                let alarmDate;
+                                try {
+                                    alarmDate = rrulestr(ruleStr).after(nowDate, false);
+                                } catch (err) {
+                                    adapter.log.warn(`${noti.type} ${noti.id} Error while calculating recurring pattern: ${ruleStr}. Please report together with a debug log.`);
+                                }
                                 if (alarmDate) {
                                     const alarmTimeDate = new Date(alarmDate);
                                     // If there was an hour given in the RRule, we need to fix the Timezone
@@ -3078,6 +3119,10 @@ function createNotificationStates(serialOrName) {
                                 const customVolume = parseInt(state.val, 10);
                                 if (isNaN(customVolume) || customVolume < 0 || customVolume > 100) return;
 
+                                if (isMusicAlarm) {
+                                    alexa.sendSequenceCommand(device, 'volume', customVolume, alexa.ownerCustomerId);
+                                    return;
+                                }
                                 device.getDeviceNotificationState((err, origNotificationState) => {
                                     if (err || !origNotificationState || origNotificationState.volumeLevel === undefined) return;
 
