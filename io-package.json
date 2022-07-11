@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.16.1",
+    "version": "3.17.0",
     "title": "Alexa2 (Amazon Echo)",
     "titleLang": {
       "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.17.0": {
+        "en": "Add support to play Audible books in Music-Providers\nOptimize deletion of alarms and reminders\nOptimize requesting smart home device data",
+        "de": "Unterstützung bei Audible-Büchern in Music-Providers hinzufügen\nOptimieren Sie das Löschen von Alarmen und Erinnerungen\nOptimieren Sie anfragende Smart-Home-Gerät-Daten",
+        "ru": "Добавить поддержку, чтобы играть в книги Audible в Music-Providers\nОптимизация удаления тревог и напоминаний\nОптимизация запроса данных умного дома",
+        "pt": "Adicionar suporte para jogar Audible books in Music-Providers\nOtimizar a exclusão de alarmes e lembretes\nOtimizar solicitando dados inteligentes do dispositivo doméstico",
+        "nl": "Voeg steun aan het spelen van Audible boeken in Music-Providers\nOptimiliseer deletie van alarm en herinneringen\nOptimistisch verzoek om slimme thuis apparatuur",
+        "fr": "Ajouter le support pour jouer Livres d'Audible dans Music-Providers\nOptimiser la suppression des alarmes et des rappels\nOptimiser la demande de données sur les appareils à domicile intelligents",
+        "it": "Aggiungi supporto per giocare Libri Audible in Music-Providers\nOttimizzare la cancellazione di allarmi e promemoria\nOttimizzare la richiesta di dati smart home device",
+        "es": "Añadir soporte para reproducir libros Audible en Music-Providers\nOptimize deletion of alarms and reminders\nOptimize requesting smart home device data",
+        "pl": "Addd supportuje Audible Books w Music-Providers\nOptymizacja alarmów i przypomnień\nOptymizowanie żądania inteligentnego urządzenia domowego",
+        "zh-cn": "增加在Music-Providers开设的书店支助\n消除震惊和提醒\nB. 要求有智的家用装置数据"
+      },
       "3.16.1": {
         "en": "Fix deletion and cancellation of Alarms and Reminders",
         "de": "Löschen und Löschen von Alarmen und Erinnerungen",
@@ -100,18 +112,6 @@
         "es": "muchas mejoras de características para los estados de Player y Smart Home Devices y más, vea Changelog en GitHub para todos los detalles!\nPermitir definir si las listas y los dispositivos domésticos inteligentes son sincronizados por el adaptador con el Amazon Cloud en absoluto",
         "pl": "wiele cech ulepszeń dla graczy i Smart Home Devices jest bardziej widoczne w GitHub dla wszystkich szczegółów!\nAllow do zdefiniowania, jeśli Listy i urządzenia do domu Smart są syndykowane przez adaptatora z chmurą Amazonki",
         "zh-cn": "许多特点都加强了Player和Smart Home Devices州,更见GitHub的变革口号。!\n允许界定哪种清单和Smart家装置是否由适应者与亚马逊·Cloud合用,而所有这一切都与亚马逊集团混凝土。"
-      },
-      "3.13.0": {
-        "en": "IMPORTANT List Names are now checked for invalid characters and replaced. Might change the name of objects in ioBroker. Old ones need to be deleted manually!\nsee Changelog for the full list of changes",
-        "de": "EINFUHR Listennamen werden nun auf ungültige Zeichen geprüft und ersetzt. Könnte den Namen von Objekten in ioBroker ändern. Alte müssen manuell gelöscht werden!\nsiehe Changelog für die vollständige Liste der Änderungen",
-        "ru": "ВАЖНО Список названий теперь проверены для недействительных персонажей и заменены. Могут изменить название объектов в ioBroker. Старые должны быть удалены вручную!\nувидеть Changelog для полного списка изменений",
-        "pt": "IMPORTANTE Os nomes da lista são agora verificados para caracteres inválidos e substituídos. Pode mudar o nome dos objetos no ioBroker. Os antigos precisam ser excluídos manualmente!\nver Changelog para a lista completa de alterações",
-        "nl": "IMPORT List Namen worden nu gecontroleerd op invalide personages en vervangen. Kan de naam van objecten veranderen in ioBroker. Ouden moeten handmatig verwijderd worden!\nvertaling:",
-        "fr": "IMPORTANT Les noms des listes sont désormais vérifiés pour les caractères invalides et remplacés. Peut-être changer le nom des objets dans ioBroker. Les vieux doivent être supprimés manuellement !\nvoir Changelog pour la liste complète des changements",
-        "it": "IMPORTANTE I nomi delle liste sono ora controllati per i caratteri non validi e sostituiti. Potrebbe cambiare il nome di oggetti in ioBroker. I vecchi devono essere eliminati manualmente!\nvedi Changelog per l'elenco completo delle modifiche",
-        "es": "IMPORTANTE Los nombres de lista ahora se verifican para caracteres inválidos y reemplazados. Podría cambiar el nombre de los objetos en ioBroker. Los viejos necesitan ser eliminados manualmente!\nver Changelog para la lista completa de cambios",
-        "pl": "IMPORTANT Nazwy są obecnie sprawdzane dla nieprawidłowych postaci i zastąpione. Might zmienia nazwę obiektów w ioBroker. Stare osoby muszą być usuwane ręcznie!\nzmiany na pełną listę zmian",
-        "zh-cn": "IMPORTA 名单现按无效性质进行检查并替换。 明文改变了OioBroker的物体名称。 老年人需要用手工删除。!\n见对全面变化清单的修改"
       }
     },
     "keywords": [
