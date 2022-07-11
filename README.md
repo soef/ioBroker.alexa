@@ -439,8 +439,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.16.1 (2022-07-11)
 * (Apollon77) Fix deletion and cancellation of Alarms and Reminders
 
 ### 3.16.0 (2022-07-11)
