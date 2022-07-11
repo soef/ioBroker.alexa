@@ -439,6 +439,13 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Work around timing issues with speak-volume when using announcement
+* (Apollon77) Correctly initialize volume/mute on startup also when player data are not available
+* (Apollon77) Do not overwrite speak-volume (and some other fields) with null on adapter start
+* (Apollon77) Fix crash cases reported by Sentry
+
 ### 3.17.0 (2022-07-11)
 * (Apollon77) Add support to play Audible books in Music-Providers
 * (Apollon77) Optimize deletion of alarms and reminders

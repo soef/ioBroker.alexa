@@ -1402,7 +1402,7 @@ function createSmarthomeStates(callback) {
                                                 });
                                             }
 
-                                            setOrUpdateObject(`Smart-Home-Devices.${shDevice.entityId}.${obj.common.name}`, obj, null, function (entityId, paramName, applianceId, value) {
+                                            setOrUpdateObject(`Smart-Home-Devices.${shDevice.entityId}.${obj.common.name}`, obj, undefined, function (entityId, paramName, applianceId, value) {
                                                 if (!obj.common.write) return;
                                                 const parameters = buildSmartHomeControlParameters(entityId, shObjects.capabilityObjects[cap.interfaceName], capProp.name, paramName, value, cap.instance);
                                                 let actionName = parameters.action;
@@ -1511,7 +1511,7 @@ function createSmarthomeStates(callback) {
                                     }
                                     obj.native.readable = readable;
 
-                                    setOrUpdateObject(`Smart-Home-Devices.${shDevice.entityId}.${obj.common.name}`, obj, null, function (entityId, paramName, applianceId, value) {
+                                    setOrUpdateObject(`Smart-Home-Devices.${shDevice.entityId}.${obj.common.name}`, obj, undefined, function (entityId, paramName, applianceId, value) {
                                         if (!obj.common.write) return;
                                         const origValue = value;
                                         const parameters = buildSmartHomeControlParameters(shDevice.entityId, shObjects.actionObjects[action], null, paramName, value);
@@ -1637,7 +1637,7 @@ function createSmarthomeStates(callback) {
                         const obj = groupParamData.parameters[param];
                         if (obj.native && obj.native.hideInGroups) continue;
                         //obj.common.read = false;
-                        setOrUpdateObject(`Smart-Home-Devices.${groupIdShort}.${obj.common.name}`, obj, null, function (entityId, paramName, applianceId, value) {
+                        setOrUpdateObject(`Smart-Home-Devices.${groupIdShort}.${obj.common.name}`, obj, undefined, function (entityId, paramName, applianceId, value) {
                             if (!obj.common.write) return;
                             const parameters = buildSmartHomeControlParameters(entityId, obj, null, paramName, value);
 
@@ -1938,7 +1938,7 @@ function createStatesForDevice(device, additionalDeviceData) {
 
                                     if (device.capabilities.includes('VOLUME_SETTING')) {
                                         setOrUpdateObject(`${devId}.Player.muted`, {common: {type: 'boolean', role: 'media.mute', write: false, def: false}});
-                                        setOrUpdateObject(`${devId}.Player.volume`, {common: {role: 'level.volume', min: 0, max: 100, def: 0}}, null, function (device, value) {
+                                        setOrUpdateObject(`${devId}.Player.volume`, {common: {role: 'level.volume', min: 0, max: 100, def: null}}, undefined, function (device, value) {
                                             if (device.isMultiroomDevice) {
                                                 alexa.sendCommand(device, 'volume', value, (err, res) => {
                                                     // on unavailability {"message":"No routes found","userFacingMessage":null}
@@ -1978,8 +1978,8 @@ function createStatesForDevice(device, additionalDeviceData) {
                                                 continue;
                                             }
 
-                                            setOrUpdateObject(`${devId}.Music-Provider.${displayName}`, {common: {name:`Phrase to play with ${musicProviders[p].displayName}`, type:'string', role:'text', def: ''}}, null, playMusicProvider.bind(alexa, device, musicProviders[p].id));
-                                            setOrUpdateObject(`${devId}.Music-Provider.${displayName}-Playlist`, {common: {name:`Playlist to play with ${musicProviders[p].displayName}`, type:'string', role:'text', def: ''}}, null, function(device, providerId, value) {
+                                            setOrUpdateObject(`${devId}.Music-Provider.${displayName}`, {common: {name:`Phrase to play with ${musicProviders[p].displayName}`, type:'string', role:'text', def: ''}}, '', playMusicProvider.bind(alexa, device, musicProviders[p].id));
+                                            setOrUpdateObject(`${devId}.Music-Provider.${displayName}-Playlist`, {common: {name:`Playlist to play with ${musicProviders[p].displayName}`, type:'string', role:'text', def: ''}}, '', function(device, providerId, value) {
                                                 if (value === '') return;
                                                 playMusicProvider(device, providerId, `playlist ${value}`);
                                             }.bind(alexa, device, musicProviders[p].id));
@@ -1987,7 +1987,7 @@ function createStatesForDevice(device, additionalDeviceData) {
                                     }
 
                                     if (device.capabilities.includes ('TUNE_IN')) {
-                                        setOrUpdateObject(`${devId}.Player.TuneIn-Station`, {common: {role: 'text', def: ''}}, null, function (device, query) {
+                                        setOrUpdateObject(`${devId}.Player.TuneIn-Station`, {common: {role: 'text', def: ''}}, '', function (device, query) {
                                             if (query.match(/^s[0-9]+$/)) {
                                                 device.setTunein(query, 'station', (err, ret) => {
                                                     if (!err) {
@@ -2026,7 +2026,7 @@ function createStatesForDevice(device, additionalDeviceData) {
                                     }
 
                                     if (device.capabilities.includes ('AUDIBLE')) {
-                                        setOrUpdateObject(`${devId}.Music-Provider.Audible`, {common: {role: 'text', def: ''}}, null, function (device, query) {
+                                        setOrUpdateObject(`${devId}.Music-Provider.Audible`, {common: {role: 'text', def: ''}}, '', function (device, query) {
                                             device.playAudible(query, (err, ret) => {
                                                 if (!err) {
                                                     adapter.setState(`${devId}.Music-Provider.Audible`, query, true);
@@ -2118,7 +2118,7 @@ function createStatesForDevice(device, additionalDeviceData) {
                                             });
                                         }.bind(alexa, device, c));
                                     }
-                                    setOrUpdateObject(`${devId}.Commands.speak`, {common: { role: 'media.tts', def: ''}}, null, function (device, value) {
+                                    setOrUpdateObject(`${devId}.Commands.speak`, {common: { role: 'media.tts', def: ''}}, '', function (device, value) {
                                         if (typeof value !== 'string') return;
                                         if (!value) return;
 
@@ -2174,7 +2174,7 @@ function createStatesForDevice(device, additionalDeviceData) {
                                             alexa.sendMultiSequenceCommand(device.serialNumber, allCommands, null, alexa.ownerCustomerId);
                                         });
                                     }.bind(alexa, device));
-                                    setOrUpdateObject(`${devId}.Commands.announcement`, {common: { role: 'media.tts', def: ''}}, null, function (device, value) {
+                                    setOrUpdateObject(`${devId}.Commands.announcement`, {common: { role: 'media.tts', def: ''}}, '', function (device, value) {
                                         if (typeof value !== 'string') return;
                                         if (!value) return;
 
@@ -2212,10 +2212,13 @@ function createStatesForDevice(device, additionalDeviceData) {
                                             });
                                         }, () => {
                                             const announceCommands = [];
+                                            let volumeResetDelay = 3000;
                                             speakValue.split(';').forEach((v) => {
                                                 const value = v.trim();
                                                 if (!value || !value.length) return;
                                                 announceCommands.push({command: 'announcement', value});
+                                                const lengthValue = value.replace(/<.+?>/g, ' ').replaceAll(/\s+/g, ' ').trim();
+                                                volumeResetDelay += lengthValue.length * 150;
                                             });
                                             if (!announceCommands.length) return;
 
@@ -2226,11 +2229,17 @@ function createStatesForDevice(device, additionalDeviceData) {
                                             } else {
                                                 allCommands.push({sequenceType: 'SerialNode', nodes: announceCommands});
                                             }
-                                            speakVolumeResetCommands.length && allCommands.push({sequenceType: 'ParallelNode', nodes: speakVolumeResetCommands});
-                                            alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, allCommands, null, alexa.ownerCustomerId);
+                                            alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, allCommands, null, alexa.ownerCustomerId, () => {
+                                                // Amazon requires us to send volume donw separately for announcement
+                                                if (speakVolumeResetCommands.length) {
+                                                    setTimeout(() => {
+                                                        alexa.sendMultiSequenceCommand((device.isMultiroomDevice && device.clusterMembers) ? device.clusterMembers: device, speakVolumeResetCommands, 'ParallelNode', alexa.ownerCustomerId);
+                                                    },volumeResetDelay);
+                                                }
+                                            });
                                         });
                                     }.bind(alexa, device));
-                                    setOrUpdateObject(`${devId}.Commands.ssml`, {common: { role: 'media.tts', def: ''}}, null, function (device, value) {
+                                    setOrUpdateObject(`${devId}.Commands.ssml`, {common: { role: 'media.tts', def: ''}}, '', function (device, value) {
                                         if (typeof value !== 'string') return;
                                         value = value.trim();
                                         if (!value) return;
@@ -2279,13 +2288,13 @@ function createStatesForDevice(device, additionalDeviceData) {
                                                 }
                                             }.bind(alexa, device));
                                         }
-                                        setOrUpdateObject(`${devId}.Commands.speak-volume`, {common: {name: 'Volume to use for speak commands', type: 'number', role: 'level.volume', min: 0, max: 100}}, null, function (device, value) {
+                                        setOrUpdateObject(`${devId}.Commands.speak-volume`, {common: {name: 'Volume to use for speak commands', type: 'number', role: 'level.volume', min: 0, max: 100, def: null}}, undefined, function (device, value) {
                                             device.speakVolume = value;
                                             adapter.log.debug(`Set speak-Volume for ${device.serialNumber}: ${value}`);
                                             adapter.setState(`${devId}.Commands.speak-volume`, value, true);
                                         }.bind(alexa, device));
                                     }
-                                    setOrUpdateObject(`${devId}.Commands.doNotDisturb`, {common: {role: 'switch'}}, null, function (device, value) {
+                                    setOrUpdateObject(`${devId}.Commands.doNotDisturb`, {common: {role: 'switch'}}, undefined, function (device, value) {
                                         device.setDoNotDisturb(!!value, (err, res) => {
                                             if (!err) {
                                                 adapter.setState(`${devId}.Commands.doNotDisturb`, !!value, true);
@@ -2745,7 +2754,7 @@ function createNotificationStates(serialOrName) {
                 let recurring = valueArr.shift();
                 if (sound) {
                     sound = sound.trim();
-                    if (sound.startsWith('DAILY') || sound.startsWith('WEEKLY') || (recurring.startsWith('{') && recurring.endsWith('}'))) {
+                    if (sound.startsWith('DAILY') || sound.startsWith('WEEKLY') || (sound.startsWith('{') && sound.endsWith('}'))) {
                         recurring = sound;
                         sound = undefined;
                     }
@@ -3339,7 +3348,18 @@ function updatePlayerStatus(serialOrName, callback) {
 
         alexa.getPlayerInfo(device , (err, resPlayer) => {
             if (stopped) return;
-            if (err || !resPlayer || !resPlayer.playerInfo) return setTimeout(doIt, Math.floor(Math.random() * 2000) + 500);
+            if (err || !resPlayer || !resPlayer.playerInfo) {
+                if (initialDeviceVolumes[device.serialNumber] && device.capabilities.includes('VOLUME_SETTING')) {
+                    let volume = initialDeviceVolumes[device.serialNumber].speakerVolume;
+                    const muted = initialDeviceVolumes[device.serialNumber].speakerMuted;
+                    if (muted !== null) adapter.setState(`${devId}.Player.muted`, muted, true);
+                    if (volume === 0 && device.isMultiroomDevice) volume = null;
+                    if (volume !== null) adapter.setState(`${devId}.Player.volume`, volume, true);
+                    adapter.log.debug(`Initialize Volume for Device ${device.serialNumber}: volume=${volume} (muted=${muted})`);
+                    delete initialDeviceVolumes[device.serialNumber];
+                }
+                return setTimeout(doIt, Math.floor(Math.random() * 2000) + 500);
+            }
 
             const playerData = {
                 providerName: '',
@@ -3789,7 +3809,7 @@ function initCommUsers(callback) {
 
                     setOrUpdateObject(`Contacts.${contactId}`, {type: 'channel', common: {name: contactName}});
 
-                    setOrUpdateObject(`Contacts.${contactId}.textMessage`, {common: {role: 'text', def: ''}}, null, function (value) {
+                    setOrUpdateObject(`Contacts.${contactId}.textMessage`, {common: {role: 'text', def: ''}}, '', function (value) {
                         if (value === '') return;
 
                         alexa.sendTextMessage(comEntry.commsId[0], value, (err, res) => {
