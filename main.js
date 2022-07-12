@@ -1106,9 +1106,13 @@ function updateSmarthomeDeviceStates(res) {
         const common = adapterObjects[`Smart-Home-Devices.${deviceEntityId}.${stateName}`].common;
         let value = cap.value;
         if (typeof value === 'object') {
-            value = value[native.valueSubKey || 'value'];
-            if (value === undefined) {
+            if (value[native.valueSubKey || 'value'] === undefined) {
                 if (!native.noFallbackStringifiedValue) {
+                    value = JSON.stringify(value);
+                }
+            } else {
+                value = value[native.valueSubKey || 'value'];
+                if (typeof value === 'object' && !native.noFallbackStringifiedValue) { // TODO: maybe always stringified?
                     value = JSON.stringify(value);
                 }
             }
