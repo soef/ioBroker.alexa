@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.17.2",
+    "version": "3.17.3",
     "title": "Alexa2 (Amazon Echo)",
     "titleLang": {
       "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.17.3": {
+        "en": "Prevent datatype warnings in log",
+        "de": "Datentyp-Warnungen im Log verhindern",
+        "ru": "Предотвратить предупреждения типа данных в логе",
+        "pt": "Impedir avisos do tipo de dados no log",
+        "nl": "Vertaling:",
+        "fr": "Prévenir les avertissements de type de données dans le journal",
+        "it": "Evitare avvisi di tipo di dati nel registro",
+        "es": "Prevenir advertencias de tipo de datos en el registro",
+        "pl": "Prevent datatype warning",
+        "zh-cn": "逻辑中的预防性数据型警告"
+      },
       "3.17.2": {
         "en": "Another adjustment for smart home device data readings\nFix crash cases reported by Sentry",
         "de": "Eine weitere Anpassung für Smart-Home-Gerät-Datenlesungen\nReparieren Crashfälle gemeldet von Sentry",
@@ -100,18 +112,6 @@
         "es": "Caso fijo donde la inicialización del adaptador nunca fue terminada y nada fue controlable",
         "pl": "Sprawa Fix, w której inicjacja adaptatora nigdy nie została ukończona i tak nic nie było sterowane",
         "zh-cn": "变通者的初始化从未完成,因此无法控制的混合案件。"
-      },
-      "3.15.1": {
-        "en": "Convert Smarthome device values if wrong datatype is delivered by device\nAdd handling for two more battery health states for smart home devices\nFix crash case when initializing notifications",
-        "de": "Smarthome-Gerätewerte umrechnen, wenn der falsche Datentyp von Gerät geliefert wird\nHinzufügen von Handling für zwei weitere Batterie-Gesundheitszustände für Smart Home-Geräte\nFehlerbehebung bei der Initialisierung von Benachrichtigungen",
-        "ru": "Преобразуйте значения устройства Smarthome, если неправильный тип данных поставлен устройством\nДобавить обработку для двух других состояния здоровья батареи для умных домашних устройств\nИсправление случай сбоя при инициализации уведомлений",
-        "pt": "Converta valores de dispositivo Smarthome se o tipo de dados errado for entregue pelo dispositivo\nAdicionar manipulação para mais dois estados de saúde da bateria para dispositivos domésticos inteligentes\nCorrigir caso de acidente ao inicializar notificações",
-        "nl": "Convert Smarthome apparaat waarden als verkeerde datatype wordt geleverd door apparaat\nAanpassen voor twee batterijen gezondheidsstaat voor slimme thuis apparaten\nVertaling:",
-        "fr": "Convertir les valeurs de périphérique Smarthome si le type de données incorrect est livré par périphérique\nAjouter la manipulation pour deux autres états de santé de la batterie pour les appareils à domicile intelligents\nCorrection d ' un cas de choc lors de l ' initialisation des notifications",
-        "it": "Convertire i valori del dispositivo Smarthome se il tipo di dati sbagliato viene fornito dal dispositivo\nAggiungere la gestione per altri due stati di salute della batteria per i dispositivi smart home\nFissare caso crash quando inizializzare le notifiche",
-        "es": "Convertir valores de dispositivo Smarthome si el tipo de datos incorrecto es entregado por dispositivo\nAgregar el manejo para dos estados de salud de baterías más para dispositivos inteligentes para el hogar\nCorregir caso de accidente al inicializar notificaciones",
-        "pl": "Przetworzone wartości urządzenia Smarthome, jeśli niewłaściwe dane są dostarczane przez urządzenia\nDostarczanie pomocy dla dwóch dodatkowych stanów na zdrowiu baterii\nSprawa rozbicia Fix, gdy inicjuje powiadomienie",
-        "zh-cn": "如果使用装置提供错误数据,则可对Smarthome装置的数值\n增加两个更电池的保健州的照旧房屋设施\n首次发出通知时发生的事故"
       }
     },
     "keywords": [
