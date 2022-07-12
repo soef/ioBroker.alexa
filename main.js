@@ -927,7 +927,7 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
                             if (shApplianceEntityMap[shDevice.applianceId] && shApplianceEntityMap[shDevice.applianceId].entityId) {
                                 adapter.setState(`Smart-Home-Devices.${shDevice.entityId}.#enabled`, shDevice.isEnabled, true);
                             } else {
-                                adapter.log.info(`It seems that a new smart home device got created, restart the Adapter to use it (${shDevice.applianceId})`);
+                                adapter.log.info(`It seems that a new smart home device got created (or device added) after last adapter start, restart the Adapter to use it (${shDevice.applianceId})`);
                             }
                         }
                     }
@@ -1109,10 +1109,12 @@ function updateSmarthomeDeviceStates(res) {
             if (value[native.valueSubKey || 'value'] === undefined) {
                 if (!native.noFallbackStringifiedValue) {
                     value = JSON.stringify(value);
+                } else {
+                    value = undefined;
                 }
             } else {
                 value = value[native.valueSubKey || 'value'];
-                if (typeof value === 'object' && !native.noFallbackStringifiedValue) { // TODO: maybe always stringified?
+                if (value !== null && typeof value === 'object' && !native.noFallbackStringifiedValue) { // TODO: maybe always stringified?
                     value = JSON.stringify(value);
                 }
             }
@@ -1210,7 +1212,6 @@ function updateSmarthomeDeviceStates(res) {
                     }
                 }
                 if (colorDataIncluded && capValues.colorRgb && capValues.colorName === null) {
-                    capValues.colorName = null;
                     const colorRgbSearch = hsvToRgb(capValues['color-hue'], capValues['color-saturation'], 1.0);
                     const nearestColor = shObjects.nearestColor(colorRgbSearch);
                     const native = adapterObjects[`Smart-Home-Devices.${deviceEntityId}.colorName`].native;
