@@ -439,8 +439,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.17.1 (2022-07-12)
 * (Apollon77) Work around timing issues with speak-volume when using announcement
 * (Apollon77) Correctly initialize volume/mute on startup also when player data are not available
 * (Apollon77) Do not overwrite speak-volume (and some other fields) with null on adapter start

@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.17.0",
+    "version": "3.17.1",
     "title": "Alexa2 (Amazon Echo)",
     "titleLang": {
       "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.17.1": {
+        "en": "Work around timing issues with speak-volume when using announcement\nCorrectly initialize volume/mute on startup also when player data are not available\nDo not overwrite speak-volume (and some other fields) with null on adapter start\nFix crash cases reported by Sentry",
+        "de": "Arbeiten Sie rund um Timing-Probleme mit Talk-Volume bei der Nutzung der Ankündigung\nKorrigieren Sie Volume/Mute beim Start auch dann, wenn die Playerdaten nicht verfügbar sind\nNicht überschreiben Sprechvolumen (und einige andere Felder) mit Null auf Adapterstart\nReparieren Crashfälle gemeldet von Sentry",
+        "ru": "Работайте по вопросам сроков с разговором при использовании объявления\nПравильно инициализировать объем/мут на стартапе также, когда данные игрока не доступны\nНе переписать разговорный (и некоторые другие поля) с null на запуске адаптера\nИсправление случаев аварии, описанных Sentry",
+        "pt": "Trabalhe em torno de problemas de cronometragem com falar-volume ao usar o anúncio\nIniciar corretamente o volume/mute na inicialização também quando os dados do jogador não estão disponíveis\nNão sobrescrever falar-volume (e alguns outros campos) com nulo no início do adaptador\nCorrigir casos de acidente relatados por Sentry",
+        "nl": "Werk rond de timing kwesties met spreek-volum wanneer je aankondiging gebruikt\nCorrect gestart volume/mut op start-up ook wanneer spelers data niet beschikbaar zijn\nSchrijf niet te veel praat-volume (en andere velden) met nul op adapter start\nVertaling:",
+        "fr": "Travailler autour des problèmes de timing avec le mot-volume lors de l'annonce\nInitialiser correctement le volume/mute sur le démarrage aussi lorsque les données du lecteur ne sont pas disponibles\nNe pas écraser parler-volume (et quelques autres champs) avec null sur le début de l'adaptateur\nTroubles de crash signalés par Sentry",
+        "it": "Lavorare intorno problemi di temporizzazione con talk-volume quando si utilizza l'annuncio\nEsattamente inizializzare volume/muto all'avvio anche quando i dati del giocatore non sono disponibili\nNon sovrascrivere la voce-volume (e alcuni altri campi) con null all'inizio dell'adattatore\nCorrezione dei casi di crash segnalati da Sentry",
+        "es": "Trabajar en torno a cuestiones de tiempo con voz-volumen al usar el anuncio\nIniciar correctamente el volumen/mute en la startup también cuando los datos del reproductor no están disponibles\nNo sobreescribir voz-volumen (y algunos otros campos) con null on adapter start\nCasos de accidente fijo reportados por Sentry",
+        "pl": "Praca nad problemami związanymi z mowa-volume przy użyciu ogłoszenia\nOczywiście wstępnie inicjuje tom/mute, kiedy dane gracza nie są dostępne\nNie piszę słów-volume (i niektóre inne pola) z pustym starterem\nSprawy katastrofy Fix podane przez Sentry’a",
+        "zh-cn": "利用公告处理时间问题\n在未提供投入数据时,投入数量/升值的细分\n不用说话(和其他一些领域)就不过分,不让读者开始。\nSentry所报告的六例事故"
+      },
       "3.17.0": {
         "en": "Add support to play Audible books in Music-Providers\nOptimize deletion of alarms and reminders\nOptimize requesting smart home device data",
         "de": "Unterstützung bei Audible-Büchern in Music-Providers hinzufügen\nOptimieren Sie das Löschen von Alarmen und Erinnerungen\nOptimieren Sie anfragende Smart-Home-Gerät-Daten",
@@ -100,18 +112,6 @@
         "es": "IMPORTANTE: Formato para especificar múltiples detalles sobre Nuevo para Alarmas y Recordatorios cambiado, vea documentación!\nGrandes mejoras para Alarmas, Recordatorios y Fijas\nAñadir nuevos Comandos habilidad y habilidadTuyo para empezar Habilidades\nAñadir varias preferencias de dispositivo más\nFijar el comando doNoDisturb roto en 3.14.0\nReduzca un poco la inicialización de todos los datos, por lo que la startup podría tardar más",
         "pl": "IMPORTANT: Format określający wiele dekatów na New for Alarms and Reminders!\nHuge udoskonalał Alarms, Reminders i Fixs\nAddd new Commandments and skillYours (ang.)\nAddd multiple times larger than Preferences\nFix do NotDisturb Command rozbiło się w 3.14 roku\nZmniejszenie inicjacji wszystkich danych jest bita, więc startup może trwać dłużej",
         "zh-cn": "IMPORTANT: 详细写明关于新语和雷米德语的多种细节的变化,见文件!\nA. 提高Alarms、Reminders和Fixes的力度\n增加新指挥部的技能和技能,以培养技能\n增加几处 Device Pec\nFix do notDises指挥 in3.14.0\n由于所有数据的初始化,因此,开始时间会长。"
-      },
-      "3.14.0": {
-        "en": "many feature enhancements for Player and Smart Home Devices states and more, see Changelog in GitHub for all details!\nAllow to define if Lists and Smart home devices are synced by the adapter with the Amazon Cloud at all",
-        "de": "viele Features Verbesserungen für Player und Smart Home Devices Zustände und mehr, siehe Changelog in GitHub für alle Details!\nErlauben Sie zu definieren, ob Listen und Smart Home-Geräte von dem Adapter mit der Amazon Cloud überhaupt synchronisiert werden",
-        "ru": "много улучшений функции для состояния устройств Player и Smart Home, см. Changelog в GitHub для всех деталей!\nРазрешить определить, если списки и умные домашние устройства синхронизированы адаптером с Amazon Cloud на всех",
-        "pt": "muitos aprimoramentos de recursos para estados do Player e Smart Home Devices e muito mais, veja Changelog no GitHub para todos os detalhes!\nPermitir definir se listas e dispositivos domésticos inteligentes são sincronizados pelo adaptador com a Amazon Cloud em tudo",
-        "nl": "veel verbeteringen voor Player en Smart Home Devices staat en meer, zie Changelog in GitHub voor alle details!\nSta toe te definiëren of Lists en Smart thuis apparatuur gesynchroniseerd zijn door de adapter met de Amazone Cloud",
-        "fr": "de nombreuses améliorations de fonctionnalités pour les états Player et Smart Home Devices et plus encore, voir Changelog dans GitHub pour tous les détails!\nPermet de définir si Lists et Smart home appareils sont synchronisés par l'adaptateur avec Amazon Cloud",
-        "it": "molti miglioramenti di funzionalità per gli stati e più dispositivi Smart Home, vedere Changelog in GitHub per tutti i dettagli!\nConsentire di definire se Lists e Smart home device sono sincronizzati dall'adattatore con Amazon Cloud a tutti",
-        "es": "muchas mejoras de características para los estados de Player y Smart Home Devices y más, vea Changelog en GitHub para todos los detalles!\nPermitir definir si las listas y los dispositivos domésticos inteligentes son sincronizados por el adaptador con el Amazon Cloud en absoluto",
-        "pl": "wiele cech ulepszeń dla graczy i Smart Home Devices jest bardziej widoczne w GitHub dla wszystkich szczegółów!\nAllow do zdefiniowania, jeśli Listy i urządzenia do domu Smart są syndykowane przez adaptatora z chmurą Amazonki",
-        "zh-cn": "许多特点都加强了Player和Smart Home Devices州,更见GitHub的变革口号。!\n允许界定哪种清单和Smart家装置是否由适应者与亚马逊·Cloud合用,而所有这一切都与亚马逊集团混凝土。"
       }
     },
     "keywords": [
