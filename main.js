@@ -2221,7 +2221,7 @@ function createStatesForDevice(device, additionalDeviceData) {
                                                 const value = v.trim();
                                                 if (!value || !value.length) return;
                                                 announceCommands.push({command: 'announcement', value});
-                                                const lengthValue = value.replace(/<.+?>/g, ' ').replaceAll(/\s+/g, ' ').trim();
+                                                const lengthValue = value.replace(/<.+?>/g, ' ').replace(/\s+/g, ' ').trim();
                                                 volumeResetDelay += lengthValue.length * 150;
                                             });
                                             if (!announceCommands.length) return;
