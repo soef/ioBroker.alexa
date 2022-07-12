@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.17.1",
+    "version": "3.17.2",
     "title": "Alexa2 (Amazon Echo)",
     "titleLang": {
       "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.17.2": {
+        "en": "Another adjustment for smart home device data readings\nFix crash cases reported by Sentry",
+        "de": "Eine weitere Anpassung für Smart-Home-Gerät-Datenlesungen\nReparieren Crashfälle gemeldet von Sentry",
+        "ru": "Другая настройка для чтения данных умных домашних устройств\nИсправление случаев аварии, описанных Sentry",
+        "pt": "Outro ajuste para leituras de dados de dispositivos domésticos inteligentes\nCorrigir casos de acidente relatados por Sentry",
+        "nl": "Weer een aanpassing voor smart home apparatuur data\nVertaling:",
+        "fr": "Un autre ajustement pour les lectures de données de périphérique à domicile intelligent\nTroubles de crash signalés par Sentry",
+        "it": "Un'altra regolazione per le letture dei dati dei dispositivi smart home\nCorrezione dei casi di crash segnalati da Sentry",
+        "es": "Otro ajuste para lecturas inteligentes de datos del dispositivo hogar\nCasos de accidente fijo reportados por Sentry",
+        "pl": "Inna korekta danych dotyczących inteligentnego urządzenia domowego\nSprawy katastrofy Fix podane przez Sentry’a",
+        "zh-cn": "对聪明的家用装置数据作的另一项调整\nSentry所报告的六例事故"
+      },
       "3.17.1": {
         "en": "Work around timing issues with speak-volume when using announcement\nCorrectly initialize volume/mute on startup also when player data are not available\nDo not overwrite speak-volume (and some other fields) with null on adapter start\nFix crash cases reported by Sentry",
         "de": "Arbeiten Sie rund um Timing-Probleme mit Talk-Volume bei der Nutzung der Ankündigung\nKorrigieren Sie Volume/Mute beim Start auch dann, wenn die Playerdaten nicht verfügbar sind\nNicht überschreiben Sprechvolumen (und einige andere Felder) mit Null auf Adapterstart\nReparieren Crashfälle gemeldet von Sentry",
@@ -100,18 +112,6 @@
         "es": "Convertir valores de dispositivo Smarthome si el tipo de datos incorrecto es entregado por dispositivo\nAgregar el manejo para dos estados de salud de baterías más para dispositivos inteligentes para el hogar\nCorregir caso de accidente al inicializar notificaciones",
         "pl": "Przetworzone wartości urządzenia Smarthome, jeśli niewłaściwe dane są dostarczane przez urządzenia\nDostarczanie pomocy dla dwóch dodatkowych stanów na zdrowiu baterii\nSprawa rozbicia Fix, gdy inicjuje powiadomienie",
         "zh-cn": "如果使用装置提供错误数据,则可对Smarthome装置的数值\n增加两个更电池的保健州的照旧房屋设施\n首次发出通知时发生的事故"
-      },
-      "3.15.0": {
-        "en": "IMPORTANT: Format to specify multiple Details on \"New\" for Alarms and Reminders changed, see documentation!\nHuge enhancements for Alarms, Reminders and Fixes\nAdd new Commands skill and skillYours to start Skills\nAdd several more Device Preferences\nFix doNotDisturb command broken in 3.14.0\nSlow down the initialization of all data a bit, so startup could take longer",
-        "de": "WICHTIG: Format, um mehrere Details zu Neu für Alarme und Erinnerungen geändert, siehe Dokumentation!\nRiesige Verbesserungen für Alarme, Reminders und Fixes\nFügen Sie neue Befehle Geschicklichkeit und Geschicklichkeit zu starten Fähigkeiten\nMehrere weitere Geräteeinstellungen hinzufügen\nFix doNotDisturb Befehl in 3.14.0 gebrochen\nVerlangsamen Sie die Initialisierung aller Daten ein bisschen, so dass Startup länger dauern könnte",
-        "ru": "ВАЖНО: Формат, чтобы указать несколько деталей о New for Alarms and Reminders изменен, см. документацию!\nОгромные улучшения для тревог, напоминаний и исправлений\nДобавить новые команды мастерство и навыкМолодежники, чтобы начать навыки\nДобавить еще несколько предпочтений устройства\nFix doNotDisturb команда сломана в 3.14.0\nЗамедлить инициализацию всех данных немного, поэтому стартап может занять больше времени",
-        "pt": "IMPORTANTE: Formato para especificar vários detalhes em Novo para alarmes e lembretes alterados, veja documentação!\nGrandes melhorias para alarmes, lembretes e correções\nAdicionar novos comandos habilidade e habilidadeSeus para começar Habilidades\nAdicione várias outras preferências de dispositivo\nCorrigir comando doNotDisturb quebrado em 3.14.0\nAbranda a inicialização de todos os dados um pouco, para que a inicialização possa demorar mais",
-        "nl": "Format om meerdere Details op Nieuw te specificeren voor Alarms en Reminders veranderden, documentatie zien!\nGrote verbetering voor Alarms, herinneringen en Fixes\nVoeg nieuwe vaardigheden en vaardigheden toe om Skills te starten\nVertaling:\nVertaling:\nVertraag de initialisatie van alle gegevens, dus starten kan langer duren",
-        "fr": "IMPORTANT: Format pour spécifier plusieurs détails sur les nouvelles armes et les rappels changés, voir la documentation!\nAméliorations énormes pour les armes, les rappels et les fixations\nAjoutez de nouvelles compétences et compétences de commandementsVos à commencer les compétences\nAjouter plusieurs autres Préférences de périphériques\nCorrection de la commande doNotDisturb cassée en 3.14.0\nSlow down the initialization of all data a bit, so startup could take longer",
-        "it": "IMPORTANTE: Formato per specificare più dettagli su Nuovo per Allarmi e Rimoni cambiati, vedi documentazione!\nGrandi miglioramenti per Allarmi, Remine e Fissi\nAggiungi nuove abilità di comandi e abilitàLa tua per iniziare abilità\nAggiungi più Preferenze di dispositivo\nFix doNotDisturb comando rotto in 3.14.0\nRallentare l'inizializzazione di tutti i dati un po ', in modo che l'avvio potrebbe richiedere più tempo",
-        "es": "IMPORTANTE: Formato para especificar múltiples detalles sobre Nuevo para Alarmas y Recordatorios cambiado, vea documentación!\nGrandes mejoras para Alarmas, Recordatorios y Fijas\nAñadir nuevos Comandos habilidad y habilidadTuyo para empezar Habilidades\nAñadir varias preferencias de dispositivo más\nFijar el comando doNoDisturb roto en 3.14.0\nReduzca un poco la inicialización de todos los datos, por lo que la startup podría tardar más",
-        "pl": "IMPORTANT: Format określający wiele dekatów na New for Alarms and Reminders!\nHuge udoskonalał Alarms, Reminders i Fixs\nAddd new Commandments and skillYours (ang.)\nAddd multiple times larger than Preferences\nFix do NotDisturb Command rozbiło się w 3.14 roku\nZmniejszenie inicjacji wszystkich danych jest bita, więc startup może trwać dłużej",
-        "zh-cn": "IMPORTANT: 详细写明关于新语和雷米德语的多种细节的变化,见文件!\nA. 提高Alarms、Reminders和Fixes的力度\n增加新指挥部的技能和技能,以培养技能\n增加几处 Device Pec\nFix do notDises指挥 in3.14.0\n由于所有数据的初始化,因此,开始时间会长。"
       }
     },
     "keywords": [
