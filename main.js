@@ -1938,7 +1938,7 @@ function createStatesForDevice(device, additionalDeviceData) {
 
                                     if (device.capabilities.includes('VOLUME_SETTING')) {
                                         setOrUpdateObject(`${devId}.Player.muted`, {common: {type: 'boolean', role: 'media.mute', write: false, def: false}});
-                                        setOrUpdateObject(`${devId}.Player.volume`, {common: {role: 'level.volume', min: 0, max: 100, def: null}}, undefined, function (device, value) {
+                                        setOrUpdateObject(`${devId}.Player.volume`, {common: {type: 'number', role: 'level.volume', min: 0, max: 100, def: null}}, undefined, function (device, value) {
                                             if (device.isMultiroomDevice) {
                                                 alexa.sendCommand(device, 'volume', value, (err, res) => {
                                                     // on unavailability {"message":"No routes found","userFacingMessage":null}
@@ -2294,7 +2294,7 @@ function createStatesForDevice(device, additionalDeviceData) {
                                             adapter.setState(`${devId}.Commands.speak-volume`, value, true);
                                         }.bind(alexa, device));
                                     }
-                                    setOrUpdateObject(`${devId}.Commands.doNotDisturb`, {common: {role: 'switch'}}, undefined, function (device, value) {
+                                    setOrUpdateObject(`${devId}.Commands.doNotDisturb`, {common: {type: 'boolean', role: 'switch'}}, undefined, function (device, value) {
                                         device.setDoNotDisturb(!!value, (err, res) => {
                                             if (!err) {
                                                 adapter.setState(`${devId}.Commands.doNotDisturb`, !!value, true);
