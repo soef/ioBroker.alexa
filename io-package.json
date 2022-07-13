@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.17.3",
+    "version": "3.17.4",
     "title": "Alexa2 (Amazon Echo)",
     "titleLang": {
       "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.17.4": {
+        "en": "Make sure disabling query intervals really work (disabling smart home device and state and configuration was not possible)",
+        "de": "Stellen Sie sicher, dass die Abfrageintervalle wirklich funktionieren (das Abschalten von Smart Home-Gerät und Zustand und Konfiguration war nicht möglich)",
+        "ru": "Убедитесь, что отключение интервалов запросов действительно работает (отключение умного дома устройства и государства и конфигурации не было возможным)",
+        "pt": "Certifique-se de desativar intervalos de consulta realmente funcionar (desativar dispositivo home inteligente e estado e configuração não foi possível)",
+        "nl": "Zorg ervoor dat nieuwsgierige intervals echt werken",
+        "fr": "Assurez-vous de désactiver les intervalles de requête vraiment fonctionner (disabling smart home device and state and configuration was not possible)",
+        "it": "Assicurarsi di disabilitare gli intervalli di query realmente funziona (disabling smart home device e stato e configurazione non è stato possibile)",
+        "es": "Asegúrate de desactivar los intervalos de consulta realmente funcionan (disabling smart home device and state and settings was not possible)",
+        "pl": "Umożliwia to, że odstępy zapytania naprawdę działają (rozpoznanie inteligentnego urządzenia domowego i stanu i konfiguracji nie były możliwe)",
+        "zh-cn": "保证不带任何时间真正工作(不可能有智的家用装置和州组合)。"
+      },
       "3.17.3": {
         "en": "Prevent datatype warnings in log",
         "de": "Datentyp-Warnungen im Log verhindern",
@@ -100,18 +112,6 @@
         "es": "Añadir (oficial) soporte para Music-Alarms - ahora se enumeran bajo Alarmas junto con los otros Alarmas! La lista de sonido contendrá objetivos de música específicos del dispositivo de teh, para que puedas básicamente zse los que creaste al menos una vez a través de comandos de voz.\nPara un Alarma de Música se utiliza el Volume personalizado en el aram para configurar el volumen de dispositivo normal 2s antes de la alarma, pero no (!) reiniciarlo después\nPreviene fallos en una vez Alarmas que acaban de desencadenar",
         "pl": "Add (oficjalna) wsparcie dla Music-Alarms - są one obecnie wymieniane pod Alarms i Alarms! Lista dźwiękowa będzie zawierać teh urządzenie specyficzne dla muzyki - tak więc możesz prowadzić zse the ones that you created at least once by voice commands.\nDla Music Alarm, zwyczajowo Volume on the aram jest używany do ustawienia normalnego objętości urządzeniem 2 przed alarmem, ale nie (!)\nPrevent rozbił się po raz pierwszy w Alarms, co spowodowało wybuch",
         "zh-cn": "添加(官方)支持Music-Alarms,现在列在Alarms和其他Alarms! 稳妥的清单将包含茶叶装置的具体音乐目标,因此,你基本上可以把你至少通过声音指挥创造的东西交给你。.\n对于一个Music Alarm来说,在警觉之前,使用了一整套的设备,但没有(!) 重新塑造后。\nA. 防止事故"
-      },
-      "3.15.2": {
-        "en": "Fix case where initialization of the adapter was never finished and so nothing was controllable",
-        "de": "Fix-Fall, wo die Initialisierung des Adapters noch nie beendet wurde und so nichts steuerbar war",
-        "ru": "Исправление дела, где инициализация адаптера никогда не была закончена и поэтому ничего не было управляемым",
-        "pt": "Corrigir caso onde a inicialização do adaptador nunca foi concluída e assim nada foi controlável",
-        "nl": "De eerste zaak waar de aanmelding van de adapter nooit klaar was, dus niets was beheersbaar",
-        "fr": "Cas fixe où l'initialisation de l'adaptateur n'a jamais été terminée et donc rien n'a été contrôlable",
-        "it": "Fissa caso in cui l'inizializzazione dell'adattatore non è mai stata terminata e quindi nulla è stato controllabile",
-        "es": "Caso fijo donde la inicialización del adaptador nunca fue terminada y nada fue controlable",
-        "pl": "Sprawa Fix, w której inicjacja adaptatora nigdy nie została ukończona i tak nic nie było sterowane",
-        "zh-cn": "变通者的初始化从未完成,因此无法控制的混合案件。"
       }
     },
     "keywords": [
