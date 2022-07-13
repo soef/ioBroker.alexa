@@ -900,7 +900,7 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
             updateSmarthomeDeviceStates(res);
         }
 
-        if (adapter.config.updateSmartHomeDevicesInterval) {
+        if (adapter.config.updateSmartHomeDevicesInterval > 0) {
             if (updateSmartHomeDevicesTimer) {
                 clearTimeout(updateSmartHomeDevicesTimer);
                 updateSmartHomeDevicesTimer = null;
@@ -3925,21 +3925,21 @@ function main() {
     if ((adapter.config.updateStateInterval !== 0 || isNaN(adapter.config.updateStateInterval)) && adapter.config.updateStateInterval < 60) {
         adapter.config.updateStateInterval = 300 + Math.floor(Math.random() * 60);
         adapter.log.info(`Update Device State Interval is too low, set to ${adapter.config.updateHistoryInterval}s`);
-    } else {
+    } else if (adapter.config.updateStateInterval !== 0) {
         adapter.config.updateStateInterval += Math.floor(Math.random() * 10);
     }
     adapter.config.updateSmartHomeDevicesInterval = parseInt(adapter.config.updateSmartHomeDevicesInterval, 10);
     if ((adapter.config.updateSmartHomeDevicesInterval !== 0 || isNaN(adapter.config.updateSmartHomeDevicesInterval)) && adapter.config.updateSmartHomeDevicesInterval < 60) {
         adapter.config.updateSmartHomeDevicesInterval = 300 + Math.floor(Math.random() * 60);
         adapter.log.info(`Update SmartHome Devices Interval is too low, set to ${adapter.config.updateHistoryInterval}s`);
-    } else {
+    } else if (adapter.config.updateSmartHomeDevicesInterval !== 0) {
         adapter.config.updateSmartHomeDevicesInterval += Math.floor(Math.random() * 10);
     }
     adapter.config.updateConfigurationInterval = parseInt(adapter.config.updateConfigurationInterval, 10);
     if ((adapter.config.updateConfigurationInterval !== 0 || isNaN(adapter.config.updateConfigurationInterval)) && adapter.config.updateConfigurationInterval < 60) {
         adapter.config.updateConfigurationInterval = 3600 + Math.floor(Math.random() * 60);
         adapter.log.info(`Update Devices Configuration Interval is too low, set to ${adapter.config.updateHistoryInterval}s`);
-    } else {
+    } else if (adapter.config.updateConfigurationInterval !== 0) {
         adapter.config.updateConfigurationInterval += Math.floor(Math.random() * 10);
     }
     if (adapter.config.synchronizeLists === undefined) {
