@@ -439,6 +439,10 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Add and query several more smart home device states (incl. the Echo own Temperature-Sensor if available)
+
 ### 3.17.4 (2022-07-13)
 * (Apollon77) Make sure disabling query intervals really work (disabling smart home device and state and configuration was not possible)
 

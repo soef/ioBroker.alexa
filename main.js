@@ -195,8 +195,10 @@ const listMap =  {};
 const lastPlayerState = {};
 const notificationTimer = {};
 let wsMqttConnected = false;
-let shApplianceEntityMap = {};
-let shGroupDetails = {};
+const shApplianceEntityMap = {};
+const shEntityApplianceMap = {};
+const shMergedApplianceIdMap = {};
+const shGroupDetails = {};
 const shDeviceParamValues = {};
 const shQueryBlocker = {};
 
@@ -859,6 +861,44 @@ function updateMediaProgress(serialNumber) {
     }
 }
 
+function scheduleNextSmarthomeDeviceQuery() {
+    if (adapter.config.updateSmartHomeDevicesInterval > 0) {
+        if (updateSmartHomeDevicesTimer) {
+            clearTimeout(updateSmartHomeDevicesTimer);
+            updateSmartHomeDevicesTimer = null;
+        }
+        if (stopped) return;
+        updateSmartHomeDevicesTimer = setTimeout(() => {
+            updateSmartHomeDevicesTimer = null;
+            if (stopped) return;
+
+            alexa.getSmarthomeDevices((err, res) => {
+                let all = {};
+                if (
+                    res &&
+                    res.locationDetails &&
+                    res.locationDetails.Default_Location &&
+                    res.locationDetails.Default_Location.amazonBridgeDetails &&
+                    res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails
+                ) {
+                    all = res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails;
+                }
+                for (const i of Object.keys(all)) {
+                    for (const n of Object.keys(all[i].applianceDetails.applianceDetails)) {
+                        const shDevice = all[i].applianceDetails.applianceDetails[n];
+                        if (shApplianceEntityMap[shDevice.applianceId] && shApplianceEntityMap[shDevice.applianceId].entityId) {
+                            adapter.setState(`Smart-Home-Devices.${shDevice.entityId}.#enabled`, shDevice.isEnabled, true);
+                        } else {
+                            adapter.log.info(`It seems that a new smart home device got created (or device added) after last adapter start, restart the Adapter to use it (${shDevice.applianceId})`);
+                        }
+                    }
+                }
+                queryAllSmartHomeDevices(true, true);
+            });
+        }, adapter.config.updateSmartHomeDevicesInterval * 1000);
+    }
+}
+
 function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
     if (updateSmartHomeDevicesTimer) {
         clearTimeout(updateSmartHomeDevicesTimer);
@@ -869,7 +909,8 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
         return callback && callback();
     }
 
-    const reqArr = [];
+    const reqApplianceIds = {};
+    const reqEntityIds = {};
     const blocked = [];
     for (const applianceId of Object.keys(shApplianceEntityMap)) {
         const queryIt = cloudOnly ? shApplianceEntityMap[applianceId].cloudReadable : shApplianceEntityMap[applianceId].readable;
@@ -879,7 +920,13 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
                 blocked.push(applianceId);
                 continue;
             }
-            reqArr.push(applianceId);
+            reqApplianceIds[applianceId] = true;
+            if (shApplianceEntityMap[applianceId].mergedApplianceIds && Array.isArray(shApplianceEntityMap[applianceId].mergedApplianceIds)) {
+                shApplianceEntityMap[applianceId].mergedApplianceIds.forEach(id => {
+                    reqApplianceIds[id] = true;
+                });
+            }
+            reqEntityIds[shApplianceEntityMap[applianceId].entityId] = true;
             if (!initial) {
                 let delay = 600000;
                 if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 60000;
@@ -892,52 +939,32 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
     if (blocked.length) {
         adapter.log.warn(`Smarthome device queries blocked for ${blocked.join(',')}`);
     }
-    if (!reqArr.length) {
+    const reqApplianceIdsArr = Object.keys(reqApplianceIds);
+    const reqEntityIdsArr = Object.keys(reqEntityIds);
+    if (!reqApplianceIdsArr.length) {
         return callback && callback();
     }
-    alexa.querySmarthomeDevices(reqArr, (err, res) => {
+    alexa.querySmarthomeDevices(reqApplianceIdsArr, 'APPLIANCE', (err, res) => {
         if (!err) {
             updateSmarthomeDeviceStates(res);
+        } else {
+            reqEntityIdsArr.length = 0; //  Also do not query Entities because Appliances gave error
         }
 
-        if (adapter.config.updateSmartHomeDevicesInterval > 0) {
-            if (updateSmartHomeDevicesTimer) {
-                clearTimeout(updateSmartHomeDevicesTimer);
-                updateSmartHomeDevicesTimer = null;
-            }
-            if (stopped) return;
-            updateSmartHomeDevicesTimer = setTimeout(() => {
-                updateSmartHomeDevicesTimer = null;
-                if (stopped) return;
+        if (!reqEntityIdsArr.length) {
+            scheduleNextSmarthomeDeviceQuery();
+            return callback && callback();
+        } else {
+            alexa.querySmarthomeDevices(reqEntityIdsArr, 'ENTITY', (err, res) => {
+                if (!err) {
+                    updateSmarthomeDeviceStates(res);
+                }
 
-                alexa.getSmarthomeDevices((err, res) => {
-                    let all = {};
-                    if (
-                        res &&
-                        res.locationDetails &&
-                        res.locationDetails.Default_Location &&
-                        res.locationDetails.Default_Location.amazonBridgeDetails &&
-                        res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails
-                    ) {
-                        all = res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails;
-                    }
-                    for (const i of Object.keys(all)) {
-                        for (const n of Object.keys(all[i].applianceDetails.applianceDetails)) {
-                            const shDevice = all[i].applianceDetails.applianceDetails[n];
-                            if (shApplianceEntityMap[shDevice.applianceId] && shApplianceEntityMap[shDevice.applianceId].entityId) {
-                                adapter.setState(`Smart-Home-Devices.${shDevice.entityId}.#enabled`, shDevice.isEnabled, true);
-                            } else {
-                                adapter.log.info(`It seems that a new smart home device got created (or device added) after last adapter start, restart the Adapter to use it (${shDevice.applianceId})`);
-                            }
-                        }
-                    }
-                    queryAllSmartHomeDevices(true, true);
-                });
-            }, adapter.config.updateSmartHomeDevicesInterval * 1000);
+                scheduleNextSmarthomeDeviceQuery();
+                callback && callback();
+            });
         }
-        callback && callback();
     });
-
 }
 
 function buildSmartHomeControlParameters(entityId, objs, selectorName, changedParamName, changedParamvalue, capInstance) {
@@ -1167,8 +1194,22 @@ function updateSmarthomeDeviceStates(res) {
     }
     if (res.deviceStates) {
         for (const states of res.deviceStates) {
-            if (!states.entity || !states.entity.entityId || !shApplianceEntityMap[states.entity.entityId]) continue;
-            const deviceEntityId = shApplianceEntityMap[states.entity.entityId].entityId;
+            if (!states.entity || !states.entity.entityId) continue;
+            const inputEntityId = states.entity.entityId;
+            let mainApplianceId;
+            if (shApplianceEntityMap[inputEntityId]) { // ID is a "main appliance id"
+                mainApplianceId = inputEntityId;
+            } else if (shMergedApplianceIdMap[inputEntityId]) { // ID is a "merged appliance id"
+                mainApplianceId = shMergedApplianceIdMap[inputEntityId];
+            } else if (shEntityApplianceMap[inputEntityId]) { // ID is an "entity id"
+                mainApplianceId = shEntityApplianceMap[inputEntityId];
+            }
+            if (!mainApplianceId) {
+                adapter.log.debug(`No main appliance id found for ${inputEntityId}`);
+                continue;
+            }
+
+            const deviceEntityId = shApplianceEntityMap[mainApplianceId].entityId;
             if (deviceEntityId && states.capabilityStates) {
                 let colorDataIncluded = false;
                 const capValues = {};
@@ -1243,9 +1284,6 @@ function createSmarthomeStates(callback) {
         return callback && callback();
     }
 
-    shApplianceEntityMap = {};
-    shGroupDetails = {};
-
     alexa.getSmarthomeBehaviourActionDefinitions((err, resProperties) => {
         if (stopped) return;
         if (!err && resProperties) shObjects.patchProperties(resProperties);
@@ -1298,8 +1336,15 @@ function createSmarthomeStates(callback) {
                         shApplianceEntityMap[shDevice.applianceId] = {
                             entityId: shDevice.entityId,
                             readable: false,
-                            cloudReadable: false
+                            cloudReadable: false,
+                            mergedApplianceIds: shDevice.mergedApplianceIds
                         };
+                        shEntityApplianceMap[shDevice.entityId] = shDevice.applianceId;
+                        if (shDevice.mergedApplianceIds && Array.isArray(shDevice.mergedApplianceIds)) {
+                            shDevice.mergedApplianceIds.forEach((applianceId) => {
+                                shMergedApplianceIdMap[applianceId] = shDevice.applianceId;
+                            });
+                        }
                         if (shDevice.aliases && shDevice.aliases[0] && shDevice.aliases[0].friendlyName) {
                             friendlyName = shDevice.aliases[0].friendlyName;
                         }
