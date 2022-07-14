@@ -443,6 +443,9 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ### __WORK IN PROGRESS__
 * (Apollon77) Add and query several more smart home device states (incl. the Echo own Temperature-Sensor if available)
 
+### __WORK IN PROGRESS__
+* (Apollon77) Minimum smart home device query interval is now 5 minutes and not 1 minute anymore to remove some requests for now
+
 ### 3.17.4 (2022-07-13)
 * (Apollon77) Make sure disabling query intervals really work (disabling smart home device and state and configuration was not possible)
 
