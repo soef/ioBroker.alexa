@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.17.4",
+    "version": "3.17.5",
     "title": "Alexa2 (Amazon Echo)",
     "titleLang": {
       "en": "Alexa2 (Amazon Echo)",
@@ -29,6 +29,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.17.5": {
+        "en": "Minimum smart home device query interval is now 5 minutes and not 1 minute anymore to remove some requests for now",
+        "de": "Mindest-Smart-Home-Gerät-Abfrage-Intervall ist jetzt 5 Minuten und nicht 1 Minute mehr, um einige Anfragen für jetzt zu entfernen",
+        "ru": "Минимальный домашний интервал запросов теперь 5 минут и больше не 1 минуты, чтобы удалить некоторые запросы сейчас",
+        "pt": "Intervalo de consulta de dispositivo doméstico inteligente mínimo é agora 5 minutos e não 1 minuto mais para remover alguns pedidos para agora",
+        "nl": "Minimum smart home apparaat query interval is nu vijf minuten en geen minuut meer om verzoeken te verwijderen voor nu",
+        "fr": "L'intervalle minimal de requête de l'appareil à domicile intelligent est maintenant 5 minutes et pas 1 minute plus pour supprimer certaines demandes pour l'instant",
+        "it": "Intervallo di query del dispositivo domestico minimo intelligente è ora 5 minuti e non 1 minuto più per rimuovere alcune richieste per ora",
+        "es": "El intervalo mínimo de consulta de dispositivo inteligente es ahora 5 minutos y no 1 minuto más para eliminar algunas solicitudes por ahora",
+        "pl": "Minimum inteligentne przedziały na urządzenie domowe to obecnie 5 minut i nie 1 minuta, aby usunąć niektóre żądania",
+        "zh-cn": "最低智能家用具的间隔时间现在为5分钟,而不是1分钟多,以取消目前的一些要求。"
+      },
       "3.17.4": {
         "en": "Make sure disabling query intervals really work (disabling smart home device and state and configuration was not possible)",
         "de": "Stellen Sie sicher, dass die Abfrageintervalle wirklich funktionieren (das Abschalten von Smart Home-Gerät und Zustand und Konfiguration war nicht möglich)",
@@ -100,18 +112,6 @@
         "es": "Eliminación y cancelación de alarmas y recordatorios",
         "pl": "Delecja i odwołanie Alarms and Reminders",
         "zh-cn": "Fix 删除和取消Alarms和 Reminders"
-      },
-      "3.16.0": {
-        "en": "Add (official) support for Music-Alarms - they are now listed under \"Alarms\" together with the other Alarms! The \"sound\" list will contain teh device specific music targets - so you can basically zse the ones that you created at least once via voice commands.\nFor a Music Alarm the \"customVolume\" on the aram is used to set the normal device volume 2s before the alarm but do not (!) reset it afterwards\nPrevent crashes on one time Alarms that just triggered",
-        "de": "Fügen Sie (offizielle) Unterstützung für Music-Alarms hinzu - sie sind jetzt unter Alarms zusammen mit den anderen Alarmen aufgeführt! Die Soundliste enthält teh-Gerät bestimmte Musikziele - so können Sie im Grunde zse die, die Sie mindestens einmal über Sprachbefehle erstellt haben.\nFür einen Musikalarm wird das benutzerdefinierteVolume auf dem Aram verwendet, um das normale Gerätevolumen 2s vor dem Alarm einzustellen, aber nicht (!) danach zurücksetzen\nVerhindern Sie Abstürzen auf einmal Alarme, die gerade ausgelöst",
-        "ru": "Добавьте (официальную) поддержку Music-Alarms - они теперь перечислены в Alarms вместе с другими тревогами! Звуковой список будет содержать тех устройства конкретные музыкальные цели - так что вы можете в основном зацировать те, которые вы создали хотя бы один раз через голосовые команды.\nДля музыкальной сигнализации customVolume на араме используется для установки нормального устройства объем 2s до тревоги, но не (!) сброс его после\nПредотвратите сбои в один раз тревоги, которые просто спрошены",
-        "pt": "Adicionar (oficial) suporte para Music-Alarms - eles estão agora listados em Alarmes junto com os outros Alarmes! A lista de som conterá alvos de música específicos do dispositivo teh - assim você pode basicamente zse aqueles que você criou pelo menos uma vez através de comandos de voz.\nPara um alarme de música o personalizadoVolume no aram é usado para definir o volume de dispositivo normal 2s antes do alarme, mas não (!) redefini-lo depois\nImpedir falhas em uma vez Alarmes que apenas desencadearam",
-        "nl": "Steun voor muziek-Alarms, ze staan nu geregistreerd onder Alarms samen met de andere Alarms. De geluidslijst bevat specifieke muzikale doelen, zodat je in feite degenen kunt zzen die je op zijn minst één keer gemaakt hebt via stembevelen.\nVoor een Muziek Alarm is het gebruikelijke apparaat op de aram gebruikt om het normale apparaat volume 2 te zetten voor het alarm, maar doe het niet na afloop\nVertaling:",
-        "fr": "Ajoutez un support (officiel) pour Music-Alarms - ils sont maintenant répertoriés sous Alarms avec les autres Alarms! La liste sonore contiendra des cibles de musique spécifiques à l'appareil teh - vous pouvez donc en gros zse celles que vous avez créées au moins une fois par des commandes vocales.\nPour une Alarme de musique, le volume personnalisé sur l'aram est utilisé pour régler le volume normal de l'appareil 2s avant l'alarme mais ne (!) pas le réinitialiser après\nPrévenir les accidents sur une seule fois Alarmes qui vient de déclencher",
-        "it": "Aggiungi (ufficiale) supporto per Music-Alarms - ora sono elencati sotto Allarmi insieme agli altri Allarmi! La lista del suono conterrà obiettivi musicali specifici del dispositivo teh - in modo da poter fondamentalmente zse quelli che hai creato almeno una volta tramite comandi vocali.\nPer un allarme musicale il volume personalizzatoVolume sull'aram viene utilizzato per impostare il normale volume del dispositivo 2s prima dell'allarme ma non (!) resettarlo dopo\nPrevenire crash in una volta Allarmi che appena innescato",
-        "es": "Añadir (oficial) soporte para Music-Alarms - ahora se enumeran bajo Alarmas junto con los otros Alarmas! La lista de sonido contendrá objetivos de música específicos del dispositivo de teh, para que puedas básicamente zse los que creaste al menos una vez a través de comandos de voz.\nPara un Alarma de Música se utiliza el Volume personalizado en el aram para configurar el volumen de dispositivo normal 2s antes de la alarma, pero no (!) reiniciarlo después\nPreviene fallos en una vez Alarmas que acaban de desencadenar",
-        "pl": "Add (oficjalna) wsparcie dla Music-Alarms - są one obecnie wymieniane pod Alarms i Alarms! Lista dźwiękowa będzie zawierać teh urządzenie specyficzne dla muzyki - tak więc możesz prowadzić zse the ones that you created at least once by voice commands.\nDla Music Alarm, zwyczajowo Volume on the aram jest używany do ustawienia normalnego objętości urządzeniem 2 przed alarmem, ale nie (!)\nPrevent rozbił się po raz pierwszy w Alarms, co spowodowało wybuch",
-        "zh-cn": "添加(官方)支持Music-Alarms,现在列在Alarms和其他Alarms! 稳妥的清单将包含茶叶装置的具体音乐目标,因此,你基本上可以把你至少通过声音指挥创造的东西交给你。.\n对于一个Music Alarm来说,在警觉之前,使用了一整套的设备,但没有(!) 重新塑造后。\nA. 防止事故"
       }
     },
     "keywords": [
