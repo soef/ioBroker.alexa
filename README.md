@@ -467,7 +467,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
-### __WORK IN PROGRESS__
+### 3.18.0 (2022-07-18)
 * IMPORTANT: Smart home device values are from now on only synchronized when enabled via #includeInIntervalQuery state. Enable only what's really needed!
 * (Apollon77) Add FireTV commands for FireTV devices
 * (Apollon77) Add CommandsAll.* commands to be sent to all devices
