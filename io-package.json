@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.18.1",
+    "version": "3.18.2",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.18.2": {
+        "en": "Enable commands again for Apps with type A2TF17PFR55MTB - will only work sometimes as it seems",
+        "de": "Befehle wieder aktivieren für Apps mit Typ A2TF17PFR55MTB - wird nur manchmal funktionieren, wie es scheint",
+        "ru": "Включите команды снова для приложений с типом A2TF17PFR55MTB - будет работать только иногда, как кажется",
+        "pt": "Habilite comandos novamente para Apps com tipo A2TF17PFR55MTB - só funcionará às vezes como parece",
+        "nl": "Weer bevoegd voor apps met type A2TF17PFR55MTB zal soms alleen werken als het lijkt alsof",
+        "fr": "Activer les commandes de nouveau pour les applications avec le type A2TF17PFR55MTB - ne fonctionnera que parfois comme il semble",
+        "it": "Attivare nuovamente comandi per Apps con tipo A2TF17PFR55MTB - funzionerà solo a volte come sembra",
+        "es": "Activar comandos de nuevo para aplicaciones con tipo A2TF17PFR55MTB - sólo funcionará a veces como parece",
+        "pl": "Wznowione polecenia z A2TF17PFR55MTB mogą działać niekiedy tylko w przypadku, gdy wydaje się to być",
+        "zh-cn": "对A2 TF17PFR55B等类型的申请,连带的指挥将只是在似乎看来工作。"
+      },
       "3.18.1": {
         "en": "Optimize Handling when push connection could not be established",
         "de": "Optimieren Sie die Handhabung, wenn keine Push-Verbindung hergestellt werden konnte",
@@ -109,18 +121,6 @@
         "es": "Otro ajuste para lecturas inteligentes de datos del dispositivo hogar\nCasos de accidente fijo reportados por Sentry",
         "pl": "Inna korekta danych dotyczących inteligentnego urządzenia domowego\nSprawy katastrofy Fix podane przez Sentry’a",
         "zh-cn": "对聪明的家用装置数据作的另一项调整\nSentry所报告的六例事故"
-      },
-      "3.17.1": {
-        "en": "Work around timing issues with speak-volume when using announcement\nCorrectly initialize volume/mute on startup also when player data are not available\nDo not overwrite speak-volume (and some other fields) with null on adapter start\nFix crash cases reported by Sentry",
-        "de": "Arbeiten Sie rund um Timing-Probleme mit Talk-Volume bei der Nutzung der Ankündigung\nKorrigieren Sie Volume/Mute beim Start auch dann, wenn die Playerdaten nicht verfügbar sind\nNicht überschreiben Sprechvolumen (und einige andere Felder) mit Null auf Adapterstart\nReparieren Crashfälle gemeldet von Sentry",
-        "ru": "Работайте по вопросам сроков с разговором при использовании объявления\nПравильно инициализировать объем/мут на стартапе также, когда данные игрока не доступны\nНе переписать разговорный (и некоторые другие поля) с null на запуске адаптера\nИсправление случаев аварии, описанных Sentry",
-        "pt": "Trabalhe em torno de problemas de cronometragem com falar-volume ao usar o anúncio\nIniciar corretamente o volume/mute na inicialização também quando os dados do jogador não estão disponíveis\nNão sobrescrever falar-volume (e alguns outros campos) com nulo no início do adaptador\nCorrigir casos de acidente relatados por Sentry",
-        "nl": "Werk rond de timing kwesties met spreek-volum wanneer je aankondiging gebruikt\nCorrect gestart volume/mut op start-up ook wanneer spelers data niet beschikbaar zijn\nSchrijf niet te veel praat-volume (en andere velden) met nul op adapter start\nVertaling:",
-        "fr": "Travailler autour des problèmes de timing avec le mot-volume lors de l'annonce\nInitialiser correctement le volume/mute sur le démarrage aussi lorsque les données du lecteur ne sont pas disponibles\nNe pas écraser parler-volume (et quelques autres champs) avec null sur le début de l'adaptateur\nTroubles de crash signalés par Sentry",
-        "it": "Lavorare intorno problemi di temporizzazione con talk-volume quando si utilizza l'annuncio\nEsattamente inizializzare volume/muto all'avvio anche quando i dati del giocatore non sono disponibili\nNon sovrascrivere la voce-volume (e alcuni altri campi) con null all'inizio dell'adattatore\nCorrezione dei casi di crash segnalati da Sentry",
-        "es": "Trabajar en torno a cuestiones de tiempo con voz-volumen al usar el anuncio\nIniciar correctamente el volumen/mute en la startup también cuando los datos del reproductor no están disponibles\nNo sobreescribir voz-volumen (y algunos otros campos) con null on adapter start\nCasos de accidente fijo reportados por Sentry",
-        "pl": "Praca nad problemami związanymi z mowa-volume przy użyciu ogłoszenia\nOczywiście wstępnie inicjuje tom/mute, kiedy dane gracza nie są dostępne\nNie piszę słów-volume (i niektóre inne pola) z pustym starterem\nSprawy katastrofy Fix podane przez Sentry’a",
-        "zh-cn": "利用公告处理时间问题\n在未提供投入数据时,投入数量/升值的细分\n不用说话(和其他一些领域)就不过分,不让读者开始。\nSentry所报告的六例事故"
       }
     },
     "keywords": [
