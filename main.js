@@ -4485,10 +4485,13 @@ function main() {
 
     alexa.on('ws-disconnect', (retries, msg) => {
         adapter.log.info(`Alexa-Push-Connection disconnected${retries ? ' - retry' : ' - fallback to poll data'}: ${msg}`);
-        connectAfterDisconnect = true;
-        if (initDone) {
+        if (initDone && wsMqttConnected) {
             scheduleHistoryUpdate(2000);
             scheduleStatesUpdate(2000);
+        }
+        if (wsMqttConnected) {
+            connectAfterDisconnect = true;
+            wsMqttConnected = false;
         }
     });
 
