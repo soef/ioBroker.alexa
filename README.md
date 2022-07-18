@@ -28,9 +28,9 @@ In the adapter namespace (e.g. alexa2.0) some channels are created
 
 | State name | meaning |
 | - | - |
-| echo-devices.* | States per Echo device, see below |
-| history.* | Infos for command history, see below |
-| smart-home-devices.* | States per smart home device and in general, see below |
+| Echo-Devices.* | States per Echo device, see below |
+| History.* | Infos for command history, see below |
+| Smart-Home-Devices.* | States per smart home device and in general, see below |
 | info.*| General information about the adapter status |
 | requestResult | Error info for TuneIn and smart-home device requests |
 
@@ -41,6 +41,14 @@ All Alexa-Contacts that can be used to send Text Messages to, including himself.
 | - | - |
 | #clearOwnMessages | Only exists in own contact and a trigger deletes all messages that are send to himself (also includes messages to himself via App or devices!) |
 | textMessage | Sends this text as message to the user. It is shown on all devices of this user with a "yellow ring" |
+
+### alexa2.0.Echo-Devices.CommandsAll.*
+Commands to be sent to all devices in the account.
+
+| State name | meaning |
+| - | - |
+| deviceStop | Stop all actions on device | Button |
+| deviceDoNotDisturb | Switch on/off "Do not Disturb" for all devices. | true/false, or number in seconds to enable (max 12h) or string in form "HH:MM" until this time it is enabled |
 
 ### alexa2.0.Echo-Devices.Serialnumber.*
 Under "echo-devices" every amazon echo device is listed with it's serial number. Not every device shows all the states. Every device has it's own states as described below:
@@ -82,7 +90,7 @@ With Commands you can trigger some actions on your Alexa-Device. If you use thes
 
 | State name | meaning | value |
 | - | - | - |
-| doNotDisturb | Switch on/off Do not Disturb for this device. Value is updated with Device Configuration updates from Cloud too| true/false |
+| doNotDisturb | Switch on/off "Do not Disturb" for this device or group. Value is updated with Device Configuration updates from Cloud too| true/false, or number in seconds to enable (max 12h) or string in form "HH:MM" until this time it is enabled |
 | flashbriefing | Briefing in 100 seconds - news etc.pp| Button |
 | goodmorning | Good morning from Alexa ...| Button |
 | funfact | Fun fact from Alexa ... (Only USA at the moment)| Button |
@@ -110,6 +118,17 @@ Normally you only can send 250 characters per speak command. By using the semico
 Alexa will then speak the text after each other with a small break. You also can use the volume together with more 255 blocks by writing #Volume;#Block1;#Block2, a.s.o A volume set here will be used over a defined speak-volume.
 
 Partially also sounds from https://developer.amazon.com/en-US/docs/alexa/custom-skills/ask-soundlibrary.html work. Specify in speak or ssml as `<audio src="soundbank://soundlibrary/animals/amzn_sfx_bear_groan_roar_01"/>`. Details and discussion please at https://forum.iobroker.net/topic/27509/ssml-audio
+
+### alexa2.0.Echo-Devices.Serialnumber.FireTVCommands.*
+If a device is a Amazon FireTV then you can use the following commands:
+
+| State name | meaning | value |
+| - | - | - |
+| turnOn | Turn FireTV and TV on | Button |
+| turnOff | Turn FireTV and TV off | Button |
+| videoPause | Pause the running video | Button |
+| videoResume | Resume the current video | Button |
+| navigateHome | Navigate to Home | Button |
 
 ### alexa2.0.Echo-Devices.Serialnumber.Info.*
 Information about the Alexa device
@@ -192,8 +211,16 @@ Here you find some device preferences.
 | ringNotificationsEnabled | Shows if the ring notifications are enabled or not and allows to edit it (true/false). Status is updated from cloud with device configuration interval |
 | notificationVolume | The notification volume set for the device. The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | number 0..100 |
 | ascendingAlarmState | The ascending alarm state set for the device. The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | Boolean |
+| auxPort-*-Direction | The direction of the AuxPort (when supported). The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | "INPUT" or "OUTPUT" |
+| connectedSpeaker | The speaker with is used for the Device output. The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | "InternalSpeaker", "Bluetooth" or "Aux" (if supported by Device! check the App) |
 | defaultAlarmNotificationSound | The default alarm sound set for the device. The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | ID from list |
 | defaultTimerNotificationSound | The default timer sound set for the device. The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | ID from list |
+| displayAdaptiveBrightnessEnabled | Is the adaptive brightness for the display of the device enabled or not. The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | true/false |
+| displayEnabled | Is the display of the device enabled or not. The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | true/false |
+| displayBrightness | Brightness of the display. The value is loaded once on adapterstart and then not synced with Cloud services, but changeable | 0..100% |
+| equalizerBass | Equalizer Bass setting. Value is updated when changed if push connection is enabled | Number |
+| equalizerMidRange | Equalizer Midrange  setting. Value is updated when changed if push connection is enabled | Number |
+| equalizerTreble | Equalizer Treble  setting. Value is updated when changed if push connection is enabled | Number |
 
 
 ### alexa2.0.Echo-Devices.Serialnumber.Reminder.*
@@ -212,7 +239,7 @@ Reminder (Erinnerungen) settings for each device, if available.
 | <id>.sound | Contains the set sound for this alarm. Can be adjusted | ID from list |
 | <id>.time | Time for alarm. Overwrite the time for existing alarm to set a new time for this alarm. In case you have an existing alarm you can change the time here by simply overwrite the time in format hh:mm:ss, seconds are not needed to set. Might have no effect when multiple-times-per-day recurring settings were used! | Time Input |
 | <id>.triggered | true if alarm is reached and triggered. Clock must be in sync with Amazon and iobroker, Use this to trigger other action as soon as the alarm time is reached | true / false |
-| New | Data to create a new Reminder as String in following format separated by ; as "timestamp;[label];[sound];[recurring]. timestamp as unix timestamp in ms, label as Text, sound as sound ID, recurring either empty for once, "DAILY" for daily or "WEEKLY=MO,TU,WE,TH,FR,SA,SU" with comma separated weekly day list. For full flexibility recurring can also be a JSONified object with all data which is passed through. Fields in example above in brackets mean that they are optional! | String |
+| New | Data to create a new Reminder as String in following format separated by ; as "timestamp;label;[sound];[recurring]. timestamp as unix timestamp in ms or text like "HH:MM", label as Text (required), sound as sound ID, recurring either empty for once, "DAILY" for daily or "WEEKLY=MO,TU,WE,TH,FR,SA,SU" with comma separated weekly day list. For full flexibility recurring can also be a JSONified object with all data which is passed through. Fields in example above in brackets mean that they are optional! | String |
 | triggered | ID of the Alarm that triggered last on this device | ID |
 
 When changing a Reminder does not work please make sure tha the Reminder timepoint is in the future - so changing e.g. "sound" on an Reminder in the past will _not_ work!
@@ -274,6 +301,7 @@ Includes all smart home devices Alexa knows from your skills. States as follows,
 | - | - | - |
 | #delete | delete smart home device from Alexa | Button
 | #enabled | Is the smart home device active? Status and control to enable/disable. State will be synced with the cloud in the same interval as the smarthome deice data. | true / false |
+| #includeInIntervalQuery | Should this device be included in the interval query ? | true / false |
 | #query | query data for this device, only visible when the smart home device/skill supports to retrieve information | Button |
 | active | shown for scenes when they can be activated/deactivated | true / false |
 | powerState | Switch power on / off | changeable, true / false |
@@ -440,7 +468,26 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ## Changelog
 ### __WORK IN PROGRESS__
-* (Apollon77) Add and query several more smart home device states (incl. the Echo own Temperature-Sensor if available)
+* IMPORTANT: Smart home device values are from now on only synchronized when enabled via #includeInIntervalQuery state. Enable only what's really needed!
+* (Apollon77) Add FireTV commands for FireTV devices
+* (Apollon77) Add CommandsAll.* commands to be sent to all devices
+* (Apollon77) Add several more Preferences (Equalizer, Display, AUX, Speaker)
+* (Apollon77) More optimizations and fixes
+
+### 3.18.0 Full Changelog
+* IMPORTANT: Smart home device values are from now on only synchronized when enabled via #includeInIntervalQuery state. Enable only what's really needed!
+* (Apollon77) Allow to query several more smart home device states (incl. the Echo own Temperature-Sensor if available) and more optimizations
+* (Apollon77) Optimize querying smart home device states to only request relevant properties
+* (Apollon77) Exclude some value types again from requesting from Amazon because they make no sense and will never contain meaningful data
+* (Apollon77) Add FireTV commands for FireTV devices
+* (Apollon77) Add CommandsAll.deviceStop and CommandsAll.deviceDoNotDisturb commands to be sent to all devices
+* (Apollon77) Add Equalizer preferences (if supported by devices)
+* (Apollon77) Add Speaker and AUX preferences (if supported by devices)
+* (Apollon77) Add Display (enabled, brightness, adaptive brightness) preferences (if supported by devices)
+* (Apollon77) Enhance doNotDisturb state to also allow specifying a enable duration or end timepoint
+* (Apollon77) Add a fallback to update music player when a new history record mentions music as target for the spoken words. Could help as fallback when push infos are not coming in sometimes with Sonos
+* (Apollon77) Delay initialization of push connection to when basic structures are initialized
+* (Apollon77) Add some more devices
 
 ### 3.17.5 (2022-07-14)
 * (Apollon77) Minimum smart home device query interval is now 5 minutes and not 1 minute anymore to remove some requests for now
@@ -484,6 +531,20 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ### 3.15.0 (2022-07-09)
 * (Apollon77) IMPORTANT: Format to specify multiple Details on "New" for Alarms and Reminders changed, see documentation!
+* (Apollon77) Add Alarm/Reminder triggered state per device which will contain the ID of the alarm that got triggered when it is triggered
+* (Apollon77) Add several more fields for Alarms and Reminders to show better the details of the alarm
+* (Apollon77) Allow to cancel Reminders and Alarms as in the Alexa App
+* (Apollon77) Allow to also edit Alarm/Reminder Dates additionally to the times
+* (Apollon77) Allow to set a custom Volume for Reminders and Alarms - it will be set 2s before the expected trigger and restored afterwards
+* (Apollon77) Calculate the "nextTriggerDate" as Timestamp of next expected triggering
+* (Apollon77) Add a JSON-Array with all running timers and the "next id" as state
+* (Apollon77) Allow to stop a timer by ID
+* (Apollon77) Add the days-list of Alarms when configured for recurrency
+* (Apollon77) Add new Commands skill and skillYours to start Skills
+* (Apollon77) Add Notification volume, Ascending Alarm setting and default notification sounds as preferences
+* (Apollon77) Slow down the initialization of all data a bit, so startup could take longer
+
+### 3.14.0 (2022-07-06)
 * (Apollon77) Allow to define if Lists and Smart home devices are synced by the adapter with the Amazon Cloud at all
 * (Apollon77) Enhance Smart Home Device support by adding various controllers and states. If in your Alexa App something is configurable which is not in ioBroker please send a debug log!
 * (Apollon77) Re-Introduce the ability to poll smart home device states in intervals, but only devices are queried that report their status proactively to Amazon-Cloud to prevent Skill developer costs! ioBroker (and OpenHab) devices are NOT queried! The interval can be configured but must not be lower than 60s! Querying is disabled by default.

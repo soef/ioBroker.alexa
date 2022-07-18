@@ -1,328 +1,388 @@
 {
-  "common": {
-    "name": "alexa2",
-    "version": "3.17.5",
-    "title": "Alexa2 (Amazon Echo)",
-    "titleLang": {
-      "en": "Alexa2 (Amazon Echo)",
-      "de": "Alexa2 (Amazon Echo)",
-      "ru": "Alexa2 (Amazon Echo)",
-      "pt": "Alexa2 (Amazon Echo)",
-      "nl": "Alexa2 (Amazon Echo)",
-      "fr": "Alexa2 (Amazon Echo)",
-      "it": "Alexa2 (Amazon Echo)",
-      "es": "Alexa2 (eco de Amazon)",
-      "pl": "Alexa2 (Amazon Echo)",
-      "zh-cn": "Alexa2（Amazon回声）"
-    },
-    "desc": {
-      "en": "Remote control for Alexa (Amazon Echo)",
-      "de": "Steuerung von Alexa (Amazon Echo)",
-      "ru": "Управление Alexa (Amazon Echo)",
-      "pt": "Controle remoto para Alexa (Amazon Echo)",
-      "nl": "Afstandsbediening voor Alexa (Amazon Echo)",
-      "fr": "Télécommande pour Alexa (Amazon Echo)",
-      "it": "Telecomando per Alexa (Amazon Echo)",
-      "es": "Control remoto para Alexa (Amazon Echo)",
-      "pl": "Pilot do Alexa (Amazon Echo)",
-      "zh-cn": "Alexa（Amazon Echo）的遥控器"
-    },
-    "platform": "Javascript/Node.js",
-    "news": {
-      "3.17.5": {
-        "en": "Minimum smart home device query interval is now 5 minutes and not 1 minute anymore to remove some requests for now",
-        "de": "Mindest-Smart-Home-Gerät-Abfrage-Intervall ist jetzt 5 Minuten und nicht 1 Minute mehr, um einige Anfragen für jetzt zu entfernen",
-        "ru": "Минимальный домашний интервал запросов теперь 5 минут и больше не 1 минуты, чтобы удалить некоторые запросы сейчас",
-        "pt": "Intervalo de consulta de dispositivo doméstico inteligente mínimo é agora 5 minutos e não 1 minuto mais para remover alguns pedidos para agora",
-        "nl": "Minimum smart home apparaat query interval is nu vijf minuten en geen minuut meer om verzoeken te verwijderen voor nu",
-        "fr": "L'intervalle minimal de requête de l'appareil à domicile intelligent est maintenant 5 minutes et pas 1 minute plus pour supprimer certaines demandes pour l'instant",
-        "it": "Intervallo di query del dispositivo domestico minimo intelligente è ora 5 minuti e non 1 minuto più per rimuovere alcune richieste per ora",
-        "es": "El intervalo mínimo de consulta de dispositivo inteligente es ahora 5 minutos y no 1 minuto más para eliminar algunas solicitudes por ahora",
-        "pl": "Minimum inteligentne przedziały na urządzenie domowe to obecnie 5 minut i nie 1 minuta, aby usunąć niektóre żądania",
-        "zh-cn": "最低智能家用具的间隔时间现在为5分钟,而不是1分钟多,以取消目前的一些要求。"
-      },
-      "3.17.4": {
-        "en": "Make sure disabling query intervals really work (disabling smart home device and state and configuration was not possible)",
-        "de": "Stellen Sie sicher, dass die Abfrageintervalle wirklich funktionieren (das Abschalten von Smart Home-Gerät und Zustand und Konfiguration war nicht möglich)",
-        "ru": "Убедитесь, что отключение интервалов запросов действительно работает (отключение умного дома устройства и государства и конфигурации не было возможным)",
-        "pt": "Certifique-se de desativar intervalos de consulta realmente funcionar (desativar dispositivo home inteligente e estado e configuração não foi possível)",
-        "nl": "Zorg ervoor dat nieuwsgierige intervals echt werken",
-        "fr": "Assurez-vous de désactiver les intervalles de requête vraiment fonctionner (disabling smart home device and state and configuration was not possible)",
-        "it": "Assicurarsi di disabilitare gli intervalli di query realmente funziona (disabling smart home device e stato e configurazione non è stato possibile)",
-        "es": "Asegúrate de desactivar los intervalos de consulta realmente funcionan (disabling smart home device and state and settings was not possible)",
-        "pl": "Umożliwia to, że odstępy zapytania naprawdę działają (rozpoznanie inteligentnego urządzenia domowego i stanu i konfiguracji nie były możliwe)",
-        "zh-cn": "保证不带任何时间真正工作(不可能有智的家用装置和州组合)。"
-      },
-      "3.17.3": {
-        "en": "Prevent datatype warnings in log",
-        "de": "Datentyp-Warnungen im Log verhindern",
-        "ru": "Предотвратить предупреждения типа данных в логе",
-        "pt": "Impedir avisos do tipo de dados no log",
-        "nl": "Vertaling:",
-        "fr": "Prévenir les avertissements de type de données dans le journal",
-        "it": "Evitare avvisi di tipo di dati nel registro",
-        "es": "Prevenir advertencias de tipo de datos en el registro",
-        "pl": "Prevent datatype warning",
-        "zh-cn": "逻辑中的预防性数据型警告"
-      },
-      "3.17.2": {
-        "en": "Another adjustment for smart home device data readings\nFix crash cases reported by Sentry",
-        "de": "Eine weitere Anpassung für Smart-Home-Gerät-Datenlesungen\nReparieren Crashfälle gemeldet von Sentry",
-        "ru": "Другая настройка для чтения данных умных домашних устройств\nИсправление случаев аварии, описанных Sentry",
-        "pt": "Outro ajuste para leituras de dados de dispositivos domésticos inteligentes\nCorrigir casos de acidente relatados por Sentry",
-        "nl": "Weer een aanpassing voor smart home apparatuur data\nVertaling:",
-        "fr": "Un autre ajustement pour les lectures de données de périphérique à domicile intelligent\nTroubles de crash signalés par Sentry",
-        "it": "Un'altra regolazione per le letture dei dati dei dispositivi smart home\nCorrezione dei casi di crash segnalati da Sentry",
-        "es": "Otro ajuste para lecturas inteligentes de datos del dispositivo hogar\nCasos de accidente fijo reportados por Sentry",
-        "pl": "Inna korekta danych dotyczących inteligentnego urządzenia domowego\nSprawy katastrofy Fix podane przez Sentry’a",
-        "zh-cn": "对聪明的家用装置数据作的另一项调整\nSentry所报告的六例事故"
-      },
-      "3.17.1": {
-        "en": "Work around timing issues with speak-volume when using announcement\nCorrectly initialize volume/mute on startup also when player data are not available\nDo not overwrite speak-volume (and some other fields) with null on adapter start\nFix crash cases reported by Sentry",
-        "de": "Arbeiten Sie rund um Timing-Probleme mit Talk-Volume bei der Nutzung der Ankündigung\nKorrigieren Sie Volume/Mute beim Start auch dann, wenn die Playerdaten nicht verfügbar sind\nNicht überschreiben Sprechvolumen (und einige andere Felder) mit Null auf Adapterstart\nReparieren Crashfälle gemeldet von Sentry",
-        "ru": "Работайте по вопросам сроков с разговором при использовании объявления\nПравильно инициализировать объем/мут на стартапе также, когда данные игрока не доступны\nНе переписать разговорный (и некоторые другие поля) с null на запуске адаптера\nИсправление случаев аварии, описанных Sentry",
-        "pt": "Trabalhe em torno de problemas de cronometragem com falar-volume ao usar o anúncio\nIniciar corretamente o volume/mute na inicialização também quando os dados do jogador não estão disponíveis\nNão sobrescrever falar-volume (e alguns outros campos) com nulo no início do adaptador\nCorrigir casos de acidente relatados por Sentry",
-        "nl": "Werk rond de timing kwesties met spreek-volum wanneer je aankondiging gebruikt\nCorrect gestart volume/mut op start-up ook wanneer spelers data niet beschikbaar zijn\nSchrijf niet te veel praat-volume (en andere velden) met nul op adapter start\nVertaling:",
-        "fr": "Travailler autour des problèmes de timing avec le mot-volume lors de l'annonce\nInitialiser correctement le volume/mute sur le démarrage aussi lorsque les données du lecteur ne sont pas disponibles\nNe pas écraser parler-volume (et quelques autres champs) avec null sur le début de l'adaptateur\nTroubles de crash signalés par Sentry",
-        "it": "Lavorare intorno problemi di temporizzazione con talk-volume quando si utilizza l'annuncio\nEsattamente inizializzare volume/muto all'avvio anche quando i dati del giocatore non sono disponibili\nNon sovrascrivere la voce-volume (e alcuni altri campi) con null all'inizio dell'adattatore\nCorrezione dei casi di crash segnalati da Sentry",
-        "es": "Trabajar en torno a cuestiones de tiempo con voz-volumen al usar el anuncio\nIniciar correctamente el volumen/mute en la startup también cuando los datos del reproductor no están disponibles\nNo sobreescribir voz-volumen (y algunos otros campos) con null on adapter start\nCasos de accidente fijo reportados por Sentry",
-        "pl": "Praca nad problemami związanymi z mowa-volume przy użyciu ogłoszenia\nOczywiście wstępnie inicjuje tom/mute, kiedy dane gracza nie są dostępne\nNie piszę słów-volume (i niektóre inne pola) z pustym starterem\nSprawy katastrofy Fix podane przez Sentry’a",
-        "zh-cn": "利用公告处理时间问题\n在未提供投入数据时,投入数量/升值的细分\n不用说话(和其他一些领域)就不过分,不让读者开始。\nSentry所报告的六例事故"
-      },
-      "3.17.0": {
-        "en": "Add support to play Audible books in Music-Providers\nOptimize deletion of alarms and reminders\nOptimize requesting smart home device data",
-        "de": "Unterstützung bei Audible-Büchern in Music-Providers hinzufügen\nOptimieren Sie das Löschen von Alarmen und Erinnerungen\nOptimieren Sie anfragende Smart-Home-Gerät-Daten",
-        "ru": "Добавить поддержку, чтобы играть в книги Audible в Music-Providers\nОптимизация удаления тревог и напоминаний\nОптимизация запроса данных умного дома",
-        "pt": "Adicionar suporte para jogar Audible books in Music-Providers\nOtimizar a exclusão de alarmes e lembretes\nOtimizar solicitando dados inteligentes do dispositivo doméstico",
-        "nl": "Voeg steun aan het spelen van Audible boeken in Music-Providers\nOptimiliseer deletie van alarm en herinneringen\nOptimistisch verzoek om slimme thuis apparatuur",
-        "fr": "Ajouter le support pour jouer Livres d'Audible dans Music-Providers\nOptimiser la suppression des alarmes et des rappels\nOptimiser la demande de données sur les appareils à domicile intelligents",
-        "it": "Aggiungi supporto per giocare Libri Audible in Music-Providers\nOttimizzare la cancellazione di allarmi e promemoria\nOttimizzare la richiesta di dati smart home device",
-        "es": "Añadir soporte para reproducir libros Audible en Music-Providers\nOptimize deletion of alarms and reminders\nOptimize requesting smart home device data",
-        "pl": "Addd supportuje Audible Books w Music-Providers\nOptymizacja alarmów i przypomnień\nOptymizowanie żądania inteligentnego urządzenia domowego",
-        "zh-cn": "增加在Music-Providers开设的书店支助\n消除震惊和提醒\nB. 要求有智的家用装置数据"
-      },
-      "3.16.1": {
-        "en": "Fix deletion and cancellation of Alarms and Reminders",
-        "de": "Löschen und Löschen von Alarmen und Erinnerungen",
-        "ru": "Исправление удаления и отмены тревог и напоминаний",
-        "pt": "Corrigir exclusão e cancelamento de alarmes e lembretes",
-        "nl": "Verwijdering en annulering van Alarm en Reminderingen",
-        "fr": "Suppression et annulation des alarmes et rappels",
-        "it": "Fissare la cancellazione e la cancellazione di Allarmi e Remine",
-        "es": "Eliminación y cancelación de alarmas y recordatorios",
-        "pl": "Delecja i odwołanie Alarms and Reminders",
-        "zh-cn": "Fix 删除和取消Alarms和 Reminders"
-      }
-    },
-    "keywords": [
-      "alexa",
-      "amazon",
-      "amazon echo",
-      "echo dot",
-      "echo show"
-    ],
-    "authors": [
-      "Apollon77 <iobroker@fischer-ka.de>"
-    ],
-    "mode": "daemon",
-    "icon": "alexa.png",
-    "materialize": true,
-    "extIcon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
-    "readme": "https://github.com/Apollon77/ioBroker.alexa2/blob/master/README.md",
-    "loglevel": "info",
-    "type": "iot-systems",
-    "enabled": true,
-    "messagebox": true,
-    "license": "MIT",
-    "localLink": "https://alexa.amazon.com",
-    "connectionType": "cloud",
-    "dataSource": "push",
-    "tier": 2,
-    "compact": true,
-    "dependencies": [
-      {
-        "js-controller": ">=2.0.0"
-      }
-    ],
-    "plugins": {
-      "sentry": {
-        "dsn": "https://e9ac55f23fe149e78b1eab9ed4bf26ad@sentry.iobroker.net/8",
-        "pathWhitelist": [
-          "@apollon",
-          "alexa-cookie2",
-          "alexa-remote2"
+    "common": {
+        "name": "alexa2",
+        "version": "3.17.5",
+        "blockedVersions": [
+            "~3.14.0",
+            "~3.15.0",
+            "~3.16.0",
+            "3.17.0",
+            "3.17.1",
+            "3.17.2",
+            "3.17.3"
         ],
-        "errorBlacklist": [
-          "SyntaxError"
-        ]
-      }
-    },
-    "messages": [
-      {
-        "condition": {
-          "operand": "and",
-          "rules": [
-            "oldVersion<3.13.0",
-            "newVersion>=3.13.0"
-          ]
+        "title": "Alexa2 (Amazon Echo)",
+        "titleLang": {
+            "en": "Alexa2 (Amazon Echo)",
+            "de": "Alexa2 (Amazon Echo)",
+            "ru": "Alexa2 (Amazon Echo)",
+            "pt": "Alexa2 (Amazon Echo)",
+            "nl": "Alexa2 (Amazon Echo)",
+            "fr": "Alexa2 (Amazon Echo)",
+            "it": "Alexa2 (Amazon Echo)",
+            "es": "Alexa2 (eco de Amazon)",
+            "pl": "Alexa2 (Amazon Echo)",
+            "zh-cn": "Alexa2（Amazon回声）"
         },
-        "title": {
-          "en": "Important notice!",
-          "de": "Wichtiger Hinweis!",
-          "ru": "Важное замечание!",
-          "pt": "Notícia importante!",
-          "nl": "Belangrijke mededeling!",
-          "fr": "Avis important!",
-          "it": "Avviso IMPORTANTE!",
-          "es": "Noticia importante!",
-          "pl": "Ważna uwaga!",
-          "zh-cn": "重要通知!"
+        "desc": {
+            "en": "Remote control for Alexa (Amazon Echo)",
+            "de": "Steuerung von Alexa (Amazon Echo)",
+            "ru": "Управление Alexa (Amazon Echo)",
+            "pt": "Controle remoto para Alexa (Amazon Echo)",
+            "nl": "Afstandsbediening voor Alexa (Amazon Echo)",
+            "fr": "Télécommande pour Alexa (Amazon Echo)",
+            "it": "Telecomando per Alexa (Amazon Echo)",
+            "es": "Control remoto para Alexa (Amazon Echo)",
+            "pl": "Pilot do Alexa (Amazon Echo)",
+            "zh-cn": "Alexa（Amazon Echo）的遥控器"
         },
-        "text": {
-          "en": "The new version 1.2.x will potentially change the Names of List Objects when special characters (including \".\") are used! Please delete the old objects manually if needed.",
-          "de": "Die neue Version 1.2.x wird die Namen der Listenobjekte möglicherweise ändern, wenn Sonderzeichen (einschließlich \".\") verwendet werden! Bitte löschen Sie die alten Objekte bei Bedarf manuell.",
-          "ru": "Новая версия 1.2.x потенциально изменит имена объектов списка, когда используются специальные символы (включая \".\")! Пожалуйста, удалите старые объекты вручную, если это необходимо.",
-          "pt": "A nova versão 1.2.x irá potencialmente alterar os nomes dos objetos de lista quando caracteres especiais (incluindo \".\") são usados! Por favor, exclua os objetos antigos manualmente, se necessário.",
-          "nl": "De nieuwe versie 1.2.x zal mogelijk de Namen van List Objects veranderen als speciale personages (includeren) worden gebruikt. Verwijder de oude objecten handmatig als het nodig is.",
-          "fr": "La nouvelle version 1.2.x modifiera potentiellement les Noms des objets de la liste lorsque des caractères spéciaux (y compris \"). Veuillez supprimer les anciens objets manuellement si nécessaire.",
-          "it": "La nuova versione 1.2.x cambierà potenzialmente i nomi degli oggetti di elenco quando vengono utilizzati caratteri speciali (inclusi \".\")! Si prega di eliminare i vecchi oggetti manualmente se necessario.",
-          "es": "La nueva versión 1.2.x potencialmente cambiará los Nombres de Objetos de Lista cuando se utilizan caracteres especiales (incluyendo \"). Por favor, borre los viejos objetos manualmente si es necesario.",
-          "pl": "Nowa wersja 1.2.x będzie potencjalnie zmieniać nazwę nazw obiektów listowych, kiedy używa się specjalnych postaci (w tym „.”). Okazuje się, że stare obiekty ręcznie będą potrzebne.",
-          "zh-cn": "新版本1.2.x将有可能改变名单所列物品的名称(包括“......”)。 请在必要时删除旧物体。."
+        "platform": "Javascript/Node.js",
+        "news": {
+            "3.17.5": {
+                "en": "Minimum smart home device query interval is now 5 minutes and not 1 minute anymore to remove some requests for now",
+                "de": "Mindest-Smart-Home-Gerät-Abfrage-Intervall ist jetzt 5 Minuten und nicht 1 Minute mehr, um einige Anfragen für jetzt zu entfernen",
+                "ru": "Минимальный домашний интервал запросов теперь 5 минут и больше не 1 минуты, чтобы удалить некоторые запросы сейчас",
+                "pt": "Intervalo de consulta de dispositivo doméstico inteligente mínimo é agora 5 minutos e não 1 minuto mais para remover alguns pedidos para agora",
+                "nl": "Minimum smart home apparaat query interval is nu vijf minuten en geen minuut meer om verzoeken te verwijderen voor nu",
+                "fr": "L'intervalle minimal de requête de l'appareil à domicile intelligent est maintenant 5 minutes et pas 1 minute plus pour supprimer certaines demandes pour l'instant",
+                "it": "Intervallo di query del dispositivo domestico minimo intelligente è ora 5 minuti e non 1 minuto più per rimuovere alcune richieste per ora",
+                "es": "El intervalo mínimo de consulta de dispositivo inteligente es ahora 5 minutos y no 1 minuto más para eliminar algunas solicitudes por ahora",
+                "pl": "Minimum inteligentne przedziały na urządzenie domowe to obecnie 5 minut i nie 1 minuta, aby usunąć niektóre żądania",
+                "zh-cn": "最低智能家用具的间隔时间现在为5分钟,而不是1分钟多,以取消目前的一些要求。"
+            },
+            "3.17.4": {
+                "en": "Make sure disabling query intervals really work (disabling smart home device and state and configuration was not possible)",
+                "de": "Stellen Sie sicher, dass die Abfrageintervalle wirklich funktionieren (das Abschalten von Smart Home-Gerät und Zustand und Konfiguration war nicht möglich)",
+                "ru": "Убедитесь, что отключение интервалов запросов действительно работает (отключение умного дома устройства и государства и конфигурации не было возможным)",
+                "pt": "Certifique-se de desativar intervalos de consulta realmente funcionar (desativar dispositivo home inteligente e estado e configuração não foi possível)",
+                "nl": "Zorg ervoor dat nieuwsgierige intervals echt werken",
+                "fr": "Assurez-vous de désactiver les intervalles de requête vraiment fonctionner (disabling smart home device and state and configuration was not possible)",
+                "it": "Assicurarsi di disabilitare gli intervalli di query realmente funziona (disabling smart home device e stato e configurazione non è stato possibile)",
+                "es": "Asegúrate de desactivar los intervalos de consulta realmente funcionan (disabling smart home device and state and settings was not possible)",
+                "pl": "Umożliwia to, że odstępy zapytania naprawdę działają (rozpoznanie inteligentnego urządzenia domowego i stanu i konfiguracji nie były możliwe)",
+                "zh-cn": "保证不带任何时间真正工作(不可能有智的家用装置和州组合)。"
+            },
+            "3.17.3": {
+                "en": "Prevent datatype warnings in log",
+                "de": "Datentyp-Warnungen im Log verhindern",
+                "ru": "Предотвратить предупреждения типа данных в логе",
+                "pt": "Impedir avisos do tipo de dados no log",
+                "nl": "Vertaling:",
+                "fr": "Prévenir les avertissements de type de données dans le journal",
+                "it": "Evitare avvisi di tipo di dati nel registro",
+                "es": "Prevenir advertencias de tipo de datos en el registro",
+                "pl": "Prevent datatype warning",
+                "zh-cn": "逻辑中的预防性数据型警告"
+            },
+            "3.17.2": {
+                "en": "Another adjustment for smart home device data readings\nFix crash cases reported by Sentry",
+                "de": "Eine weitere Anpassung für Smart-Home-Gerät-Datenlesungen\nReparieren Crashfälle gemeldet von Sentry",
+                "ru": "Другая настройка для чтения данных умных домашних устройств\nИсправление случаев аварии, описанных Sentry",
+                "pt": "Outro ajuste para leituras de dados de dispositivos domésticos inteligentes\nCorrigir casos de acidente relatados por Sentry",
+                "nl": "Weer een aanpassing voor smart home apparatuur data\nVertaling:",
+                "fr": "Un autre ajustement pour les lectures de données de périphérique à domicile intelligent\nTroubles de crash signalés par Sentry",
+                "it": "Un'altra regolazione per le letture dei dati dei dispositivi smart home\nCorrezione dei casi di crash segnalati da Sentry",
+                "es": "Otro ajuste para lecturas inteligentes de datos del dispositivo hogar\nCasos de accidente fijo reportados por Sentry",
+                "pl": "Inna korekta danych dotyczących inteligentnego urządzenia domowego\nSprawy katastrofy Fix podane przez Sentry’a",
+                "zh-cn": "对聪明的家用装置数据作的另一项调整\nSentry所报告的六例事故"
+            },
+            "3.17.1": {
+                "en": "Work around timing issues with speak-volume when using announcement\nCorrectly initialize volume/mute on startup also when player data are not available\nDo not overwrite speak-volume (and some other fields) with null on adapter start\nFix crash cases reported by Sentry",
+                "de": "Arbeiten Sie rund um Timing-Probleme mit Talk-Volume bei der Nutzung der Ankündigung\nKorrigieren Sie Volume/Mute beim Start auch dann, wenn die Playerdaten nicht verfügbar sind\nNicht überschreiben Sprechvolumen (und einige andere Felder) mit Null auf Adapterstart\nReparieren Crashfälle gemeldet von Sentry",
+                "ru": "Работайте по вопросам сроков с разговором при использовании объявления\nПравильно инициализировать объем/мут на стартапе также, когда данные игрока не доступны\nНе переписать разговорный (и некоторые другие поля) с null на запуске адаптера\nИсправление случаев аварии, описанных Sentry",
+                "pt": "Trabalhe em torno de problemas de cronometragem com falar-volume ao usar o anúncio\nIniciar corretamente o volume/mute na inicialização também quando os dados do jogador não estão disponíveis\nNão sobrescrever falar-volume (e alguns outros campos) com nulo no início do adaptador\nCorrigir casos de acidente relatados por Sentry",
+                "nl": "Werk rond de timing kwesties met spreek-volum wanneer je aankondiging gebruikt\nCorrect gestart volume/mut op start-up ook wanneer spelers data niet beschikbaar zijn\nSchrijf niet te veel praat-volume (en andere velden) met nul op adapter start\nVertaling:",
+                "fr": "Travailler autour des problèmes de timing avec le mot-volume lors de l'annonce\nInitialiser correctement le volume/mute sur le démarrage aussi lorsque les données du lecteur ne sont pas disponibles\nNe pas écraser parler-volume (et quelques autres champs) avec null sur le début de l'adaptateur\nTroubles de crash signalés par Sentry",
+                "it": "Lavorare intorno problemi di temporizzazione con talk-volume quando si utilizza l'annuncio\nEsattamente inizializzare volume/muto all'avvio anche quando i dati del giocatore non sono disponibili\nNon sovrascrivere la voce-volume (e alcuni altri campi) con null all'inizio dell'adattatore\nCorrezione dei casi di crash segnalati da Sentry",
+                "es": "Trabajar en torno a cuestiones de tiempo con voz-volumen al usar el anuncio\nIniciar correctamente el volumen/mute en la startup también cuando los datos del reproductor no están disponibles\nNo sobreescribir voz-volumen (y algunos otros campos) con null on adapter start\nCasos de accidente fijo reportados por Sentry",
+                "pl": "Praca nad problemami związanymi z mowa-volume przy użyciu ogłoszenia\nOczywiście wstępnie inicjuje tom/mute, kiedy dane gracza nie są dostępne\nNie piszę słów-volume (i niektóre inne pola) z pustym starterem\nSprawy katastrofy Fix podane przez Sentry’a",
+                "zh-cn": "利用公告处理时间问题\n在未提供投入数据时,投入数量/升值的细分\n不用说话(和其他一些领域)就不过分,不让读者开始。\nSentry所报告的六例事故"
+            },
+            "3.17.0": {
+                "en": "Add support to play Audible books in Music-Providers\nOptimize deletion of alarms and reminders\nOptimize requesting smart home device data",
+                "de": "Unterstützung bei Audible-Büchern in Music-Providers hinzufügen\nOptimieren Sie das Löschen von Alarmen und Erinnerungen\nOptimieren Sie anfragende Smart-Home-Gerät-Daten",
+                "ru": "Добавить поддержку, чтобы играть в книги Audible в Music-Providers\nОптимизация удаления тревог и напоминаний\nОптимизация запроса данных умного дома",
+                "pt": "Adicionar suporte para jogar Audible books in Music-Providers\nOtimizar a exclusão de alarmes e lembretes\nOtimizar solicitando dados inteligentes do dispositivo doméstico",
+                "nl": "Voeg steun aan het spelen van Audible boeken in Music-Providers\nOptimiliseer deletie van alarm en herinneringen\nOptimistisch verzoek om slimme thuis apparatuur",
+                "fr": "Ajouter le support pour jouer Livres d'Audible dans Music-Providers\nOptimiser la suppression des alarmes et des rappels\nOptimiser la demande de données sur les appareils à domicile intelligents",
+                "it": "Aggiungi supporto per giocare Libri Audible in Music-Providers\nOttimizzare la cancellazione di allarmi e promemoria\nOttimizzare la richiesta di dati smart home device",
+                "es": "Añadir soporte para reproducir libros Audible en Music-Providers\nOptimize deletion of alarms and reminders\nOptimize requesting smart home device data",
+                "pl": "Addd supportuje Audible Books w Music-Providers\nOptymizacja alarmów i przypomnień\nOptymizowanie żądania inteligentnego urządzenia domowego",
+                "zh-cn": "增加在Music-Providers开设的书店支助\n消除震惊和提醒\nB. 要求有智的家用装置数据"
+            },
+            "3.16.1": {
+                "en": "Fix deletion and cancellation of Alarms and Reminders",
+                "de": "Löschen und Löschen von Alarmen und Erinnerungen",
+                "ru": "Исправление удаления и отмены тревог и напоминаний",
+                "pt": "Corrigir exclusão e cancelamento de alarmes e lembretes",
+                "nl": "Verwijdering en annulering van Alarm en Reminderingen",
+                "fr": "Suppression et annulation des alarmes et rappels",
+                "it": "Fissare la cancellazione e la cancellazione di Allarmi e Remine",
+                "es": "Eliminación y cancelación de alarmas y recordatorios",
+                "pl": "Delecja i odwołanie Alarms and Reminders",
+                "zh-cn": "Fix 删除和取消Alarms和 Reminders"
+            }
         },
-        "level": "warn",
-        "buttons": [
-          "agree",
-          "cancel"
-        ]
-      },
-      {
-        "condition": {
-          "operand": "and",
-          "rules": [
-            "oldVersion<3.15.0",
-            "newVersion>=3.15.0"
-          ]
-        },
-        "title": {
-          "en": "Format to create Reminder/Alarms changed!",
-          "de": "Format zum Erstellen von Reminder/Alarms geändert!",
-          "ru": "Формат для создания Reminder/Alarms изменился!",
-          "pt": "Formato para criar lembrete / alarmes alterado!",
-          "nl": "Format om Reminder/Alarms te creëren!",
-          "fr": "Format pour créer Reminder/Alarms changé!",
-          "it": "Formato per creare Reminder/Allarma cambiate!",
-          "es": "Formato para crear Reminder/Alarms cambiado!",
-          "pl": "W celu stworzenia zmian Reminder/Alarms!",
-          "zh-cn": "创建Reminder/Alarms的格局改变了!"
-        },
-        "text": {
-          "en": "The format used in the \"New\" states for Alarms or Reminders has changed and allows now to provide more Details. Please see the Readme for the details!",
-          "de": "Das Format, das in den neuen Zuständen für Alarme oder Reminders verwendet wird, hat sich geändert und ermöglicht nun mehr Details. Die Readme enthält alle Details!",
-          "ru": "Изменен формат, используемый в новых состояниях для тревоги или напоминаний и позволяет теперь предоставить более подробную информацию. Пожалуйста, посмотрите Readme для деталей!",
-          "pt": "O formato usado nos Novos estados para Alarmes ou Lembretes mudou e agora permite fornecer mais detalhes. Por favor, veja o Readme para os detalhes!",
-          "nl": "De formaat gebruikt in de Nieuwe staten voor Alarms of Reminders is veranderd en staat nu toe om meer Details te leveren. Zie de Readme voor de details!",
-          "fr": "Le format utilisé dans les nouveaux états pour les armes ou les rappels a changé et permet maintenant de fournir plus de détails. Veuillez voir le Readme pour les détails!",
-          "it": "Il formato utilizzato nei nuovi stati per gli allarmi o i ripetitori è cambiato e consente ora di fornire ulteriori dettagli. Si prega di vedere il Readme per i dettagli!",
-          "es": "El formato utilizado en los Nuevos estados para Alarmas o Recordatorios ha cambiado y permite ahora proporcionar más detalles. Por favor, vea el Readme para los detalles!",
-          "pl": "Format używany w nowych stanach dla Alarmsa lub Remindersa został zmieniony i pozwala obecnie na dostarczenie większej liczby dekatów. Wyglądaj na szczegóły!",
-          "zh-cn": "新州用于申报或递解剂的格式已经改变,现在可以提供更多的细节。 请见详细!"
-        },
-        "level": "warn",
-        "buttons": [
-          "agree",
-          "cancel"
+        "keywords": [
+            "alexa",
+            "amazon",
+            "amazon echo",
+            "echo dot",
+            "echo show"
         ],
-        "link": "https://github.com/Apollon77/ioBroker.alexa2#alexa20echo-devicesserialnumberalarm",
-        "linkText": {
-          "en": "Readme",
-          "de": "Reader",
-          "ru": "Читать",
-          "pt": "Readme",
-          "nl": "Lees",
-          "fr": "Readme",
-          "it": "Readme",
-          "es": "Readme",
-          "pl": "Ready",
-          "zh-cn": "阅读摘要"
+        "authors": [
+            "Apollon77 <iobroker@fischer-ka.de>"
+        ],
+        "mode": "daemon",
+        "icon": "alexa.png",
+        "materialize": true,
+        "extIcon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
+        "readme": "https://github.com/Apollon77/ioBroker.alexa2/blob/master/README.md",
+        "loglevel": "info",
+        "type": "iot-systems",
+        "enabled": true,
+        "messagebox": true,
+        "license": "MIT",
+        "localLink": "https://alexa.amazon.com",
+        "connectionType": "cloud",
+        "dataSource": "push",
+        "tier": 2,
+        "compact": true,
+        "dependencies": [
+            {
+                "js-controller": ">=2.0.0"
+            }
+        ],
+        "plugins": {
+            "sentry": {
+                "dsn": "https://e9ac55f23fe149e78b1eab9ed4bf26ad@sentry.iobroker.net/8",
+                "pathWhitelist": [
+                    "@apollon",
+                    "alexa-cookie2",
+                    "alexa-remote2"
+                ],
+                "errorBlacklist": [
+                    "SyntaxError"
+                ]
+            }
+        },
+        "messages": [
+            {
+                "condition": {
+                    "operand": "and",
+                    "rules": [
+                        "oldVersion<3.13.0",
+                        "newVersion>=3.13.0"
+                    ]
+                },
+                "title": {
+                    "en": "Important notice!",
+                    "de": "Wichtiger Hinweis!",
+                    "ru": "Важное замечание!",
+                    "pt": "Notícia importante!",
+                    "nl": "Belangrijke mededeling!",
+                    "fr": "Avis important!",
+                    "it": "Avviso IMPORTANTE!",
+                    "es": "Noticia importante!",
+                    "pl": "Ważna uwaga!",
+                    "zh-cn": "重要通知!"
+                },
+                "text": {
+                    "en": "The new version 1.2.x will potentially change the Names of List Objects when special characters (including \".\") are used! Please delete the old objects manually if needed.",
+                    "de": "Die neue Version 1.2.x wird die Namen der Listenobjekte möglicherweise ändern, wenn Sonderzeichen (einschließlich \".\") verwendet werden! Bitte löschen Sie die alten Objekte bei Bedarf manuell.",
+                    "ru": "Новая версия 1.2.x потенциально изменит имена объектов списка, когда используются специальные символы (включая \".\")! Пожалуйста, удалите старые объекты вручную, если это необходимо.",
+                    "pt": "A nova versão 1.2.x irá potencialmente alterar os nomes dos objetos de lista quando caracteres especiais (incluindo \".\") são usados! Por favor, exclua os objetos antigos manualmente, se necessário.",
+                    "nl": "De nieuwe versie 1.2.x zal mogelijk de Namen van List Objects veranderen als speciale personages (includeren) worden gebruikt. Verwijder de oude objecten handmatig als het nodig is.",
+                    "fr": "La nouvelle version 1.2.x modifiera potentiellement les Noms des objets de la liste lorsque des caractères spéciaux (y compris \"). Veuillez supprimer les anciens objets manuellement si nécessaire.",
+                    "it": "La nuova versione 1.2.x cambierà potenzialmente i nomi degli oggetti di elenco quando vengono utilizzati caratteri speciali (inclusi \".\")! Si prega di eliminare i vecchi oggetti manualmente se necessario.",
+                    "es": "La nueva versión 1.2.x potencialmente cambiará los Nombres de Objetos de Lista cuando se utilizan caracteres especiales (incluyendo \"). Por favor, borre los viejos objetos manualmente si es necesario.",
+                    "pl": "Nowa wersja 1.2.x będzie potencjalnie zmieniać nazwę nazw obiektów listowych, kiedy używa się specjalnych postaci (w tym „.”). Okazuje się, że stare obiekty ręcznie będą potrzebne.",
+                    "zh-cn": "新版本1.2.x将有可能改变名单所列物品的名称(包括“......”)。 请在必要时删除旧物体。."
+                },
+                "level": "warn",
+                "buttons": [
+                    "agree",
+                    "cancel"
+                ]
+            },
+            {
+                "condition": {
+                    "operand": "and",
+                    "rules": [
+                        "oldVersion<3.15.0",
+                        "newVersion>=3.15.0"
+                    ]
+                },
+                "title": {
+                    "en": "Format to create Reminder/Alarms changed!",
+                    "de": "Format zum Erstellen von Reminder/Alarms geändert!",
+                    "ru": "Формат для создания Reminder/Alarms изменился!",
+                    "pt": "Formato para criar lembrete / alarmes alterado!",
+                    "nl": "Format om Reminder/Alarms te creëren!",
+                    "fr": "Format pour créer Reminder/Alarms changé!",
+                    "it": "Formato per creare Reminder/Allarma cambiate!",
+                    "es": "Formato para crear Reminder/Alarms cambiado!",
+                    "pl": "W celu stworzenia zmian Reminder/Alarms!",
+                    "zh-cn": "创建Reminder/Alarms的格局改变了!"
+                },
+                "text": {
+                    "en": "The format used in the \"New\" states for Alarms or Reminders has changed and allows now to provide more Details. Please see the Readme for the details!",
+                    "de": "Das Format, das in den neuen Zuständen für Alarme oder Reminders verwendet wird, hat sich geändert und ermöglicht nun mehr Details. Die Readme enthält alle Details!",
+                    "ru": "Изменен формат, используемый в новых состояниях для тревоги или напоминаний и позволяет теперь предоставить более подробную информацию. Пожалуйста, посмотрите Readme для деталей!",
+                    "pt": "O formato usado nos Novos estados para Alarmes ou Lembretes mudou e agora permite fornecer mais detalhes. Por favor, veja o Readme para os detalhes!",
+                    "nl": "De formaat gebruikt in de Nieuwe staten voor Alarms of Reminders is veranderd en staat nu toe om meer Details te leveren. Zie de Readme voor de details!",
+                    "fr": "Le format utilisé dans les nouveaux états pour les armes ou les rappels a changé et permet maintenant de fournir plus de détails. Veuillez voir le Readme pour les détails!",
+                    "it": "Il formato utilizzato nei nuovi stati per gli allarmi o i ripetitori è cambiato e consente ora di fornire ulteriori dettagli. Si prega di vedere il Readme per i dettagli!",
+                    "es": "El formato utilizado en los Nuevos estados para Alarmas o Recordatorios ha cambiado y permite ahora proporcionar más detalles. Por favor, vea el Readme para los detalles!",
+                    "pl": "Format używany w nowych stanach dla Alarmsa lub Remindersa został zmieniony i pozwala obecnie na dostarczenie większej liczby dekatów. Wyglądaj na szczegóły!",
+                    "zh-cn": "新州用于申报或递解剂的格式已经改变,现在可以提供更多的细节。 请见详细!"
+                },
+                "level": "warn",
+                "buttons": [
+                    "agree",
+                    "cancel"
+                ],
+                "link": "https://github.com/Apollon77/ioBroker.alexa2#alexa20echo-devicesserialnumberalarm",
+                "linkText": {
+                    "en": "Readme",
+                    "de": "Reader",
+                    "ru": "Читать",
+                    "pt": "Readme",
+                    "nl": "Lees",
+                    "fr": "Readme",
+                    "it": "Readme",
+                    "es": "Readme",
+                    "pl": "Ready",
+                    "zh-cn": "阅读摘要"
+                }
+            },
+            {
+                "condition": {
+                    "operand": "and",
+                    "rules": [
+                        "oldVersion<3.18.0",
+                        "newVersion>=3.18.0"
+                    ]
+                },
+                "title": {
+                    "en": "Changes in Smart Home device syncing",
+                    "de": "Änderungen der Smart Home Gerätesynchronisation",
+                    "ru": "Изменения в синхронизации устройства Smart Home",
+                    "pt": "Alterações na sincronização de dispositivos Smart Home",
+                    "nl": "Veranderingen in Smart Home apparaat",
+                    "fr": "Changements dans la synchronisation de l'appareil Smart Home",
+                    "it": "Modifiche nella sincronizzazione dei dispositivi Smart Home",
+                    "es": "Cambios en la sincronización de dispositivos Smart Home",
+                    "pl": "Zmiany w Smart Home urządzenie synchronizujące",
+                    "zh-cn": "Smart家装置的合并变化"
+                },
+                "text": {
+                    "en": "Starting with version 3.18.0 smart home device values are no longer synced by default. You need to enable the new state #includeInIntervalQuery existing for each syncable device in the objects in order for the device to be synchronized. Please enable only those that you really need to reduce the requests to Amazon and the Skills and prevent blocking or issues.",
+                    "de": "Ab Version 3.18.0 werden Smart Home-Gerät-Werte nicht mehr standardmäßig synchronisiert. Der neuen Zustand #includeInInterQuery, der für jedes synchronisierbare Gerät in den Objekten vorhanden ist, muss aktiviert werden um das Gerät zu synchronisieren. Bitte nur diejenigen Geräte aktivieren, die wirklich benötigt werden, um die Anfragen an Amazon und die Skills zu reduzieren und Blockierung oder Probleme zu verhindern.",
+                    "ru": "Начиная с версии 3.18.0 интеллектуальные ценности домашнего устройства больше не синхронизированы по умолчанию. Вам необходимо включить новое состояние #includeInIntervalQuery существующее для каждого синхронного устройства в объектах, чтобы устройство было синхронизировано. Пожалуйста, включите только те, что вам действительно нужно уменьшить запросы на Amazon и навыки и предотвратить блокировку или проблемы.",
+                    "pt": "Começando com a versão 3.18.0 os valores de dispositivo doméstico inteligente não são mais sincronizados por padrão. Você precisa ativar o novo estado #includeInIntervalQuery existente para cada dispositivo sincronizável nos objetos para que o dispositivo seja sincronizado. Por favor, ative apenas aqueles que você realmente precisa para reduzir os pedidos para Amazon e as habilidades e evitar bloqueio ou problemas.",
+                    "nl": "Beginnend met versie 3.18.0 slimme thuis apparatuur is niet meer gesynchroniseerd door defect. Je moet de nieuwe staat in staat stellen includeïntervalQuery die bestaat voor elk syncable apparaat in de objecten om het apparaat te synchroniseren. Betrek alleen degenen die je echt nodig hebt om de verzoeken naar Amazone en de Skills te verminderen en blokkeren of problemen te voorkomen.",
+                    "fr": "À partir de la version 3.18.0, les valeurs de périphérique à domicile intelligent ne sont plus synchronisées par défaut. Vous devez activer le nouvel état #includeInIntervalQuery existant pour chaque périphérique synchronisé dans les objets afin que le dispositif soit synchronisé. S'il vous plaît activer seulement ceux que vous avez vraiment besoin de réduire les demandes à Amazon et les Compétences et prévenir le blocage ou les problèmes.",
+                    "it": "A partire dalla versione 3.18.0 i valori dei dispositivi smart home non sono più sincronizzati per impostazione predefinita. È necessario abilitare il nuovo stato #includeInIntervalQuery esistente per ogni dispositivo sincronizzabile negli oggetti in modo che il dispositivo sia sincronizzato. Si prega di attivare solo quelli che è davvero necessario ridurre le richieste a Amazon e le competenze e prevenire il blocco o problemi.",
+                    "es": "Empezando con la versión 3.18.0, los valores de dispositivo hogar inteligente ya no se sincronizan por defecto. Necesita habilitar el nuevo estado #includeInIntervalQuery existente para cada dispositivo sincronizable en los objetos con el fin de sincronizar el dispositivo. Por favor, active sólo aquellos que realmente necesita para reducir las solicitudes a Amazon y las Habilidades y evitar el bloqueo o problemas.",
+                    "pl": "Począwszy od wersji 3.18.0, inteligentne urządzenia domowe nie są już zsynchronizowane. Musisz umożliwić nowy stan #include InIntervalQuery istniejące dla każdego urządzenia synchronizującego się w obiektach. Pozwólcie to tylko tym, że musisz zredukować żądania do Amazona i Umiejętności i zapobiegać blokowaniu lub problemom.",
+                    "zh-cn": "从第3.18.0版的家里装置价值开始,不再因违约而形成。 你们需要使新的国家能够为各物体的每个可核对装置建立新的国家行动目标。 仅请你真正需要减少对亚马逊和技能的要求,并防止阻断或问题。."
+                },
+                "level": "warn",
+                "buttons": [
+                    "agree",
+                    "cancel"
+                ],
+                "link": "https://github.com/Apollon77/ioBroker.alexa2#alexa20echo-devicesserialnumberalarm",
+                "linkText": {
+                    "en": "Readme",
+                    "de": "Reader",
+                    "ru": "Читать",
+                    "pt": "Readme",
+                    "nl": "Lees",
+                    "fr": "Readme",
+                    "it": "Readme",
+                    "es": "Readme",
+                    "pl": "Ready",
+                    "zh-cn": "阅读摘要"
+                }
+            }
+        ]
+    },
+    "native": {
+        "cookie": "",
+        "csrf": "",
+        "cookieData": null,
+        "alexaServiceHost": "",
+        "email": "",
+        "password": "",
+        "userAgent": "",
+        "acceptLanguage": "",
+        "cookieLoginUrl": "",
+        "proxyOwnIp": "",
+        "proxyPort": 0,
+        "proxyListenBind": "",
+        "updateConfigurationInterval": 3600,
+        "updateStateInterval": 300,
+        "updateHistoryInterval": 300,
+        "updateSmartHomeDevicesInterval": 0,
+        "usePushConnection": true,
+        "proxyOverrideIp": "",
+        "resetCookies": false,
+        "historyIgnoreEmptySummary": false,
+        "macDms": null,
+        "includeAppDevices": false,
+        "synchronizeLists": true,
+        "synchronizeSmartHomeDevices": true
+    },
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "If communication with alexa works",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.cookie",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Alexa Cookie",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.csrf",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Alexa CSRF",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
         }
-      }
     ]
-  },
-  "native": {
-    "cookie": "",
-    "csrf": "",
-    "cookieData": null,
-    "alexaServiceHost": "",
-    "email": "",
-    "password": "",
-    "userAgent": "",
-    "acceptLanguage": "",
-    "cookieLoginUrl": "",
-    "proxyOwnIp": "",
-    "proxyPort": 0,
-    "proxyListenBind": "",
-    "updateConfigurationInterval": 3600,
-    "updateStateInterval": 300,
-    "updateHistoryInterval": 300,
-    "updateSmartHomeDevicesInterval": 0,
-    "usePushConnection": true,
-    "proxyOverrideIp": "",
-    "resetCookies": false,
-    "historyIgnoreEmptySummary": false,
-    "macDms": null,
-    "includeAppDevices": false,
-    "synchronizeLists": true,
-    "synchronizeSmartHomeDevices": true
-  },
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": "Information"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.connected",
-        "name": "If communication with alexa works",
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.cookie",
-      "type": "state",
-      "common": {
-        "role": "text",
-        "name": "Alexa Cookie",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "def": ""
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.csrf",
-      "type": "state",
-      "common": {
-        "role": "text",
-        "name": "Alexa CSRF",
-        "type": "string",
-        "read": true,
-        "write": false,
-        "def": ""
-      },
-      "native": {}
-    }
-  ]
 }
