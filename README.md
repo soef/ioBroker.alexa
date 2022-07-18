@@ -467,6 +467,12 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Fix doNotdisturb and doNotDisturb for All devices
+* (Apollon77) Update do not disturb status after set for all devices
+* (Apollon77) preserve a changed name for a "This device" device object
+
 ### 3.18.2 (2022-07-18)
 * (Apollon77) Enable commands again for Apps with type A2TF17PFR55MTB - will only work sometimes as it seems
 

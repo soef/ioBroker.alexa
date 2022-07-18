@@ -225,6 +225,7 @@ const objectQueue = [];
 
 const existingStates = {};
 const adapterObjects = {};
+
 function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
     let callback = null;
     if (typeof value === 'function') {
@@ -274,6 +275,12 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
         obj.common.name = id.split('.').pop();
     }
 
+    let preserveSettings;
+    if (obj.preserveSettings) {
+        preserveSettings = obj.preserveSettings;
+        delete obj.preserveSettings;
+    }
+
     if (!adapterObjects[id] && existingStates[id]) {
         adapterObjects[id] = existingStates[id];
         if (adapterObjects[id].from) delete adapterObjects[id].from;
@@ -302,7 +309,8 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
         id: id,
         value: value,
         obj: obj,
-        stateChangeCallback: stateChangeCallback
+        stateChangeCallback: stateChangeCallback,
+        preserveSettings
     });
     //adapter.log.debug('Create object for ' + id + ': ' + JSON.stringify(obj) + ' with value: ' + JSON.stringify(value));
 
@@ -411,9 +419,13 @@ function processObjectQueue(callback) {
             });
             return;
         }
+        const options = {};
+        if (queueEntry.preserveSettings) {
+            options.preserve = queueEntry.preserveSettings; //{ common: ['name'], native: true } };
+        }
         adapter.getObject(queueEntry.id, (err, obj) => {
             if (!err && obj) {
-                adapter.extendObject(queueEntry.id, queueEntry.obj, () => {
+                adapter.extendObject(queueEntry.id, queueEntry.obj, options, () => {
                     handleValue(queueEntry, () => {
                         return callback && callback();
                     });
@@ -849,7 +861,7 @@ function initEqualizerData(device) {
                         numStates++;
                         setOrUpdateObject(`Echo-Devices.${device.serialNumber}.Preferences.equalizerMidRange`, {
                             common: {
-                                name: `Equalizer Bass`,
+                                name: `Equalizer Midrange`,
                                 type: 'number',
                                 role: 'level.midrange',
                                 min: rangeMin,
@@ -871,7 +883,7 @@ function initEqualizerData(device) {
                         numStates++;
                         setOrUpdateObject(`Echo-Devices.${device.serialNumber}.Preferences.equalizerTreble`, {
                             common: {
-                                name: `Equalizer Bass`,
+                                name: `Equalizer Treble`,
                                 type: 'number',
                                 role: 'level.treble',
                                 min: rangeMin,
@@ -2758,6 +2770,16 @@ function createStatesForDevice(device, additionalDeviceData) {
 
                                     const deviceList = [];
 
+                                    if (value === 'true') {
+                                        value = true;
+                                    } else if (value === 'false') {
+                                        value = false;
+                                    } else if (value === '') {
+                                        return;
+                                    } else if (typeof value === 'string' && isFinite(value)) {
+                                        value = parseInt(value, 10);
+                                    }
+
                                     iterateMultiroom(device, (iteratorDevice, nextCallback) => {
                                         deviceList.push(iteratorDevice.serialNumber);
                                         return nextCallback && nextCallback();
@@ -2831,8 +2853,27 @@ function createStates(callback) {
             const obj = JSON.parse (JSON.stringify(allDevicesCommands[c]));
             setOrUpdateObject(`Echo-Devices.CommandsAll.${c}`, {common: obj.common}, obj.val, function (command, value) {
                 command = allDevicesCommands[command].command || command;
+
+                if (command === 'deviceDoNotDisturbAll') {
+                    if (value === 'true') {
+                        value = true;
+                    } else if (value === 'false') {
+                        value = false;
+                    } else if (value === '') {
+                        return;
+                    } else if (typeof value === 'string' && isFinite(value)) {
+                        value = parseInt(value, 10);
+                    }
+                }
                 try {
-                    alexa.sendSequenceCommand('', command, value, alexa.ownerCustomerId);
+                    alexa.sendSequenceCommand('', command, value, alexa.ownerCustomerId, (err, res) => {
+                        if (!err && res && command === 'deviceDoNotDisturbAll') {
+                            updateConfigurationTimer && clearTimeout(updateConfigurationTimer);
+                            updateConfigurationTimer = setTimeout(() => {
+                                updateDeviceConfigurationStates();
+                            }, 3000);
+                        }
+                    });
                 } catch (err) {
                     adapter.log.error(`Error sending command ${command} to all devices: ${err}`);
                 }
@@ -2880,10 +2921,12 @@ async function createDeviceStates(serialOrName, additionalDeviceData, callback) 
     const device = alexa.find(serialOrName);
     const devId = `Echo-Devices.${device.serialNumber}`;
 
+    let preserveSettings;
     if (device.deviceType === 'A2IVLV5VM2W81') {
         if (device.parentDeviceSerialNumber && adapter.config.includeAppDevices) {
             // App device, add it but adjust name
             device._name += ` (${device.parentDeviceSerialNumber})`;
+            preserveSettings = { common: ['name'] };
         } else {
             // App main device, ignore them!
             adapter.log.debug(`Ignore Device ${device.serialNumber} because is App-Type`);
@@ -2915,7 +2958,7 @@ async function createDeviceStates(serialOrName, additionalDeviceData, callback) 
     }
     device.deviceTypeDetails = deviceTypeDetails;
 
-    setOrUpdateObject(devId, {type: 'device', common: commonDevice});
+    setOrUpdateObject(devId, {type: 'device', common: commonDevice, preserveSettings});
     setOrUpdateObject(`${devId}.online`, {common: {role: 'indicator.reachable', type: 'boolean'}}, device.online);
     //setOrUpdateObject(devId + '.delete', {common: {name: 'Delete (Log out of this device)', role: 'button'}}, false); TODO
 
