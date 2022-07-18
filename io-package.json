@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.18.0",
+    "version": "3.18.1",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.18.1": {
+        "en": "Optimize Handling when push connection could not be established",
+        "de": "Optimieren Sie die Handhabung, wenn keine Push-Verbindung hergestellt werden konnte",
+        "ru": "Оптимизация обработки при нажатии соединения не может быть установлена",
+        "pt": "Otimizar o manuseio quando a conexão push não pôde ser estabelecida",
+        "nl": "Optimiliseer Handling wanneer de verbinding niet kan worden vastgesteld",
+        "fr": "Optimiser la manipulation lorsque la connexion push ne peut être établie",
+        "it": "Ottimizzare la gestione quando la connessione di spinta non potrebbe essere stabilita",
+        "es": "Optimize Handling cuando la conexión de empuje no se puede establecer",
+        "pl": "Optimizację Handlingu, gdy nie można było utworzyć połączenia push",
+        "zh-cn": "如果不建立推动联系,就能减少浪费"
+      },
       "3.18.0": {
         "en": "IMPORTANT: Smart home device values are from now on only synchronized when enabled via #includeInIntervalQuery state. Enable only what's really needed!\nAdd FireTV commands for FireTV devices\nAdd CommandsAll.* commands to be sent to all devices\nAdd several more Preferences (Equalizer, Display, AUX, Speaker)\nMore optimizations and fixes",
         "de": "WICHTIG: Smart Home-Gerätewerte werden ab sofort nur synchronisiert, wenn sie über #includeInIntervalQuery-Zustand aktiviert sind. Aktiviere nur das, was wirklich nötig ist!\nFireTV-Befehle für FireTV-Geräte hinzufügen\nBefehle hinzufügen, die an alle Geräte gesendet werden sollen\nWeitere Einstellungen hinzufügen (Equalizer, Display, AUX, Lautsprecher)\nWeitere Optimierungen und Fixierungen",
@@ -109,18 +121,6 @@
         "es": "Trabajar en torno a cuestiones de tiempo con voz-volumen al usar el anuncio\nIniciar correctamente el volumen/mute en la startup también cuando los datos del reproductor no están disponibles\nNo sobreescribir voz-volumen (y algunos otros campos) con null on adapter start\nCasos de accidente fijo reportados por Sentry",
         "pl": "Praca nad problemami związanymi z mowa-volume przy użyciu ogłoszenia\nOczywiście wstępnie inicjuje tom/mute, kiedy dane gracza nie są dostępne\nNie piszę słów-volume (i niektóre inne pola) z pustym starterem\nSprawy katastrofy Fix podane przez Sentry’a",
         "zh-cn": "利用公告处理时间问题\n在未提供投入数据时,投入数量/升值的细分\n不用说话(和其他一些领域)就不过分,不让读者开始。\nSentry所报告的六例事故"
-      },
-      "3.17.0": {
-        "en": "Add support to play Audible books in Music-Providers\nOptimize deletion of alarms and reminders\nOptimize requesting smart home device data",
-        "de": "Unterstützung bei Audible-Büchern in Music-Providers hinzufügen\nOptimieren Sie das Löschen von Alarmen und Erinnerungen\nOptimieren Sie anfragende Smart-Home-Gerät-Daten",
-        "ru": "Добавить поддержку, чтобы играть в книги Audible в Music-Providers\nОптимизация удаления тревог и напоминаний\nОптимизация запроса данных умного дома",
-        "pt": "Adicionar suporte para jogar Audible books in Music-Providers\nOtimizar a exclusão de alarmes e lembretes\nOtimizar solicitando dados inteligentes do dispositivo doméstico",
-        "nl": "Voeg steun aan het spelen van Audible boeken in Music-Providers\nOptimiliseer deletie van alarm en herinneringen\nOptimistisch verzoek om slimme thuis apparatuur",
-        "fr": "Ajouter le support pour jouer Livres d'Audible dans Music-Providers\nOptimiser la suppression des alarmes et des rappels\nOptimiser la demande de données sur les appareils à domicile intelligents",
-        "it": "Aggiungi supporto per giocare Libri Audible in Music-Providers\nOttimizzare la cancellazione di allarmi e promemoria\nOttimizzare la richiesta di dati smart home device",
-        "es": "Añadir soporte para reproducir libros Audible en Music-Providers\nOptimize deletion of alarms and reminders\nOptimize requesting smart home device data",
-        "pl": "Addd supportuje Audible Books w Music-Providers\nOptymizacja alarmów i przypomnień\nOptymizowanie żądania inteligentnego urządzenia domowego",
-        "zh-cn": "增加在Music-Providers开设的书店支助\n消除震惊和提醒\nB. 要求有智的家用装置数据"
       }
     },
     "keywords": [

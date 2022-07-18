@@ -467,8 +467,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.18.1 (2022-07-18)
 * (Apollon77) Optimize Handling when push connection could not be established
 
 ### 3.18.0 (2022-07-18)
