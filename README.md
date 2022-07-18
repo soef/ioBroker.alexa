@@ -469,7 +469,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ## Changelog
 
 ### __WORK IN PROGRESS__
-* (Apollon77) Fix doNotdisturb and doNotDisturb for All devices
+* (Apollon77) Fix doNotDisturb and doNotDisturb for All devices
 * (Apollon77) Update do not disturb status after set for all devices
 * (Apollon77) preserve a changed name for a "This device" device object
 
