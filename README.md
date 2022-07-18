@@ -469,13 +469,6 @@ But be aware: The Cookie will time out after several time and then the adapter w
 ## Changelog
 ### 3.18.0 (2022-07-18)
 * IMPORTANT: Smart home device values are from now on only synchronized when enabled via #includeInIntervalQuery state. Enable only what's really needed!
-* (Apollon77) Add FireTV commands for FireTV devices
-* (Apollon77) Add CommandsAll.* commands to be sent to all devices
-* (Apollon77) Add several more Preferences (Equalizer, Display, AUX, Speaker)
-* (Apollon77) More optimizations and fixes
-
-### 3.18.0 Full Changelog
-* IMPORTANT: Smart home device values are from now on only synchronized when enabled via #includeInIntervalQuery state. Enable only what's really needed!
 * (Apollon77) Allow to query several more smart home device states (incl. the Echo own Temperature-Sensor if available) and more optimizations
 * (Apollon77) Optimize querying smart home device states to only request relevant properties
 * (Apollon77) Exclude some value types again from requesting from Amazon because they make no sense and will never contain meaningful data
