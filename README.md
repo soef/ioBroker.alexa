@@ -467,7 +467,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
-### 3.18.4 (2022-07-19)
+### __WORK IN PROGRESS__
 * (Apollon77) Fix crash case reported by Sentry
 * (arteck) Add image for Fire Cube
 
