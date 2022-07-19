@@ -467,7 +467,7 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 
 ## Changelog
-### __WORK IN PROGRESS__
+### 3.18.6 (2022-07-19)
 * (Apollon77) Fix deviceStop sequence command
 
 ### 3.18.5 (2022-07-19)

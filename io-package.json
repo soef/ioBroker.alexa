@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.18.5",
+    "version": "3.18.6",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.18.6": {
+        "en": "Fix deviceStop sequence command",
+        "de": "Fix Gerät Befehl der Befehlsfolge stoppen",
+        "ru": "Fix устройство Прекратите команду последовательности",
+        "pt": "Dispositivo de fixação Pare o comando de sequência",
+        "nl": "Vertaling: Stop de volgorde",
+        "fr": "Dispositif fixe Arrêtez la commande",
+        "it": "Dispositivo di fissaggio Stop comando sequenza",
+        "es": "Dispositivo de fijación Alto orden de secuencia",
+        "pl": "Fix Zakończenie sekwencji",
+        "zh-cn": "固定装置 战时指挥"
+      },
       "3.18.5": {
         "en": "Fix crash case reported by Sentry\nAdd image for Fire Cube",
         "de": "Reparieren Crashfall berichtet von Sentry\nBild hinzugefügt für Fire Cube",
@@ -109,18 +121,6 @@
         "es": "El intervalo mínimo de consulta de dispositivo inteligente es ahora 5 minutos y no 1 minuto más para eliminar algunas solicitudes por ahora",
         "pl": "Minimum inteligentne przedziały na urządzenie domowe to obecnie 5 minut i nie 1 minuta, aby usunąć niektóre żądania",
         "zh-cn": "最低智能家用具的间隔时间现在为5分钟,而不是1分钟多,以取消目前的一些要求。"
-      },
-      "3.17.4": {
-        "en": "Make sure disabling query intervals really work (disabling smart home device and state and configuration was not possible)",
-        "de": "Stellen Sie sicher, dass die Abfrageintervalle wirklich funktionieren (das Abschalten von Smart Home-Gerät und Zustand und Konfiguration war nicht möglich)",
-        "ru": "Убедитесь, что отключение интервалов запросов действительно работает (отключение умного дома устройства и государства и конфигурации не было возможным)",
-        "pt": "Certifique-se de desativar intervalos de consulta realmente funcionar (desativar dispositivo home inteligente e estado e configuração não foi possível)",
-        "nl": "Zorg ervoor dat nieuwsgierige intervals echt werken",
-        "fr": "Assurez-vous de désactiver les intervalles de requête vraiment fonctionner (disabling smart home device and state and configuration was not possible)",
-        "it": "Assicurarsi di disabilitare gli intervalli di query realmente funziona (disabling smart home device e stato e configurazione non è stato possibile)",
-        "es": "Asegúrate de desactivar los intervalos de consulta realmente funcionan (disabling smart home device and state and settings was not possible)",
-        "pl": "Umożliwia to, że odstępy zapytania naprawdę działają (rozpoznanie inteligentnego urządzenia domowego i stanu i konfiguracji nie były możliwe)",
-        "zh-cn": "保证不带任何时间真正工作(不可能有智的家用装置和州组合)。"
       }
     },
     "keywords": [
