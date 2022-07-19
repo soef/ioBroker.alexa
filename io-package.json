@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.18.3",
+    "version": "3.18.4",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.18.4": {
+        "en": "Fix crash case reported by Sentry\nAdd image for Fire Cube",
+        "de": "Reparieren Crashfall berichtet von Sentry\nBild hinzugefügt für Fire Cube",
+        "ru": "Исправление случай аварии сообщается в Sentry\nДобавить изображение для Fire Cube",
+        "pt": "Corrigir caso de acidente relatado por Sentry\nAdicionar imagem para Fire Cube",
+        "nl": "Vertaling:\nVertaling:",
+        "fr": "Correction de l'accident rapporté par Sentry\nAjouter une image pour Fire Cube",
+        "it": "Correzione caso di crash segnalato da Sentry\nAggiungi immagine per Fire Cube",
+        "es": "Caso de accidente fijo reportado por Sentry\nAñadir imagen para Fire Cube",
+        "pl": "Sprawa rozbicia Fixa doniesiona przez firmę Sentry\nZdjęcie Fire Cube",
+        "zh-cn": "Sentry所报告的六例事故\nFire Cube的添加形象"
+      },
       "3.18.3": {
         "en": "Fix doNotDisturb and doNotDisturb for All devices\nUpdate do not disturb status after set for all devices\npreserve a changed name for a \"This device\" device object",
         "de": "Fix doNotDisturb und doNotDisturb für alle Geräte\nUpdate stört nicht den Status nach dem Set für alle Geräte\neinen geänderten Namen für ein Gerät-Objekt \"This device\" erhalten",
@@ -109,18 +121,6 @@
         "es": "Asegúrate de desactivar los intervalos de consulta realmente funcionan (disabling smart home device and state and settings was not possible)",
         "pl": "Umożliwia to, że odstępy zapytania naprawdę działają (rozpoznanie inteligentnego urządzenia domowego i stanu i konfiguracji nie były możliwe)",
         "zh-cn": "保证不带任何时间真正工作(不可能有智的家用装置和州组合)。"
-      },
-      "3.17.3": {
-        "en": "Prevent datatype warnings in log",
-        "de": "Datentyp-Warnungen im Log verhindern",
-        "ru": "Предотвратить предупреждения типа данных в логе",
-        "pt": "Impedir avisos do tipo de dados no log",
-        "nl": "Vertaling:",
-        "fr": "Prévenir les avertissements de type de données dans le journal",
-        "it": "Evitare avvisi di tipo di dati nel registro",
-        "es": "Prevenir advertencias de tipo de datos en el registro",
-        "pl": "Prevent datatype warning",
-        "zh-cn": "逻辑中的预防性数据型警告"
       }
     },
     "keywords": [
