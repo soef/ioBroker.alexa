@@ -4915,10 +4915,10 @@ function main() {
                                                         for (let i = 0; i < delIds.length; i++) {
                                                             try {
                                                                 adapter.delObject(delIds[i], err => {
-                                                                    if (err) adapter.log.info(`Can not delete object ${delIds[i]}`);
+                                                                    if (err) adapter.log.info(`Can not delete object ${delIds[i]}: ${err.message}`);
                                                                 });
                                                             } catch (err) {
-                                                                adapter.log.info(`Can not delete object ${delIds[i]}`);
+                                                                adapter.log.info(`Can not delete object ${delIds[i]}: ${err.message}`);
                                                             }
                                                             delete existingStates[delIds[i]];
                                                         }
