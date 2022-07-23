@@ -1099,7 +1099,7 @@ function updateDeviceConfigurationStates(callback) {
         if (!err && res && res.doNotDisturbDeviceStatusList && Array.isArray(res.doNotDisturbDeviceStatusList)) {
             res.doNotDisturbDeviceStatusList.forEach(status => {
                 const device = alexa.find(status.deviceSerialNumber);
-                if (device && device.deviceTypeDetails.commandSupport) {
+                if (device && device.deviceTypeDetails && device.deviceTypeDetails.commandSupport) {
                     adapter.setState(`Echo-Devices.${device.serialNumber}.Commands.doNotDisturb`, status.enabled, true);
                 }
             });
