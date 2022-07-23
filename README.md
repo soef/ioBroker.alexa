@@ -441,7 +441,7 @@ Mostly this captcha needs to be answered once and after this the login works wit
 When you need to answer such a captcha then try to do the following:
 * Use a common Browser (e.g. Chrome)
 * disable Javascript!
-* clear all cookies that may exist for Amazon or use Proivate/Incognito mode of the browser
+* clear all cookies that may exist for Amazon or use Private/Incognito mode of the browser
 * call https://alexa.amazon.de
 * you should get a login form (normally displayed for older mobile browsers)
 * login there with your Amazon credentials where the Echo/Alexa is registered in
@@ -465,6 +465,15 @@ If the automatic Cookie determination don't work or you do not trust the Adapter
 
 But be aware: The Cookie will time out after several time and then the adapter will stop working and disable itself. You then need to manually get a new cookie!
 
+### Push Connections do not connect
+Sometimes it could happen that because of too many connection tries aAmazon blocks the push connection endpoint for a specific IP and "device".
+
+If the Push connection is never established then you can try to use the following:
+* delete the instance of the adapter
+* check if there are files like /opt/iobroker/node_modules/iobroker.alexa2/formerDataStore*.json - if existing please delete them
+* add new instance and get new cookie
+
+Then it should work again
 
 ## Changelog
 ### 3.18.6 (2022-07-19)
