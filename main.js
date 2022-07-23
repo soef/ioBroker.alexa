@@ -2922,12 +2922,13 @@ async function createDeviceStates(serialOrName, additionalDeviceData, callback) 
     const devId = `Echo-Devices.${device.serialNumber}`;
 
     let preserveSettings;
+    if (device.parentDeviceSerialNumber) {
+        // App device, add it but adjust name
+        preserveSettings = { common: ['name'] };
+        device._name += ` (${device.parentDeviceSerialNumber})`;
+    }
     if (device.deviceType === 'A2IVLV5VM2W81') {
-        if (device.parentDeviceSerialNumber && adapter.config.includeAppDevices) {
-            // App device, add it but adjust name
-            device._name += ` (${device.parentDeviceSerialNumber})`;
-            preserveSettings = { common: ['name'] };
-        } else {
+        if (!device.parentDeviceSerialNumber || !adapter.config.includeAppDevices) {
             // App main device, ignore them!
             adapter.log.debug(`Ignore Device ${device.serialNumber} because is App-Type`);
             device.ignore = true;
@@ -3830,7 +3831,7 @@ function createNotificationStates(serialOrName) {
         setOrUpdateObject(`${devId}.Timer.nextTimerDate`, {common: {type: 'number', role: 'date', name: 'Unix epoch timestamp for next timer'}}, nextTimerObject ? (nextTimerObject.triggerTime || (Date.now() + nextTimerObject.remainingTime)) : 0, nextTimerObject ? nextTimerObject.set : null);
         setOrUpdateObject(`${devId}.Timer.activeTimerList`, {common: {type: 'string', role: 'array', name: 'Array of the active timers'}}, JSON.stringify(activeTimerList));
         setOrUpdateObject(`${devId}.Timer.nextTimerId`, {common: {type: 'string', role: 'text', name: 'ID of the next triggered timer'}}, nextTimerObject ? nextTimerObject.notificationIndex : null);
-        setOrUpdateObject(`${devId}.Timer.stopTimerId`, {common: {type: 'string', role: 'text', name: 'ID of the next triggered timer'}}, '', function(value) {
+        setOrUpdateObject(`${devId}.Timer.stopTimerId`, {common: {type: 'string', role: 'text', name: 'ID of the timer to be stopped'}}, '', function(value) {
             if (!value) {
                 return;
             }

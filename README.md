@@ -476,6 +476,10 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Preserve Names as soon as it is an App type in general
+
 ### 3.18.6 (2022-07-19)
 * (Apollon77) Fix deviceStop sequence command
 
