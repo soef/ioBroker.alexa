@@ -476,8 +476,7 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.19.1 (2022-08-04)
 * (Apollon77) Fix retry handling
 
 ### 3.19.0 (2022-08-04)

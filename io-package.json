@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.19.0",
+    "version": "3.19.1",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.19.1": {
+        "en": "Fix retry handling",
+        "de": "Retry Handling",
+        "ru": "Fix ретриминг",
+        "pt": "Manuseamento de retrete",
+        "nl": "Vertaling:",
+        "fr": "Manipulation par réarmement",
+        "it": "Risolvere la gestione del processo",
+        "es": "Manejo de repostaje fijo",
+        "pl": "Fix retry",
+        "zh-cn": "九. 固定的重新处理"
+      },
       "3.19.0": {
         "en": "Preserve Names as soon as it is an App type in general\nEnhance checks and safeguards for polling intervals\nCheck for restart intervals that do not make sense and stop adapter if detected\nAdd additional crash-loop detection",
         "de": "Reservieren Sie Namen, sobald es ein App-Typ im Allgemeinen ist\nVerbessern Sie die Überprüfungen und Sicherheitsvorkehrungen für Abfragen\nPrüfen Sie für Neustart-Intervalle, die keinen Sinn und Stopp-Adapter ergeben, wenn erkannt\nZusätzliche Crash-Loop-Erkennung hinzufügen",
@@ -109,18 +121,6 @@
         "es": "Optimize Handling cuando la conexión de empuje no se puede establecer",
         "pl": "Optimizację Handlingu, gdy nie można było utworzyć połączenia push",
         "zh-cn": "如果不建立推动联系,就能减少浪费"
-      },
-      "3.18.0": {
-        "en": "IMPORTANT: Smart home device values are from now on only synchronized when enabled via #includeInIntervalQuery state. Enable only what's really needed!\nAdd FireTV commands for FireTV devices\nAdd CommandsAll.* commands to be sent to all devices\nAdd several more Preferences (Equalizer, Display, AUX, Speaker)\nMore optimizations and fixes",
-        "de": "WICHTIG: Smart Home-Gerätewerte werden ab sofort nur synchronisiert, wenn sie über #includeInIntervalQuery-Zustand aktiviert sind. Aktiviere nur das, was wirklich nötig ist!\nFireTV-Befehle für FireTV-Geräte hinzufügen\nBefehle hinzufügen, die an alle Geräte gesendet werden sollen\nWeitere Einstellungen hinzufügen (Equalizer, Display, AUX, Lautsprecher)\nWeitere Optimierungen und Fixierungen",
-        "ru": "ВАЖНО: Значения умного домашнего устройства теперь на только синхронизированы, когда включено через #includeInIntervalQuery состояние. Включите только то, что действительно нужно!\nДобавить FireTV команды для FireTV устройств\nДобавить CommandsAll.* команды, которые будут отправлены на все устройства\nДобавьте еще несколько предпочтений (Equalizer, Display, AUX, Speaker)\nБольше оптимизации и исправлений",
-        "pt": "IMPORTANTE: Os valores dos dispositivos domésticos inteligentes são agora sincronizados apenas quando ativados através do #includeInIntervalQuery estado. Habilite apenas o que realmente é necessário!\nAdicionar comandos FireTV para dispositivos FireTV\nAdicionar comandos CommandsAll.* para ser enviado para todos os dispositivos\nAdicione várias outras Preferências (Equalizer, Display, AUX, Speaker)\nMais otimizações e correções",
-        "nl": "Slimme thuis apparatuurwaarden zijn van nu af aan alleen gesynchroniseerd als je in staat bent via includeïntervalQuery staat. Alleen wat nodig is!\nVertaling:\nVertaling:\nVertaling:\nMeer optimaties en fixaties",
-        "fr": "IMPORTANT : Les valeurs de périphériques à domicile intelligents sont désormais synchronisées uniquement lorsqu'elles sont activées via #includeInIntervalQuery state. Activez seulement ce qui est vraiment nécessaire !\nAjouter les commandes FireTV pour les appareils FireTV\nAjouter les commandesAll.* à envoyer à tous les appareils\nAjouter plusieurs autres Préférences (Equalizer, Display, AUX, Speaker)\nPlus d'optimisations et de corrections",
-        "it": "IMPORTANTE: I valori Smart home device sono sincronizzati solo quando abilitati tramite #includeInIntervalQuery State. Abilitare solo ciò che è veramente necessario!\nAggiungi comandi FireTV per dispositivi FireTV\nAggiungi comandiAll.* da inviare a tutti i dispositivi\nAggiungi più Preferenze (Equalizzatore, Display, AUX, Speaker)\nAltre ottimizzazioni e correzioni",
-        "es": "IMPORTANTE: Los valores inteligentes del dispositivo casero se sincronizan solo a partir de ahora mediante #includeInIntervalQuery state. ¡Hable sólo lo que realmente se necesita!\nAñadir comandos FireTV para dispositivos FireTV\nAgregar comandosAll.* comandos a ser enviados a todos los dispositivos\nAñadir varias preferencias más (Equalizer, Display, AUX, Speaker)\nMás optimizaciones y soluciones",
-        "pl": "IMPORTANT: Smart home urządzenie jest już zsynchronizowane tylko w momencie, gdy można je za pomocą #includes IntervalQuery state. Doszło do tego, co naprawdę potrzebuje!\nAdd FireTV Command (ang.)\nAdd CommandsAll (ang.)\nDodał jeszcze kilka referencji (Equalizer, Display, AUX, Speaker)\nWięcej optymalizacji i napraw",
-        "zh-cn": "IMPORTANT:Smart家装置的数值现在只与通过Pinclude Include In IntervalQuery州的设施同步。 只有真需要的!\n消防电视设备的增派指挥\n增加指挥部:* 向所有装置发送的指挥\n增加几处P引述(联邦十名议长)\nB. 改进和定量"
       }
     },
     "keywords": [
