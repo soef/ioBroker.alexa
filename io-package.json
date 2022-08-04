@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.18.6",
+    "version": "3.19.0",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.19.0": {
+        "en": "Preserve Names as soon as it is an App type in general\nEnhance checks and safeguards for polling intervals\nCheck for restart intervals that do not make sense and stop adapter if detected\nAdd additional crash-loop detection",
+        "de": "Reservieren Sie Namen, sobald es ein App-Typ im Allgemeinen ist\nVerbessern Sie die Überprüfungen und Sicherheitsvorkehrungen für Abfragen\nPrüfen Sie für Neustart-Intervalle, die keinen Sinn und Stopp-Adapter ergeben, wenn erkannt\nZusätzliche Crash-Loop-Erkennung hinzufügen",
+        "ru": "Сохранить имена, как только это тип приложения в целом\nУлучшение проверок и гарантий для интервалов опроса\nПроверьте перезагрузочные интервалы, которые не имеют смысла и остановки адаптера, если обнаружено\nДобавьте дополнительное обнаружение сбоев",
+        "pt": "Preserve nomes assim que é um tipo de App em geral\nMelhorar verificações e salvaguardas para intervalos de votação\nVerifique para intervalos de reinício que não fazem sentido e pare o adaptador se detectado\nAdicionar detecção adicional de falhas",
+        "nl": "Bewaar Names zodra het een App-type is in het algemeen\nEnhance checks en bewakers voor het vervullen van interval\nControleer op herstelmiddelen die niet logisch zijn en stoppen met adapter als ze ontdekt worden\nVoeg extra crash-loop detectie toe",
+        "fr": "Préserver Noms dès qu'il s'agit d'un type App en général\nAméliorer les contrôles et les garanties pour les intervalles de vote\nVérifiez les intervalles de redémarrage qui n'ont pas de sens et de stop adaptateur si détecté\nAjout d'une détection de fuite supplémentaire",
+        "it": "Preservare i nomi non appena si tratta di un tipo di App in generale\nMigliorare i controlli e le garanzie per gli intervalli di inquinamento\nControllare gli intervalli di riavvio che non hanno senso e interrompere l'adattatore se rilevato\nAggiungi ulteriore rilevamento crash-loop",
+        "es": "Preserve Nombres tan pronto como sea un tipo de aplicación en general\nMejorar los controles y las salvaguardias para los intervalos de votación\nCompruebe los intervalos de reinicio que no tienen sentido y detenga el adaptador si se detecta\nAñadir detección adicional de fallos",
+        "pl": "Nazwy preserve są tak szybko, jak to jest typ App\nEnhance sprawdza i schronienie dla odstępów zanieczyszczeń\nCheck dla przesunięcia odstępów, które nie mają sensu i stopa adapter, jeśli wykrywa się wykrywcy\nDodać dodatkową detekcję pętli",
+        "zh-cn": "一. 保留国一俟是普遍适用的名称。\n加强对投票的检查和保障\n如果发现有过失感和停止适应的间隔时间,检查时间不长。\n增加事故侦测"
+      },
       "3.18.6": {
         "en": "Fix deviceStop sequence command",
         "de": "Fix Gerät Befehl der Befehlsfolge stoppen",
@@ -109,18 +121,6 @@
         "es": "IMPORTANTE: Los valores inteligentes del dispositivo casero se sincronizan solo a partir de ahora mediante #includeInIntervalQuery state. ¡Hable sólo lo que realmente se necesita!\nAñadir comandos FireTV para dispositivos FireTV\nAgregar comandosAll.* comandos a ser enviados a todos los dispositivos\nAñadir varias preferencias más (Equalizer, Display, AUX, Speaker)\nMás optimizaciones y soluciones",
         "pl": "IMPORTANT: Smart home urządzenie jest już zsynchronizowane tylko w momencie, gdy można je za pomocą #includes IntervalQuery state. Doszło do tego, co naprawdę potrzebuje!\nAdd FireTV Command (ang.)\nAdd CommandsAll (ang.)\nDodał jeszcze kilka referencji (Equalizer, Display, AUX, Speaker)\nWięcej optymalizacji i napraw",
         "zh-cn": "IMPORTANT:Smart家装置的数值现在只与通过Pinclude Include In IntervalQuery州的设施同步。 只有真需要的!\n消防电视设备的增派指挥\n增加指挥部:* 向所有装置发送的指挥\n增加几处P引述(联邦十名议长)\nB. 改进和定量"
-      },
-      "3.17.5": {
-        "en": "Minimum smart home device query interval is now 5 minutes and not 1 minute anymore to remove some requests for now",
-        "de": "Mindest-Smart-Home-Gerät-Abfrage-Intervall ist jetzt 5 Minuten und nicht 1 Minute mehr, um einige Anfragen für jetzt zu entfernen",
-        "ru": "Минимальный домашний интервал запросов теперь 5 минут и больше не 1 минуты, чтобы удалить некоторые запросы сейчас",
-        "pt": "Intervalo de consulta de dispositivo doméstico inteligente mínimo é agora 5 minutos e não 1 minuto mais para remover alguns pedidos para agora",
-        "nl": "Minimum smart home apparaat query interval is nu vijf minuten en geen minuut meer om verzoeken te verwijderen voor nu",
-        "fr": "L'intervalle minimal de requête de l'appareil à domicile intelligent est maintenant 5 minutes et pas 1 minute plus pour supprimer certaines demandes pour l'instant",
-        "it": "Intervallo di query del dispositivo domestico minimo intelligente è ora 5 minuti e non 1 minuto più per rimuovere alcune richieste per ora",
-        "es": "El intervalo mínimo de consulta de dispositivo inteligente es ahora 5 minutos y no 1 minuto más para eliminar algunas solicitudes por ahora",
-        "pl": "Minimum inteligentne przedziały na urządzenie domowe to obecnie 5 minut i nie 1 minuta, aby usunąć niektóre żądania",
-        "zh-cn": "最低智能家用具的间隔时间现在为5分钟,而不是1分钟多,以取消目前的一些要求。"
       }
     },
     "keywords": [

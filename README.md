@@ -476,8 +476,7 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.19.0 (2022-08-04)
 * (Apollon77) Preserve Names as soon as it is an App type in general
 * (Apollon77) Enhance checks and safeguards for polling intervals
 * (Apollon77) Check for restart intervals that do not make sense and stop adapter if detected
