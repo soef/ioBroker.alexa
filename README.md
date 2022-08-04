@@ -479,6 +479,9 @@ Then it should work again
 
 ### __WORK IN PROGRESS__
 * (Apollon77) Preserve Names as soon as it is an App type in general
+* (Apollon77) Enhance checks and safeguards for polling intervals
+* (Apollon77) Check for restart intervals that do not make sense and stop adapter if detected
+* (Apollon77) Add additional crash-loop detection
 
 ### 3.18.6 (2022-07-19)
 * (Apollon77) Fix deviceStop sequence command

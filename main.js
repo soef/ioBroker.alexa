@@ -1,6 +1,7 @@
 ﻿/* eslint-disable no-unused-vars */
 const Alexa = require('alexa-remote2');
 const path = require('path');
+const fs = require('fs');
 const os = require('os');
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const shObjects = require('./lib/smarthomedevices.js');
@@ -189,6 +190,7 @@ const unknownDeviceWarnings = {};
 
 let proxyUrl = null;
 
+let resetCrashCheckerTimeout = null;
 let updateStateTimer;
 let updateHistoryTimer;
 let updateConfigurationTimer;
@@ -225,6 +227,17 @@ const objectQueue = [];
 
 const existingStates = {};
 const adapterObjects = {};
+
+const crashCheckFileName = path.join(__dirname, 'crashCheck.json');
+let isCrashStop = false;
+const useCrashCheck = true; // Only disable for development!
+
+process.on('uncaughtException', () => {
+    isCrashStop = true;
+});
+process.on('unhandledRejection', () => {
+    isCrashStop = true;
+});
 
 function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
     let callback = null;
@@ -570,6 +583,18 @@ function startAdapter(options) {
 
     adapter.on('unload', (callback) => {
         stopped = true;
+        if (resetCrashCheckerTimeout) {
+            clearTimeout(resetCrashCheckerTimeout);
+            if (!isCrashStop) {
+                try {
+                    if (fs.existsSync(crashCheckFileName)) {
+                        fs.unlinkSync(crashCheckFileName);
+                    }
+                } catch (err) {
+                    adapter.log.error(`Error deleting crashCheck file: ${err.message}`);
+                }
+            }
+        }
         updateSmartHomeDevicesTimer && clearTimeout(updateSmartHomeDevicesTimer);
         updateStateTimer && clearTimeout(updateStateTimer);
         updateConfigurationTimer && clearTimeout(updateConfigurationTimer);
@@ -628,36 +653,29 @@ function startAdapter(options) {
 
     adapter.on('ready', () => {
         if (adapter.supportsFeature && adapter.supportsFeature('PLUGINS')) {
-            loadExistingAccessories(main);
+            loadExistingAccessories(checkInstanceObject(main));
         }
         else {
-            initSentry(() => loadExistingAccessories(main));
+            initSentry(() => loadExistingAccessories(checkInstanceObject(main)));
         }
     });
 
     return adapter;
 }
 
-process.on('SIGINT', () => {
-    if (alexa) {
-        alexa.stop();
-    }
-});
-
-process.on('SIGTERM', () => {
-    if (alexa) {
-        alexa.stop();
-    }
-});
-
-process.on('uncaughtException', err => {
-    if (adapter && adapter.log) {
-        adapter.log.warn(`Exception: ${err}`);
-    }
-    if (alexa) {
-        alexa.stop();
-    }
-});
+function checkInstanceObject(callback) {
+    adapter.getForeignObject('system.adapter.' + adapter.namespace, (err, obj) => {
+        if (obj && obj.common && obj.common.restartSchedule) {
+            const cronParts = obj.common.restartSchedule.split(' ');
+            if (cronParts[0].startsWith('*') || cronParts[1].startsWith('*') || (cronParts.length === 6 && cronParts[2].startsWith('*'))) {
+                adapter.log.error(`Restart schedule "${obj.common.restartSchedule}" is too often, please set a restart schedule that makes sense. Disabling adapter now.`);
+                adapter.terminate && adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+                return;
+            }
+        }
+        callback();
+    });
+}
 
 function processMessage(msg) {
     adapter.log.debug(`Message: ${JSON.stringify(msg)}`);
@@ -771,10 +789,11 @@ function scheduleStatesUpdate(delay) {
         clearTimeout(updateStateTimer);
     }
     if (delay === undefined) {
-        if (adapter.config.updateStateInterval === 0) return;
+        if (!adapter.config.updateStateInterval) return;
         delay = adapter.config.updateStateInterval * 1000;
         if (wsMqttConnected) delay = 60 * 60 * 1000; // 1h
     }
+    delay = Math.max(delay, 300000);
     updateStateTimer = setTimeout(() => {
         if (stopped) return;
         updateStateTimer = null;
@@ -1123,7 +1142,7 @@ function updateDeviceConfigurationStates(callback) {
             if (adapter.config.updateConfigurationInterval > 0) {
                 updateConfigurationTimer = setTimeout(() => {
                     updateDeviceConfigurationStates();
-                }, adapter.config.updateConfigurationInterval * 1000);
+                }, Math.max(adapter.config.updateConfigurationInterval * 1000, 300000));
             }
             callback && callback();
         });
@@ -1211,7 +1230,7 @@ function scheduleNextSmarthomeDeviceQuery() {
             updateSmartHomeDevicesTimer = null;
             if (stopped) return;
 
-            queryAllSmartHomeDevices(true, true);
+            queryAllSmartHomeDevices(false, true);
             /*alexa.getSmarthomeDevices((err, res) => {
                 let all = {};
                 if (
@@ -1235,7 +1254,7 @@ function scheduleNextSmarthomeDeviceQuery() {
                 }
                 queryAllSmartHomeDevices(true, true);
             });*/
-        }, adapter.config.updateSmartHomeDevicesInterval * 1000);
+        }, Math.max(adapter.config.updateSmartHomeDevicesInterval * 1000, 300000));
     }
 }
 
@@ -1295,7 +1314,7 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
             reqArr.push(...generateApplianceQueryArray(applianceId, false));
             if (!initial) {
                 let delay = 600000;
-                if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 60000;
+                if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 300000;
                 shQueryBlocker[applianceId] = setTimeout(() => {
                     shQueryBlocker[applianceId] = null;
                 }, delay);
@@ -2000,8 +2019,8 @@ function createSmarthomeStates(callback) {
                                         adapter.log.warn(`Smart Home device request blocked for ${applianceId}`);
                                         return;
                                     }
-                                    let delay = 300000;
-                                    if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 60000;
+                                    let delay = 600000;
+                                    if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 300000;
                                     shQueryBlocker[applianceId] = setTimeout(() => {
                                         shQueryBlocker[applianceId] = null;
                                     }, delay);
@@ -2123,6 +2142,7 @@ function scheduleHistoryUpdate(delay) {
     }
     if (wsMqttConnected) return;
     if (stopped) return;
+    delay = Math.max(delay, 60000);
     updateHistoryTimer = setTimeout(() => {
         updateHistoryTimer = null;
         if (stopped) return;
@@ -4424,6 +4444,40 @@ function loadExistingAccessories(callback) {
 
 
 function main() {
+    if (useCrashCheck) {
+        let crashCheck = {
+            startCounter: 0
+        };
+        try {
+            if (fs.existsSync(crashCheckFileName)) {
+                crashCheck = JSON.parse(fs.readFileSync(crashCheckFileName, 'utf8'));
+            }
+        } catch (err) {
+            adapter.log.error(`Error reading crashCheck file: ${err.message}`);
+        }
+        crashCheck.startCounter++;
+        try {
+            fs.writeFileSync(crashCheckFileName, JSON.stringify(crashCheck));
+        } catch (err) {
+            adapter.log.error(`Error writing crashCheck file: ${err.message}`);
+        }
+
+        if (crashCheck.startCounter > 3) {
+            crashCheck.startCounter = 2;
+            try {
+                fs.writeFileSync(crashCheckFileName, JSON.stringify(crashCheck));
+            } catch (err) {
+                adapter.log.error(`Error writing crashCheck file: ${err.message}`);
+            }
+            adapter.log.error('Adapter seems to have issues and crashed three times in a row. Disabling!! Please start again and check logs.');
+            setTimeout(() => {
+                isCrashStop = true; // Do not remove crash file
+                adapter.terminate && adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            }, 1000);
+            return;
+        }
+    }
+
     if (!adapter.config.proxyOwnIp) {
         const ifaces = os.networkInterfaces();
         for (const eth of Object.keys(ifaces)) {
@@ -4472,36 +4526,60 @@ function main() {
         apiUserAgentPostfix: `ioBrokerAlexa2/${require(path.join(__dirname, 'package.json')).version}`
     };
     adapter.config.updateHistoryInterval = parseInt(adapter.config.updateHistoryInterval, 10);
-    if ((adapter.config.updateHistoryInterval !== 0 || isNaN(adapter.config.updateHistoryInterval)) && adapter.config.updateHistoryInterval < 60) {
+    if (isNaN(adapter.config.updateHistoryInterval)) {
+        adapter.config.updateHistoryInterval = 0;
+    }
+    if (adapter.config.updateHistoryInterval !== 0 && adapter.config.updateHistoryInterval < 60) {
         adapter.config.updateHistoryInterval = 60 + Math.floor(Math.random() * 60);
         adapter.log.info(`Update History Interval is too low, set to ${adapter.config.updateHistoryInterval}s`);
+    }
+    if (adapter.config.updateHistoryInterval !== 0) {
+        adapter.config.updateHistoryInterval = Math.max(adapter.config.updateHistoryInterval, 60);
     }
     adapter.log.debug(`Update History Interval: ${adapter.config.updateHistoryInterval !== 0 ? `${adapter.config.updateHistoryInterval}s` : 'disabled'}`);
 
     adapter.config.updateStateInterval = parseInt(adapter.config.updateStateInterval, 10);
-    if ((adapter.config.updateStateInterval !== 0 || isNaN(adapter.config.updateStateInterval)) && adapter.config.updateStateInterval < 300) {
+    if (isNaN(adapter.config.updateStateInterval)) {
+        adapter.config.updateStateInterval = 0;
+    }
+    if (adapter.config.updateStateInterval !== 0 && adapter.config.updateStateInterval < 300) {
         adapter.config.updateStateInterval = 300 + Math.floor(Math.random() * 60);
         adapter.log.info(`Update Device State Interval is too low, set to ${adapter.config.updateStateInterval}s`);
     } else if (adapter.config.updateStateInterval !== 0) {
         adapter.config.updateStateInterval += Math.floor(Math.random() * 10);
     }
+    if (adapter.config.updateStateInterval !== 0) {
+        adapter.config.updateStateInterval = Math.max(adapter.config.updateStateInterval, 300);
+    }
     adapter.log.debug(`Update Device State Interval: ${adapter.config.updateStateInterval !== 0 ? `${adapter.config.updateStateInterval}s` : 'disabled'}`);
 
     adapter.config.updateSmartHomeDevicesInterval = parseInt(adapter.config.updateSmartHomeDevicesInterval, 10);
-    if ((adapter.config.updateSmartHomeDevicesInterval !== 0 || isNaN(adapter.config.updateSmartHomeDevicesInterval)) && adapter.config.updateSmartHomeDevicesInterval < 300) {
+    if (isNaN(adapter.config.updateSmartHomeDevicesInterval)) {
+        adapter.config.updateSmartHomeDevicesInterval = 0;
+    }
+    if (adapter.config.updateSmartHomeDevicesInterval !== 0 && adapter.config.updateSmartHomeDevicesInterval < 300) {
         adapter.config.updateSmartHomeDevicesInterval = 300 + Math.floor(Math.random() * 60);
         adapter.log.info(`Update SmartHome Devices Interval is too low, set to ${adapter.config.updateSmartHomeDevicesInterval}s`);
     } else if (adapter.config.updateSmartHomeDevicesInterval !== 0) {
         adapter.config.updateSmartHomeDevicesInterval += Math.floor(Math.random() * 10);
     }
+    if (adapter.config.updateSmartHomeDevicesInterval !== 0) {
+        adapter.config.updateSmartHomeDevicesInterval = Math.max(adapter.config.updateSmartHomeDevicesInterval, 300);
+    }
     adapter.log.debug(`Update SmartHome Devices Interval: ${adapter.config.updateSmartHomeDevicesInterval !== 0 ? `${adapter.config.updateSmartHomeDevicesInterval}s` : 'disabled'}`);
 
     adapter.config.updateConfigurationInterval = parseInt(adapter.config.updateConfigurationInterval, 10);
-    if ((adapter.config.updateConfigurationInterval !== 0 || isNaN(adapter.config.updateConfigurationInterval)) && adapter.config.updateConfigurationInterval < 300) {
+    if (isNaN(adapter.config.updateConfigurationInterval)) {
+        adapter.config.updateConfigurationInterval = 0;
+    }
+    if (adapter.config.updateConfigurationInterval !== 0 && adapter.config.updateConfigurationInterval < 300) {
         adapter.config.updateConfigurationInterval = 3600 + Math.floor(Math.random() * 60);
         adapter.log.info(`Update Devices Configuration Interval is too low, set to ${adapter.config.updateConfigurationInterval}s`);
     } else if (adapter.config.updateConfigurationInterval !== 0) {
         adapter.config.updateConfigurationInterval += Math.floor(Math.random() * 10);
+    }
+    if (adapter.config.updateConfigurationInterval !== 0) {
+        adapter.config.updateConfigurationInterval = Math.max(adapter.config.updateConfigurationInterval, 300);
     }
     adapter.log.debug(`Update Devices Configuration Interval: ${adapter.config.updateConfigurationInterval !== 0 ? `${adapter.config.updateConfigurationInterval}s` : 'disabled'}`);
 
@@ -4540,7 +4618,7 @@ function main() {
     });
 
     alexa.on('ws-error', (error) => {
-        adapter.log.info(`Alexa-Push-Connection Error: ${error}`);
+        adapter.log.info(`Alexa-Push-Connection Error: ${error && error.message ? error.message :  error}`);
     });
 
     alexa.on('ws-unknown-message', (incomingMsg) => {
@@ -4907,6 +4985,16 @@ function main() {
                                                             updatePlayerStatus( () => {
                                                                 adapter.log.info('Initialization Done ...');
                                                                 scheduleStatesUpdate();
+
+                                                                if (useCrashCheck) {
+                                                                    resetCrashCheckerTimeout = setTimeout(() => {
+                                                                        try {
+                                                                            fs.unlinkSync(crashCheckFileName);
+                                                                        } catch (err) {
+                                                                            adapter.log.error(`Error deleting crashCheck file: ${err.message}`);
+                                                                        }
+                                                                    }, 10 * 60 * 1000);
+                                                                }
                                                             });
                                                         });
                                                     });
