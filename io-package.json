@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.19.1",
+    "version": "3.19.2",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.19.2": {
+        "en": "Fix Alarm creation when just providing time and it is for next day",
+        "de": "Alarm-Erstellung, wenn nur Zeit zur Verfügung gestellt und es ist für den nächsten Tag",
+        "ru": "Исправьте создание тревоги когда как раз обеспечивая время и оно на следующий день",
+        "pt": "Corrigir a criação de alarme ao fornecer tempo e é para o dia seguinte",
+        "nl": "Vertaling:",
+        "fr": "Réparer la création d'alarme quand il suffit de fournir du temps et c'est pour le lendemain",
+        "it": "Fissare la creazione di allarme quando solo fornire il tempo ed è per il giorno successivo",
+        "es": "Fijar la creación de Alarma cuando sólo proporciona tiempo y es para el día siguiente",
+        "pl": "Fix Alarm - tworzenie, kiedy tylko daje czas i jest przez następne dni",
+        "zh-cn": "在提供时间时,创设ix Alarm"
+      },
       "3.19.1": {
         "en": "Fix retry handling",
         "de": "Retry Handling",
@@ -109,18 +121,6 @@
         "es": "Activar comandos de nuevo para aplicaciones con tipo A2TF17PFR55MTB - sólo funcionará a veces como parece",
         "pl": "Wznowione polecenia z A2TF17PFR55MTB mogą działać niekiedy tylko w przypadku, gdy wydaje się to być",
         "zh-cn": "对A2 TF17PFR55B等类型的申请,连带的指挥将只是在似乎看来工作。"
-      },
-      "3.18.1": {
-        "en": "Optimize Handling when push connection could not be established",
-        "de": "Optimieren Sie die Handhabung, wenn keine Push-Verbindung hergestellt werden konnte",
-        "ru": "Оптимизация обработки при нажатии соединения не может быть установлена",
-        "pt": "Otimizar o manuseio quando a conexão push não pôde ser estabelecida",
-        "nl": "Optimiliseer Handling wanneer de verbinding niet kan worden vastgesteld",
-        "fr": "Optimiser la manipulation lorsque la connexion push ne peut être établie",
-        "it": "Ottimizzare la gestione quando la connessione di spinta non potrebbe essere stabilita",
-        "es": "Optimize Handling cuando la conexión de empuje no se puede establecer",
-        "pl": "Optimizację Handlingu, gdy nie można było utworzyć połączenia push",
-        "zh-cn": "如果不建立推动联系,就能减少浪费"
       }
     },
     "keywords": [
