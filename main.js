@@ -228,7 +228,7 @@ const objectQueue = [];
 const existingStates = {};
 const adapterObjects = {};
 
-const crashCheckFileName = path.join(__dirname, 'crashCheck.json');
+let crashCheckFileName;
 let isCrashStop = false;
 const useCrashCheck = true; // Only disable for development!
 
@@ -4444,6 +4444,7 @@ function loadExistingAccessories(callback) {
 
 
 function main() {
+    crashCheckFileName = path.join(__dirname, `crashCheck-${adapter.namespace}.json`);
     if (useCrashCheck) {
         let crashCheck = {
             startCounter: 0
