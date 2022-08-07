@@ -231,6 +231,7 @@ const adapterObjects = {};
 let crashCheckFileName;
 let isCrashStop = false;
 const useCrashCheck = true; // Only disable for development!
+let initDone = false;
 
 process.on('uncaughtException', () => {
     isCrashStop = true;
@@ -633,7 +634,9 @@ function startAdapter(options) {
     });
 
     adapter.on('objectChange', (id, object) => {
+        if (!initDone) return;
         adapter.log.debug(`Object changed ${id}: ${JSON.stringify(object)}`);
+        if (!id || !id.startsWith(`${adapter.namespace}.Echo-Devices.`)) return;
         const ar = id.split('.');
         if (ar[2] === 'Echo-Devices' && ar.length === 4) {
             if (object === null) {
@@ -641,7 +644,7 @@ function startAdapter(options) {
                 return;
             }
             const device = alexa.serialNumbers[ar[3]];
-            if (device && object && object.common && object.common.name) {
+            if (device && object && object.common && object.common.name && device._name && object.common.name !== device._name) {
                 if (typeof device.rename === 'function') device.rename(object.common.name);
             }
         }
@@ -4591,7 +4594,6 @@ function main() {
         adapter.config.synchronizeSmartHomeDevices = true;
     }
 
-    let initDone = false;
     let connectAfterDisconnect = false;
 
     alexa = new Alexa();
