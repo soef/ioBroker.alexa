@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.19.2",
+    "version": "3.19.3",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.19.3": {
+        "en": "Fix crash check with multiple adapter instances",
+        "de": "Crash-Check mit mehreren Adapterinstanzen beheben",
+        "ru": "Исправление проверки аварий с несколькими примерами адаптера",
+        "pt": "Corrigir verificação de falhas com várias instâncias do adaptador",
+        "nl": "Vertaling:",
+        "fr": "Contrôle de crash fixe avec plusieurs instances adaptatives",
+        "it": "Fissare il controllo crash con più istanze dell'adattatore",
+        "es": "Control de fallo fijo con múltiples instancias de adaptador",
+        "pl": "Fix sprawdza się z wieloma aplikacjami",
+        "zh-cn": "Fix 事故检查"
+      },
       "3.19.2": {
         "en": "Fix Alarm creation when just providing time and it is for next day",
         "de": "Alarm-Erstellung, wenn nur Zeit zur Verfügung gestellt und es ist für den nächsten Tag",
@@ -109,18 +121,6 @@
         "es": "Fix doNoDisturb y doNoDisturb para Todos los dispositivos\nActualización no altera el estado después de establecerse para todos los dispositivos\npreservar un nombre cambiado para un objeto de dispositivo \"Este dispositivo\"",
         "pl": "Fix do NotDisturb i do NotDisturb dla wszystkich urządzeń\nNie zaniepokojenie statusu po założeniu wszystkich urządzeń\nzachowanie zmienionej nazwy na „Ten urządzenie” obiekt",
         "zh-cn": "Fix do Notdiss涡轮和NotDis涡轮机对所有装置的干扰\n所有装置的更新不干扰地位\n保留“这种装置”装置的名称的更改"
-      },
-      "3.18.2": {
-        "en": "Enable commands again for Apps with type A2TF17PFR55MTB - will only work sometimes as it seems",
-        "de": "Befehle wieder aktivieren für Apps mit Typ A2TF17PFR55MTB - wird nur manchmal funktionieren, wie es scheint",
-        "ru": "Включите команды снова для приложений с типом A2TF17PFR55MTB - будет работать только иногда, как кажется",
-        "pt": "Habilite comandos novamente para Apps com tipo A2TF17PFR55MTB - só funcionará às vezes como parece",
-        "nl": "Weer bevoegd voor apps met type A2TF17PFR55MTB zal soms alleen werken als het lijkt alsof",
-        "fr": "Activer les commandes de nouveau pour les applications avec le type A2TF17PFR55MTB - ne fonctionnera que parfois comme il semble",
-        "it": "Attivare nuovamente comandi per Apps con tipo A2TF17PFR55MTB - funzionerà solo a volte come sembra",
-        "es": "Activar comandos de nuevo para aplicaciones con tipo A2TF17PFR55MTB - sólo funcionará a veces como parece",
-        "pl": "Wznowione polecenia z A2TF17PFR55MTB mogą działać niekiedy tylko w przypadku, gdy wydaje się to być",
-        "zh-cn": "对A2 TF17PFR55B等类型的申请,连带的指挥将只是在似乎看来工作。"
       }
     },
     "keywords": [
