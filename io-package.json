@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.19.3",
+    "version": "3.19.4",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.19.4": {
+        "en": "Prevent unwanted device Name updates",
+        "de": "Unerwünschtes Gerät verhindern Name Updates",
+        "ru": "Предотвращение нежелательного устройства Обновление имени",
+        "pt": "Impedir dispositivo indesejado Atualizações de nome",
+        "nl": "Vertaling: Naam updates",
+        "fr": "Prévenir un dispositif indésirable Mises à jour des noms",
+        "it": "Prevenire dispositivo indesiderato Aggiornamenti del nome",
+        "es": "Evitar el dispositivo no deseado Actualizaciones de nombres",
+        "pl": "Przygotowanie niepożądane aktualizacja",
+        "zh-cn": "预防意外装置 姓名最新情况"
+      },
       "3.19.3": {
         "en": "Fix crash check with multiple adapter instances",
         "de": "Crash-Check mit mehreren Adapterinstanzen beheben",
@@ -109,18 +121,6 @@
         "es": "Caso de accidente fijo reportado por Sentry\nAñadir imagen para Fire Cube",
         "pl": "Sprawa rozbicia Fixa doniesiona przez firmę Sentry\nZdjęcie Fire Cube",
         "zh-cn": "Sentry所报告的六例事故\nFire Cube的添加形象"
-      },
-      "3.18.3": {
-        "en": "Fix doNotDisturb and doNotDisturb for All devices\nUpdate do not disturb status after set for all devices\npreserve a changed name for a \"This device\" device object",
-        "de": "Fix doNotDisturb und doNotDisturb für alle Geräte\nUpdate stört nicht den Status nach dem Set für alle Geräte\neinen geänderten Namen für ein Gerät-Objekt \"This device\" erhalten",
-        "ru": "Fix doNotDisturb и doNotDisturb для всех устройств\nОбновление не нарушает статус после установки для всех устройств\nсохранить измененное имя для объекта устройства \"Это устройство\"",
-        "pt": "Fix doNotDisturb e doNotDisturb para Todos os dispositivos\nAtualização não perturba o status após o conjunto para todos os dispositivos\npreservar um nome alterado para um objeto de dispositivo \"Este dispositivo\"",
-        "nl": "Vertaling:\nQuality over Quantity (QoQ) Releases Vertaling:\nbewaar een andere naam voor een \"Dit apparaat\" voorwerp",
-        "fr": "Fix doNotDisturb et doNotDisturb pour tous les appareils\nLa mise à jour ne perturbe pas l'état après défini pour tous les appareils\nconserver un nom modifié pour un objet \"Ce dispositif\"",
-        "it": "Fix doNotDisturb e doNotDisturb per tutti i dispositivi\nAggiornamento non disturbare lo stato dopo impostato per tutti i dispositivi\nconservare un nome modificato per un oggetto dispositivo \"Questo dispositivo\"",
-        "es": "Fix doNoDisturb y doNoDisturb para Todos los dispositivos\nActualización no altera el estado después de establecerse para todos los dispositivos\npreservar un nombre cambiado para un objeto de dispositivo \"Este dispositivo\"",
-        "pl": "Fix do NotDisturb i do NotDisturb dla wszystkich urządzeń\nNie zaniepokojenie statusu po założeniu wszystkich urządzeń\nzachowanie zmienionej nazwy na „Ten urządzenie” obiekt",
-        "zh-cn": "Fix do Notdiss涡轮和NotDis涡轮机对所有装置的干扰\n所有装置的更新不干扰地位\n保留“这种装置”装置的名称的更改"
       }
     },
     "keywords": [

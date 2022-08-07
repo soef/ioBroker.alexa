@@ -476,8 +476,7 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.19.4 (2022-08-07)
 * (Apollon77) Prevent unwanted device Name updates
 
 ### 3.19.3 (2022-08-07)
