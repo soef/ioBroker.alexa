@@ -39,15 +39,15 @@
     "platform": "Javascript/Node.js",
     "news": {
       "3.19.5": {
-        "en": "Fix doNotDevice for groups",
-        "de": "Fehler NichtGerät für Gruppen",
-        "ru": "Fix сделать NotDevice для групп",
-        "pt": "Fixo do NotDevice para grupos",
-        "nl": "_ Niet Device voor groepen",
-        "fr": "Fixe do NotDevice pour les groupes",
+        "en": "Fix doNotDisturb for groups",
+        "de": "Fehler doNotDisturb für Gruppen",
+        "ru": "Fix сделать doNotDisturb для групп",
+        "pt": "Fixo doNotDisturb para grupos",
+        "nl": "_ doNotDisturb voor groepen",
+        "fr": "Fixe doNotDisturb pour les groupes",
         "it": "Riparare Consigli per gruppi",
-        "es": "Corrección do No Dispositivo para grupos",
-        "pl": "Fixa do Fixa NotDevice for groups (ang.)",
+        "es": "Corrección do doNotDisturb",
+        "pl": "Fixa do Fixa doNotDisturb for groups (ang.)",
         "zh-cn": "Fix do D. 对团体不予赔偿"
       },
       "3.19.4": {

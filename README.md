@@ -477,7 +477,7 @@ Then it should work again
 
 ## Changelog
 ### 3.19.5 (2022-08-09)
-* (Apollon77) Fix doNotDevice for groups
+* (Apollon77) Fix doNotDisturb for groups
 
 ### 3.19.4 (2022-08-07)
 * (Apollon77) Prevent unwanted device Name updates
