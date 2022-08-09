@@ -476,8 +476,7 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.19.5 (2022-08-09)
 * (Apollon77) Fix doNotDevice for groups
 
 ### 3.19.4 (2022-08-07)
