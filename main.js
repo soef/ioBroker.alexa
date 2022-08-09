@@ -2791,8 +2791,6 @@ function createStatesForDevice(device, additionalDeviceData) {
                                 }
                                 setOrUpdateObject(`${devId}.Commands.doNotDisturb`, {common: {type: 'mixed', role: 'state'}}, undefined, function (device, value) {
 
-                                    const deviceList = [];
-
                                     if (value === 'true') {
                                         value = true;
                                     } else if (value === 'false') {
@@ -2803,12 +2801,13 @@ function createStatesForDevice(device, additionalDeviceData) {
                                         value = parseInt(value, 10);
                                     }
 
+                                    const deviceList = [];
                                     iterateMultiroom(device, (iteratorDevice, nextCallback) => {
                                         deviceList.push(iteratorDevice.serialNumber);
                                         return nextCallback && nextCallback();
                                     }, () => {
                                         if (!deviceList.length) return;
-                                        alexa.sendSequenceCommand(device.serialNumber, 'deviceDoNotDisturb', value, alexa.ownerCustomerId, (err, res) => {
+                                        alexa.sendSequenceCommand(deviceList, 'deviceDoNotDisturb', value, alexa.ownerCustomerId, (err, res) => {
                                             if (err) {
                                                 adapter.log.error(`Error setting doNotDisturb for ${JSON.stringify(deviceList)}: ${err}`);
                                             } else {
