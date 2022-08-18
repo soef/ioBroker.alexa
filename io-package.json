@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.19.5",
+    "version": "3.19.6",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.19.6": {
+        "en": "Fix doNotDisturb when using a time string",
+        "de": "Fehler NichtDisturb bei Verwendung eines Zeitstrings",
+        "ru": "Fix сделать NotDisturb при использовании строки времени",
+        "pt": "Fixo do NotDisturb ao usar uma string de tempo",
+        "nl": "_ Niet elke dag als je een tijdstip gebruikt",
+        "fr": "Fixe do NotDisturb lors de l'utilisation d'une chaîne temporelle",
+        "it": "Riparare NotDisturb quando si utilizza una stringa di tempo",
+        "es": "Corrección do No molestar al usar una cadena de tiempo",
+        "pl": "Fixa do Fixa NotDisturb kiedy używa czasu smyczki",
+        "zh-cn": "Fix do 在使用时间包时,不设歧见"
+      },
       "3.19.5": {
         "en": "Fix doNotDisturb for groups",
         "de": "Fehler doNotDisturb für Gruppen",
@@ -109,18 +121,6 @@
         "es": "Preserve Nombres tan pronto como sea un tipo de aplicación en general\nMejorar los controles y las salvaguardias para los intervalos de votación\nCompruebe los intervalos de reinicio que no tienen sentido y detenga el adaptador si se detecta\nAñadir detección adicional de fallos",
         "pl": "Nazwy preserve są tak szybko, jak to jest typ App\nEnhance sprawdza i schronienie dla odstępów zanieczyszczeń\nCheck dla przesunięcia odstępów, które nie mają sensu i stopa adapter, jeśli wykrywa się wykrywcy\nDodać dodatkową detekcję pętli",
         "zh-cn": "一. 保留国一俟是普遍适用的名称。\n加强对投票的检查和保障\n如果发现有过失感和停止适应的间隔时间,检查时间不长。\n增加事故侦测"
-      },
-      "3.18.6": {
-        "en": "Fix deviceStop sequence command",
-        "de": "Fix Gerät Befehl der Befehlsfolge stoppen",
-        "ru": "Fix устройство Прекратите команду последовательности",
-        "pt": "Dispositivo de fixação Pare o comando de sequência",
-        "nl": "Vertaling: Stop de volgorde",
-        "fr": "Dispositif fixe Arrêtez la commande",
-        "it": "Dispositivo di fissaggio Stop comando sequenza",
-        "es": "Dispositivo de fijación Alto orden de secuencia",
-        "pl": "Fix Zakończenie sekwencji",
-        "zh-cn": "固定装置 战时指挥"
       }
     },
     "keywords": [
