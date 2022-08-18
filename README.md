@@ -476,6 +476,10 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Fix doNotDisturb when using a time string
+
 ### 3.19.5 (2022-08-09)
 * (Apollon77) Fix doNotDisturb for groups
 
