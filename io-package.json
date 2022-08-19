@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.19.6",
+    "version": "3.19.7",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.19.7": {
+        "en": "Fix doNotDisturb when using a time string",
+        "de": "Fehler NichtDisturb bei Verwendung eines Zeitstrings",
+        "ru": "Fix сделать NotDisturb при использовании строки времени",
+        "pt": "Fixo do NotDisturb ao usar uma string de tempo",
+        "nl": "_ Niet elke dag als je een tijdstip gebruikt",
+        "fr": "Fixe do NotDisturb lors de l'utilisation d'une chaîne temporelle",
+        "it": "Riparare NotDisturb quando si utilizza una stringa di tempo",
+        "es": "Corrección do No molestar al usar una cadena de tiempo",
+        "pl": "Fixa do Fixa NotDisturb kiedy używa czasu smyczki",
+        "zh-cn": "Fix do 在使用时间包时,不设歧见"
+      },
       "3.19.6": {
         "en": "Fix doNotDisturb when using a time string",
         "de": "Fehler NichtDisturb bei Verwendung eines Zeitstrings",
@@ -109,18 +121,6 @@
         "es": "Manejo de repostaje fijo",
         "pl": "Fix retry",
         "zh-cn": "九. 固定的重新处理"
-      },
-      "3.19.0": {
-        "en": "Preserve Names as soon as it is an App type in general\nEnhance checks and safeguards for polling intervals\nCheck for restart intervals that do not make sense and stop adapter if detected\nAdd additional crash-loop detection",
-        "de": "Reservieren Sie Namen, sobald es ein App-Typ im Allgemeinen ist\nVerbessern Sie die Überprüfungen und Sicherheitsvorkehrungen für Abfragen\nPrüfen Sie für Neustart-Intervalle, die keinen Sinn und Stopp-Adapter ergeben, wenn erkannt\nZusätzliche Crash-Loop-Erkennung hinzufügen",
-        "ru": "Сохранить имена, как только это тип приложения в целом\nУлучшение проверок и гарантий для интервалов опроса\nПроверьте перезагрузочные интервалы, которые не имеют смысла и остановки адаптера, если обнаружено\nДобавьте дополнительное обнаружение сбоев",
-        "pt": "Preserve nomes assim que é um tipo de App em geral\nMelhorar verificações e salvaguardas para intervalos de votação\nVerifique para intervalos de reinício que não fazem sentido e pare o adaptador se detectado\nAdicionar detecção adicional de falhas",
-        "nl": "Bewaar Names zodra het een App-type is in het algemeen\nEnhance checks en bewakers voor het vervullen van interval\nControleer op herstelmiddelen die niet logisch zijn en stoppen met adapter als ze ontdekt worden\nVoeg extra crash-loop detectie toe",
-        "fr": "Préserver Noms dès qu'il s'agit d'un type App en général\nAméliorer les contrôles et les garanties pour les intervalles de vote\nVérifiez les intervalles de redémarrage qui n'ont pas de sens et de stop adaptateur si détecté\nAjout d'une détection de fuite supplémentaire",
-        "it": "Preservare i nomi non appena si tratta di un tipo di App in generale\nMigliorare i controlli e le garanzie per gli intervalli di inquinamento\nControllare gli intervalli di riavvio che non hanno senso e interrompere l'adattatore se rilevato\nAggiungi ulteriore rilevamento crash-loop",
-        "es": "Preserve Nombres tan pronto como sea un tipo de aplicación en general\nMejorar los controles y las salvaguardias para los intervalos de votación\nCompruebe los intervalos de reinicio que no tienen sentido y detenga el adaptador si se detecta\nAñadir detección adicional de fallos",
-        "pl": "Nazwy preserve są tak szybko, jak to jest typ App\nEnhance sprawdza i schronienie dla odstępów zanieczyszczeń\nCheck dla przesunięcia odstępów, które nie mają sensu i stopa adapter, jeśli wykrywa się wykrywcy\nDodać dodatkową detekcję pętli",
-        "zh-cn": "一. 保留国一俟是普遍适用的名称。\n加强对投票的检查和保障\n如果发现有过失感和停止适应的间隔时间,检查时间不长。\n增加事故侦测"
       }
     },
     "keywords": [
