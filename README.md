@@ -476,8 +476,7 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.19.8 (2022-09-07)
 * (Apollon77) Add safeguard for too high intervals
 
 ### 3.19.7 (2022-08-19)

@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.19.7",
+    "version": "3.19.8",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.19.8": {
+        "en": "Add safeguard for too high intervals",
+        "de": "Schutz für zu hohe Intervalle hinzufügen",
+        "ru": "Добавьте защиту для слишком высоких интервалов",
+        "pt": "Adicionar proteção para intervalos muito altos",
+        "nl": "Bescherming toevoegen voor te hoge intervallen",
+        "fr": "Ajouter la sauvegarde pour des intervalles trop élevés",
+        "it": "Aggiungi protezione per intervalli troppo alti",
+        "es": "Añadir salvaguardia para intervalos demasiado altos",
+        "pl": "Zabezpieczony za zbyt wysokie odstępy",
+        "zh-cn": "增加时间太长的保障"
+      },
       "3.19.7": {
         "en": "Fix doNotDisturb when using a time string",
         "de": "Fehler NichtDisturb bei Verwendung eines Zeitstrings",
@@ -109,18 +121,6 @@
         "es": "Fijar la creación de Alarma cuando sólo proporciona tiempo y es para el día siguiente",
         "pl": "Fix Alarm - tworzenie, kiedy tylko daje czas i jest przez następne dni",
         "zh-cn": "在提供时间时,创设ix Alarm"
-      },
-      "3.19.1": {
-        "en": "Fix retry handling",
-        "de": "Retry Handling",
-        "ru": "Fix ретриминг",
-        "pt": "Manuseamento de retrete",
-        "nl": "Vertaling:",
-        "fr": "Manipulation par réarmement",
-        "it": "Risolvere la gestione del processo",
-        "es": "Manejo de repostaje fijo",
-        "pl": "Fix retry",
-        "zh-cn": "九. 固定的重新处理"
       }
     },
     "keywords": [
