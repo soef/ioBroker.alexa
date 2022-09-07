@@ -476,6 +476,10 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Add safeguard for too high intervals
+
 ### 3.19.7 (2022-08-19)
 * (Apollon77) Fix doNotDisturb when using a time string
 

@@ -349,6 +349,7 @@ function deleteObject(id) {
                             adapter.log.info(`${adapterObjects[objId] ? adapterObjects[objId].type : '?'} ${objId} deleted${err}`);
                             if (!err) {
                                 delete adapterObjects[objId];
+                                delete stateChangeTrigger[objId];
                             }
                         });
                     } catch (err) {
@@ -362,6 +363,7 @@ function deleteObject(id) {
                 adapter.log.info(`${obj.type} ${id} deleted (${err})`);
                 if (!err) {
                     delete adapterObjects[id];
+                    delete stateChangeTrigger[id];
                 }
             });
         } catch (err) {
@@ -4539,6 +4541,9 @@ function main() {
     if (adapter.config.updateHistoryInterval !== 0) {
         adapter.config.updateHistoryInterval = Math.max(adapter.config.updateHistoryInterval, 60);
     }
+    if (adapter.config.updateHistoryInterval > 2147482) { // max 2147483647/1000 --> 2147482
+        adapter.config.updateHistoryInterval = 0;
+    }
     adapter.log.debug(`Update History Interval: ${adapter.config.updateHistoryInterval !== 0 ? `${adapter.config.updateHistoryInterval}s` : 'disabled'}`);
 
     adapter.config.updateStateInterval = parseInt(adapter.config.updateStateInterval, 10);
@@ -4553,6 +4558,9 @@ function main() {
     }
     if (adapter.config.updateStateInterval !== 0) {
         adapter.config.updateStateInterval = Math.max(adapter.config.updateStateInterval, 300);
+    }
+    if (adapter.config.updateStateInterval > 2147482) { // max 2147483647/1000 --> 2147482
+        adapter.config.updateStateInterval = 0;
     }
     adapter.log.debug(`Update Device State Interval: ${adapter.config.updateStateInterval !== 0 ? `${adapter.config.updateStateInterval}s` : 'disabled'}`);
 
@@ -4569,6 +4577,9 @@ function main() {
     if (adapter.config.updateSmartHomeDevicesInterval !== 0) {
         adapter.config.updateSmartHomeDevicesInterval = Math.max(adapter.config.updateSmartHomeDevicesInterval, 300);
     }
+    if (adapter.config.updateSmartHomeDevicesInterval > 2147482) { // max 2147483647/1000 --> 2147482
+        adapter.config.updateSmartHomeDevicesInterval = 0;
+    }
     adapter.log.debug(`Update SmartHome Devices Interval: ${adapter.config.updateSmartHomeDevicesInterval !== 0 ? `${adapter.config.updateSmartHomeDevicesInterval}s` : 'disabled'}`);
 
     adapter.config.updateConfigurationInterval = parseInt(adapter.config.updateConfigurationInterval, 10);
@@ -4583,6 +4594,9 @@ function main() {
     }
     if (adapter.config.updateConfigurationInterval !== 0) {
         adapter.config.updateConfigurationInterval = Math.max(adapter.config.updateConfigurationInterval, 300);
+    }
+    if (adapter.config.updateConfigurationInterval > 2147482) { // max 2147483647/1000 --> 2147482
+        adapter.config.updateConfigurationInterval = 0;
     }
     adapter.log.debug(`Update Devices Configuration Interval: ${adapter.config.updateConfigurationInterval !== 0 ? `${adapter.config.updateConfigurationInterval}s` : 'disabled'}`);
 
