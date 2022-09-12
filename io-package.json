@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.19.8",
+    "version": "3.19.9",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,18 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.19.9": {
+        "en": "Receive the correct player status again when musik is stopped",
+        "de": "Erhalten Sie den richtigen Spielerstatus wieder, wenn die Musik gestoppt wird",
+        "ru": "Получить правильный статус игрока снова, когда musik остановлен",
+        "pt": "Receba o status do jogador correto novamente quando musik for parado",
+        "nl": "Ontvang de juiste spelersstatus als Musik stopt",
+        "fr": "Recevez à nouveau le statut correct du joueur lorsque le musik est arrêté",
+        "it": "Ricevi nuovamente lo stato del giocatore corretto quando musik viene fermato",
+        "es": "Recibe el estado correcto del jugador cuando se detiene el musik",
+        "pl": "Odpowiedzialny status gracza ponownie, gdy musik został zatrzymany",
+        "zh-cn": "在Cmusik被阻止后再次获得正确的角色身份"
+      },
       "3.19.8": {
         "en": "Add safeguard for too high intervals",
         "de": "Schutz für zu hohe Intervalle hinzufügen",
@@ -109,18 +121,6 @@
         "es": "Control de fallo fijo con múltiples instancias de adaptador",
         "pl": "Fix sprawdza się z wieloma aplikacjami",
         "zh-cn": "Fix 事故检查"
-      },
-      "3.19.2": {
-        "en": "Fix Alarm creation when just providing time and it is for next day",
-        "de": "Alarm-Erstellung, wenn nur Zeit zur Verfügung gestellt und es ist für den nächsten Tag",
-        "ru": "Исправьте создание тревоги когда как раз обеспечивая время и оно на следующий день",
-        "pt": "Corrigir a criação de alarme ao fornecer tempo e é para o dia seguinte",
-        "nl": "Vertaling:",
-        "fr": "Réparer la création d'alarme quand il suffit de fournir du temps et c'est pour le lendemain",
-        "it": "Fissare la creazione di allarme quando solo fornire il tempo ed è per il giorno successivo",
-        "es": "Fijar la creación de Alarma cuando sólo proporciona tiempo y es para el día siguiente",
-        "pl": "Fix Alarm - tworzenie, kiedy tylko daje czas i jest przez następne dni",
-        "zh-cn": "在提供时间时,创设ix Alarm"
       }
     },
     "keywords": [

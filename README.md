@@ -476,8 +476,7 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.19.9 (2022-09-12)
 * (Apollon77) Receive the correct player status again when musik is stopped
 
 ### 3.19.8 (2022-09-07)
