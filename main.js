@@ -3931,6 +3931,27 @@ function updatePlayerStatus(serialOrName, callback) {
         alexa.getPlayerInfo(device , (err, resPlayer) => {
             if (stopped) return;
             if (err || !resPlayer || !resPlayer.playerInfo) {
+                const lastKnownPlayerState = ((lastPlayerState[device.serialNumber] && lastPlayerState[device.serialNumber].resPlayer && lastPlayerState[device.serialNumber].resPlayer.playerInfo) ? lastPlayerState[device.serialNumber].resPlayer.playerInfo.state : 'UNKNOWN') || 'UNKNOWN';
+                // no player info means no player active
+                const devId = `Echo-Devices.${device.serialNumber}`;
+                adapter.setState(`${devId}.Player.controlPause`, lastKnownPlayerState === 'PAUSED' || (lastKnownPlayerState !== 'PLAYING' && lastKnownPlayerState !== 'FINISHED'), true);
+                adapter.setState(`${devId}.Player.controlPlay`, lastKnownPlayerState === 'PLAYING', true);
+                playingDevices[device.serialNumber] = lastKnownPlayerState === 'PLAYING';
+                adapter.setState(`${devId}.Player.currentState`, lastKnownPlayerState === 'PLAYING', true);
+
+                if ((lastKnownPlayerState !== 'PLAYING' && lastPlayerState[device.serialNumber] && lastPlayerState[device.serialNumber].resPlayer && lastPlayerState[device.serialNumber].resPlayer.playerInfo && lastPlayerState[device.serialNumber].resPlayer.playerInfo.isPlayingInLemur) && device.isMultiroomDevice && device.clusterMembers && playingDevices[device.serialNumber]) { // Played before but now no longer playing in group
+                    device.clusterMembers.forEach(member => {
+                        if (playingDevices[member]) {
+                            return; // Device is updated itself while playing
+                        }
+                        const memberDevice = alexa.find(member);
+                        if (memberDevice && memberDevice.isControllable) {
+                            adapter.setState(`Echo-Devices.${memberDevice.serialNumber}.Player.playingInGroup`, false, true);
+                            adapter.setState(`Echo-Devices.${memberDevice.serialNumber}.Player.playingInGroupId`, null, true);
+                        }
+                    });
+                }
+
                 if (initialDeviceVolumes[device.serialNumber] && device.capabilities.includes('VOLUME_SETTING')) {
                     let volume = initialDeviceVolumes[device.serialNumber].speakerVolume;
                     const muted = initialDeviceVolumes[device.serialNumber].speakerMuted;
@@ -4679,6 +4700,16 @@ function main() {
             clearTimeout(lastPlayerState[device.serialNumber].timeout);
             lastPlayerState[device.serialNumber].timeout = null;
         }
+
+        if (lastPlayerState[device.serialNumber] && lastPlayerState[device.serialNumber].resPlayer && lastPlayerState[device.serialNumber].resPlayer.playerInfo) {
+            lastPlayerState[device.serialNumber].resPlayer.playerInfo.state = data.audioPlayerState;
+        }
+        const devId = `Echo-Devices.${device.serialNumber}`;
+        adapter.setState(`${devId}.Player.controlPause`, data.audioPlayerState !== 'PLAYING' && data.audioPlayerState !== 'FINISHED', true);
+        adapter.setState(`${devId}.Player.controlPlay`, data.audioPlayerState === 'PLAYING', true);
+        playingDevices[device.serialNumber] = data.audioPlayerState === 'PLAYING';
+        adapter.setState(`${devId}.Player.currentState`, data.audioPlayerState === 'PLAYING', true);
+
         schedulePlayerUpdate(device.serialNumber, 1000);
     });
 
