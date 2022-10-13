@@ -51,7 +51,7 @@
     "updateSmartHomeDevicesInterval": "Aktualisierungsintervall für Smart-Home-Geräte",
     "updateSmartHomeDevicesInterval_info": "Bitte dieses Intervall nur aktivieren, wenn die Werte der Smart Home-Geräte wirklich benötigt werden! Nur die intelligenten Home-Geräte, die #includeInIntervalQuery in den Objekten aktiviert haben und aktiv ihren Status auf Amazon-Systeme melden, werden aktualisiert, um sicherzustellen, dass keine Probleme und Kosten auf der Entwicklerseite des Skills entstehen! Bitte das Intervall nicht zu niedrig, setzen, weil sonst Amazon Sie blockieren könnte! Das Minimum ist 300s oder kann auf 0 gesetzt werden, um das Update zu deaktivieren (Update kann manuell über #query Zustände ausgelöst werden).",
     "updateStateInterval": "Datenaktualisierungsinterval (Player-Info ...)",
-    "updateStateInterval_info": "Das allgemeine Datenupdate-Intervall des Geräts definiert, wie oft die Daten von den Amazon-Servern aktualisiert werden sollen. Das Minimum ist 300s oder auf 0 gesetzt, um das Update zu deaktivieren. Setzen Sie das nicht zu niedrig, weil sonst Amazon Sie blockieren könnte! Wenn die Push-Connection festgestellt wird, wird das Update-Intervall auf 60 Minuten eingestellt, wenn es aktiviert ist.",
+    "updateStateInterval_info": "Das allgemeine Datenupdate-Intervall des Geräts definiert, wie oft die Daten von den Amazon-Servern aktualisiert werden sollen. Das Minimum ist 300s oder wird auf 0 gesetzt um das Update zu deaktivieren. Setzen Sie das nicht zu niedrig, weil Amazon Sie sonst blockieren könnte! Wenn die Push-Connection hergestellt ist wird das Update-Intervall auf 60 Minuten gestellt, falls aktiviert.",
     "usePushConnection": "Push-Verbindung verwenden",
     "userAgent": "Eigener User-Agent"
 }
