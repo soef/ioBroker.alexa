@@ -109,7 +109,7 @@ With Commands you can trigger some actions on your Alexa-Device. If you use thes
 | notification | Send text notification to customer of the device | Text, optionally specify title "title;text" |
 | announcement | Play announcement (like speak but with Bing before text) | Text |
 | ssml | Speak SSML XML string | Text |
-| textcommand | Send a Text command to Alexa | Text |
+| textcommand | Send a Text command to Alexa,. Make sure to only use text (e.g. also 3 -> three and such, else Alexa might not correctly react to it!) | Text |
 | sound | Play a sound on the device. | Text |
 
 Detailed information Speak and Announcement: Type in here what you want Alexa to say. You can also adjust the volume of Alexa by giving a percentage before your text.
@@ -476,6 +476,11 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Fix issue in retry handling when rate limit exceeded is returned by Amazon
+* (Apollon77) Do not clean up Smart Home Device objects for now - delete manually if you remove a device
+
 ### 3.19.9 (2022-09-12)
 * (Apollon77) Receive the correct player status again when musik is stopped
 

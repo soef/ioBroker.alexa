@@ -5049,6 +5049,7 @@ function main() {
                                                     if (delIds.length) {
                                                         adapter.log.info(`Deleting the following states: ${JSON.stringify(delIds)}`);
                                                         for (let i = 0; i < delIds.length; i++) {
+                                                            if (delIds[i].startsWith('Smart-Home-Devices.')) continue; // TODO Do not cleanup for now, change later
                                                             try {
                                                                 adapter.delObject(delIds[i], err => {
                                                                     if (err) adapter.log.info(`Can not delete object ${delIds[i]}: ${err.message}`);
