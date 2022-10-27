@@ -476,8 +476,7 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.19.10 (2022-10-27)
 * (Apollon77) Fix issue in retry handling when rate limit exceeded is returned by Amazon
 * (Apollon77) Do not clean up Smart Home Device objects for now - delete manually if you remove a device
 

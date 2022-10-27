@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.19.9",
+    "version": "3.19.10",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.19.10": {
+        "en": "Fix issue in retry handling when rate limit exceeded is returned by Amazon\nDo not clean up Smart Home Device objects for now - delete manually if you remove a device",
+        "de": "Problem bei der Retry-Handling behoben, wenn die Ratengrenze überschritten wird\nNicht aufräumen Smart Home Device Objekte für jetzt - manuell löschen, wenn Sie ein Gerät entfernen",
+        "ru": "Исправление проблемы в переработке при превышении лимита тарифа возвращается Amazon\nНе очистите объекты Smart Home Device на данный момент - удаляйте вручную, если вы удалите устройство",
+        "pt": "Corrigir questão no manuseio de retração quando o limite de taxa excedeu é devolvido pela Amazon\nNão limpe objetos Smart Home Device por agora - exclua manualmente se você remover um dispositivo",
+        "nl": "Een retournatieprocedure als de temperatuur van de Amazone wordt teruggebracht\nRuim Smart Home Device voorwerpen niet op voor nu",
+        "fr": "Correction d'un problème dans le traitement des rentrées lorsque la limite de vitesse dépassée est retournée par Amazon\nNe pas nettoyer les objets Smart Home Device pour le moment - supprimer manuellement si vous supprimez un appareil",
+        "it": "Risolvere il problema nella gestione dei rifornimenti quando il limite del tasso è restituito da Amazon\nNon pulire gli oggetti Smart Home Device per ora - eliminare manualmente se si rimuove un dispositivo",
+        "es": "Cuestión de fijación en el manejo de retry cuando el límite de tarifas excedido es devuelto por Amazon\nNo limpie los objetos Smart Home Device por ahora - eliminar manualmente si elimina un dispositivo",
+        "pl": "Pytania o przepustowość, gdy limit przekroczy się w stronę Amazonki, jest zwrócony przez Amazon\nNie czyszczy przedmiotów Smart Home Device – ręcznie, jeśli usuniesz urządzenia",
+        "uk": "Виправлення проблеми з переробки при перевищенні тарифів повертається на Amazon\nНе очищайте предмети Smart Home Device тепер - видаліть вручну, якщо видалити пристрій",
+        "zh-cn": "瓦亚马逊岛恢复利率时重新处理的固定问题\n目前没有清洁Smart Home Device物品,如果你搬走一个装置,则用手工删除。"
+      },
       "3.19.9": {
         "en": "Receive the correct player status again when musik is stopped",
         "de": "Erhalten Sie den richtigen Spielerstatus wieder, wenn die Musik gestoppt wird",
@@ -109,18 +122,6 @@
         "es": "Evitar el dispositivo no deseado Actualizaciones de nombres",
         "pl": "Przygotowanie niepożądane aktualizacja",
         "zh-cn": "预防意外装置 姓名最新情况"
-      },
-      "3.19.3": {
-        "en": "Fix crash check with multiple adapter instances",
-        "de": "Crash-Check mit mehreren Adapterinstanzen beheben",
-        "ru": "Исправление проверки аварий с несколькими примерами адаптера",
-        "pt": "Corrigir verificação de falhas com várias instâncias do adaptador",
-        "nl": "Vertaling:",
-        "fr": "Contrôle de crash fixe avec plusieurs instances adaptatives",
-        "it": "Fissare il controllo crash con più istanze dell'adattatore",
-        "es": "Control de fallo fijo con múltiples instancias de adaptador",
-        "pl": "Fix sprawdza się z wieloma aplikacjami",
-        "zh-cn": "Fix 事故检查"
       }
     },
     "keywords": [
