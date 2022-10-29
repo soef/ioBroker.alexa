@@ -1338,7 +1338,7 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
         return callback && callback();
     }
 
-    const cachedDeviceStatesFileName = path.join(__dirname, 'cachedDeviceStates.json');
+    const cachedDeviceStatesFileName = path.join(__dirname, `cachedDeviceStates.${adapter.namespace}.json`);
     if (initial) {
         try {
             if (fs.existsSync(cachedDeviceStatesFileName)) {
@@ -1687,7 +1687,7 @@ function updateSmarthomeDeviceStates(res) {
 }
 
 function getCachedSmarthomeDevices(callback) {
-    const cachedDevicesFilename = path.join(__dirname, 'cachedDevices.json');
+    const cachedDevicesFilename = path.join(__dirname, `cachedDevices.${adapter.namespace}.json`);
 
     function getCachedDeviceList(ignoreTimestamp) {
         try {
@@ -1753,7 +1753,7 @@ function createSmarthomeStates(callback) {
                 setOrUpdateObject('Smart-Home-Devices', {type: 'folder', common: {name: 'Smart Home Devices'}});
 
                 setOrUpdateObject('Smart-Home-Devices.deleteAll', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, (val) => {
-                    const cachedDevicesFilename = path.join(__dirname, 'cachedDevices.json');
+                    const cachedDevicesFilename = path.join(__dirname, `cachedDevices.${adapter.namespace}.json`);
                     try {
                         if (fs.existsSync(cachedDevicesFilename)) {
                             fs.unlinkSync(cachedDevicesFilename);
@@ -1768,7 +1768,7 @@ function createSmarthomeStates(callback) {
                     });
                 });
                 setOrUpdateObject('Smart-Home-Devices.discoverDevices', {common: {name: 'Let Alexa search for devices', type: 'boolean', read: false, write: true, role: 'button'}}, false, (val) => {
-                    const cachedDevicesFilename = path.join(__dirname, 'cachedDevices.json');
+                    const cachedDevicesFilename = path.join(__dirname, `cachedDevices.${adapter.namespace}.json`);
                     try {
                         if (fs.existsSync(cachedDevicesFilename)) {
                             fs.unlinkSync(cachedDevicesFilename);
