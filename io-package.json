@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.20.0",
+    "version": "3.20.1",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.20.1": {
+        "en": "make sure caching works correctly with multiple instances of the adapter",
+        "de": "achten sie darauf, dass cache mit mehreren instanzen des adapters korrekt funktioniert",
+        "ru": "убедитесь, что кэширование работает правильно с несколькими экземплярами адаптера",
+        "pt": "certifique-se de que o cache funciona corretamente com várias instâncias do adaptador",
+        "nl": "zorg ervoor dat kassa correct werkt met meerdere instanties van de adapter",
+        "fr": "assurez-vous que le cache fonctionne correctement avec plusieurs instances de l'adaptateur",
+        "it": "assicurarsi che il caching funzioni correttamente con più istanze dell'adattatore",
+        "es": "asegúrese de que el caché funciona correctamente con múltiples instancias del adaptador",
+        "pl": "umożliwia to prawidłowo prace przy użyciu wielu przykładów adaptera",
+        "uk": "переконайтеся, що кешування працює правильно з декількома екземплярами адаптера",
+        "zh-cn": "确保在适应者多重情况下进行正确工作"
+      },
       "3.20.0": {
         "en": "Increase minimum interval for requesting smart home device data to 15 minutes (900s) because of Amazon rate limits. Please do not try to work around it!\nCache Smart home device list and data to prevent too many requests when restarting adapter in short intervals and to prevent deleted smart home devices also on further rate limit issues",
         "de": "Erhöhen Sie das Mindestintervall für die Anforderung von Smart-Home-Gerät-Daten auf 15 Minuten (900s) wegen Amazon-Rate Grenzen. Bitte versuchen Sie nicht, um es zu arbeiten!\nCache Smart Home Geräteliste und Daten, um zu viele Anfragen beim Neustart von Adapter in kurzen Intervallen zu verhindern und gelöschte Smart Home-Geräte auch bei weiteren Geschwindigkeitsbeschränkungen zu verhindern",
@@ -111,18 +124,6 @@
         "es": "Corrección do No molestar al usar una cadena de tiempo",
         "pl": "Fixa do Fixa NotDisturb kiedy używa czasu smyczki",
         "zh-cn": "Fix do 在使用时间包时,不设歧见"
-      },
-      "3.19.5": {
-        "en": "Fix doNotDisturb for groups",
-        "de": "Fehler doNotDisturb für Gruppen",
-        "ru": "Fix сделать doNotDisturb для групп",
-        "pt": "Fixo doNotDisturb para grupos",
-        "nl": "_ doNotDisturb voor groepen",
-        "fr": "Fixe doNotDisturb pour les groupes",
-        "it": "Riparare Consigli per gruppi",
-        "es": "Corrección do doNotDisturb",
-        "pl": "Fixa do Fixa doNotDisturb for groups (ang.)",
-        "zh-cn": "Fix do D. 对团体不予赔偿"
       }
     },
     "keywords": [
