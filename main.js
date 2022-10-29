@@ -1318,8 +1318,12 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
             }
             reqArr.push(...generateApplianceQueryArray(applianceId, false));
             if (!initial) {
-                let delay = 600000;
-                if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 300000;
+                /**
+                 * Please DO NOT modify these block values and DO NOT lower them! Doing this might mean that Amazon
+                 * blocks the Smart home device queries for all > 20k ioBroker Adapter users!
+                 */
+                let delay = 900000;
+                if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 600000;
                 shQueryBlocker[applianceId] = setTimeout(() => {
                     shQueryBlocker[applianceId] = null;
                 }, delay);
@@ -1333,8 +1337,33 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
     if (!reqArr.length) {
         return callback && callback();
     }
+
+    const cachedDeviceStatesFileName = path.join(__dirname, 'cachedDeviceStates.json');
+    if (initial) {
+        try {
+            if (fs.existsSync(cachedDeviceStatesFileName)) {
+                const stats = fs.statSync(cachedDeviceStatesFileName);
+                if (stats.mtime.getTime() + Math.min(Math.floor(adapter.config.updateSmartHomeDevicesInterval / 2) || 450, 450) * 1000 > Date.now()) {
+                    adapter.log.info(`Home Device states last requested ${stats.mtime} ... Do not request again now`);
+
+                    scheduleNextSmarthomeDeviceQuery();
+                    return callback && callback();
+                }
+            }
+        } catch (err) {
+            adapter.log.info('Could not cache devices: ' + err.message);
+        }
+    }
+
     alexa.querySmarthomeDevices(reqArr, (err, res) => {
         if (!err) {
+            if (res && !blocked.length) {
+                try {
+                    fs.writeFileSync(cachedDeviceStatesFileName, JSON.stringify(res));
+                } catch (err) {
+                    adapter.log.info(`Cannot write cached device states to file: ${err}`);
+                }
+            }
             updateSmarthomeDeviceStates(res);
         }
 
@@ -1657,6 +1686,49 @@ function updateSmarthomeDeviceStates(res) {
     }
 }
 
+function getCachedSmarthomeDevices(callback) {
+    const cachedDevicesFilename = path.join(__dirname, 'cachedDevices.json');
+
+    function getCachedDeviceList(ignoreTimestamp) {
+        try {
+            if (fs.existsSync(cachedDevicesFilename)) {
+                const stats = fs.statSync(cachedDevicesFilename);
+                if (ignoreTimestamp || stats.mtime.getTime() + 30 * 60 * 1000 > Date.now()) {
+                    const cachedDevices = JSON.parse(fs.readFileSync(cachedDevicesFilename, 'utf8'));
+                    adapter.log.info(`Using cached smart home devices list from ${stats.mtime}: ${JSON.stringify(cachedDevices)}`);
+                    return cachedDevices;
+                }
+            }
+        } catch (err) {
+            adapter.log.info('Could not cache devices: ' + err.message);
+        }
+        return null;
+    }
+    const cachedDeviceList = getCachedDeviceList();
+    if (cachedDeviceList) {
+        callback(null, cachedDeviceList);
+        return;
+    }
+
+    alexa.getSmarthomeDevices((err, res) => {
+        if (!err && res && res.locationDetails && res.locationDetails.Default_Location) {
+            try {
+                fs.writeFileSync(cachedDevicesFilename, JSON.stringify(res));
+            } catch (err) {
+                adapter.log.info('Could not cache devices: ' + err.message);
+            }
+        }
+        if (err || !res || !res.locationDetails || !res.locationDetails.Default_Location) {
+            res = getCachedDeviceList(true);
+            if (res) {
+                err = null;
+                adapter.log.info('Could not get smart home devices from Amazon. Using cached list.');
+            }
+        }
+        callback(err, res);
+    });
+}
+
 function createSmarthomeStates(callback) {
     if (!adapter.config.synchronizeSmartHomeDevices) {
         return callback && callback();
@@ -1676,11 +1748,19 @@ function createSmarthomeStates(callback) {
             if (stopped) return;
             if (!err && resProperties) shObjects.patchProperties(resProperties);
 
-            alexa.getSmarthomeDevices((err, res) => {
+            getCachedSmarthomeDevices((err, res) => {
                 if (stopped) return;
                 setOrUpdateObject('Smart-Home-Devices', {type: 'folder', common: {name: 'Smart Home Devices'}});
 
                 setOrUpdateObject('Smart-Home-Devices.deleteAll', {common: { type: 'boolean', read: false, write: true, role: 'button'}}, false, (val) => {
+                    const cachedDevicesFilename = path.join(__dirname, 'cachedDevices.json');
+                    try {
+                        if (fs.existsSync(cachedDevicesFilename)) {
+                            fs.unlinkSync(cachedDevicesFilename);
+                        }
+                    } catch (err) {
+                        adapter.log.info('Could not delete cached devices: ' + err.message);
+                    }
                     alexa.deleteAllSmarthomeDevices((err, res) => {
                         adapter.deleteDevice('Smart-Home-Devices', () => {
                             setTimeout(createSmarthomeStates, 1000);
@@ -1688,6 +1768,14 @@ function createSmarthomeStates(callback) {
                     });
                 });
                 setOrUpdateObject('Smart-Home-Devices.discoverDevices', {common: {name: 'Let Alexa search for devices', type: 'boolean', read: false, write: true, role: 'button'}}, false, (val) => {
+                    const cachedDevicesFilename = path.join(__dirname, 'cachedDevices.json');
+                    try {
+                        if (fs.existsSync(cachedDevicesFilename)) {
+                            fs.unlinkSync(cachedDevicesFilename);
+                        }
+                    } catch (err) {
+                        adapter.log.info('Could not delete cached devices: ' + err.message);
+                    }
                     alexa.discoverSmarthomeDevice((err, res) => {
                         return createSmarthomeStates();
                     });
@@ -2024,8 +2112,12 @@ function createSmarthomeStates(callback) {
                                         adapter.log.warn(`Smart Home device request blocked for ${applianceId}`);
                                         return;
                                     }
-                                    let delay = 600000;
-                                    if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 300000;
+                                    /**
+                                     * Please do not change these delay, else Amazon might block the smart home device state query function
+                                     * for all >20k Adapter users!
+                                     */
+                                    let delay = 900000;
+                                    if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 600000;
                                     shQueryBlocker[applianceId] = setTimeout(() => {
                                         shQueryBlocker[applianceId] = null;
                                     }, delay);
@@ -4469,6 +4561,7 @@ function loadExistingAccessories(callback) {
 
 
 function main() {
+    adapter.log.info('Starting Alexa2 adapter ... it can take several minutes to initialize all data. Please be patient! A done message is logged.');
     crashCheckFileName = path.join(__dirname, `crashCheck-${adapter.namespace}.json`);
     if (useCrashCheck) {
         let crashCheck = {
@@ -4549,15 +4642,19 @@ function main() {
         useWsMqtt: false,
         //deviceAppName: 'Amazon Alexa',
         formerDataStorePath: path.join(__dirname, `formerDataStore${adapter.namespace}.json`),
-        apiUserAgentPostfix: `ioBrokerAlexa2/${require(path.join(__dirname, 'package.json')).version}`
+        apiUserAgentPostfix: `ioBrokrAlexa2/${require(path.join(__dirname, 'package.json')).version}`
     };
     adapter.config.updateHistoryInterval = parseInt(adapter.config.updateHistoryInterval, 10);
-    if (isNaN(adapter.config.updateHistoryInterval)) {
+    if (!adapter.config.updateHistoryInterval || isNaN(adapter.config.updateHistoryInterval) || adapter.config.updateHistoryInterval < 0) {
         adapter.config.updateHistoryInterval = 0;
     }
     if (adapter.config.updateHistoryInterval !== 0 && adapter.config.updateHistoryInterval < 60) {
         adapter.config.updateHistoryInterval = 60 + Math.floor(Math.random() * 60);
         adapter.log.info(`Update History Interval is too low, set to ${adapter.config.updateHistoryInterval}s`);
+    } else if (adapter.config.updateHistoryInterval !== 0 && adapter.config.updateHistoryInterval >= 60) {
+        adapter.config.updateStateInterval += Math.floor(Math.random() * 10);
+    } else {
+        adapter.config.updateHistoryInterval = 0;
     }
     if (adapter.config.updateHistoryInterval !== 0) {
         adapter.config.updateHistoryInterval = Math.max(adapter.config.updateHistoryInterval, 60);
@@ -4568,14 +4665,16 @@ function main() {
     adapter.log.debug(`Update History Interval: ${adapter.config.updateHistoryInterval !== 0 ? `${adapter.config.updateHistoryInterval}s` : 'disabled'}`);
 
     adapter.config.updateStateInterval = parseInt(adapter.config.updateStateInterval, 10);
-    if (isNaN(adapter.config.updateStateInterval)) {
+    if (!adapter.config.updateStateInterval || isNaN(adapter.config.updateStateInterval) || adapter.config.updateStateInterval < 0) {
         adapter.config.updateStateInterval = 0;
     }
     if (adapter.config.updateStateInterval !== 0 && adapter.config.updateStateInterval < 300) {
         adapter.config.updateStateInterval = 300 + Math.floor(Math.random() * 60);
         adapter.log.info(`Update Device State Interval is too low, set to ${adapter.config.updateStateInterval}s`);
-    } else if (adapter.config.updateStateInterval !== 0) {
+    } else if (adapter.config.updateStateInterval !== 0 && adapter.config.updateStateInterval >= 300) {
         adapter.config.updateStateInterval += Math.floor(Math.random() * 10);
+    } else {
+        adapter.config.updateStateInterval = 0;
     }
     if (adapter.config.updateStateInterval !== 0) {
         adapter.config.updateStateInterval = Math.max(adapter.config.updateStateInterval, 300);
@@ -4586,17 +4685,23 @@ function main() {
     adapter.log.debug(`Update Device State Interval: ${adapter.config.updateStateInterval !== 0 ? `${adapter.config.updateStateInterval}s` : 'disabled'}`);
 
     adapter.config.updateSmartHomeDevicesInterval = parseInt(adapter.config.updateSmartHomeDevicesInterval, 10);
-    if (isNaN(adapter.config.updateSmartHomeDevicesInterval)) {
+    if (!adapter.config.updateSmartHomeDevicesInterval || isNaN(adapter.config.updateSmartHomeDevicesInterval) || adapter.config.updateSmartHomeDevicesInterval < 0) {
         adapter.config.updateSmartHomeDevicesInterval = 0;
     }
-    if (adapter.config.updateSmartHomeDevicesInterval !== 0 && adapter.config.updateSmartHomeDevicesInterval < 300) {
-        adapter.config.updateSmartHomeDevicesInterval = 300 + Math.floor(Math.random() * 60);
+    /**
+     * ATTENTION: DO NOT lower this limit of 900s (15mins) because there is a high risk that Amazon blocks the Query of Smart home
+     * devices for all >20.000 Users of this Adapter! If this happens again I need to remove the feature at all from the adapter!
+     */
+    if (adapter.config.updateSmartHomeDevicesInterval !== 0 && adapter.config.updateSmartHomeDevicesInterval < 900) {
+        adapter.config.updateSmartHomeDevicesInterval = 3600 + Math.floor(Math.random() * 60);
         adapter.log.info(`Update SmartHome Devices Interval is too low, set to ${adapter.config.updateSmartHomeDevicesInterval}s`);
-    } else if (adapter.config.updateSmartHomeDevicesInterval !== 0) {
+    } else if (adapter.config.updateSmartHomeDevicesInterval !== 0 && adapter.config.updateSmartHomeDevicesInterval >= 900) {
         adapter.config.updateSmartHomeDevicesInterval += Math.floor(Math.random() * 10);
+    } else {
+        adapter.config.updateSmartHomeDevicesInterval = 0;
     }
     if (adapter.config.updateSmartHomeDevicesInterval !== 0) {
-        adapter.config.updateSmartHomeDevicesInterval = Math.max(adapter.config.updateSmartHomeDevicesInterval, 300);
+        adapter.config.updateSmartHomeDevicesInterval = Math.max(adapter.config.updateSmartHomeDevicesInterval, 900);
     }
     if (adapter.config.updateSmartHomeDevicesInterval > 2147482) { // max 2147483647/1000 --> 2147482
         adapter.config.updateSmartHomeDevicesInterval = 0;
@@ -4604,14 +4709,16 @@ function main() {
     adapter.log.debug(`Update SmartHome Devices Interval: ${adapter.config.updateSmartHomeDevicesInterval !== 0 ? `${adapter.config.updateSmartHomeDevicesInterval}s` : 'disabled'}`);
 
     adapter.config.updateConfigurationInterval = parseInt(adapter.config.updateConfigurationInterval, 10);
-    if (isNaN(adapter.config.updateConfigurationInterval)) {
+    if (!adapter.config.updateConfigurationInterval || isNaN(adapter.config.updateConfigurationInterval) || adapter.config.updateConfigurationInterval < 0) {
         adapter.config.updateConfigurationInterval = 0;
     }
     if (adapter.config.updateConfigurationInterval !== 0 && adapter.config.updateConfigurationInterval < 300) {
         adapter.config.updateConfigurationInterval = 3600 + Math.floor(Math.random() * 60);
         adapter.log.info(`Update Devices Configuration Interval is too low, set to ${adapter.config.updateConfigurationInterval}s`);
-    } else if (adapter.config.updateConfigurationInterval !== 0) {
+    } else if (adapter.config.updateConfigurationInterval !== 0 && adapter.config.updateConfigurationInterval >= 300) {
         adapter.config.updateConfigurationInterval += Math.floor(Math.random() * 10);
+    } else {
+        adapter.config.updateConfigurationInterval = 0;
     }
     if (adapter.config.updateConfigurationInterval !== 0) {
         adapter.config.updateConfigurationInterval = Math.max(adapter.config.updateConfigurationInterval, 300);

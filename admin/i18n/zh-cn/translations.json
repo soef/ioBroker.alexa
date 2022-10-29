@@ -45,7 +45,7 @@
     "synchronizeLists": "同步列表（例如 Todo）",
     "synchronizeSmartHomeDevices": "同步智能家居设备",
     "updateConfigurationInterval": "设备配置更新间隔",
-    "updateConfigurationInterval_info": "装置配置可以自动更新。 更新的间隔界定了如何经常发生这种情况。 由于其他亚马逊可能阻碍你! 最低限度是300个,或规定为0.至0.1%的更新。.",
+    "updateConfigurationInterval_info": "装置配置可以自动更新。 更新的间隔界定了如何经常发生这种情况。 由于其他亚马逊可能阻碍你! 最低限度是900个,或规定为0.至0.1%的更新。.",
     "updateHistoryInterval": "历史记录更新间隔",
     "updateHistoryInterval_info": "历史最新间隔界定了如何从亚马逊服务器更新历史数据。 最低限度是60个,或为0.1%的更新。 由于其他亚马逊可能阻碍你! 当Push-Connection成立时,没有使用最新间隔,因为如果需要自动启动信息就会触发。.",
     "updateSmartHomeDevicesInterval": "智能家居设备更新间隔",

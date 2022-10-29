@@ -476,6 +476,11 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Increase minimum interval for requesting smart home device data to 15 minutes (900s) because of Amazon rate limits. Please do not try to work around it!
+* (Apollon77) Cache Smart home device list and data to prevent too many requests when restarting adapter in short intervals and to prevent deleted smart home devices also on further rate limit issues
+
 ### 3.19.10 (2022-10-27)
 * (Apollon77) Fix issue in retry handling when rate limit exceeded is returned by Amazon
 * (Apollon77) Do not clean up Smart Home Device objects for now - delete manually if you remove a device
