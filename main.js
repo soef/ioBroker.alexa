@@ -1646,7 +1646,13 @@ function updateSmarthomeDeviceStates(res) {
                             if (cap.instance) {
                                 name = `${cap.instance.replace(/\./g, '-')}-${name}`;
                             }
-                            capValues[name] = handleObject(deviceEntityId, cap, name);
+                            let val = handleObject(deviceEntityId, cap, name);
+                            if (val === null && cap.instance && !adapterObjects[`Smart-Home-Devices.${deviceEntityId}.${name}`] && adapterObjects[`Smart-Home-Devices.${deviceEntityId}.${obj.common.name}`]) {
+                                // seems Amazon provided invalid details about cap.instance, try fallback
+                                val = handleObject(deviceEntityId, cap, obj.common.name);
+                                name = obj.common.name;
+                            }
+                            capValues[name] = val;
                         }
                     }
                     if (cap.namespace === 'Alexa.ColorController') {
@@ -1860,6 +1866,7 @@ function createSmarthomeStates(callback) {
                                     deviceActions[a] = true;
                                 });
                             }
+                            const applianceDriverIdentity = shDevice.applianceDriverIdentity ? (shDevice.applianceDriverIdentity.identifier || '') : '';
                             let readableProperties = 0;
                             let capabilitiesReadable = null;
                             let capabilitiesCloudReadable = null;
@@ -1905,12 +1912,12 @@ function createSmarthomeStates(callback) {
                                                 }
                                                 if (obj.experimental) delete obj.experimental;
                                                 if (obj.common && obj.common.read) {
-                                                    if (excludeReadable || !cap.properties.retrievable) {
-                                                        obj.common.read = false;
-                                                    }
-                                                    else {
+                                                    if (!excludeReadable && (cap.properties.retrievable || (!cap.properties.retrievable && cap.properties.proactivelyReported && applianceDriverIdentity === 'SonarCloudService' && !!shDevice.connectedVia)) ) {
                                                         readableProperties++;
                                                         propertyToQuery = true;
+                                                    }
+                                                    else {
+                                                        obj.common.read = false;
                                                     }
                                                 }
 
@@ -5156,7 +5163,7 @@ function main() {
                                                     if (delIds.length) {
                                                         adapter.log.info(`Deleting the following states: ${JSON.stringify(delIds)}`);
                                                         for (let i = 0; i < delIds.length; i++) {
-                                                            if (delIds[i].startsWith('Smart-Home-Devices.')) continue; // TODO Do not cleanup for now, change later
+                                                            //if (delIds[i].startsWith('Smart-Home-Devices.')) continue; // TODO Do not cleanup for now, change later
                                                             try {
                                                                 adapter.delObject(delIds[i], err => {
                                                                     if (err) adapter.log.info(`Can not delete object ${delIds[i]}: ${err.message}`);

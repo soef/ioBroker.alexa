@@ -476,6 +476,10 @@ If the Push connection is never established then you can try to use the followin
 Then it should work again
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Optimize state value loading
+
 ### 3.20.1 (2022-10-29)
 * (Apollon77) make sure caching works correctly with multiple instances of the adapter
 
