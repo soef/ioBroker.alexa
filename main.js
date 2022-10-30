@@ -1816,6 +1816,7 @@ function createSmarthomeStates(callback) {
                     for (const i of Object.keys(all)) {
                         for (const n of Object.keys(all[i].applianceDetails.applianceDetails)) {
                             const shDevice = all[i].applianceDetails.applianceDetails[n];
+                            if (!shDevice.isEnabled) continue;
                             let friendlyName = shDevice.friendlyName;
                             shApplianceEntityMap[shDevice.applianceId] = {
                                 entityId: shDevice.entityId,
@@ -1886,7 +1887,9 @@ function createSmarthomeStates(callback) {
                                             continue;
                                         } else if (!cap.properties.retrievable) {
                                             capabilitiesReadable = capabilitiesReadable || false;
-                                            continue;
+                                            if (!(cap.properties.proactivelyReported && applianceDriverIdentity === 'SonarCloudService' && !!shDevice.connectedVia && !shDevice.applianceId.startsWith('SKILL_'))) {
+                                                continue;
+                                            }
                                         }
                                         capabilitiesCloudReadable = capabilitiesCloudReadable || cap.properties.proactivelyReported;
                                         if (!shObjects.capabilityObjects[cap.interfaceName]) {
@@ -1914,7 +1917,7 @@ function createSmarthomeStates(callback) {
                                                 }
                                                 if (obj.experimental) delete obj.experimental;
                                                 if (obj.common && obj.common.read) {
-                                                    if (!excludeReadable && (cap.properties.retrievable || (!cap.properties.retrievable && cap.properties.proactivelyReported && applianceDriverIdentity === 'SonarCloudService' && !!shDevice.connectedVia)) ) {
+                                                    if (!excludeReadable && (cap.properties.retrievable || (!cap.properties.retrievable && cap.properties.proactivelyReported && applianceDriverIdentity === 'SonarCloudService' && !!shDevice.connectedVia && !shDevice.applianceId.startsWith('SKILL_'))) ) {
                                                         readableProperties++;
                                                         propertyToQuery = true;
                                                     }
@@ -4550,7 +4553,7 @@ function initCommUsers(callback) {
                                     res.conversations.forEach((conversation) => {
                                         if (!conversation.participants || !conversation.participants.length || conversation.participants[0] !== alexa.commsId) return;
                                         adapter.log.debug(`Delete Conversation with ID ${conversation.conversationId}`);
-                                        alexa.deleteConversation(conversation.conversationId, (err, res) => {
+                                        alexa.deleteConversation(conversation.conversationId, conversation.lastMessageId, (err, res) => {
                                             //TODO
                                         });
                                     });
