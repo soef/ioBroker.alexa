@@ -479,6 +479,8 @@ Then it should work again
 
 ### __WORK IN PROGRESS__
 * (Apollon77) Optimize state value loading
+* (Apollon77) Fix enabling/disabling of Alarms in combination with non-default music for the alarm
+* (Apollon77) Prevent Timers or Alarms that are long in the future to trigger their trigger state too early
 
 ### 3.20.1 (2022-10-29)
 * (Apollon77) make sure caching works correctly with multiple instances of the adapter

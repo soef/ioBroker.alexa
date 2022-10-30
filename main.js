@@ -1740,6 +1740,8 @@ function createSmarthomeStates(callback) {
         return callback && callback();
     }
 
+    // TODO alexa.getSmarthomeGroups nutzen
+
     adapter.getStates('Smart-Home-Devices.*.#includeInIntervalQuery', (err, states) => {
         const shQueryEnabledEntities = {};
         if (!err && states) {
@@ -3505,21 +3507,28 @@ function createNotificationStates(serialOrName) {
                         clearTimeout(notificationTimer[noti.id]);
                         notificationTimer[noti.id] = null;
                     }
-                    notificationTimer[noti.id] = setTimeout(function (noti) {
-                        notificationTimer[noti.id] = null;
-                        adapter.log.debug(`${noti.type} ${noti.id} triggered`);
-                        adapter.setState(`${devId}.Timer.triggered`, true, true);
-
-                        // Check again status after 1min if no stop was arrived
-                        notificationTimer[noti.id] = setTimeout(() => {
+                    if (remainingTime < 14 * 24 * 60 * 60 * 1000) { // not longer then 14 days in future
+                        notificationTimer[noti.id] = setTimeout(function (noti) {
                             notificationTimer[noti.id] = null;
-                            adapter.getState(`${devId}.Timer.triggered`, (err, state) => {
-                                if (!err && state && state.val) {
-                                    updateNotificationStates(device);
-                                }
-                            });
-                        }, 60000);
-                    }.bind(alexa, noti), remainingTime);
+                            adapter.log.debug(`${noti.type} ${noti.id} triggered`);
+                            adapter.setState(`${devId}.Timer.triggered`, true, true);
+
+                            // Check again status after 1min if no stop was arrived
+                            notificationTimer[noti.id] = setTimeout(() => {
+                                notificationTimer[noti.id] = null;
+                                adapter.getState(`${devId}.Timer.triggered`, (err, state) => {
+                                    if (!err && state && state.val) {
+                                        updateNotificationStates(device);
+                                    }
+                                });
+                            }, 60000);
+                        }.bind(alexa, noti), remainingTime);
+                    } else {
+                        notificationTimer[noti.id] = setTimeout(function (noti) {
+                            notificationTimer[noti.id] = null;
+                            updateNotificationStates(device);
+                        }.bind(alexa, noti), 14 * 24 * 60 * 60 * 1000);
+                    }
                 }
             } else if (noti.type !== 'Timer') {
                 const id = noti.notificationIndex;
@@ -3565,47 +3574,51 @@ function createNotificationStates(serialOrName) {
                     });
                 });
                 setOrUpdateObject(`${notiId}.enabled`, {common: {type: 'boolean', role: 'switch.enable', name: `${displayName} Enabled`}}, (noti.status === 'ON' || noti.status === 'SNOOZED'), value => {
-                    noti.set(value, (err, res) => {
+                    noti.set(!!value, (err, res) => {
                         if (err | !res) {
                             adapter.log.error(`Error setting ${notiId}.enabled to ${value}: ${err.message}`);
                         }
                     });
                 });
                 setOrUpdateObject(`${notiId}.snoozed`, {common: {type: 'boolean', role: 'indicator', name: `${displayName} Snoozed`, write: false}}, (noti.status === 'SNOOZED'));
-                setOrUpdateObject(`${notiId}.delete`, {common: {type: 'boolean', role: 'button', read: false, name: `${displayName} Delete`}}, false, () => {
-                    noti.delete(err => {
-                        if (err) {
-                            adapter.log.error(`Error deleting ${noti.type} ${noti.id}: ${err.message}`);
-                        } else {
-                            if (notificationTimer[noti.id]) {
-                                clearTimeout(notificationTimer[noti.id]);
-                                notificationTimer[noti.id] = null;
-                            }
-                            if (notificationTimer[`${noti.id}-customVolume`]) {
-                                clearTimeout(notificationTimer[`${noti.id}-customVolume`]);
-                                notificationTimer[`${noti.id}-customVolume`] = null;
-                            }
-                            if (notificationTimer[`${noti.id}-customVolumeReset`]) {
-                                clearTimeout(notificationTimer[`${noti.id}-customVolumeReset`]);
-                                notificationTimer[`${noti.id}-customVolumeReset`] = null;
-                                if (rememberedNotificationVolumeRestoreCallbacks[device.serialNumber]) {
-                                    const callback = rememberedNotificationVolumeRestoreCallbacks[device.serialNumber];
-                                    delete rememberedNotificationVolumeRestoreCallbacks[device.serialNumber];
-                                    callback();
+                setOrUpdateObject(`${notiId}.delete`, {common: {type: 'boolean', role: 'button', read: false, name: `${displayName} Delete`}}, false, (value) => {
+                    if (value) {
+                        noti.delete(err => {
+                            if (err) {
+                                adapter.log.error(`Error deleting ${noti.type} ${noti.id}: ${err.message}`);
+                            } else {
+                                if (notificationTimer[noti.id]) {
+                                    clearTimeout(notificationTimer[noti.id]);
+                                    notificationTimer[noti.id] = null;
+                                }
+                                if (notificationTimer[`${noti.id}-customVolume`]) {
+                                    clearTimeout(notificationTimer[`${noti.id}-customVolume`]);
+                                    notificationTimer[`${noti.id}-customVolume`] = null;
+                                }
+                                if (notificationTimer[`${noti.id}-customVolumeReset`]) {
+                                    clearTimeout(notificationTimer[`${noti.id}-customVolumeReset`]);
+                                    notificationTimer[`${noti.id}-customVolumeReset`] = null;
+                                    if (rememberedNotificationVolumeRestoreCallbacks[device.serialNumber]) {
+                                        const callback = rememberedNotificationVolumeRestoreCallbacks[device.serialNumber];
+                                        delete rememberedNotificationVolumeRestoreCallbacks[device.serialNumber];
+                                        callback();
+                                    }
+                                }
+                                if (adapterObjects[notiId]) {
+                                    deleteObject(notiId);
                                 }
                             }
-                            if (adapterObjects[notiId]) {
-                                deleteObject(notiId);
-                            }
-                        }
-                    });
+                        });
+                    }
                 });
-                setOrUpdateObject(`${notiId}.cancel`, {common: {type: 'boolean', role: 'button', read: false, name: `${displayName} Delete`}}, false, () => {
-                    noti.cancel((err, res) => {
-                        if (err | !res) {
-                            adapter.log.error(`Error setting ${notiId}.cancel: ${err.message}`);
-                        }
-                    });
+                setOrUpdateObject(`${notiId}.cancel`, {common: {type: 'boolean', role: 'button', read: false, name: `${displayName} Delete`}}, false, (value) => {
+                    if (value) {
+                        noti.cancel((err, res) => {
+                            if (err | !res) {
+                                adapter.log.error(`Error setting ${notiId}.cancel: ${err.message}`);
+                            }
+                        });
+                    }
                 });
                 setOrUpdateObject(`${notiId}.musicProvider`, {common: {type: 'string', role: 'state', name: `${displayName} Music Provider`}}, noti.provider || null);
                 setOrUpdateObject(`${notiId}.musicEntity`, {common: {type: 'string', role: 'state', name: `${displayName} Music Entity`}}, noti.musicEntity || null);
@@ -3843,74 +3856,100 @@ function createNotificationStates(serialOrName) {
                     const alarmDelay = (nextTriggerTime || 0) - now;
                     adapter.log.debug(`${noti.type} ${noti.id} trigger expected in ${Math.floor(alarmDelay / 1000)}s at ${new Date(nextTriggerTime).toString()}`);
                     if (alarmDelay > 0) {
-                        if (notificationTimer[`${noti.id}-customVolume`]) {
-                            clearTimeout(notificationTimer[`${noti.id}-customVolume`]);
-                            notificationTimer[`${noti.id}-customVolume`] = null;
-                        }
-                        if (device.capabilities.includes('TIMERS_ALARMS_NOTIFICATIONS_VOLUME') || device.capabilities.includes('CUSTOM_ALARM_TONE') || isMusicAlarm) {
-                            notificationTimer[`${noti.id}-customVolume`] = setTimeout(function (notiId, noti) {
+                        if (alarmDelay < 14 * 24 * 60 * 60 * 1000) { // not longer then 14 days in future
+                            if (notificationTimer[`${noti.id}-customVolume`]) {
+                                clearTimeout(notificationTimer[`${noti.id}-customVolume`]);
                                 notificationTimer[`${noti.id}-customVolume`] = null;
+                            }
+                            if (device.capabilities.includes('TIMERS_ALARMS_NOTIFICATIONS_VOLUME') || device.capabilities.includes('CUSTOM_ALARM_TONE') || isMusicAlarm) {
+                                notificationTimer[`${noti.id}-customVolume`] = setTimeout(function (notiId, noti) {
+                                    notificationTimer[`${noti.id}-customVolume`] = null;
 
-                                adapter.getState(`${notiId}.customVolume`, (err, state) => {
-                                    if (err || !state || state.val === null) return;
-                                    const customVolume = parseInt(state.val, 10);
-                                    if (isNaN(customVolume) || customVolume < 0 || customVolume > 100) return;
+                                    adapter.getState(`${notiId}.customVolume`, (err, state) => {
+                                        if (err || !state || state.val === null) return;
+                                        const customVolume = parseInt(state.val, 10);
+                                        if (isNaN(customVolume) || customVolume < 0 || customVolume > 100) return;
 
-                                    if (isMusicAlarm) {
-                                        try {
-                                            alexa.sendSequenceCommand(device, 'volume', customVolume, alexa.ownerCustomerId);
-                                        } catch (err) {
-                                            adapter.log.error(`${noti.type} ${noti.id} Error while setting volume: ${err}`);
+                                        if (isMusicAlarm) {
+                                            try {
+                                                alexa.sendSequenceCommand(device, 'volume', customVolume, alexa.ownerCustomerId);
+                                            } catch (err) {
+                                                adapter.log.error(`${noti.type} ${noti.id} Error while setting volume: ${err}`);
+                                            }
+                                            return;
                                         }
-                                        return;
-                                    }
-                                    device.getDeviceNotificationState((err, origNotificationState) => {
-                                        if (err || !origNotificationState || origNotificationState.volumeLevel === undefined) return;
+                                        device.getDeviceNotificationState((err, origNotificationState) => {
+                                            if (err || !origNotificationState || origNotificationState.volumeLevel === undefined) return;
 
-                                        if (adapterObjects[`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`]) {
-                                            adapter.setState(`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`, origNotificationState.volumeLevel, true);
-                                        }
-                                        device.setDeviceNotificationVolume(customVolume, err => {
-                                            if (err) return;
                                             if (adapterObjects[`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`]) {
-                                                adapter.setState(`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`, customVolume, true);
+                                                adapter.setState(`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`, origNotificationState.volumeLevel, true);
                                             }
-                                            if (rememberedNotificationVolumeRestoreCallbacks[device.serialNumber] === undefined) {
-                                                rememberedNotificationVolumeRestoreCallbacks[device.serialNumber] = function (notiId, noti, volumeToRestore) {
-                                                    if (notificationTimer[`${noti.id}-customVolumeReset`]) {
-                                                        clearTimeout(notificationTimer[`${noti.id}-customVolumeReset`]);
-                                                        notificationTimer[`${noti.id}-customVolumeReset`] = null;
-                                                    }
-                                                    device.setDeviceNotificationVolume(volumeToRestore, err => {
-                                                        if (err) return;
-                                                        if (adapterObjects[`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`]) {
-                                                            adapter.setState(`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`, volumeToRestore, true);
-                                                        }
-                                                        adapter.log.debug(`${noti.type} ${noti.id} - Reset notification volume level: ${volumeToRestore}`);
-                                                        delete rememberedNotificationVolumeRestoreCallbacks[device.serialNumber];
-                                                    });
-                                                }.bind(alexa, notiId, noti, origNotificationState.volumeLevel);
-
-                                                adapter.log.debug(`${noti.type} ${noti.id} - Remember notification volume level: ${origNotificationState.volumeLevel}`);
-                                            } else {
-                                                adapter.log.debug(`${noti.type} ${noti.id} - Do not remember notification value because already set!`);
-                                            }
-
-                                            if (notificationTimer[`${noti.id}-customVolumeReset`]) {
-                                                clearTimeout(notificationTimer[`${noti.id}-customVolumeReset`]);
-                                                notificationTimer[`${noti.id}-customVolumeReset`] = null;
-                                            }
-                                            notificationTimer[`${noti.id}-customVolumeReset`] = setTimeout(() => {
-                                                notificationTimer[`${noti.id}-customVolumeReset`] = null;
-                                                if (rememberedNotificationVolumeRestoreCallbacks[device.serialNumber]) {
-                                                    rememberedNotificationVolumeRestoreCallbacks[device.serialNumber](notiId, noti, origNotificationState.volumeLevel);
+                                            device.setDeviceNotificationVolume(customVolume, err => {
+                                                if (err) return;
+                                                if (adapterObjects[`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`]) {
+                                                    adapter.setState(`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`, customVolume, true);
                                                 }
-                                            }, 120000);
+                                                if (rememberedNotificationVolumeRestoreCallbacks[device.serialNumber] === undefined) {
+                                                    rememberedNotificationVolumeRestoreCallbacks[device.serialNumber] = function (notiId, noti, volumeToRestore) {
+                                                        if (notificationTimer[`${noti.id}-customVolumeReset`]) {
+                                                            clearTimeout(notificationTimer[`${noti.id}-customVolumeReset`]);
+                                                            notificationTimer[`${noti.id}-customVolumeReset`] = null;
+                                                        }
+                                                        device.setDeviceNotificationVolume(volumeToRestore, err => {
+                                                            if (err) return;
+                                                            if (adapterObjects[`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`]) {
+                                                                adapter.setState(`Echo-Devices.${device.serialNumber}.Preferences.notificationVolume`, volumeToRestore, true);
+                                                            }
+                                                            adapter.log.debug(`${noti.type} ${noti.id} - Reset notification volume level: ${volumeToRestore}`);
+                                                            delete rememberedNotificationVolumeRestoreCallbacks[device.serialNumber];
+                                                        });
+                                                    }.bind(alexa, notiId, noti, origNotificationState.volumeLevel);
 
+                                                    adapter.log.debug(`${noti.type} ${noti.id} - Remember notification volume level: ${origNotificationState.volumeLevel}`);
+                                                } else {
+                                                    adapter.log.debug(`${noti.type} ${noti.id} - Do not remember notification value because already set!`);
+                                                }
+
+                                                if (notificationTimer[`${noti.id}-customVolumeReset`]) {
+                                                    clearTimeout(notificationTimer[`${noti.id}-customVolumeReset`]);
+                                                    notificationTimer[`${noti.id}-customVolumeReset`] = null;
+                                                }
+                                                notificationTimer[`${noti.id}-customVolumeReset`] = setTimeout(() => {
+                                                    notificationTimer[`${noti.id}-customVolumeReset`] = null;
+                                                    if (rememberedNotificationVolumeRestoreCallbacks[device.serialNumber]) {
+                                                        rememberedNotificationVolumeRestoreCallbacks[device.serialNumber](notiId, noti, origNotificationState.volumeLevel);
+                                                    }
+                                                }, 120000);
+
+                                            });
                                         });
                                     });
-                                });
 
+                                    // Check again status after 1min if no stop was arrived
+                                    notificationTimer[noti.id] = setTimeout(() => {
+                                        notificationTimer[noti.id] = null;
+                                        adapter.getState(`${notiId}.triggered`, (err, state) => {
+                                            if (!err && state && state.val) {
+                                                updateNotificationStates(device);
+                                            }
+                                        });
+                                    }, 60000);
+                                }.bind(alexa, notiId, noti), alarmDelay > 2000 ? alarmDelay - 2000 : 0);
+                            }
+
+                            if (notificationTimer[noti.id]) {
+                                clearTimeout(notificationTimer[noti.id]);
+                                notificationTimer[noti.id] = null;
+                            }
+                            notificationTimer[noti.id] = setTimeout(function (notiId, noti) {
+                                notificationTimer[noti.id] = null;
+                                adapter.log.debug(`${noti.type} ${noti.id} triggered`);
+                                adapter.setState(`${notiId}.triggered`, true, true);
+                                if (noti.type === 'Alarm') {
+                                    adapter.setState(`${devId}.Alarm.triggered`, noti.notificationIndex, true);
+                                } else if (noti.type === 'Reminder') {
+                                    adapter.setState(`${devId}.Reminder.triggered`, noti.notificationIndex, true);
+                                }
                                 // Check again status after 1min if no stop was arrived
                                 notificationTimer[noti.id] = setTimeout(() => {
                                     notificationTimer[noti.id] = null;
@@ -3920,32 +3959,13 @@ function createNotificationStates(serialOrName) {
                                         }
                                     });
                                 }, 60000);
-                            }.bind(alexa, notiId, noti), alarmDelay > 2000 ? alarmDelay - 2000 : 0);
-                        }
-
-                        if (notificationTimer[noti.id]) {
-                            clearTimeout(notificationTimer[noti.id]);
-                            notificationTimer[noti.id] = null;
-                        }
-                        notificationTimer[noti.id] = setTimeout(function (notiId, noti) {
-                            notificationTimer[noti.id] = null;
-                            adapter.log.debug(`${noti.type} ${noti.id} triggered`);
-                            adapter.setState(`${notiId}.triggered`, true, true);
-                            if (noti.type === 'Alarm') {
-                                adapter.setState(`${devId}.Alarm.triggered`, noti.notificationIndex, true);
-                            } else if (noti.type === 'Reminder') {
-                                adapter.setState(`${devId}.Reminder.triggered`, noti.notificationIndex, true);
-                            }
-                            // Check again status after 1min if no stop was arrived
-                            notificationTimer[noti.id] = setTimeout(() => {
+                            }.bind(alexa, notiId, noti), alarmDelay);
+                        } else {
+                            notificationTimer[noti.id] = setTimeout(function (noti) {
                                 notificationTimer[noti.id] = null;
-                                adapter.getState(`${notiId}.triggered`, (err, state) => {
-                                    if (!err && state && state.val) {
-                                        updateNotificationStates(device);
-                                    }
-                                });
-                            }, 60000);
-                        }.bind(alexa, notiId, noti), alarmDelay);
+                                updateNotificationStates(device);
+                            }.bind(alexa, noti), 14 * 24 * 60 * 60 * 1000);
+                        }
                     }
                 }
                 setOrUpdateObject(`${notiId}.nextTriggerDate`, {common: {type: 'number', role: 'date', name: noti.reminderLabel ? noti.reminderLabel : `${displayName} Trigger Timestamp`}}, nextTriggerTime);
