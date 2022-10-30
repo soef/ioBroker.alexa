@@ -672,7 +672,7 @@ function checkInstanceObject(callback) {
     adapter.getForeignObject('system.adapter.' + adapter.namespace, (err, obj) => {
         if (obj && obj.common && obj.common.restartSchedule) {
             const cronParts = obj.common.restartSchedule.split(' ');
-            if (cronParts[0].startsWith('*') || cronParts[1].startsWith('*') || (cronParts.length === 6 && cronParts[2].startsWith('*'))) {
+            if ((cronParts[0] || '').startsWith('*') || (cronParts[1] || '').startsWith('*') || (cronParts.length === 6 && cronParts[2].startsWith('*'))) {
                 adapter.log.error(`Restart schedule "${obj.common.restartSchedule}" is too often, please set a restart schedule that makes sense. Disabling adapter now.`);
                 adapter.terminate && adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
                 return;
