@@ -475,6 +475,14 @@ If the Push connection is never established then you can try to use the followin
 
 Then it should work again
 
+### I have too many App/"This device" devices in my list of Echo-Devices
+The adapter reads whatever Amazon reports. Sometimes unused and old Apps or other connections stay in that list.
+If you want to clean this up you need to do that by visiting the Amazon website and remove the devices there.
+
+Link: https://www.amazon.de/hz/mycd/digital-console/devicedetails?deviceFamily=ALEXA_APP
+
+After deleting unused device please restart the adapter to remove them there too.
+
 ## Changelog
 
 ### __WORK IN PROGRESS__
