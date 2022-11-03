@@ -484,8 +484,7 @@ Link: https://www.amazon.de/hz/mycd/digital-console/devicedetails?deviceFamily=A
 After deleting unused device please restart the adapter to remove them there too.
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.21.0 (2022-11-03)
 * IMPORTANT: Because of rate limits by Amazon I decided to remove the update of smart home device values in intervals because it seems to produce too much load in Skills and Amazon systems.
 * (Apollon77) Optimizes loading of smart home device states
 * (Apollon77) Fixed issue with enabling/disabling of Alarms in combination with non-default music for the alarm

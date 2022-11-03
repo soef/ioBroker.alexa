@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.20.1",
+    "version": "3.21.0",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.21.0": {
+        "en": "IMPORTANT: Because of rate limits by Amazon I decided to remove the update of smart home device values in intervals because it seems to produce too much load in Skills and Amazon systems.\nOptimizes loading of smart home device states\nFixed issue with enabling/disabling of Alarms in combination with non-default music for the alarm\nPrevented that Timers or Alarms that are long in the future to trigger their trigger state too early\nFixed deleting own user Messages state\nAlready request Notification updates when history registered a Notification action and do not wait for Push info to come in",
+        "de": "WICHTIG: Aufgrund der Geschwindigkeitslimits von Amazon entschied ich mich, das Update von Smart Home-Gerät-Werten in Intervallen zu entfernen, weil es zu viel Belastung in Skills und Amazon-Systemen scheint.\nOptimiert das Laden von Smart Home-Gerätezuständen\nProblem behoben mit dem Aktivieren/Deaktivieren von Alarmen in Kombination mit nicht-Standard-Musik für den Alarm\nVerhindert, dass Timer oder Alarme, die in der Zukunft lange sind, um ihren Auslösezustand zu früh auszulösen\nBehoben Löschen eigener Benutzer Nachrichten Zustand\nBereits Anfrage Benachrichtigungsaktualisierungen, wenn die Geschichte eine Benachrichtigungsaktion registriert und nicht warten, bis Push-Info kommen",
+        "ru": "ВАЖНО: Из-за пределов тарифа Amazon я решил удалить обновление интеллектуальных домашних устройств в интервалах, потому что кажется, производить слишком много нагрузки в Skills и Amazon систем.\nОптимизирует загрузку состояния умного дома\nИсправлена проблема с предоставлением/отключением тревоги в сочетании с неповрежденной музыкой для тревоги\nПредотвращается, что Таймеры или тревоги, которые долго в будущем, чтобы триггер их состояние слишком рано\nИсправлено удаление собственного пользователя Messages state\nУже запрос Уведомление об обновлениях, когда история зарегистрировала действие Уведомления и не дождаться Push info, чтобы прийти в",
+        "pt": "IMPORTANTE: Por causa dos limites de taxa da Amazon eu decidi remover a atualização de valores de dispositivo doméstico inteligente em intervalos porque parece produzir muita carga em Habilidades e sistemas da Amazon.\nOtimiza o carregamento de estados inteligentes de dispositivos domésticos\nProblema fixo com habilitação/desativação de alarmes em combinação com música não padrão para o alarme\nPrevinei que Timers ou Alarmes que são longos no futuro para desencadear seu estado de gatilho muito cedo\nCorrigido a exclusão do próprio estado de Mensagens de usuário\nJá solicite atualizações de notificação quando o histórico registrou uma ação de notificação e não espere que o Push info entre",
+        "nl": "Vanwege de snelheidsgrenzen van Amazon besloot ik de update te verwijderen van de smart home apparatuurwaarden in intervals omdat het te veel lading lijkt te veroorzaken in Skills en Amazone systemen.\nOptimizes lading van slim thuis apparaat staat\nGereserveerd met het verslechteren van Alarms in combinatie met niet-fault muziek voor het alarm\nBedenk dat Timers of Alarms lang in de toekomst zijn om hun ontstekingstoestand te vroeg te activeren\nVerwijdering van eigen gebruikers\nIk heb al een verzoek ingediend toen de geschiedenis een aanmeldingsactie registreerde en niet wachten tot de info van de pers binnenkomt",
+        "fr": "IMPORTANT: En raison des limites tarifaires d'Amazon, j'ai décidé de supprimer la mise à jour des valeurs de périphérique à domicile intelligent dans les intervalles parce qu'il semble produire trop de charge dans les systèmes Skills et Amazon.\nOptimise le chargement des états d'appareil à domicile intelligent\nProblème fixe avec habilitation/désactivation des alarmes en combinaison avec la musique non par défaut pour l'alarme\nEmpêché que Timers ou Alarms qui sont longs à l'avenir pour déclencher leur état de déclenchement trop tôt\nFixed deleting own user Messages state\nDemandez déjà des mises à jour de notification lorsque l'histoire a enregistré une action de notification et n'attendez pas les informations Push à venir dans",
+        "it": "IMPORTANTE: A causa dei limiti di tasso da Amazon ho deciso di rimuovere l'aggiornamento dei valori dei dispositivi smart home in intervalli perché sembra produrre troppo carico in competenze e sistemi Amazon.\nOttimizza il caricamento degli stati smart home device\nRisolto problema con l'abilitazione / disabilitazione di Allarmi in combinazione con musica non predefinita per l'allarme\nPrevenire che Timer o Allarmi che sono a lungo in futuro per innescare il loro stato di trigger troppo presto\nEliminato cancellazione del proprio utente\nGià richiesta Aggiornamenti di notifica quando la storia ha registrato un'azione di notifica e non aspettare per Push info per entrare",
+        "es": "IMPORTANTE: Debido a los límites de tarifas por Amazon decidí eliminar la actualización de los valores de dispositivo hogareño inteligente en intervalos porque parece producir demasiada carga en los sistemas Skills y Amazon.\nOptimiza la carga de estados inteligentes de dispositivos caseros\nEdición fija con habilitación/disacción de Alarmas en combinación con música no predeterminada para la alarma\nPrevented that Timers or Alarms that are long in the future to trigger their trigger state too early\nEliminar el propio usuario Mensajes estado\nSolicita ya actualizaciones de notificaciones cuando la historia registró una acción de notificación y no espera que Push info entre",
+        "pl": "IMPORTANT: Ze względu na ograniczenia prędkości przez Amazon I zdecydował się usunąć uaktualnione wartości urządzenie w odstępach, ponieważ wydaje się być zbyt dużo obciążenia w systemach Skills i Amazon.\nOptymizowanie obciążenia inteligentnymi jednostkami domowymi\nZawarty problem z możliwością uniknięcia Alarmsa w połączeniu z muzyką nieobronioną dla alarmu\nPrzypuszcza się, że Timerowie lub Alarmowie, którzy są długo w przyszłości w stanie wywołać swoje stany zbyt wcześnie\nFixed deletuje własny system Messages\nAlready wniosek Notification aktualizuje się, gdy historia zarejestrowała akcję Notyfikacji i nie czeka na wiadomość Push",
+        "uk": "ВАЖЛИВО: Через обмеження швидкості на Amazon я вирішив видалити оновлення значень інтелектуального домашнього пристрою в інтервалах, оскільки це, здається, виготовляти занадто багато навантаження на навички та системи Amazon.\nОптимізуйте завантаження смарт-мереж\nВиправлено проблему, що дозволяє / відключення сигнальних сигналів у поєднанні з нерозголошенням музики для сигналізації\nЗапобігла, що Тимерси або сигнали, які довге в майбутньому, щоб запустити стангера занадто рано\nВиправлено видалення власного стану повідомлень\nУже запит про оновлення повідомлень, коли історія зареєструвала дію повідомлення та не чекайте на отримання інформації про Push",
+        "zh-cn": "IMPORTANT:由于亚马逊集团的汇率限制,我决定每隔一次取消对聪明的家用具价值的更新,因为它似乎在技能和亚马逊系统中产生过多的载荷。.\n利用智能家用具的国家\nAlarms的固定问题与非燃烧音乐相结合,使人感到震惊。\n防止今后很长的推展时间或标志太早地触发国家\n九. 固定删除自己的用户信\n早就要求更新通知,因为历史登记了通知行动,不等到Pushfo上去。"
+      },
       "3.20.1": {
         "en": "make sure caching works correctly with multiple instances of the adapter",
         "de": "achten sie darauf, dass cache mit mehreren instanzen des adapters korrekt funktioniert",
@@ -102,18 +115,6 @@
         "zh-cn": "增加时间太长的保障"
       },
       "3.19.7": {
-        "en": "Fix doNotDisturb when using a time string",
-        "de": "Fehler NichtDisturb bei Verwendung eines Zeitstrings",
-        "ru": "Fix сделать NotDisturb при использовании строки времени",
-        "pt": "Fixo do NotDisturb ao usar uma string de tempo",
-        "nl": "_ Niet elke dag als je een tijdstip gebruikt",
-        "fr": "Fixe do NotDisturb lors de l'utilisation d'une chaîne temporelle",
-        "it": "Riparare NotDisturb quando si utilizza una stringa di tempo",
-        "es": "Corrección do No molestar al usar una cadena de tiempo",
-        "pl": "Fixa do Fixa NotDisturb kiedy używa czasu smyczki",
-        "zh-cn": "Fix do 在使用时间包时,不设歧见"
-      },
-      "3.19.6": {
         "en": "Fix doNotDisturb when using a time string",
         "de": "Fehler NichtDisturb bei Verwendung eines Zeitstrings",
         "ru": "Fix сделать NotDisturb при использовании строки времени",
