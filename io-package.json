@@ -328,7 +328,6 @@
     "updateConfigurationInterval": 3600,
     "updateStateInterval": 300,
     "updateHistoryInterval": 300,
-    "updateSmartHomeDevicesInterval": 0,
     "usePushConnection": true,
     "proxyOverrideIp": "",
     "resetCookies": false,
@@ -336,7 +335,7 @@
     "macDms": null,
     "includeAppDevices": false,
     "synchronizeLists": true,
-    "synchronizeSmartHomeDevices": true
+    "synchronizeSmartHomeDevices": false
   },
   "objects": [],
   "instanceObjects": [

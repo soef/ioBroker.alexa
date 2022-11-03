@@ -172,6 +172,7 @@ const knownDeviceType = {
     'A8DM4FYR6D3HT':    {name: 'LG WebOS TV', commandSupport: true}, // CHANGE_NAME,AUDIBLE,ASCENDING_ALARM_VOLUME,REMINDERS,DIALOG_INTERFACE_VERSION,DEREGISTER_DEVICE,MUSIC_SKILL,I_HEART_RADIO,SET_LOCALE,CUSTOM_ALARM_TONE,SET_TIME_ZONE,MULTI_WAKEWORDS_SUPPORTED,TUNE_IN,MICROPHONE,KINDLE_BOOKS,DREAM_TRAINING,SOUND_SETTINGS,GOLDFISH,VOLUME_SETTING,SUPPORTS_LOCALE_SWITCH,SLEEP,TIMERS_AND_ALARMS,AUDIO_PLAYER,SUPPORTS_LOCALE,AMAZON_MUSIC,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,PERSISTENT_CONNECTION
     'AB72C64C86AW2':    {name: 'Echo', commandSupport: true, icon: 'icons/echo.png'}, // PAIR_BT_SINK,CUSTOM_ALARM_TONE,PAIR_REMOTE,TIMERS_AND_ALARMS,SUPPORTS_CONNECTED_HOME,TUNE_IN,SOUND_SETTINGS,DEREGISTER_DEVICE,SET_LOCALE,SLEEP,EARCONS,UPDATE_WIFI,PAIR_BT_SOURCE,SUPPORTS_SOFTWARE_VERSION,REQUIRES_OOBE_FOR_SETUP,TUPLE_CATEGORY_B,MICROPHONE,SALMON,TAHOE_BYOD,CHANGE_NAME,FAR_FIELD_WAKE_WORD,VOLUME_SETTING,AUDIO_PLAYER,I_HEART_RADIO,REMINDERS,ASCENDING_ALARM_VOLUME,PERSISTENT_CONNECTION,AUDIBLE,GADGETS,SUPPORTS_CONNECTED_HOME_ALL,AMAZON_MUSIC,VOICE_TRAINING,FLASH_BRIEFING,DEREGISTER_FACTORY_RESET,GOLDFISH,TUPLE,PANDORA,ACTIVE_AFTER_FRO,DREAM_TRAINING,LEMUR_ALPHA,POPTART,KINDLE_BOOKS
     'ADVBD696BHNV5':    {name: 'Fire TV Stick V1', commandSupport: true, icon: 'icons/firetv.png'}, // REMINDERS,CUSTOM_ALARM_TONE,VOLUME_SETTING,SUPPORTS_LOCALE_SWITCH,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,DIALOG_INTERFACE_VERSION,SUPPORTS_SOFTWARE_VERSION,SOUND_SETTINGS,PERSISTENT_CONNECTION,MICROPHONE,SUPPORTS_LOCALE,FLASH_BRIEFING,ACTIVE_AFTER_FRO,ARTHUR_TARGET,ASCENDING_ALARM_VOLUME,CHANGE_NAME,TIMERS_AND_ALARMS
+    'AHCEDGRIFN5RP':    {name: 'Xiaomi Smart Fire TV', commandSupport: true}, // DREAM_TRAINING,AMAZON_MUSIC,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,CUSTOM_ALARM_TONE,SUPPORTS_CONNECTED_HOME_ALL,ARTHUR_TARGET,SALMON,VOLUME_SETTING,I_HEART_RADIO,TIMERS_ALARMS_NOTIFICATIONS_VOLUME,SUPPORTS_LOCALE,REMINDERS,AUDIO_PLAYER,ADAPTIVE_LISTENING,KINDLE_BOOKS,TAHOE_BYOD,EARCONS,FLASH_BRIEFING,AUDIO_CONTROLS,PANDORA,SET_LOCALE,TIMERS_AND_ALARMS,SPEECH_RECOGNIZER_USS,PERSISTENT_CONNECTION,AUDIBLE,MICROPHONE,REQUIRES_OOBE_FOR_SETUP,TIDAL,SIRIUSXM,SHARKNADO,CHANGE_NAME,EQUALIZER_CONTROLLER_MIDRANGE,SUPPORTS_LOCALE_SWITCH,DEEZER,MUSIC_SKILL,SLEEP,SUPPORTS_SOFTWARE_VERSION,APPLE_MUSIC,MULTI_WAKEWORDS_SUPPORTED,DIALOG_INTERFACE_VERSION,VOICE_TRAINING,ACTIVE_AFTER_FRO,TUNE_IN,ASCENDING_ALARM_VOLUME,SOUND_SETTINGS,TIMEZONE
     'AHJYKVA63YCAQ':    {name: 'Sonos Roam', commandSupport: true, icon: 'icons/sonos.png'}, // SIRIUSXM,PERSISTENT_CONNECTION,TIDAL,SUPPORTS_LOCALE_SWITCH,DIALOG_INTERFACE_VERSION,DREAM_TRAINING,CUSTOM_ALARM_TONE,APPLE_MUSIC,GOLDFISH,KINDLE_BOOKS,CHANGE_NAME,SET_LOCALE,AUDIO_PLAYER,AUDIBLE,TUNE_IN,DEREGISTER_DEVICE,SPEECH_RECOGNIZER_USS,TIMERS_AND_ALARMS,MULTI_WAKEWORDS_SUPPORTED,EARCONS,MICROPHONE,DEEZER,ASCENDING_ALARM_VOLUME,MUSIC_SKILL,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,SLEEP,SOUND_SETTINGS,SUPPORTS_LOCALE,I_HEART_RADIO,REMINDERS,AMAZON_MUSIC,SET_TIME_ZONE,VOLUME_SETTING
     'AILBSA2LNTOYL':    {name: 'reverb App', commandSupport: false, icon: 'icons/reverb.png'},
     'AINRG27IL8AS0':    {name: 'Megablast Speaker', commandSupport: false}, // (TUNE_IN,KINDLE_BOOKS,PAIR_BT_SINK,TIMERS_AND_ALARMS,MICROPHONE,AUDIBLE,CHANGE_NAME,GOLDFISH,REMINDERS,VOLUME_SETTING,SUPPORTS_CONNECTED_HOME_CLOUD_ONLY,DREAM_TRAINING,SLEEP,PERSISTENT_CONNECTION,AMAZON_MUSIC,I_HEART_RADIO,MUSIC_SKILL,PEONY,AUDIO_PLAYER,DEREGISTER_DEVICE)
@@ -768,8 +769,9 @@ function sec2HMS(sec) {
 }
 
 
-function scheduleNotificationUpdate(deviceId, delay) {
+function scheduleNotificationUpdate(deviceId, delay, onlyIfNew) {
     if (updateNotificationTimer[deviceId]) {
+        if (onlyIfNew) return;
         clearTimeout(updateNotificationTimer[deviceId]);
     }
     updateNotificationTimer[deviceId] = setTimeout(() => {
@@ -1225,45 +1227,6 @@ function updateMediaProgress(serialNumber) {
     }
 }
 
-function scheduleNextSmarthomeDeviceQuery() {
-    if (adapter.config.updateSmartHomeDevicesInterval > 0) {
-        if (updateSmartHomeDevicesTimer) {
-            clearTimeout(updateSmartHomeDevicesTimer);
-            updateSmartHomeDevicesTimer = null;
-        }
-        if (stopped) return;
-        updateSmartHomeDevicesTimer = setTimeout(() => {
-            updateSmartHomeDevicesTimer = null;
-            if (stopped) return;
-
-            queryAllSmartHomeDevices(false, true);
-            /*alexa.getSmarthomeDevices((err, res) => {
-                let all = {};
-                if (
-                    res &&
-                    res.locationDetails &&
-                    res.locationDetails.Default_Location &&
-                    res.locationDetails.Default_Location.amazonBridgeDetails &&
-                    res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails
-                ) {
-                    all = res.locationDetails.Default_Location.amazonBridgeDetails.amazonBridgeDetails;
-                }
-                for (const i of Object.keys(all)) {
-                    for (const n of Object.keys(all[i].applianceDetails.applianceDetails)) {
-                        const shDevice = all[i].applianceDetails.applianceDetails[n];
-                        if (shApplianceEntityMap[shDevice.applianceId] && shApplianceEntityMap[shDevice.applianceId].entityId) {
-                            adapter.setState(`Smart-Home-Devices.${shDevice.entityId}.#enabled`, shDevice.isEnabled, true);
-                        } else {
-                            adapter.log.info(`It seems that a new smart home device got created (or device added) after last adapter start, restart the Adapter to use it (${shDevice.applianceId})`);
-                        }
-                    }
-                }
-                queryAllSmartHomeDevices(true, true);
-            });*/
-        }, Math.max(adapter.config.updateSmartHomeDevicesInterval * 1000, 300000));
-    }
-}
-
 function generateApplianceQueryArray(applianceId, queryAllProperties) {
     let propertiesToQuery;
     if (!queryAllProperties) {
@@ -1323,8 +1286,8 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
                  * Please DO NOT modify these block values and DO NOT lower them! Doing this might mean that Amazon
                  * blocks the Smart home device queries for all > 20k ioBroker Adapter users!
                  */
-                let delay = 900000;
-                if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 600000;
+                let delay = 1200000;
+                if (!applianceId.startsWith('SKILL_') && shApplianceEntityMap[applianceId].cloudReadable) delay = 900000;
                 shQueryBlocker[applianceId] = setTimeout(() => {
                     shQueryBlocker[applianceId] = null;
                 }, delay);
@@ -1332,28 +1295,26 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
         }
     }
     if (blocked.length) {
-        adapter.log.warn(`Smarthome device queries blocked for ${blocked.join(',')}`);
+        adapter.log.warn(`Smarthome device queries blocked for ${blocked.length} devices: ${blocked.join(',')}`);
     }
 
     if (!reqArr.length) {
+        adapter.log.info('No smart home devices to query');
         return callback && callback();
     }
 
     const cachedDeviceStatesFileName = path.join(__dirname, `cachedDeviceStates.${adapter.namespace}.json`);
-    if (initial) {
-        try {
-            if (fs.existsSync(cachedDeviceStatesFileName)) {
-                const stats = fs.statSync(cachedDeviceStatesFileName);
-                if (stats.mtime.getTime() + Math.min(Math.floor(adapter.config.updateSmartHomeDevicesInterval / 2) || 450, 450) * 1000 > Date.now()) {
-                    adapter.log.info(`Home Device states last requested ${stats.mtime} ... Do not request again now`);
+    try {
+        if (fs.existsSync(cachedDeviceStatesFileName)) {
+            const stats = fs.statSync(cachedDeviceStatesFileName);
+            if (stats.mtime.getTime() + 900 * 1000 > Date.now()) {
+                adapter.log.info(`Home Device states last requested ${stats.mtime} ... Do not request again now`);
 
-                    scheduleNextSmarthomeDeviceQuery();
-                    return callback && callback();
-                }
+                return callback && callback();
             }
-        } catch (err) {
-            adapter.log.info('Could not cache devices: ' + err.message);
         }
+    } catch (err) {
+        adapter.log.info('Could not cache devices: ' + err.message);
     }
 
     alexa.querySmarthomeDevices(reqArr, (err, res) => {
@@ -1368,7 +1329,6 @@ function queryAllSmartHomeDevices(initial, cloudOnly, callback) {
             updateSmarthomeDeviceStates(res);
         }
 
-        scheduleNextSmarthomeDeviceQuery();
         return callback && callback();
     });
 }
@@ -1743,12 +1703,12 @@ function createSmarthomeStates(callback) {
 
     // TODO alexa.getSmarthomeGroups nutzen
 
-    adapter.getStates('Smart-Home-Devices.*.#includeInIntervalQuery', (err, states) => {
+    adapter.getStates('Smart-Home-Devices.*.#includeInAllQuery', (err, states) => {
         const shQueryEnabledEntities = {};
         if (!err && states) {
             Object.keys(states).forEach(id => {
                 if (!states[id]) return;
-                const entityId = id.replace(new RegExp(`^${adapter.namespace}.Smart-Home-Devices.`), '').replace(/\.#includeInIntervalQuery$/, '');
+                const entityId = id.replace(new RegExp(`^${adapter.namespace}.Smart-Home-Devices.`), '').replace(/\.#includeInAllQuery$/, '');
                 shQueryEnabledEntities[entityId] = !!states[id].val;
                 adapter.log.debug(`${id} for ${entityId} is ${shQueryEnabledEntities[entityId] ? 'enabled' : 'disabled'}`);
             });
@@ -2142,9 +2102,9 @@ function createSmarthomeStates(callback) {
                                 }.bind(alexa, shDevice.applianceId));
                                 shQueryEnabled[shDevice.applianceId] = !!shQueryEnabledEntities[shDevice.entityId];
                                 adapter.log.debug(`Smarthome-Device ${shDevice.applianceId} is query enabled (${shQueryEnabled[shDevice.applianceId]})`);
-                                setOrUpdateObject(`Smart-Home-Devices.${shDevice.entityId}.#includeInIntervalQuery`, {common: {type: 'boolean', read: true, write: true, role: 'switch', def: false}}, undefined, function (applianceId, value) {
+                                setOrUpdateObject(`Smart-Home-Devices.${shDevice.entityId}.#includeInAllQuery`, {common: {type: 'boolean', read: true, write: true, role: 'switch', def: false}}, undefined, function (applianceId, value) {
                                     shQueryEnabled[applianceId] = !!value;
-                                    adapter.setState(`Smart-Home-Devices.${shDevice.entityId}.#includeInIntervalQuery`, !!value, true);
+                                    adapter.setState(`Smart-Home-Devices.${shDevice.entityId}.#includeInAllQuery`, !!value, true);
                                 }.bind(alexa, shDevice.applianceId));
                             }
                         }
@@ -2383,6 +2343,8 @@ function updateHistoryStates(o) {
             }
         } else if (jsonHistory.domain === 'Music') {
             schedulePlayerUpdate(jsonHistory.serialNumber, 5000, true);
+        } else if (jsonHistory.domain === 'Notifications') {
+            scheduleNotificationUpdate(jsonHistory.deviceSerialNumber, 2000);
         }
     }
     adapter.setState('History.json', JSON.stringify(jsonHistory), true);
@@ -3402,7 +3364,7 @@ function createNotificationStates(serialOrName) {
                 const notification = alexa.createNotificationObject(device, 'Reminder', label, time, true, sound, recurring);
                 if (notification) {
                     alexa.createNotification(notification, (err, res) => {
-                        scheduleNotificationUpdate(device, 2000);
+                        scheduleNotificationUpdate(device, 2000, true);
                     });
                 }
             }.bind(alexa, device));
@@ -3462,7 +3424,7 @@ function createNotificationStates(serialOrName) {
                 const notification = alexa.createNotificationObject(device, 'Alarm', label, time, true, sound, recurring);
                 if (notification) {
                     alexa.createNotification(notification, (err, res) => {
-                        scheduleNotificationUpdate(device, 2000);
+                        scheduleNotificationUpdate(device, 2000, true);
                     });
                 }
             }.bind(alexa, device));
@@ -4673,7 +4635,7 @@ function main() {
         useWsMqtt: false,
         //deviceAppName: 'Amazon Alexa',
         formerDataStorePath: path.join(__dirname, `formerDataStore${adapter.namespace}.json`),
-        apiUserAgentPostfix: `ioBrokrAlexa2/${require(path.join(__dirname, 'package.json')).version}`
+        apiUserAgentPostfix: `ioBrokAlexa2/${require(path.join(__dirname, 'package.json')).version}`
     };
     adapter.config.updateHistoryInterval = parseInt(adapter.config.updateHistoryInterval, 10);
     if (!adapter.config.updateHistoryInterval || isNaN(adapter.config.updateHistoryInterval) || adapter.config.updateHistoryInterval < 0) {
@@ -4714,30 +4676,6 @@ function main() {
         adapter.config.updateStateInterval = 0;
     }
     adapter.log.debug(`Update Device State Interval: ${adapter.config.updateStateInterval !== 0 ? `${adapter.config.updateStateInterval}s` : 'disabled'}`);
-
-    adapter.config.updateSmartHomeDevicesInterval = parseInt(adapter.config.updateSmartHomeDevicesInterval, 10);
-    if (!adapter.config.updateSmartHomeDevicesInterval || isNaN(adapter.config.updateSmartHomeDevicesInterval) || adapter.config.updateSmartHomeDevicesInterval < 0) {
-        adapter.config.updateSmartHomeDevicesInterval = 0;
-    }
-    /**
-     * ATTENTION: DO NOT lower this limit of 900s (15mins) because there is a high risk that Amazon blocks the Query of Smart home
-     * devices for all >20.000 Users of this Adapter! If this happens again I need to remove the feature at all from the adapter!
-     */
-    if (adapter.config.updateSmartHomeDevicesInterval !== 0 && adapter.config.updateSmartHomeDevicesInterval < 900) {
-        adapter.config.updateSmartHomeDevicesInterval = 3600 + Math.floor(Math.random() * 60);
-        adapter.log.info(`Update SmartHome Devices Interval is too low, set to ${adapter.config.updateSmartHomeDevicesInterval}s`);
-    } else if (adapter.config.updateSmartHomeDevicesInterval !== 0 && adapter.config.updateSmartHomeDevicesInterval >= 900) {
-        adapter.config.updateSmartHomeDevicesInterval += Math.floor(Math.random() * 10);
-    } else {
-        adapter.config.updateSmartHomeDevicesInterval = 0;
-    }
-    if (adapter.config.updateSmartHomeDevicesInterval !== 0) {
-        adapter.config.updateSmartHomeDevicesInterval = Math.max(adapter.config.updateSmartHomeDevicesInterval, 900);
-    }
-    if (adapter.config.updateSmartHomeDevicesInterval > 2147482) { // max 2147483647/1000 --> 2147482
-        adapter.config.updateSmartHomeDevicesInterval = 0;
-    }
-    adapter.log.debug(`Update SmartHome Devices Interval: ${adapter.config.updateSmartHomeDevicesInterval !== 0 ? `${adapter.config.updateSmartHomeDevicesInterval}s` : 'disabled'}`);
 
     adapter.config.updateConfigurationInterval = parseInt(adapter.config.updateConfigurationInterval, 10);
     if (!adapter.config.updateConfigurationInterval || isNaN(adapter.config.updateConfigurationInterval) || adapter.config.updateConfigurationInterval < 0) {
@@ -5067,7 +5005,7 @@ function main() {
                 }
             }
         }
-        scheduleNotificationUpdate(data.deviceSerialNumber, 2000);
+        scheduleNotificationUpdate(data.deviceSerialNumber, 2000, true);
     });
 
     alexa.on('cookie', (cookie, csrf, macDms) => {
@@ -5187,7 +5125,7 @@ function main() {
                                                     if (delIds.length) {
                                                         adapter.log.info(`Deleting the following states: ${JSON.stringify(delIds)}`);
                                                         for (let i = 0; i < delIds.length; i++) {
-                                                            //if (delIds[i].startsWith('Smart-Home-Devices.')) continue; // TODO Do not cleanup for now, change later
+                                                            if (delIds[i].startsWith('Smart-Home-Devices.') && !delIds[i].endsWith('.#includeInIntervalQuery')) continue; // TODO Do not cleanup for now, change later
                                                             try {
                                                                 adapter.delObject(delIds[i], err => {
                                                                     if (err) adapter.log.info(`Can not delete object ${delIds[i]}: ${err.message}`);
