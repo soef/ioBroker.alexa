@@ -223,6 +223,9 @@ const shGroupDetails = {};
 const shDeviceParamValues = {};
 const shQueryBlocker = {};
 const shQueryEnabled = {};
+const shDeviceParamControlValues = {};
+const shDeviceRefreshTimeoutAfterControl = {};
+let shDeviceDiscoveryTimeout = null;
 
 const stateChangeTrigger = {};
 const objectQueue = [];
@@ -234,6 +237,15 @@ let crashCheckFileName;
 let isCrashStop = false;
 const useCrashCheck = true; // Only disable for development!
 let initDone = false;
+let installationUuid;
+
+const shdCounters = {
+    getSkill: 0,
+    get: 0,
+    setSkill: 0,
+    set: 0
+};
+let checkerInterval = null;
 
 process.on('uncaughtException', () => {
     isCrashStop = true;
@@ -485,95 +497,108 @@ function initSentry(callback) {
         adapter.log.warn('Invalid Sentry definition, no dsn provided. Disable error reporting');
         return callback && callback();
     }
-    // Require needed tooling
-    Sentry = require('@sentry/node');
-    SentryIntegrations = require('@sentry/integrations');
-    // By installing source map support, we get the original source
-    // locations in error messages
-    require('source-map-support').install();
-
-    let sentryPathWhitelist = [];
-    if (sentryConfig.pathWhitelist && Array.isArray(sentryConfig.pathWhitelist)) {
-        sentryPathWhitelist = sentryConfig.pathWhitelist;
-    }
-    if (adapter.pack.name && !sentryPathWhitelist.includes(adapter.pack.name)) {
-        sentryPathWhitelist.push(adapter.pack.name);
-    }
-    let sentryErrorBlacklist = [];
-    if (sentryConfig.errorBlacklist && Array.isArray(sentryConfig.errorBlacklist)) {
-        sentryErrorBlacklist = sentryConfig.errorBlacklist;
-    }
-    if (!sentryErrorBlacklist.includes('SyntaxError')) {
-        sentryErrorBlacklist.push('SyntaxError');
-    }
-
-    Sentry.init({
-        release: `${adapter.pack.name}@${adapter.pack.version}`,
-        dsn: sentryConfig.dsn,
-        integrations: [
-            new SentryIntegrations.Dedupe()
-        ]
-    });
-    Sentry.configureScope(scope => {
-        scope.setTag('version', adapter.common.installedVersion || adapter.common.version);
-        if (adapter.common.installedFrom) {
-            scope.setTag('installedFrom', adapter.common.installedFrom);
+    adapter.getForeignObject('system.meta.uuid', (err, obj) => {
+        // create uuid
+        if (!err  && obj) {
+            installationUuid = obj.native.uuid;
         }
-        else {
-            scope.setTag('installedFrom', adapter.common.installedVersion || adapter.common.version);
-        }
-        scope.addEventProcessor(function(event, hint) {
-            // Try to filter out some events
-            if (event.exception && event.exception.values && event.exception.values[0]) {
-                const eventData = event.exception.values[0];
-                // if error type is one from blacklist we ignore this error
-                if (eventData.type && sentryErrorBlacklist.includes(eventData.type)) {
-                    return null;
-                }
-                if (eventData.stacktrace && eventData.stacktrace.frames && Array.isArray(eventData.stacktrace.frames) && eventData.stacktrace.frames.length) {
-                    // if last exception frame is from an nodejs internal method we ignore this error
-                    if (eventData.stacktrace.frames[eventData.stacktrace.frames.length - 1].filename && (eventData.stacktrace.frames[eventData.stacktrace.frames.length - 1].filename.startsWith('internal/') || eventData.stacktrace.frames[eventData.stacktrace.frames.length - 1].filename.startsWith('Module.'))) {
-                        return null;
-                    }
-                    // Check if any entry is whitelisted from pathWhitelist
-                    const whitelisted = eventData.stacktrace.frames.find(frame => {
-                        if (frame.function && frame.function.startsWith('Module.')) {
-                            return false;
-                        }
-                        if (frame.filename && frame.filename.startsWith('internal/')) {
-                            return false;
-                        }
-                        if (frame.filename && !sentryPathWhitelist.find(path => path && path.length && frame.filename.includes(path))) {
-                            return false;
-                        }
-                        return true;
-                    });
-                    if (!whitelisted) {
-                        return null;
-                    }
-                }
+
+        if (adapter.supportsFeature && adapter.supportsFeature('PLUGINS')) {
+            const sentryInstance = adapter.getPluginInstance('sentry');
+            if (sentryInstance) {
+                Sentry = sentryInstance.getSentryObject();
             }
+        }
+        if (Sentry) {
+            return callback && callback();
+        }
+        // Require needed tooling
+        Sentry = require('@sentry/node');
+        SentryIntegrations = require('@sentry/integrations');
+        // By installing source map support, we get the original source
+        // locations in error messages
+        require('source-map-support').install();
 
-            return event;
+        let sentryPathWhitelist = [];
+        if (sentryConfig.pathWhitelist && Array.isArray(sentryConfig.pathWhitelist)) {
+            sentryPathWhitelist = sentryConfig.pathWhitelist;
+        }
+        if (adapter.pack.name && !sentryPathWhitelist.includes(adapter.pack.name)) {
+            sentryPathWhitelist.push(adapter.pack.name);
+        }
+        let sentryErrorBlacklist = [];
+        if (sentryConfig.errorBlacklist && Array.isArray(sentryConfig.errorBlacklist)) {
+            sentryErrorBlacklist = sentryConfig.errorBlacklist;
+        }
+        if (!sentryErrorBlacklist.includes('SyntaxError')) {
+            sentryErrorBlacklist.push('SyntaxError');
+        }
+
+        Sentry.init({
+            release: `${adapter.pack.name}@${adapter.pack.version}`,
+            dsn: sentryConfig.dsn,
+            integrations: [
+                new SentryIntegrations.Dedupe()
+            ]
         });
+        Sentry.configureScope(scope => {
+            if (adapter.supportsFeature && adapter.supportsFeature('PLUGINS')) {
+                scope.setTag('activationOverwrite', true);
+            }
+            scope.setTag('version', adapter.common.installedVersion || adapter.common.version);
+            if (adapter.common.installedFrom) {
+                scope.setTag('installedFrom', adapter.common.installedFrom);
+            }
+            else {
+                scope.setTag('installedFrom', adapter.common.installedVersion || adapter.common.version);
+            }
+            scope.addEventProcessor(function(event, hint) {
+                // Try to filter out some events
+                if (event.exception && event.exception.values && event.exception.values[0]) {
+                    const eventData = event.exception.values[0];
+                    // if error type is one from blacklist we ignore this error
+                    if (eventData.type && sentryErrorBlacklist.includes(eventData.type)) {
+                        return null;
+                    }
+                    if (eventData.stacktrace && eventData.stacktrace.frames && Array.isArray(eventData.stacktrace.frames) && eventData.stacktrace.frames.length) {
+                        // if last exception frame is from an nodejs internal method we ignore this error
+                        if (eventData.stacktrace.frames[eventData.stacktrace.frames.length - 1].filename && (eventData.stacktrace.frames[eventData.stacktrace.frames.length - 1].filename.startsWith('internal/') || eventData.stacktrace.frames[eventData.stacktrace.frames.length - 1].filename.startsWith('Module.'))) {
+                            return null;
+                        }
+                        // Check if any entry is whitelisted from pathWhitelist
+                        const whitelisted = eventData.stacktrace.frames.find(frame => {
+                            if (frame.function && frame.function.startsWith('Module.')) {
+                                return false;
+                            }
+                            if (frame.filename && frame.filename.startsWith('internal/')) {
+                                return false;
+                            }
+                            if (frame.filename && !sentryPathWhitelist.find(path => path && path.length && frame.filename.includes(path))) {
+                                return false;
+                            }
+                            return true;
+                        });
+                        if (!whitelisted) {
+                            return null;
+                        }
+                    }
+                }
 
-        adapter.getForeignObject('system.config', (err, obj) => {
-            if (obj && obj.common && obj.common.diag !== 'none') {
-                adapter.getForeignObject('system.meta.uuid', (err, obj) => {
-                    // create uuid
-                    if (!err  && obj) {
+                return event;
+            });
+
+            adapter.getForeignObject('system.config', (err, obj) => {
+                if (obj && obj.common && obj.common.diag !== 'none') {
+                    if (installationUuid) {
                         Sentry.configureScope(scope => {
                             scope.setUser({
                                 id: obj.native.uuid
                             });
                         });
                     }
-                    callback && callback();
-                });
-            }
-            else {
+                }
                 callback && callback();
-            }
+            });
         });
     });
 }
@@ -600,6 +625,7 @@ function startAdapter(options) {
                 }
             }
         }
+        checkerInterval && clearInterval(checkerInterval);
         updateSmartHomeDevicesTimer && clearTimeout(updateSmartHomeDevicesTimer);
         updateStateTimer && clearTimeout(updateStateTimer);
         updateConfigurationTimer && clearTimeout(updateConfigurationTimer);
@@ -608,6 +634,8 @@ function startAdapter(options) {
         Object.keys(updateNotificationTimer).forEach(timer => updateNotificationTimer[timer] && clearTimeout(updateNotificationTimer[timer]));
         Object.keys(updatePlayerTimer).forEach(timer => updatePlayerTimer[timer] && clearTimeout(updatePlayerTimer[timer]));
         Object.keys(lastPlayerState).forEach(timer => lastPlayerState[timer] && lastPlayerState[timer].timeout && clearTimeout(lastPlayerState[timer].timeout));
+        Object.keys(shDeviceRefreshTimeoutAfterControl).forEach(timer => shDeviceRefreshTimeoutAfterControl[timer] && clearTimeout(shDeviceRefreshTimeoutAfterControl[timer]));
+
         if (alexa) {
             alexa.stop();
         }
@@ -659,12 +687,7 @@ function startAdapter(options) {
     });
 
     adapter.on('ready', () => {
-        if (adapter.supportsFeature && adapter.supportsFeature('PLUGINS')) {
-            loadExistingAccessories(checkInstanceObject(main));
-        }
-        else {
-            initSentry(() => loadExistingAccessories(checkInstanceObject(main)));
-        }
+        initSentry(() => loadExistingAccessories(checkInstanceObject(main)));
     });
 
     return adapter;
@@ -1696,6 +1719,39 @@ function getCachedSmarthomeDevices(callback) {
     });
 }
 
+function checkSmartHomeControlParameters(parameterId, value) {
+    let counter = 1;
+    const now = Date.now();
+    if (shDeviceParamControlValues[parameterId]) {
+        if (shDeviceParamControlValues[parameterId].ts > now - 300000) {
+            if (shDeviceParamControlValues[parameterId].value == value) {
+                adapter.log.info(`Ignore update of ${parameterId} because it was set to the same value in last 5min`);
+                return false;
+            }
+            if (typeof shDeviceParamControlValues[parameterId].value === 'number') {
+                const difference = Math.abs(shDeviceParamControlValues[parameterId].value - value);
+                if (difference < 0.5) {
+                    adapter.log.info(`Ignore update of ${parameterId} because value only changed ${difference.toFixed(2)} since last set within 5min`);
+                    return false;
+                }
+            }
+        }
+        if (shDeviceParamControlValues[parameterId].ts > now - 600000) {
+            counter = ++shDeviceParamControlValues[parameterId].counter;
+            if (counter > 4) {
+                adapter.log.info(`Ignore update of ${parameterId} because it was set too often in the last time (${counter})`);
+                return false;
+            }
+        }
+    }
+    shDeviceParamControlValues[parameterId] = {
+        value,
+        ts: now,
+        counter
+    };
+    return true;
+}
+
 function createSmarthomeStates(callback) {
     if (!adapter.config.synchronizeSmartHomeDevices) {
         return callback && callback();
@@ -1737,6 +1793,10 @@ function createSmarthomeStates(callback) {
                     });
                 });
                 setOrUpdateObject('Smart-Home-Devices.discoverDevices', {common: {name: 'Let Alexa search for devices', type: 'boolean', read: false, write: true, role: 'button'}}, false, (val) => {
+                    if (shDeviceDiscoveryTimeout) {
+                        adapter.log.info('Discovery was executed too short ago, can not trigger it');
+                        return;
+                    }
                     const cachedDevicesFilename = path.join(__dirname, `cachedDevices.${adapter.namespace}.json`);
                     try {
                         if (fs.existsSync(cachedDevicesFilename)) {
@@ -1745,6 +1805,7 @@ function createSmarthomeStates(callback) {
                     } catch (err) {
                         adapter.log.info('Could not delete cached devices: ' + err.message);
                     }
+                    shDeviceDiscoveryTimeout = setTimeout(() => shDeviceDiscoveryTimeout = null, 300000);
                     alexa.discoverSmarthomeDevice((err, res) => {
                         return createSmarthomeStates();
                     });
@@ -1929,17 +1990,42 @@ function createSmarthomeStates(callback) {
                                                         }
                                                         return;
                                                     }
+
+                                                    if (!checkSmartHomeControlParameters(`${entityId}.${obj.common.name}`, value)) return;
+
                                                     alexa.executeSmarthomeDeviceAction(entityId, parameters, (err, res) => {
                                                         if (!err && res && res.controlResponses && res.controlResponses[0] && res.controlResponses[0].code && res.controlResponses[0].code === 'SUCCESS' && !excludeReadable) {
                                                             if (shQueryBlocker[applianceId]) {
                                                                 clearTimeout(shQueryBlocker[applianceId]);
                                                                 shQueryBlocker[applianceId] = null;
                                                             }
-                                                            setTimeout(() => alexa.querySmarthomeDevices(generateApplianceQueryArray(applianceId, true), (err, res) => {
-                                                                if (!err) {
-                                                                    updateSmarthomeDeviceStates(res);
+                                                            if (shDeviceRefreshTimeoutAfterControl[applianceId]) {
+                                                                clearTimeout(shDeviceRefreshTimeoutAfterControl[applianceId]);
+                                                                shDeviceRefreshTimeoutAfterControl[applianceId] = null;
+                                                            }
+                                                            shDeviceRefreshTimeoutAfterControl[applianceId] = setTimeout(() => {
+                                                                shDeviceRefreshTimeoutAfterControl[applianceId] = null;
+
+                                                                if (shQueryBlocker[applianceId]) {
+                                                                    clearTimeout(shQueryBlocker[applianceId]);
+                                                                    shQueryBlocker[applianceId] = null;
                                                                 }
-                                                            }), 2000);
+                                                                /**
+                                                                 * Please do not change these delay, else Amazon might block the smart home device state query function
+                                                                 * for all >20k Adapter users!
+                                                                 */
+                                                                let delay = 900000;
+                                                                if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 600000;
+                                                                shQueryBlocker[applianceId] = setTimeout(() => {
+                                                                    shQueryBlocker[applianceId] = null;
+                                                                }, delay);
+
+                                                                alexa.querySmarthomeDevices(generateApplianceQueryArray(applianceId, true), (err, res) => {
+                                                                    if (!err) {
+                                                                        updateSmarthomeDeviceStates(res);
+                                                                    }
+                                                                });
+                                                            }, 2000);
                                                         }
                                                         else {
                                                             updateSmarthomeDeviceStates(res);
@@ -2037,6 +2123,9 @@ function createSmarthomeStates(callback) {
                                                 }
                                                 return;
                                             }
+
+                                            if (!checkSmartHomeControlParameters(`${entityId}.${obj.common.name}`, value)) return;
+
                                             alexa.executeSmarthomeDeviceAction(entityId, parameters, (err, res) => {
                                                 if (!err && res && res.controlResponses && res.controlResponses[0] && res.controlResponses[0].code && res.controlResponses[0].code === 'SUCCESS') {
                                                     if (obj.native.readable) {
@@ -2044,11 +2133,33 @@ function createSmarthomeStates(callback) {
                                                             clearTimeout(shQueryBlocker[applianceId]);
                                                             shQueryBlocker[applianceId] = null;
                                                         }
-                                                        setTimeout(() => alexa.querySmarthomeDevices(generateApplianceQueryArray(applianceId, true), (err, res) => {
-                                                            if (!err) {
-                                                                updateSmarthomeDeviceStates(res);
+                                                        if (shDeviceRefreshTimeoutAfterControl[applianceId]) {
+                                                            clearTimeout(shDeviceRefreshTimeoutAfterControl[applianceId]);
+                                                            shDeviceRefreshTimeoutAfterControl[applianceId] = null;
+                                                        }
+                                                        shDeviceRefreshTimeoutAfterControl[applianceId] = setTimeout(() => {
+                                                            shDeviceRefreshTimeoutAfterControl[applianceId] = null;
+
+                                                            if (shQueryBlocker[applianceId]) {
+                                                                clearTimeout(shQueryBlocker[applianceId]);
+                                                                shQueryBlocker[applianceId] = null;
                                                             }
-                                                        }), 2000);
+                                                            /**
+                                                             * Please do not change these delay, else Amazon might block the smart home device state query function
+                                                             * for all >20k Adapter users!
+                                                             */
+                                                            let delay = 900000;
+                                                            if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 600000;
+                                                            shQueryBlocker[applianceId] = setTimeout(() => {
+                                                                shQueryBlocker[applianceId] = null;
+                                                            }, delay);
+
+                                                            alexa.querySmarthomeDevices(generateApplianceQueryArray(applianceId, true), (err, res) => {
+                                                                if (!err) {
+                                                                    updateSmarthomeDeviceStates(res);
+                                                                }
+                                                            });
+                                                        }, 2000);
                                                     }
                                                     else {
                                                         adapter.setState(`Smart-Home-Devices.${shDevice.entityId}.${obj.common.name}`, origValue, true);
@@ -2168,6 +2279,8 @@ function createSmarthomeStates(callback) {
                                     return;
                                 }
 
+                                if (!checkSmartHomeControlParameters(`${groupIdShort}.${obj.common.name}`, value)) return;
+
                                 alexa.executeSmarthomeDeviceAction(groupIdShort, parameters, 'GROUP', (err, res) => {
                                     if (!err && res && res.controlResponses && res.controlResponses[0] && res.controlResponses[0].code && res.controlResponses[0].code === 'SUCCESS') {
                                         if (obj.native.readable) {
@@ -2175,11 +2288,32 @@ function createSmarthomeStates(callback) {
                                                 clearTimeout(shQueryBlocker[applianceId]);
                                                 shQueryBlocker[applianceId] = null;
                                             }
-                                            setTimeout(() => alexa.querySmarthomeDevices(generateApplianceQueryArray(applianceId, true), (err, res) => {
-                                                if (!err) {
-                                                    updateSmarthomeDeviceStates(res);
+                                            if (shDeviceRefreshTimeoutAfterControl[applianceId]) {
+                                                clearTimeout(shDeviceRefreshTimeoutAfterControl[applianceId]);
+                                                shDeviceRefreshTimeoutAfterControl[applianceId] = null;
+                                            }
+                                            shDeviceRefreshTimeoutAfterControl[applianceId] = setTimeout(() => {
+                                                shDeviceRefreshTimeoutAfterControl[applianceId] = null;
+
+                                                if (shQueryBlocker[applianceId]) {
+                                                    clearTimeout(shQueryBlocker[applianceId]);
+                                                    shQueryBlocker[applianceId] = null;
                                                 }
-                                            }), 2000);
+                                                /**
+                                                 * Please do not change these delay, else Amazon might block the smart home device state query function
+                                                 * for all >20k Adapter users!
+                                                 */
+                                                let delay = 900000;
+                                                if (!applianceId.startsWith('SKILL_') || shApplianceEntityMap[applianceId].cloudReadable) delay = 600000;
+                                                shQueryBlocker[applianceId] = setTimeout(() => {
+                                                    shQueryBlocker[applianceId] = null;
+                                                }, delay);
+                                                alexa.querySmarthomeDevices(generateApplianceQueryArray(applianceId, true), (err, res) => {
+                                                    if (!err) {
+                                                        updateSmarthomeDeviceStates(res);
+                                                    }
+                                                });
+                                            }, 2000);
                                         }
                                     }
                                     else {
@@ -4635,7 +4769,7 @@ function main() {
         useWsMqtt: false,
         //deviceAppName: 'Amazon Alexa',
         formerDataStorePath: path.join(__dirname, `formerDataStore${adapter.namespace}.json`),
-        apiUserAgentPostfix: `ioBrokAlexa2/${require(path.join(__dirname, 'package.json')).version}`
+        apiUserAgentPostfix: `ioBroAlexa2/${require(path.join(__dirname, 'package.json')).version}`
     };
     adapter.config.updateHistoryInterval = parseInt(adapter.config.updateHistoryInterval, 10);
     if (!adapter.config.updateHistoryInterval || isNaN(adapter.config.updateHistoryInterval) || adapter.config.updateHistoryInterval < 0) {
@@ -4707,6 +4841,30 @@ function main() {
     let connectAfterDisconnect = false;
 
     alexa = new Alexa();
+
+    const origSHDQueryFunc = alexa.querySmarthomeDevices.bind(alexa);
+    alexa.querySmarthomeDevices = function (toQuery, entityType, maxTimeout, callback) {
+        toQuery.forEach(q => {
+            if (q.entityId && q.entityId.startsWith('SKILL')) {
+                shdCounters.getSkill++;
+            } else {
+                shdCounters.get++;
+            }
+        });
+        origSHDQueryFunc(toQuery, entityType, maxTimeout, callback);
+    };
+    const origSHDExecFunc = alexa.executeSmarthomeDeviceAction.bind(alexa);
+    alexa.executeSmarthomeDeviceAction = function (entityIds, parameters, entityType, callback) {
+        if (!Array.isArray(entityIds)) entityIds = [entityIds];
+        entityIds.forEach(id => {
+            if (id.startsWith('SKILL')) {
+                shdCounters.setSkill++;
+            } else {
+                shdCounters.set++;
+            }
+        });
+        origSHDExecFunc(entityIds, parameters, entityType, callback);
+    };
 
     alexa.on('ws-connect', () => {
         if (initDone && connectAfterDisconnect) {
@@ -5136,6 +5294,29 @@ function main() {
                                                             delete existingStates[delIds[i]];
                                                         }
                                                     }
+                                                    checkerInterval = setInterval(() => {
+                                                        let allCalls = 0;
+                                                        let allSkills = 0;
+                                                        adapter.log.debug(`shdCounters: ${JSON.stringify(shdCounters)}`);
+                                                        Object.keys(shdCounters).forEach(key => {
+                                                            allCalls += shdCounters[key];
+                                                            if (key.endsWith('Skill')) allSkills += shdCounters[key];
+                                                        });
+                                                        if (allCalls > 1000 || allSkills > 500) {
+                                                            adapter.log.error(`Too many calls for Smart-Home-Devices in the last hour: ${allCalls} (via Skills: ${allSkills})`);
+                                                            adapter.log.error('The Alexa2 Smart Home devices are NOT designed to make mass calls and generate costs at the Skill developer for each call!');
+                                                            adapter.log.error('The Alexa2 Adapter will be deactivated now to prevent issues for your Amazon account, other ioBroker users of the adapter and also the Skill developers because of these mass calls.');
+                                                            adapter.log.error('Please contact iobroker@fischer-ka.de to find the reason for this behaviour of your installation!');
+                                                            Sentry && Sentry.withScope(scope => {
+                                                                scope.setLevel('info');
+                                                                scope.setExtra('requestCounters', `${JSON.stringify(shdCounters)}`);
+                                                                Sentry.captureMessage(`Too many SHD requests ${installationUuid}`, 'info');
+                                                            });
+
+                                                            setTimeout(() => adapter.disable(), 2000);
+                                                        }
+                                                        Object.keys(shdCounters).forEach(key => shdCounters[key] = 0);
+                                                    }, 60 * 60 * 1000);
                                                 }
                                             });
                                         });

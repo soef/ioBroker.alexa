@@ -1,6 +1,6 @@
 {
   "name": "iobroker.alexa2",
-  "version": "3.21.0",
+  "version": "3.22.0",
   "description": "Remote control for Alexa (Amazon Echo)",
   "author": {
     "name": "Apollon77",
@@ -40,8 +40,8 @@
     "https": "^1.0.0",
     "nearest-color": "^0.4.4",
     "@iobroker/adapter-core": "^2.6.7",
-    "@sentry/node": "^7.16.0",
-    "@sentry/integrations": "^7.16.0",
+    "@sentry/node": "^7.21.1",
+    "@sentry/integrations": "^7.21.1",
     "source-map-support": "^0.5.21",
     "rrule": "^2.7.1"
   },
