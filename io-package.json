@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.23.0",
+    "version": "3.23.1",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.23.1": {
+        "en": "Enhance checks when changing smart device values\nTry to prevent Amazon rate limiting (again)",
+        "de": "Verbessern Sie die Kontrollen beim Ändern von Smart Device-Werten\nVersuchen Sie, Amazon-Rate zu verhindern (wieder)",
+        "ru": "Повысить проверки при изменении интеллектуальных значений устройства\nПопробуйте предотвратить ограничение курса Amazon (в зависимости от)",
+        "pt": "Aprimore verificações ao alterar valores de dispositivo inteligente\nTente evitar a limitação da taxa do Amazonas (novamente)",
+        "nl": "Enhance controleert wanneer het veranderen van slimme apparatuur waarden\nProbeer te voorkomen dat Amazone beperkt blijft",
+        "fr": "Améliorez les contrôles lorsque vous modifiez les valeurs de périphérique intelligent\nEssayez d'empêcher la limitation des taux d'Amazonie (encore)",
+        "it": "Migliorare i controlli quando si cambiano i valori dei dispositivi intelligenti\nCerca di evitare il limite di tasso Amazon (di nuovo)",
+        "es": "Mejorar los controles al cambiar los valores de dispositivo inteligente\nTrate de evitar que la tasa de Amazon limite (de nuevo)",
+        "pl": "Enhance sprawdza się, gdy zmienia się wartości urządzenie\nZapobiega ona limitacji wskaźników (against)",
+        "uk": "Підвищення перевірок при зміні значень інтелектуального пристрою\nСпробуйте запобігти обмеження швидкості Amazon",
+        "zh-cn": "在改变智能器价值时加强检查\n防止亚马逊限制(again)"
+      },
       "3.21.0": {
         "en": "IMPORTANT: Because of rate limits by Amazon I decided to remove the update of smart home device values in intervals because it seems to produce too much load in Skills and Amazon systems.\nOptimizes loading of smart home device states\nFixed issue with enabling/disabling of Alarms in combination with non-default music for the alarm\nPrevented that Timers or Alarms that are long in the future to trigger their trigger state too early\nFixed deleting own user Messages state\nAlready request Notification updates when history registered a Notification action and do not wait for Push info to come in",
         "de": "WICHTIG: Aufgrund der Geschwindigkeitslimits von Amazon entschied ich mich, das Update von Smart Home-Gerät-Werten in Intervallen zu entfernen, weil es zu viel Belastung in Skills und Amazon-Systemen scheint.\nOptimiert das Laden von Smart Home-Gerätezuständen\nProblem behoben mit dem Aktivieren/Deaktivieren von Alarmen in Kombination mit nicht-Standard-Musik für den Alarm\nVerhindert, dass Timer oder Alarme, die in der Zukunft lange sind, um ihren Auslösezustand zu früh auszulösen\nBehoben Löschen eigener Benutzer Nachrichten Zustand\nBereits Anfrage Benachrichtigungsaktualisierungen, wenn die Geschichte eine Benachrichtigungsaktion registriert und nicht warten, bis Push-Info kommen",
@@ -113,18 +126,6 @@
         "es": "Añadir salvaguardia para intervalos demasiado altos",
         "pl": "Zabezpieczony za zbyt wysokie odstępy",
         "zh-cn": "增加时间太长的保障"
-      },
-      "3.19.7": {
-        "en": "Fix doNotDisturb when using a time string",
-        "de": "Fehler NichtDisturb bei Verwendung eines Zeitstrings",
-        "ru": "Fix сделать NotDisturb при использовании строки времени",
-        "pt": "Fixo do NotDisturb ao usar uma string de tempo",
-        "nl": "_ Niet elke dag als je een tijdstip gebruikt",
-        "fr": "Fixe do NotDisturb lors de l'utilisation d'une chaîne temporelle",
-        "it": "Riparare NotDisturb quando si utilizza una stringa di tempo",
-        "es": "Corrección do No molestar al usar una cadena de tiempo",
-        "pl": "Fixa do Fixa NotDisturb kiedy używa czasu smyczki",
-        "zh-cn": "Fix do 在使用时间包时,不设歧见"
       }
     },
     "keywords": [
