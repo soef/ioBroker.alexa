@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.23.1",
+    "version": "3.23.2",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.23.2": {
+        "en": "Prioritize real devices higher than app devices when serialnumbers overlap",
+        "de": "Priorisieren Sie reale Geräte höher als App-Geräte, wenn sich Seriennummern überlappen",
+        "ru": "Приоритетные реальные устройства выше, чем устройства приложений, когда перекрываются серийные номера",
+        "pt": "Priorize dispositivos reais superiores aos dispositivos de aplicativos quando os números de série se sobrepõem",
+        "nl": "Vertaling:",
+        "fr": "Prioriser les dispositifs réels plus élevés que les appareils d'application lorsque les nombres de série se chevauchent",
+        "it": "Priorizzare dispositivi reali superiori ai dispositivi app quando i numeri di serie si sovrappongono",
+        "es": "Priorizar dispositivos reales superiores a los dispositivos de aplicación cuando superpone números de serie",
+        "pl": "Priorytetyzacja rzeczywistych urządzeń wyższa niż urządzenia aplikacji, gdy liczba odcinków się pokrywa",
+        "uk": "Передбачити реальні пристрої вище пристроїв додатків при перекриттях серійних чисел",
+        "zh-cn": "当序号重叠时,实际装置的优先顺序高于装置"
+      },
       "3.23.1": {
         "en": "Enhance checks when changing smart device values\nTry to prevent Amazon rate limiting (again)",
         "de": "Verbessern Sie die Kontrollen beim Ändern von Smart Device-Werten\nVersuchen Sie, Amazon-Rate zu verhindern (wieder)",
@@ -114,18 +127,6 @@
         "es": "Recibe el estado correcto del jugador cuando se detiene el musik",
         "pl": "Odpowiedzialny status gracza ponownie, gdy musik został zatrzymany",
         "zh-cn": "在Cmusik被阻止后再次获得正确的角色身份"
-      },
-      "3.19.8": {
-        "en": "Add safeguard for too high intervals",
-        "de": "Schutz für zu hohe Intervalle hinzufügen",
-        "ru": "Добавьте защиту для слишком высоких интервалов",
-        "pt": "Adicionar proteção para intervalos muito altos",
-        "nl": "Bescherming toevoegen voor te hoge intervallen",
-        "fr": "Ajouter la sauvegarde pour des intervalles trop élevés",
-        "it": "Aggiungi protezione per intervalli troppo alti",
-        "es": "Añadir salvaguardia para intervalos demasiado altos",
-        "pl": "Zabezpieczony za zbyt wysokie odstępy",
-        "zh-cn": "增加时间太长的保障"
       }
     },
     "keywords": [
