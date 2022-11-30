@@ -484,6 +484,10 @@ Link: https://www.amazon.de/hz/mycd/digital-console/devicedetails?deviceFamily=A
 After deleting unused device please restart the adapter to remove them there too.
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Prioritize real devices higher than app devices when serialnumbers overlap
+
 ### 3.23.1 (2022-11-26)
 * (Apollon77) Enhance checks when changing smart device values
 * (Apollon77) Try to prevent Amazon rate limiting (again)
