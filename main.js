@@ -315,10 +315,12 @@ function setOrUpdateObject(id, obj, value, stateChangeCallback, createNow) {
         if (adapterObjects[id].ts) delete adapterObjects[id].ts;
         if (adapterObjects[id].acl) delete adapterObjects[id].acl;
         if (adapterObjects[id]._id) delete adapterObjects[id]._id;
-        if (obj.common.def === undefined && adapterObjects[id].common.def !== undefined) delete adapterObjects[id].common.def;
-        if (obj.common.unit === undefined && adapterObjects[id].common.unit !== undefined) delete adapterObjects[id].common.unit;
-        if (obj.common.min === undefined && adapterObjects[id].common.min !== undefined) delete adapterObjects[id].common.min;
-        if (obj.common.max === undefined && adapterObjects[id].common.max !== undefined) delete adapterObjects[id].common.max;
+        if (obj.common && adapterObjects[id].common) {
+            if (obj.common.def === undefined && adapterObjects[id].common.def !== undefined) delete adapterObjects[id].common.def;
+            if (obj.common.unit === undefined && adapterObjects[id].common.unit !== undefined) delete adapterObjects[id].common.unit;
+            if (obj.common.min === undefined && adapterObjects[id].common.min !== undefined) delete adapterObjects[id].common.min;
+            if (obj.common.max === undefined && adapterObjects[id].common.max !== undefined) delete adapterObjects[id].common.max;
+        }
         //value = undefined; // when exists and it is first time do not overwrite value!
     }
     if (existingStates[id]) delete(existingStates[id]);
@@ -655,7 +657,7 @@ function startAdapter(options) {
             if (adapterObjects[id] && adapterObjects[id].common && adapterObjects[id].common.type && adapterObjects[id].common.type !== 'mixed') {
                 if (adapterObjects[id].common.type === 'boolean' && adapterObjects[id].common.role && adapterObjects[id].common.role.startsWith('button')) state.val = !!state.val;
                 if (typeof state.val !== adapterObjects[id].common.type) {
-                    adapter.log.error(`Datatype for ${id} differs from expected, ignore state change! Please write correct datatype (${adapterObjects[id].common.type})`);
+                    adapter.log.error(`Datatype "${typeof state.val}" for ${id} differs from expected "${adapterObjects[id].common.type}", ignore state change! Please write correct datatype`);
                     return;
                 }
             }
@@ -1685,7 +1687,8 @@ function getCachedSmarthomeDevices(callback) {
                 const stats = fs.statSync(cachedDevicesFilename);
                 if (ignoreTimestamp || stats.mtime.getTime() + 30 * 60 * 1000 > Date.now()) {
                     const cachedDevices = JSON.parse(fs.readFileSync(cachedDevicesFilename, 'utf8'));
-                    adapter.log.info(`Using cached smart home devices list from ${stats.mtime}: ${JSON.stringify(cachedDevices)}`);
+                    adapter.log.info(`Using cached smart home devices list from ${stats.mtime}`);
+                    adapter.log.debug(JSON.stringify(cachedDevices));
                     return cachedDevices;
                 }
             }
@@ -1724,7 +1727,7 @@ function checkSmartHomeControlParameters(parameterId, value) {
     const now = Date.now();
     if (shDeviceParamControlValues[parameterId]) {
         if (shDeviceParamControlValues[parameterId].ts > now - 300000) {
-            if (shDeviceParamControlValues[parameterId].value == value) {
+            if (shDeviceParamControlValues[parameterId].value == value && typeof shDeviceParamControlValues[parameterId].value !== 'boolean') {
                 adapter.log.info(`Ignore update of ${parameterId} because it was set to the same value in last 5min`);
                 return false;
             }
@@ -4769,7 +4772,8 @@ function main() {
         useWsMqtt: false,
         //deviceAppName: 'Amazon Alexa',
         formerDataStorePath: path.join(__dirname, `formerDataStore${adapter.namespace}.json`),
-        apiUserAgentPostfix: `ioBroAlexa2/${require(path.join(__dirname, 'package.json')).version}`
+        apiUserAgentPostfix: `ioBroAlexa2/${require(path.join(__dirname, 'package.json')).version}`,
+        usePushConnectType: 1,
     };
     adapter.config.updateHistoryInterval = parseInt(adapter.config.updateHistoryInterval, 10);
     if (!adapter.config.updateHistoryInterval || isNaN(adapter.config.updateHistoryInterval) || adapter.config.updateHistoryInterval < 0) {
