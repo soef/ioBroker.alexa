@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.24.0",
+    "version": "3.24.1",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.24.1": {
+        "en": "Work around Amazon changes that affected all functions over the Push connection\nSome smaller fixes and adjustments",
+        "de": "Arbeiten um Amazon Änderungen, die alle Funktionen über die Push-Verbindung beeinflusst\nEinige kleinere Fixierungen und Anpassungen",
+        "ru": "Работа вокруг Amazon меняется, что повлияло на все функции по подключению Push\nНекоторые мелкие исправления и настройки",
+        "pt": "Trabalhe em torno de mudanças da Amazon que afetaram todas as funções sobre a conexão Push\nAlgumas correções e ajustes menores",
+        "nl": "Werk rond Amazon verandert alle functies over de Push connectie\nWat kleinere fixes en aanpassingen",
+        "fr": "Travail autour de Amazon changements qui ont affecté toutes les fonctions sur la connexion Push\nQuelques corrections et ajustements plus petits",
+        "it": "Lavorare intorno Amazon modifiche che hanno interessato tutte le funzioni sopra il collegamento Push\nAlcuni piccoli correzioni e regolazioni",
+        "es": "Trabajar alrededor de Amazon cambios que afectaron todas las funciones sobre la conexión Push\nAlgunas correcciones y ajustes más pequeños",
+        "pl": "Prace nad zmianami Amazona, które wpływały na wszystkie funkcje w związku Push\nNiektóre mniejsze rozwiązania i przystosowania",
+        "uk": "Робота по змінах Amazon, які впливають на всі функції над підключенням Push\nДеякі менші виправлення та налаштування",
+        "zh-cn": "三. 亚马逊的改变影响到普沙伊特的所有职能\n有些较小的配量和调整"
+      },
       "3.23.2": {
         "en": "Prioritize real devices higher than app devices when serialnumbers overlap",
         "de": "Priorisieren Sie reale Geräte höher als App-Geräte, wenn sich Seriennummern überlappen",
