@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.23.2",
+    "version": "3.24.0",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.24.0": {
+        "en": "Work around Amazon changes that affected all functions over the Push connection\nSome smaller fixes and adjustments",
+        "de": "Arbeiten um Amazon Änderungen, die alle Funktionen über die Push-Verbindung beeinflusst\nEinige kleinere Fixierungen und Anpassungen",
+        "ru": "Работа вокруг Amazon меняется, что повлияло на все функции по подключению Push\nНекоторые мелкие исправления и настройки",
+        "pt": "Trabalhe em torno de mudanças da Amazon que afetaram todas as funções sobre a conexão Push\nAlgumas correções e ajustes menores",
+        "nl": "Werk rond Amazon verandert alle functies over de Push connectie\nWat kleinere fixes en aanpassingen",
+        "fr": "Travail autour de Amazon changements qui ont affecté toutes les fonctions sur la connexion Push\nQuelques corrections et ajustements plus petits",
+        "it": "Lavorare intorno Amazon modifiche che hanno interessato tutte le funzioni sopra il collegamento Push\nAlcuni piccoli correzioni e regolazioni",
+        "es": "Trabajar alrededor de Amazon cambios que afectaron todas las funciones sobre la conexión Push\nAlgunas correcciones y ajustes más pequeños",
+        "pl": "Prace nad zmianami Amazona, które wpływały na wszystkie funkcje w związku Push\nNiektóre mniejsze rozwiązania i przystosowania",
+        "uk": "Робота по змінах Amazon, які впливають на всі функції над підключенням Push\nДеякі менші виправлення та налаштування",
+        "zh-cn": "三. 亚马逊的改变影响到普沙伊特的所有职能\n有些较小的配量和调整"
+      },
       "3.23.2": {
         "en": "Prioritize real devices higher than app devices when serialnumbers overlap",
         "de": "Priorisieren Sie reale Geräte höher als App-Geräte, wenn sich Seriennummern überlappen",
@@ -115,18 +128,6 @@
         "pl": "Pytania o przepustowość, gdy limit przekroczy się w stronę Amazonki, jest zwrócony przez Amazon\nNie czyszczy przedmiotów Smart Home Device – ręcznie, jeśli usuniesz urządzenia",
         "uk": "Виправлення проблеми з переробки при перевищенні тарифів повертається на Amazon\nНе очищайте предмети Smart Home Device тепер - видаліть вручну, якщо видалити пристрій",
         "zh-cn": "瓦亚马逊岛恢复利率时重新处理的固定问题\n目前没有清洁Smart Home Device物品,如果你搬走一个装置,则用手工删除。"
-      },
-      "3.19.9": {
-        "en": "Receive the correct player status again when musik is stopped",
-        "de": "Erhalten Sie den richtigen Spielerstatus wieder, wenn die Musik gestoppt wird",
-        "ru": "Получить правильный статус игрока снова, когда musik остановлен",
-        "pt": "Receba o status do jogador correto novamente quando musik for parado",
-        "nl": "Ontvang de juiste spelersstatus als Musik stopt",
-        "fr": "Recevez à nouveau le statut correct du joueur lorsque le musik est arrêté",
-        "it": "Ricevi nuovamente lo stato del giocatore corretto quando musik viene fermato",
-        "es": "Recibe el estado correcto del jugador cuando se detiene el musik",
-        "pl": "Odpowiedzialny status gracza ponownie, gdy musik został zatrzymany",
-        "zh-cn": "在Cmusik被阻止后再次获得正确的角色身份"
       }
     },
     "keywords": [

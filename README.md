@@ -487,7 +487,7 @@ Link: https://www.amazon.de/hz/mycd/digital-console/devicedetails?deviceFamily=A
 After deleting unused device please restart the adapter to remove them there too.
 
 ## Changelog
-### __WORK IN PROGRESS__
+### 3.24.0 (2023-08-08)
 * (Apollon77) Work around Amazon changes that affected all functions over the Push connection
 * (Apollon77) Some smaller fixes and adjustments
 
