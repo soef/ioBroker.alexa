@@ -39,20 +39,20 @@
     "alexa-remote2": "^5.10.1",
     "https": "^1.0.0",
     "nearest-color": "^0.4.4",
-    "@iobroker/adapter-core": "^2.6.7",
-    "@sentry/node": "^7.22.0",
-    "@sentry/integrations": "^7.22.0",
+    "@iobroker/adapter-core": "^2.6.8",
+    "@sentry/node": "^7.61.1",
+    "@sentry/integrations": "^7.61.1",
     "source-map-support": "^0.5.21",
-    "rrule": "^2.7.1"
+    "rrule": "^2.7.2"
   },
   "devDependencies": {
-    "@alcalzone/release-script": "^3.5.9",
-    "@alcalzone/release-script-plugin-iobroker": "^3.5.9",
+    "@alcalzone/release-script": "^3.6.0",
+    "@alcalzone/release-script-plugin-iobroker": "^3.6.0",
     "@alcalzone/release-script-plugin-license": "^3.5.9",
     "@iobroker/dev-server": "^0.6.0",
     "@iobroker/adapter-dev": "^1.2.0",
-    "eslint": "^8.28.0",
-    "mocha": "^10.1.0",
+    "eslint": "^8.46.0",
+    "mocha": "^10.2.0",
     "chai": "^4.3.7"
   },
   "main": "main.js",
