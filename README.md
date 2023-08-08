@@ -433,6 +433,9 @@ A structure like the following is possible:
 
 ## Troubleshooting
 
+### Problem with Cookie determination with SMS based 2 FA flow
+If you still use the SMS based 2FA flow then this might now work. Please update the 2fa method in the amazon settings to the current process.
+
 ### Problems with Cookie determination via E-Mail/Password
 Sometimes Amazon has weired checks in place when they detect unexpected traffic on Login.
 This can result in the problem that a captcha needs to be answered in order to login.
