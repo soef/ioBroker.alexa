@@ -4773,7 +4773,7 @@ function main() {
         //deviceAppName: 'Amazon Alexa',
         formerDataStorePath: path.join(__dirname, `formerDataStore${adapter.namespace}.json`),
         apiUserAgentPostfix: `ioBroAlexa2/${require(path.join(__dirname, 'package.json')).version}`,
-        usePushConnectType: 1,
+        usePushConnectType: 2,
     };
     adapter.config.updateHistoryInterval = parseInt(adapter.config.updateHistoryInterval, 10);
     if (!adapter.config.updateHistoryInterval || isNaN(adapter.config.updateHistoryInterval) || adapter.config.updateHistoryInterval < 0) {
