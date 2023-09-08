@@ -215,7 +215,7 @@ const equalizerUpdateTimeouts = {};
 
 const lastPlayerState = {};
 const notificationTimer = {};
-let wsMqttConnected = false;
+let pushConnected = false;
 const shApplianceEntityMap = {};
 const shEntityApplianceMap = {};
 const shMergedApplianceIdMap = {};
@@ -664,7 +664,7 @@ function startAdapter(options) {
             stateChangeTrigger[id](state.val);
         }
 
-        if (!wsMqttConnected) scheduleStatesUpdate(3000);
+        if (!pushConnected) scheduleStatesUpdate(3000);
     });
 
     adapter.on('objectChange', (id, object) => {
@@ -824,7 +824,7 @@ function scheduleStatesUpdate(delay) {
     if (delay === undefined) {
         if (!adapter.config.updateStateInterval) return;
         delay = adapter.config.updateStateInterval * 1000;
-        if (wsMqttConnected) delay = 60 * 60 * 1000; // 1h
+        if (pushConnected) delay = 60 * 60 * 1000; // 1h
     }
     delay = Math.max(delay, 300000);
     updateStateTimer = setTimeout(() => {
@@ -2347,7 +2347,7 @@ function scheduleHistoryUpdate(delay) {
     if (updateHistoryTimer) {
         clearTimeout(updateHistoryTimer);
     }
-    if (wsMqttConnected) return;
+    if (pushConnected) return;
     if (stopped) return;
     delay = Math.max(delay, 60000);
     updateHistoryTimer = setTimeout(() => {
@@ -4769,7 +4769,7 @@ function main() {
         proxyPort: adapter.config.proxyPort,           // optional: use this port for the proxy, default is 0 means random port is selected
         proxyListenBind: adapter.config.proxyListenBind,// optional: set this to bind the proxy to a special IP, default is '0.0.0.0'
         proxyLogLevel: null,      // optional: Loglevel of Proxy, default 'warn'
-        useWsMqtt: false,
+        usePushConnection: false,
         //deviceAppName: 'Amazon Alexa',
         formerDataStorePath: path.join(__dirname, `formerDataStore${adapter.namespace}.json`),
         apiUserAgentPostfix: `ioBroAlexa2/${require(path.join(__dirname, 'package.json')).version}`,
@@ -4876,19 +4876,19 @@ function main() {
             scheduleStatesUpdate(2000);
         }
         connectAfterDisconnect = false;
-        wsMqttConnected = true;
+        pushConnected = true;
         adapter.log.info(`Alexa-Push-Connection (macDms = ${!!options.macDms}) established. Disable Polling`);
     });
 
     alexa.on('ws-disconnect', (retries, msg) => {
         adapter.log.info(`Alexa-Push-Connection disconnected${retries ? ' - retry' : ' - fallback to poll data'}: ${msg}`);
-        if (initDone && wsMqttConnected) {
+        if (initDone && pushConnected) {
             scheduleHistoryUpdate(2000);
             scheduleStatesUpdate(2000);
         }
-        if (wsMqttConnected) {
+        if (pushConnected) {
             connectAfterDisconnect = true;
-            wsMqttConnected = false;
+            pushConnected = false;
         }
     });
 
@@ -5265,7 +5265,7 @@ function main() {
                                                     updateHistory(() => {
                                                         updateDeviceConfigurationStates(() => {
                                                             if (adapter.config.usePushConnection) {
-                                                                alexa.initWsMqttConnection();
+                                                                alexa.initPushConnection();
                                                             }
                                                             updatePlayerStatus( () => {
                                                                 adapter.log.info('Initialization Done ...');
