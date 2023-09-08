@@ -490,7 +490,8 @@ After deleting unused device please restart the adapter to remove them there too
 
 ### __WORK IN PROGRESS__
 * IMPORTANT: Minimum required Node-js version is 16 now!
-* (Apollon77) Update the Push connection after Amazon technology changes 
+* (Apollon77) Updated the Push connection after Amazon technology changes
+* (Apollon77) Added some more device types
 
 ### 3.24.1 (2023-08-08)
 * (Apollon77) Work around Amazon changes that affected all functions over the Push connection
