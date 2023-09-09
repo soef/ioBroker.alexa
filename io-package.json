@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.25.0",
+    "version": "3.25.1",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.25.1": {
+        "en": "IMPORTANT: Minimum required Node-js version is 16 now!\nUpdated the Push connection after Amazon technology changes\nAdded some more device types",
+        "de": "WICHTIG: Mindestanforderungen Node-js-Version ist jetzt 16!\nAktualisiert die Push-Verbindung nach Amazon-Technologie Änderungen\nEinige weitere Gerätetypen hinzugefügt",
+        "ru": "ВАЖНО: Минимальная необходимая версия Node-js теперь 16!\nОбновлено соединение Push после изменения технологии Amazon\nДобавлены еще некоторые типы устройств",
+        "pt": "IMPORTANTE: A versão mínima necessária do Node-js é 16 agora!\nAtualizou a conexão Push depois que a tecnologia Amazon muda\nAdicionado alguns mais tipos de dispositivo",
+        "nl": "Minimum vereist dat Node-Js versie 16 is!\nVerhoogde de Push connectie nadat Amazon technologie veranderde\nVoeg nog wat apparaten toe",
+        "fr": "IMPORTANT: La version minimum requise Node-js est 16 maintenant!\nMise à jour de la connexion Push après les changements de technologie Amazon\nAjout d'autres types de périphériques",
+        "it": "IMPORTANTE: La versione minima Node-js richiesta è 16 ora!\nAggiornato il collegamento Push dopo le modifiche della tecnologia Amazon\nAggiunto alcuni più tipi di dispositivo",
+        "es": "IMPORTANTE: La versión mínima requerida Node-js es 16 ahora!\nActualización de la conexión Push después de los cambios de la tecnología Amazon\nAñadido algunos tipos de dispositivo más",
+        "pl": "IMPORTANT: Minimum wymagało od wersji Node-js 16 now!\nUlepszenie połączenia Push po zmianie technologii Amazon zmienia się\nUdostępnić więcej typów urządzeń",
+        "uk": "ВАЖЛИВО: Мінімальна необхідна версія Node-js 16 тепер!\nОновлено підключення Push після зміни технології Amazon\nДодайте більше типів пристроїв",
+        "zh-cn": "IMPORTANT:最低要求的提名现在是16!\nA. 亚马逊技术变化之后的管道更新\n增加一些更类型的装置"
+      },
       "3.24.1": {
         "en": "Work around Amazon changes that affected all functions over the Push connection\nSome smaller fixes and adjustments",
         "de": "Arbeiten um Amazon Änderungen, die alle Funktionen über die Push-Verbindung beeinflusst\nEinige kleinere Fixierungen und Anpassungen",
@@ -115,19 +128,6 @@
         "pl": "Increase minimum interval for requesting smart home equipment data to 15 minut z powodu limitów tempa lotu. Nie chcecie pracować nad nim!\nCache Smart home device lista i dane, aby zapobiec zbyt wielu żądaniom, gdy restartuje adapter w krótkich odstępach i zapobiegać usunięciu inteligentnych urządzeń domowych również w dalszej części limitu",
         "uk": "Підвищений мінімальний інтервал для запиту даних розумного дому до 15 хвилин (900s) через ліміти швидкості Amazon. Будь ласка, не намагайтеся працювати над ним!\nСписок побутових пристроїв та даних для запобігання занадто багато запитів при перезавантаженні адаптера в короткі інтервали і для запобігання видалених пристроїв розумного дому також з подальшим обмеженням швидкості",
         "zh-cn": "由于亚马逊的费率限制,要求将智能设备数据提高到15分钟(900)。 请不要试图围绕它努力!\n每个Smart的家用装置清单和数据在短期内恢复适应者并防止删除智能家用具时也防止过多的要求,从而进一步降低速度问题。"
-      },
-      "3.19.10": {
-        "en": "Fix issue in retry handling when rate limit exceeded is returned by Amazon\nDo not clean up Smart Home Device objects for now - delete manually if you remove a device",
-        "de": "Problem bei der Retry-Handling behoben, wenn die Ratengrenze überschritten wird\nNicht aufräumen Smart Home Device Objekte für jetzt - manuell löschen, wenn Sie ein Gerät entfernen",
-        "ru": "Исправление проблемы в переработке при превышении лимита тарифа возвращается Amazon\nНе очистите объекты Smart Home Device на данный момент - удаляйте вручную, если вы удалите устройство",
-        "pt": "Corrigir questão no manuseio de retração quando o limite de taxa excedeu é devolvido pela Amazon\nNão limpe objetos Smart Home Device por agora - exclua manualmente se você remover um dispositivo",
-        "nl": "Een retournatieprocedure als de temperatuur van de Amazone wordt teruggebracht\nRuim Smart Home Device voorwerpen niet op voor nu",
-        "fr": "Correction d'un problème dans le traitement des rentrées lorsque la limite de vitesse dépassée est retournée par Amazon\nNe pas nettoyer les objets Smart Home Device pour le moment - supprimer manuellement si vous supprimez un appareil",
-        "it": "Risolvere il problema nella gestione dei rifornimenti quando il limite del tasso è restituito da Amazon\nNon pulire gli oggetti Smart Home Device per ora - eliminare manualmente se si rimuove un dispositivo",
-        "es": "Cuestión de fijación en el manejo de retry cuando el límite de tarifas excedido es devuelto por Amazon\nNo limpie los objetos Smart Home Device por ahora - eliminar manualmente si elimina un dispositivo",
-        "pl": "Pytania o przepustowość, gdy limit przekroczy się w stronę Amazonki, jest zwrócony przez Amazon\nNie czyszczy przedmiotów Smart Home Device – ręcznie, jeśli usuniesz urządzenia",
-        "uk": "Виправлення проблеми з переробки при перевищенні тарифів повертається на Amazon\nНе очищайте предмети Smart Home Device тепер - видаліть вручну, якщо видалити пристрій",
-        "zh-cn": "瓦亚马逊岛恢复利率时重新处理的固定问题\n目前没有清洁Smart Home Device物品,如果你搬走一个装置,则用手工删除。"
       }
     },
     "keywords": [
