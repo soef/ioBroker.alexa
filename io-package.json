@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.25.1",
+    "version": "3.25.2",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.25.2": {
+        "en": "Optimize reconnection handling for push connections",
+        "de": "Optimieren Sie die Umschaltung von Push-Verbindungen",
+        "ru": "Оптимизируйте переподключение обработки для push соединений",
+        "pt": "Otimizar o manuseio de reconexão para conexões push",
+        "nl": "Optimiliseer verbinding met de pers",
+        "fr": "Optimiser la manipulation de reconnection pour les connexions push",
+        "it": "Ottimizzare la gestione della riconnessione per le connessioni push",
+        "es": "Optimize reconnection handling for push connections",
+        "pl": "Optimize reconnection",
+        "uk": "Оптимальна обробка відключення для підключення штовхачів",
+        "zh-cn": "利用重新连接的渠道推动联系"
+      },
       "3.25.1": {
         "en": "IMPORTANT: Minimum required Node-js version is 16 now!\nUpdated the Push connection after Amazon technology changes\nAdded some more device types",
         "de": "WICHTIG: Mindestanforderungen Node-js-Version ist jetzt 16!\nAktualisiert die Push-Verbindung nach Amazon-Technologie Änderungen\nEinige weitere Gerätetypen hinzugefügt",
@@ -115,19 +128,6 @@
         "pl": "umożliwia to prawidłowo prace przy użyciu wielu przykładów adaptera",
         "uk": "переконайтеся, що кешування працює правильно з декількома екземплярами адаптера",
         "zh-cn": "确保在适应者多重情况下进行正确工作"
-      },
-      "3.20.0": {
-        "en": "Increase minimum interval for requesting smart home device data to 15 minutes (900s) because of Amazon rate limits. Please do not try to work around it!\nCache Smart home device list and data to prevent too many requests when restarting adapter in short intervals and to prevent deleted smart home devices also on further rate limit issues",
-        "de": "Erhöhung des Mindestintervall für die Anforderung von Smart-Home-Gerät-Daten auf 15 Minuten (900s) wegen Amazon-Rate Grenzen. Bitte versuchen Sie nicht, um es zu arbeiten!\nCache Smart Home Geräteliste und Daten, um zu viele Anfragen beim Neustart von Adapter in kurzen Intervallen zu verhindern und gelöschte Smart Home-Geräte auch bei weiteren Geschwindigkeitsbeschränkungen zu verhindern",
-        "ru": "Увеличить минимальный интервал для запроса данных умного дома устройства до 15 минут (900s) из-за пределов тарифа Amazon. Пожалуйста, не пытайтесь работать вокруг этого!\nCache Smart home список устройств и данных, чтобы предотвратить слишком много запросов при перезагрузке адаптера в короткие интервалы и предотвратить удаленные умные домашние устройства также по дальнейшим ограничениям тарифов",
-        "pt": "Aumente o intervalo mínimo para solicitar dados de dispositivos domésticos inteligentes a 15 minutos (900s) por causa dos limites de taxa da Amazônia. Por favor, não tente trabalhar ao seu redor!\nCache Lista de dispositivos domésticos inteligentes e dados para evitar muitas solicitações ao reiniciar o adaptador em intervalos curtos e para evitar dispositivos domésticos inteligentes excluídos também em problemas de limite de taxa adicional",
-        "nl": "Verhoog minimale interval voor het verzoeken van smart home apparatuur naar 15 minuten, vanwege de Amazone cijfers. Probeer er alsjeblieft niet omheen te werken!\nCache Smart huis apparaat lijst en data om te veel verzoeken te voorkomen als het herstarten van adapter in korte tussentijd en om verwijderde smart home apparatuur te voorkomen op meer niveaus",
-        "fr": "Augmenter l'intervalle minimal pour demander des données sur les appareils à domicile intelligents à 15 minutes (900) en raison des limites de taux Amazon. S'il vous plaît n'essayez pas de travailler autour de lui!\nCache Smart home device list and data to prevent too many requests when restarting adapt in short intervals and to prevent removed smart home devices also on further rate limit issues",
-        "it": "Aumentare l'intervallo minimo per la richiesta di dati smart home device a 15 minuti (900s) a causa dei limiti di tasso Amazon. Per favore non cercare di lavorare intorno a esso!\nElenco di dispositivi e dati per la casa Smart Cache per prevenire troppe richieste durante il riavvio dell'adattatore in brevi intervalli e per prevenire i dispositivi domestici intelligenti cancellati anche su ulteriori problemi di limite di velocità",
-        "es": "Aumente el intervalo mínimo para solicitar datos de dispositivo hogar inteligente a 15 minutos (900s) debido a los límites de tarifas de Amazon. ¡Por favor, no intentes trabajar a su alrededor!\nCache Smart home device list and data to prevent too many requests when restarting adapter in short intervals and to prevent removed smart home devices also on further rate limit issues",
-        "pl": "Increase minimum interval for requesting smart home equipment data to 15 minut z powodu limitów tempa lotu. Nie chcecie pracować nad nim!\nCache Smart home device lista i dane, aby zapobiec zbyt wielu żądaniom, gdy restartuje adapter w krótkich odstępach i zapobiegać usunięciu inteligentnych urządzeń domowych również w dalszej części limitu",
-        "uk": "Підвищений мінімальний інтервал для запиту даних розумного дому до 15 хвилин (900s) через ліміти швидкості Amazon. Будь ласка, не намагайтеся працювати над ним!\nСписок побутових пристроїв та даних для запобігання занадто багато запитів при перезавантаженні адаптера в короткі інтервали і для запобігання видалених пристроїв розумного дому також з подальшим обмеженням швидкості",
-        "zh-cn": "由于亚马逊的费率限制,要求将智能设备数据提高到15分钟(900)。 请不要试图围绕它努力!\n每个Smart的家用装置清单和数据在短期内恢复适应者并防止删除智能家用具时也防止过多的要求,从而进一步降低速度问题。"
       }
     },
     "keywords": [
