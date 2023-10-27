@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.25.2",
+    "version": "3.25.3",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.25.3": {
+        "en": "Adjust History update to work with recent Amazon changes",
+        "de": "Anpassung der Geschichte-Updates an die neuesten Amazon-Änderungen",
+        "ru": "Отрегулируйте обновление истории для работы с недавними изменениями Amazon",
+        "pt": "Ajustar atualização de histórico para trabalhar com mudanças recentes da Amazônia",
+        "nl": "Verandering van geschiedenis aan het werk met de recente Amazone",
+        "fr": "Ajuster la mise à jour historique pour travailler avec les récents changements Amazon",
+        "it": "Regolare l'aggiornamento di storia per lavorare con le recenti modifiche Amazon",
+        "es": "Ajuste de la actualización de la historia para trabajar con cambios recientes de Amazon",
+        "pl": "Adjust History zaktualizował prace nad nowymi zmianami Amazona",
+        "uk": "Налаштування оновлення історії для роботи з останніми змінами Amazon",
+        "zh-cn": "A. 亚马逊最近变化的历史更新"
+      },
       "3.25.2": {
         "en": "Optimize reconnection handling for push connections",
         "de": "Optimieren Sie die Umschaltung von Push-Verbindungen",
@@ -115,19 +128,6 @@
         "pl": "IMPORTANT: Ze względu na ograniczenia prędkości przez Amazon I zdecydował się usunąć uaktualnione wartości urządzenie w odstępach, ponieważ wydaje się być zbyt dużo obciążenia w systemach Skills i Amazon.\nOptymizowanie obciążenia inteligentnymi jednostkami domowymi\nZawarty problem z możliwością uniknięcia Alarmsa w połączeniu z muzyką nieobronioną dla alarmu\nPrzypuszcza się, że Timerowie lub Alarmowie, którzy są długo w przyszłości w stanie wywołać swoje stany zbyt wcześnie\nFixed deletuje własny system Messages\nAlready wniosek Notification aktualizuje się, gdy historia zarejestrowała akcję Notyfikacji i nie czeka na wiadomość Push",
         "uk": "ВАЖЛИВО: Через обмеження швидкості на Amazon я вирішив видалити оновлення значень інтелектуального домашнього пристрою в інтервалах, оскільки це, здається, виготовляти занадто багато навантаження на навички та системи Amazon.\nОптимізуйте завантаження смарт-мереж\nВиправлено проблему, що дозволяє / відключення сигнальних сигналів у поєднанні з нерозголошенням музики для сигналізації\nЗапобігла, що Тимерси або сигнали, які довге в майбутньому, щоб запустити стангера занадто рано\nВиправлено видалення власного стану повідомлень\nУже запит про оновлення повідомлень, коли історія зареєструвала дію повідомлення та не чекайте на отримання інформації про Push",
         "zh-cn": "IMPORTANT:由于亚马逊集团的汇率限制,我决定每隔一次取消对聪明的家用具价值的更新,因为它似乎在技能和亚马逊系统中产生过多的载荷。.\n利用智能家用具的国家\nAlarms的固定问题与非燃烧音乐相结合,使人感到震惊。\n防止今后很长的推展时间或标志太早地触发国家\n九. 固定删除自己的用户信\n早就要求更新通知,因为历史登记了通知行动,不等到Pushfo上去。"
-      },
-      "3.20.1": {
-        "en": "make sure caching works correctly with multiple instances of the adapter",
-        "de": "Sicherstellen dass cache mit mehreren instanzen des adapters korrekt funktioniert",
-        "ru": "убедитесь, что кэширование работает правильно с несколькими экземплярами адаптера",
-        "pt": "certifique-se de que o cache funciona corretamente com várias instâncias do adaptador",
-        "nl": "zorg ervoor dat kassa correct werkt met meerdere instanties van de adapter",
-        "fr": "assurez-vous que le cache fonctionne correctement avec plusieurs instances de l'adaptateur",
-        "it": "assicurarsi che il caching funzioni correttamente con più istanze dell'adattatore",
-        "es": "asegúrese de que el caché funciona correctamente con múltiples instancias del adaptador",
-        "pl": "umożliwia to prawidłowo prace przy użyciu wielu przykładów adaptera",
-        "uk": "переконайтеся, що кешування працює правильно з декількома екземплярами адаптера",
-        "zh-cn": "确保在适应者多重情况下进行正确工作"
       }
     },
     "keywords": [
