@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.25.4",
+    "version": "3.25.5",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -38,6 +38,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.25.5": {
+        "en": "Optimize activity detection to process all relevant entries in all cases",
+        "de": "Optimieren Sie die Aktivitätserkennung, um alle relevanten Einträge in allen Fällen zu bearbeiten",
+        "ru": "Оптимизация обнаружения активности для обработки всех соответствующих записей во всех случаях",
+        "pt": "Otimizar a detecção de atividades para processar todas as entradas relevantes em todos os casos",
+        "nl": "Optimaal activiteitsdetector om alle relevante instanties te verwerken in alle gevallen",
+        "fr": "Optimiser la détection d'activité pour traiter toutes les entrées pertinentes dans tous les cas",
+        "it": "Ottimizzare il rilevamento delle attività per elaborare tutte le voci pertinenti in tutti i casi",
+        "es": "Optimize activity detection to process all relevant entries in all cases",
+        "pl": "Wykrywanie aktywności w optymalizacji polega na przetwarzaniu wszystkich istotnych wpisów we wszystkich przypadkach",
+        "uk": "Оптимальне виявлення активності для обробки всіх відповідних записів у всіх випадках",
+        "zh-cn": "制止在所有情况下处理所有有关物品的活动"
+      },
       "3.25.4": {
         "en": "Optimize activity detection to process all relevant entries and not just the last one",
         "de": "Optimieren Sie die Aktivitätserkennung, um alle relevanten Einträge zu bearbeiten und nicht nur die letzte",
@@ -115,19 +128,6 @@
         "pl": "Priorytetyzacja rzeczywistych urządzeń wyższa niż urządzenia aplikacji, gdy liczba odcinków się pokrywa",
         "uk": "Передбачити реальні пристрої вище пристроїв додатків при перекриттях серійних чисел",
         "zh-cn": "当序号重叠时,实际装置的优先顺序高于装置"
-      },
-      "3.23.1": {
-        "en": "Enhance checks when changing smart device values\nTry to prevent Amazon rate limiting (again)",
-        "de": "Verbessern Sie die Kontrollen beim Ändern von Smart Device-Werten\nVersuchen Sie, Amazon-Rate zu verhindern (wieder)",
-        "ru": "Повысить проверки при изменении интеллектуальных значений устройства\nПопробуйте предотвратить ограничение курса Amazon (в зависимости от)",
-        "pt": "Aprimore verificações ao alterar valores de dispositivo inteligente\nTente evitar a limitação da taxa do Amazonas (novamente)",
-        "nl": "Enhance controleert wanneer het veranderen van slimme apparatuur waarden\nProbeer te voorkomen dat Amazone beperkt blijft",
-        "fr": "Améliorez les contrôles lorsque vous modifiez les valeurs de périphérique intelligent\nEssayez d'empêcher la limitation des taux d'Amazonie (encore)",
-        "it": "Migliorare i controlli quando si cambiano i valori dei dispositivi intelligenti\nCerca di evitare il limite di tasso Amazon (di nuovo)",
-        "es": "Mejorar los controles al cambiar los valores de dispositivo inteligente\nTrate de evitar que la tasa de Amazon limite (de nuevo)",
-        "pl": "Enhance sprawdza się, gdy zmienia się wartości urządzenie\nZapobiega ona limitacji wskaźników (against)",
-        "uk": "Підвищення перевірок при зміні значень інтелектуального пристрою\nСпробуйте запобігти обмеження швидкості Amazon",
-        "zh-cn": "在改变智能器价值时加强检查\n防止亚马逊限制(again)"
       }
     },
     "keywords": [
