@@ -487,6 +487,9 @@ Link: https://www.amazon.de/hz/mycd/digital-console/devicedetails?deviceFamily=A
 After deleting unused device please restart the adapter to remove them there too.
 
 ## Changelog
+### __WORK IN PROGRESS__
+* (Apollon77) Fix missing text in Admin Config
+
 ### 3.26.0 (2023-11-08)
 * (Apollon77) Automatically query of activity/history needs to be enabled manually (if you need it!)
 

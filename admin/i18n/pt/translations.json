@@ -10,6 +10,8 @@
     "alexaServiceHost": "URL básico da Alexa",
     "auth": "Dados de login para a conta da Amazon na qual os dispositivos da Alexa estão registrados",
     "auth_info": "Os dados de login serão armazenados criptografados na instância local do ioBroker. Se os dados não forem especificados, o próprio cookie deve ser lido ou o login deve ser realizado através do proxy do adaptador para que o cookie possa ser determinado. No entanto, isso deve ser repetido manualmente assim que o cookie se tornar inválido.",
+    "autoQueryActivityOnTrigger": "Consultar automaticamente a atividade na interação do dispositivo",
+    "autoQueryActivityOnTrigger_info": "Ative apenas se você realmente precisar de informações de atividades automaticamente!",
     "bespoken": "Dispositivo virtual Bespoken",
     "bespokenToken": "Token de validação para Bespoken",
     "bespoken_info": "Os Dispositivos Virtuais da Bespoken podem ser usados ​​para enviar comandos de texto para sua Conta da Amazon e fornecer controle limitado sobre seus Dispositivos - quando possível, usando palavras faladas. <br/> <br/> Você precisa criar uma Conta Bespoken e, em seguida, um Dispositivo Virtual para obtenha um Token Bespoken conforme descrito em https://read.Bespoken.io/end-to-end/setup/. Em seguida, você insere o token abaixo e verá novos objetos para o adaptador. <br/> <br/> Observação: Bespoken cria um arquivo de áudio com o texto e o envia para as APIs do Alexa. Portanto, a qualidade de compreensão do Alexa é tão boa quanto essa geração de fala, por isso pode ser problemático com palavras especiais.",
@@ -53,7 +55,5 @@
     "updateStateInterval": "Intervalo de atualização de dados (informações do player ...)",
     "updateStateInterval_info": "O intervalo geral de atualização de dados do dispositivo define com que frequência os dados devem ser atualizados a partir dos servidores da Amazon. O mínimo é 300s ou definido para 0 para desativar a atualização. Não coloque isso muito baixo porque a Amazon pode bloquear você! Quando o Push-Connection é estabelecido o intervalo de atualização é definido para 60 minutos quando ativado.",
     "usePushConnection": "Use conexão push",
-    "userAgent": "Custom User-Agent",
-    "autoQueryActivityOnTrigger": "Consultar automaticamente a atividade na interação do dispositivo",
-    "autoQueryActivityOnTrigger_info": "Ative apenas se você realmente precisar de informações de atividades automaticamente!"
+    "userAgent": "Custom User-Agent"
 }

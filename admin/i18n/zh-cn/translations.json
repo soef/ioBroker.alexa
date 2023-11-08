@@ -10,6 +10,8 @@
     "alexaServiceHost": "Alexa基本网址",
     "auth": "注册了Echo设备的Amazon帐户的登录详细信息",
     "auth_info": "凭据将以加密方式存储在本地ioBroker实例中。",
+    "autoQueryActivityOnTrigger": "自动查询设备交互活动",
+    "autoQueryActivityOnTrigger_info": "请仅在您确实需要自动获取活动信息时启用！",
     "bespoken": "预定的虚拟设备",
     "bespokenToken": "验证令牌",
     "bespoken_info": "Bespoken虚拟设备可用于向您的Amazon帐户发送文本命令，并在可能的情况下使用口语对您的设备进行有限的控制。<br/> <br/>您需要先创建Bespoken帐户，然后创建虚拟设备才能使用",
@@ -53,7 +55,5 @@
     "updateStateInterval": "数据更新间隔（玩家信息...）",
     "updateStateInterval_info": "总的装置数据更新的间隔界定了如何从亚马逊服务器更新数据。 最低限度是300个,或为0.1%的更新。 由于其他亚马逊可能阻碍你! 当Push-Connection成立时,更新的间隔时间为60分钟。.",
     "usePushConnection": "使用推送连接",
-    "userAgent": "自定义用户代理",
-    "autoQueryActivityOnTrigger": "自动查询设备交互活动",
-    "autoQueryActivityOnTrigger_info": "请仅在您确实需要自动获取活动信息时启用！"
+    "userAgent": "自定义用户代理"
 }

@@ -10,6 +10,8 @@
     "alexaServiceHost": "Alexa base url",
     "auth": "Login Details for Amazon Account where your Alexa devices are registered",
     "auth_info": "The credentials will be stored encrypted in your local ioBroker instance. You can also leave them empty, but then you need to fetch the Amazon cookie by your own or use the proxy from the adapter to login and get the cookie.",
+    "autoQueryActivityOnTrigger": "Automatically query activity on device interaction",
+    "autoQueryActivityOnTrigger_info": "Please only enable if you really need activity information automatically!",
     "bespoken": "Bespoken Virtual Device",
     "bespokenToken": "Bespoken Validation Token",
     "bespoken_info": "The Bespoken Virtual Devices can be used to send text commands to you Amazon Account and gives limited control over your Devices - when possible using spoken words.<br/><br/>You need to create a Bespoken Account and then a Virtual Device to get a Bespoken Token as described on https://read.Bespoken.io/end-to-end/setup/ . Then you enter the token below and you will see new objects for the adapter.<br/><br/>Please note: Bespoken creates a audio file out of your text and sends this to the Alexa-APIs. So the understanding quality of Alexa is as good as this speech generation, so it may be problematic with special words.",
@@ -53,7 +55,5 @@
     "updateStateInterval": "Data update interval (player info …)",
     "updateStateInterval_info": "The general device data update interval defines how often the data should be updated from the Amazon servers. The minimum is 300s or set to 0 to disable the update. Do not set this too low because else Amazon might block you! When the Push-Connection is established the update interval is set to 60 minutes when enabled.",
     "usePushConnection": "Use push connection",
-    "userAgent": "Custom User-Agent",
-    "autoQueryActivityOnTrigger": "Automatically query activity on device interaction",
-    "autoQueryActivityOnTrigger_info": "Please only enable if you really need activity information automatically!"
+    "userAgent": "Custom User-Agent"
 }

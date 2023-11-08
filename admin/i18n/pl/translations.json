@@ -10,6 +10,8 @@
     "alexaServiceHost": "Adres bazowy Alexa",
     "auth": "Dane logowania do konta Amazon, w którym zarejestrowane są urządzenia Echo",
     "auth_info": "Dane uwierzytelniające będą przechowywane w postaci zaszyfrowanej w lokalnej instancji ioBroker. Możesz również pozostawić je puste, ale musisz pobrać plik cookie Amazon samodzielnie lub użyć proxy z adaptera, aby się zalogować i uzyskać plik cookie.",
+    "autoQueryActivityOnTrigger": "Automatycznie sprawdzaj aktywność związaną z interakcją urządzenia",
+    "autoQueryActivityOnTrigger_info": "Włącz tylko wtedy, gdy naprawdę potrzebujesz automatycznie informacji o aktywności!",
     "bespoken": "Wirtualne urządzenie Bespoken",
     "bespokenToken": "Bespoken Validation Token",
     "bespoken_info": "Urządzenia wirtualne Bespoken mogą być używane do wysyłania poleceń tekstowych do konta Amazon i dają ograniczoną kontrolę nad urządzeniami - w miarę możliwości za pomocą wypowiadanych słów. <br/> <br/> Musisz utworzyć konto Bespoken, a następnie urządzenie wirtualne do zdobądź token Bespoken zgodnie z opisem na https://read.Bespoken.io/end-to-end/setup/. Następnie wpisz poniższy token, a zobaczysz nowe obiekty dla adaptera. <br/> <br/> Uwaga: Bespoken tworzy plik audio poza tekstem i wysyła go do Alexa-API. Zatem jakość rozumienia Alexy jest tak dobra, jak ta generacja mowy, więc może być problematyczne w przypadku specjalnych słów.",
@@ -53,7 +55,5 @@
     "updateStateInterval": "Interwał aktualizacji danych (Player-Info ...)",
     "updateStateInterval_info": "Ogólna aktualizacja danych definiuje, jak często dane powinny być aktualizowane z serwerów Amazon. Minimalna liczba wynosi 300 lub jest ustawiona do 0, aby złagodzić aktualizację. Nie ustalono tego zbyt niskiego, ponieważ inna Amazonka może blokować Ciebie. Po ustanowieniu przez Push-Connection przedziału aktualizacji następuje do 60 minut.",
     "usePushConnection": "Użyj połączenia push",
-    "userAgent": "Niestandardowy User-Agent",
-    "autoQueryActivityOnTrigger": "Automatycznie sprawdzaj aktywność związaną z interakcją urządzenia",
-    "autoQueryActivityOnTrigger_info": "Włącz tylko wtedy, gdy naprawdę potrzebujesz automatycznie informacji o aktywności!"
+    "userAgent": "Niestandardowy User-Agent"
 }

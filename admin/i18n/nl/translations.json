@@ -10,6 +10,8 @@
     "alexaServiceHost": "Alexa-basis-URL",
     "auth": "Aanmeldgegevens voor Amazon-account waarop Echo-apparaten zijn geregistreerd",
     "auth_info": "De inloggegevens worden gecodeerd opgeslagen in uw lokale instantie ioBroker. Je kunt ze ook leeg laten, maar dan moet je de Amazon-cookie zelf ophalen of de proxy van de adapter gebruiken om in te loggen en de cookie te krijgen.",
+    "autoQueryActivityOnTrigger": "Automatisch opvragen van activiteit bij apparaatinteractie",
+    "autoQueryActivityOnTrigger_info": "Schakel dit alleen in als u activiteitsinformatie echt automatisch nodig heeft!",
     "bespoken": "Bespoken virtueel apparaat",
     "bespokenToken": "Bespoken Validation Token",
     "bespoken_info": "De virtuele BESACT-apparaten kunnen worden gebruikt om tekstopdrachten naar uw Amazon-account te verzenden en geeft beperkte controle over uw apparaten - indien mogelijk met behulp van gesproken woorden. <br/> <br/> U moet eerst een Bespoken-account en vervolgens een virtueel apparaat maken een Bespoken-token krijgen zoals beschreven op https://read.Bespoken.io/end-toend/setup/. Vervolgens voert u de token hieronder in en ziet u nieuwe objecten voor de adapter. <br/> <br/> Let op: Bespoken maakt een audiobestand van uw tekst en stuurt dit naar de Alexa-API's. Dus de kenniskwaliteit van Alexa is net zo goed als deze spraakgeneratie, dus het kan problematisch zijn met speciale woorden.",
@@ -53,7 +55,5 @@
     "updateStateInterval": "Gegevensbijwerkingsinterval (Player-Info ...)",
     "updateStateInterval_info": "De algemene apparatuur update bepaalt hoe vaak de gegevens moeten worden geüpload van de Amazone servers. Het minimum is 300 of klaar om de update uit te schakelen. Zet dit niet te laag, want anders blokkeert Amazone je. Als de Push-Connectie is vastgesteld dat de update interval is gestart tot 60 minuten wanneer het in staat is.",
     "usePushConnection": "Gebruik een push-verbinding",
-    "userAgent": "Aangepaste User-Agent",
-    "autoQueryActivityOnTrigger": "Automatisch opvragen van activiteit bij apparaatinteractie",
-    "autoQueryActivityOnTrigger_info": "Schakel dit alleen in als u activiteitsinformatie echt automatisch nodig heeft!"
+    "userAgent": "Aangepaste User-Agent"
 }

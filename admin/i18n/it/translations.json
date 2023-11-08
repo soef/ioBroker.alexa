@@ -10,6 +10,8 @@
     "alexaServiceHost": "Alexa base url",
     "auth": "Dettagli di accesso per l'account Amazon in cui sono registrati i dispositivi Echo",
     "auth_info": "Le credenziali verranno archiviate crittografate nell'istanza ioBroker locale. Puoi anche lasciarli vuoti, ma poi devi recuperare il cookie Amazon da solo o utilizzare il proxy dall'adattatore per accedere e ottenere il cookie.",
+    "autoQueryActivityOnTrigger": "Interroga automaticamente l'attività sull'interazione del dispositivo",
+    "autoQueryActivityOnTrigger_info": "Abilitalo solo se hai veramente bisogno delle informazioni sull'attività automaticamente!",
     "bespoken": "Dispositivo virtuale Bespoken",
     "bespokenToken": "Bespoken Validation Token",
     "bespoken_info": "I dispositivi virtuali Bespoken possono essere utilizzati per inviare comandi di testo al tuo account Amazon e forniscono un controllo limitato sui tuoi dispositivi - quando possibile usando parole parlate. <br/> <br/> Devi creare un account Bespoken e poi un dispositivo virtuale per ottenere un token Bespoken come descritto su https://read.Bespoken.io/end-to-end/setup/. Quindi inserisci il token qui sotto e vedrai nuovi oggetti per l'adattatore. <br/> <br/> Nota: Bespoken crea un file audio dal tuo testo e lo invia alle API Alexa. Quindi la qualità della comprensione di Alexa è buona quanto questa generazione di parlato, quindi potrebbe essere problematica con parole speciali.",
@@ -53,7 +55,5 @@
     "updateStateInterval": "Intervallo di aggiornamento dei dati (Player-Info ...)",
     "updateStateInterval_info": "L'intervallo di aggiornamento dei dati del dispositivo generale definisce quanto spesso i dati dovrebbero essere aggiornati dai server Amazon. Il minimo è di 300 o impostato a 0 per disabilitare l'aggiornamento. Non impostare questo troppo basso perché altrimenti Amazon potrebbe bloccarti! Quando viene stabilita la Push-Connection, l'intervallo di aggiornamento viene impostato a 60 minuti quando abilitato.",
     "usePushConnection": "Utilizzare la connessione push",
-    "userAgent": "User-Agent personalizzato",
-    "autoQueryActivityOnTrigger": "Interroga automaticamente l'attività sull'interazione del dispositivo",
-    "autoQueryActivityOnTrigger_info": "Abilitalo solo se hai veramente bisogno delle informazioni sull'attività automaticamente!"
+    "userAgent": "User-Agent personalizzato"
 }

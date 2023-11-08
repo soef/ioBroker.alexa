@@ -10,6 +10,8 @@
     "alexaServiceHost": "Alexa base de l'Alexa",
     "auth": "Détails de connexion pour le compte Amazon où les appareils Echo sont enregistrés",
     "auth_info": "Les informations d'identification seront stockées cryptées dans votre instance ioBroker locale. Vous pouvez également les laisser vides, mais vous devez ensuite récupérer le cookie Amazon par vous-même ou utiliser le proxy de l'adaptateur pour vous connecter et obtenir le cookie.",
+    "autoQueryActivityOnTrigger": "Interroger automatiquement l'activité sur l'interaction de l'appareil",
+    "autoQueryActivityOnTrigger_info": "Veuillez l'activer uniquement si vous avez vraiment besoin automatiquement d'informations sur votre activité !",
     "bespoken": "Appareil virtuel Bespoken",
     "bespokenToken": "Bespoken Validation Token",
     "bespoken_info": "Les périphériques virtuels Bespoken peuvent être utilisés pour envoyer des commandes de texte à votre compte Amazon et donner un contrôle limité sur vos périphériques - si possible en utilisant des mots prononcés. <br/> <br/> Vous devez créer un compte Bespoken puis un périphérique virtuel pour obtenir un jeton Bespoken comme décrit sur https://read.Bespoken.io/end-to-end/setup/. Ensuite, vous entrez le jeton ci-dessous et vous verrez de nouveaux objets pour l'adaptateur. <br/> <br/> Remarque: Bespoken crée un fichier audio à partir de votre texte et l'envoie aux API Alexa. Donc, la qualité de la compréhension d’Alex est aussi bonne que cette génération de discours, donc il peut être problématique avec des mots spéciaux.",
@@ -53,7 +55,5 @@
     "updateStateInterval": "Intervalle de mise à jour des données (Player-Info ...)",
     "updateStateInterval_info": "L'intervalle général de mise à jour des données de périphérique définit la fréquence de mise à jour des données des serveurs Amazon. Le minimum est de 300 ou de 0 pour désactiver la mise à jour. Ne le mettez pas trop bas parce que d'autres Amazon pourraient vous bloquer! Lorsque le Push-Connection est établi, l'intervalle de mise à jour est fixé à 60 minutes lorsque activé.",
     "usePushConnection": "Utiliser la connexion push",
-    "userAgent": "User-Agent personnalisé",
-    "autoQueryActivityOnTrigger": "Interroger automatiquement l'activité sur l'interaction de l'appareil",
-    "autoQueryActivityOnTrigger_info": "Veuillez l'activer uniquement si vous avez vraiment besoin automatiquement d'informations sur votre activité !"
+    "userAgent": "User-Agent personnalisé"
 }
