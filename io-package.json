@@ -1,445 +1,445 @@
 {
-    "common": {
-        "name": "alexa2",
-        "version": "3.25.5",
-        "blockedVersions": [
-            "~3.14.0",
-            "~3.15.0",
-            "~3.16.0",
-            "3.17.0",
-            "3.17.1",
-            "3.17.2",
-            "3.17.3"
+  "common": {
+    "name": "alexa2",
+    "version": "3.26.0",
+    "blockedVersions": [
+      "~3.14.0",
+      "~3.15.0",
+      "~3.16.0",
+      "3.17.0",
+      "3.17.1",
+      "3.17.2",
+      "3.17.3"
+    ],
+    "title": "Alexa2 (Amazon Echo)",
+    "titleLang": {
+      "en": "Alexa2 (Amazon Echo)",
+      "de": "Alexa2 (Amazon Echo)",
+      "ru": "Alexa2 (Amazon Echo)",
+      "pt": "Alexa2 (Amazon Echo)",
+      "nl": "Alexa2 (Amazon Echo)",
+      "fr": "Alexa2 (Amazon Echo)",
+      "it": "Alexa2 (Amazon Echo)",
+      "es": "Alexa2 (eco de Amazon)",
+      "pl": "Alexa2 (Amazon Echo)",
+      "zh-cn": "Alexa2（Amazon回声）",
+      "uk": "Alexa2 (Amazon Echo)"
+    },
+    "desc": {
+      "en": "Remote control for Alexa (Amazon Echo)",
+      "de": "Steuerung von Alexa (Amazon Echo)",
+      "ru": "Управление Alexa (Amazon Echo)",
+      "pt": "Controle remoto para Alexa (Amazon Echo)",
+      "nl": "Afstandsbediening voor Alexa (Amazon Echo)",
+      "fr": "Télécommande pour Alexa (Amazon Echo)",
+      "it": "Telecomando per Alexa (Amazon Echo)",
+      "es": "Control remoto para Alexa (Amazon Echo)",
+      "pl": "Pilot do Alexa (Amazon Echo)",
+      "zh-cn": "Alexa（Amazon Echo）的遥控器",
+      "uk": "Пульт дистанційного керування для Alexa (Amazon Echo)"
+    },
+    "platform": "Javascript/Node.js",
+    "news": {
+      "3.26.0": {
+        "en": "Automatically query of activity/history needs to be enabled manually (if you need it!)",
+        "de": "Automatische Abfrage von Aktivität/Geschichte muss manuell aktiviert werden (wenn Sie es benötigen)",
+        "ru": "Автоматически запрос активности/истории должен быть включен вручную (если вам это нужно)",
+        "pt": "Consulta automática da atividade / história precisa ser ativada manualmente (se você precisar)",
+        "nl": "Automatisch onderzoek naar activiteit/historie moet handmatig ingeschakeld worden als je het nodig hebt",
+        "fr": "Une requête automatique d'activité/histoire doit être activée manuellement (si vous en avez besoin) ",
+        "it": "La query automatica di attività/storia deve essere abilitata manualmente (se ne hai bisogno)",
+        "es": "La consulta automática de la actividad/historia necesita ser activada manualmente (si lo necesita)",
+        "pl": "Automatycznie zapytanie o aktywność/historię musi być umożliwione ręcznie (jeśli potrzebujemy)",
+        "uk": "Автоматично квартету діяльності/історінки необхідно ввімкнути вручну",
+        "zh-cn": "活动/活动需要自动查询(如果你需要!)"
+      },
+      "3.25.5": {
+        "en": "Optimize activity detection to process all relevant entries in all cases",
+        "de": "Optimieren Sie die Aktivitätserkennung, um alle relevanten Einträge in allen Fällen zu bearbeiten",
+        "ru": "Оптимизация обнаружения активности для обработки всех соответствующих записей во всех случаях",
+        "pt": "Otimizar a detecção de atividades para processar todas as entradas relevantes em todos os casos",
+        "nl": "Optimaal activiteitsdetector om alle relevante instanties te verwerken in alle gevallen",
+        "fr": "Optimiser la détection d'activité pour traiter toutes les entrées pertinentes dans tous les cas",
+        "it": "Ottimizzare il rilevamento delle attività per elaborare tutte le voci pertinenti in tutti i casi",
+        "es": "Optimize activity detection to process all relevant entries in all cases",
+        "pl": "Wykrywanie aktywności w optymalizacji polega na przetwarzaniu wszystkich istotnych wpisów we wszystkich przypadkach",
+        "uk": "Оптимальне виявлення активності для обробки всіх відповідних записів у всіх випадках",
+        "zh-cn": "制止在所有情况下处理所有有关物品的活动"
+      },
+      "3.25.4": {
+        "en": "Optimize activity detection to process all relevant entries and not just the last one",
+        "de": "Optimieren Sie die Aktivitätserkennung, um alle relevanten Einträge zu bearbeiten und nicht nur die letzte",
+        "ru": "Оптимизация обнаружения активности для обработки всех соответствующих записей и не только последнего",
+        "pt": "Otimizar a detecção de atividades para processar todas as entradas relevantes e não apenas a última",
+        "nl": "Optimale activiteit detectie om alle relevante ingangen te verwerken en niet alleen de laatste",
+        "fr": "Optimiser la détection d'activité pour traiter toutes les entrées pertinentes et pas seulement la dernière",
+        "it": "Ottimizzare il rilevamento delle attività per elaborare tutte le voci pertinenti e non solo l'ultimo",
+        "es": "Optimize activity detection to process all relevant entries and not just the last one",
+        "pl": "Wykrywanie czynności optymalnych do przetwarzania wszystkich istotnych wpisów i nie tylko ostatni",
+        "uk": "Оптимізуйте виявлення активності для обробки всіх відповідних записів і не просто останнього",
+        "zh-cn": "停止活动,处理所有有关物品,而不是最后一个物品"
+      },
+      "3.25.3": {
+        "en": "Adjust History update to work with recent Amazon changes",
+        "de": "Anpassung der Geschichte-Updates an die neuesten Amazon-Änderungen",
+        "ru": "Отрегулируйте обновление истории для работы с недавними изменениями Amazon",
+        "pt": "Ajustar atualização de histórico para trabalhar com mudanças recentes da Amazônia",
+        "nl": "Verandering van geschiedenis aan het werk met de recente Amazone",
+        "fr": "Ajuster la mise à jour historique pour travailler avec les récents changements Amazon",
+        "it": "Regolare l'aggiornamento di storia per lavorare con le recenti modifiche Amazon",
+        "es": "Ajuste de la actualización de la historia para trabajar con cambios recientes de Amazon",
+        "pl": "Adjust History zaktualizował prace nad nowymi zmianami Amazona",
+        "uk": "Налаштування оновлення історії для роботи з останніми змінами Amazon",
+        "zh-cn": "A. 亚马逊最近变化的历史更新"
+      },
+      "3.25.2": {
+        "en": "Optimize reconnection handling for push connections",
+        "de": "Optimieren Sie die Umschaltung von Push-Verbindungen",
+        "ru": "Оптимизируйте переподключение обработки для push соединений",
+        "pt": "Otimizar o manuseio de reconexão para conexões push",
+        "nl": "Optimiliseer verbinding met de pers",
+        "fr": "Optimiser la manipulation de reconnection pour les connexions push",
+        "it": "Ottimizzare la gestione della riconnessione per le connessioni push",
+        "es": "Optimize reconnection handling for push connections",
+        "pl": "Optimize reconnection",
+        "uk": "Оптимальна обробка відключення для підключення штовхачів",
+        "zh-cn": "利用重新连接的渠道推动联系"
+      },
+      "3.25.1": {
+        "en": "IMPORTANT: Minimum required Node-js version is 16 now!\nUpdated the Push connection after Amazon technology changes\nAdded some more device types",
+        "de": "WICHTIG: Mindestanforderungen Node-js-Version ist jetzt 16!\nAktualisiert die Push-Verbindung nach Amazon-Technologie Änderungen\nEinige weitere Gerätetypen hinzugefügt",
+        "ru": "ВАЖНО: Минимальная необходимая версия Node-js теперь 16!\nОбновлено соединение Push после изменения технологии Amazon\nДобавлены еще некоторые типы устройств",
+        "pt": "IMPORTANTE: A versão mínima necessária do Node-js é 16 agora!\nAtualizou a conexão Push depois que a tecnologia Amazon muda\nAdicionado alguns mais tipos de dispositivo",
+        "nl": "Minimum vereist dat Node-Js versie 16 is!\nVerhoogde de Push connectie nadat Amazon technologie veranderde\nVoeg nog wat apparaten toe",
+        "fr": "IMPORTANT: La version minimum requise Node-js est 16 maintenant!\nMise à jour de la connexion Push après les changements de technologie Amazon\nAjout d'autres types de périphériques",
+        "it": "IMPORTANTE: La versione minima Node-js richiesta è 16 ora!\nAggiornato il collegamento Push dopo le modifiche della tecnologia Amazon\nAggiunto alcuni più tipi di dispositivo",
+        "es": "IMPORTANTE: La versión mínima requerida Node-js es 16 ahora!\nActualización de la conexión Push después de los cambios de la tecnología Amazon\nAñadido algunos tipos de dispositivo más",
+        "pl": "IMPORTANT: Minimum wymagało od wersji Node-js 16 now!\nUlepszenie połączenia Push po zmianie technologii Amazon zmienia się\nUdostępnić więcej typów urządzeń",
+        "uk": "ВАЖЛИВО: Мінімальна необхідна версія Node-js 16 тепер!\nОновлено підключення Push після зміни технології Amazon\nДодайте більше типів пристроїв",
+        "zh-cn": "IMPORTANT:最低要求的提名现在是16!\nA. 亚马逊技术变化之后的管道更新\n增加一些更类型的装置"
+      },
+      "3.24.1": {
+        "en": "Work around Amazon changes that affected all functions over the Push connection\nSome smaller fixes and adjustments",
+        "de": "Arbeiten um Amazon Änderungen, die alle Funktionen über die Push-Verbindung beeinflusst\nEinige kleinere Fixierungen und Anpassungen",
+        "ru": "Работа вокруг Amazon меняется, что повлияло на все функции по подключению Push\nНекоторые мелкие исправления и настройки",
+        "pt": "Trabalhe em torno de mudanças da Amazon que afetaram todas as funções sobre a conexão Push\nAlgumas correções e ajustes menores",
+        "nl": "Werk rond Amazon verandert alle functies over de Push connectie\nWat kleinere fixes en aanpassingen",
+        "fr": "Travail autour de Amazon changements qui ont affecté toutes les fonctions sur la connexion Push\nQuelques corrections et ajustements plus petits",
+        "it": "Lavorare intorno Amazon modifiche che hanno interessato tutte le funzioni sopra il collegamento Push\nAlcuni piccoli correzioni e regolazioni",
+        "es": "Trabajar alrededor de Amazon cambios que afectaron todas las funciones sobre la conexión Push\nAlgunas correcciones y ajustes más pequeños",
+        "pl": "Prace nad zmianami Amazona, które wpływały na wszystkie funkcje w związku Push\nNiektóre mniejsze rozwiązania i przystosowania",
+        "uk": "Робота по змінах Amazon, які впливають на всі функції над підключенням Push\nДеякі менші виправлення та налаштування",
+        "zh-cn": "三. 亚马逊的改变影响到普沙伊特的所有职能\n有些较小的配量和调整"
+      }
+    },
+    "keywords": [
+      "alexa",
+      "amazon",
+      "amazon echo",
+      "echo dot",
+      "echo show"
+    ],
+    "authors": [
+      "Apollon77 <iobroker@fischer-ka.de>"
+    ],
+    "mode": "daemon",
+    "icon": "alexa.png",
+    "materialize": true,
+    "extIcon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
+    "readme": "https://github.com/Apollon77/ioBroker.alexa2/blob/master/README.md",
+    "loglevel": "info",
+    "type": "iot-systems",
+    "enabled": true,
+    "messagebox": true,
+    "license": "MIT",
+    "localLink": "https://alexa.amazon.com",
+    "connectionType": "cloud",
+    "dataSource": "push",
+    "tier": 2,
+    "compact": true,
+    "dependencies": [
+      {
+        "js-controller": ">=2.0.0"
+      }
+    ],
+    "plugins": {
+      "sentry": {
+        "dsn": "https://e9ac55f23fe149e78b1eab9ed4bf26ad@sentry.iobroker.net/8",
+        "pathWhitelist": [
+          "@apollon",
+          "alexa-cookie2",
+          "alexa-remote2"
         ],
-        "title": "Alexa2 (Amazon Echo)",
-        "titleLang": {
-            "en": "Alexa2 (Amazon Echo)",
-            "de": "Alexa2 (Amazon Echo)",
-            "ru": "Alexa2 (Amazon Echo)",
-            "pt": "Alexa2 (Amazon Echo)",
-            "nl": "Alexa2 (Amazon Echo)",
-            "fr": "Alexa2 (Amazon Echo)",
-            "it": "Alexa2 (Amazon Echo)",
-            "es": "Alexa2 (eco de Amazon)",
-            "pl": "Alexa2 (Amazon Echo)",
-            "zh-cn": "Alexa2（Amazon回声）",
-            "uk": "Alexa2 (Amazon Echo)"
-        },
-        "desc": {
-            "en": "Remote control for Alexa (Amazon Echo)",
-            "de": "Steuerung von Alexa (Amazon Echo)",
-            "ru": "Управление Alexa (Amazon Echo)",
-            "pt": "Controle remoto para Alexa (Amazon Echo)",
-            "nl": "Afstandsbediening voor Alexa (Amazon Echo)",
-            "fr": "Télécommande pour Alexa (Amazon Echo)",
-            "it": "Telecomando per Alexa (Amazon Echo)",
-            "es": "Control remoto para Alexa (Amazon Echo)",
-            "pl": "Pilot do Alexa (Amazon Echo)",
-            "zh-cn": "Alexa（Amazon Echo）的遥控器",
-            "uk": "Пульт дистанційного керування для Alexa (Amazon Echo)"
-        },
-        "platform": "Javascript/Node.js",
-        "news": {
-            "3.25.5": {
-                "en": "Optimize activity detection to process all relevant entries in all cases",
-                "de": "Optimieren Sie die Aktivitätserkennung, um alle relevanten Einträge in allen Fällen zu bearbeiten",
-                "ru": "Оптимизация обнаружения активности для обработки всех соответствующих записей во всех случаях",
-                "pt": "Otimizar a detecção de atividades para processar todas as entradas relevantes em todos os casos",
-                "nl": "Optimaal activiteitsdetector om alle relevante instanties te verwerken in alle gevallen",
-                "fr": "Optimiser la détection d'activité pour traiter toutes les entrées pertinentes dans tous les cas",
-                "it": "Ottimizzare il rilevamento delle attività per elaborare tutte le voci pertinenti in tutti i casi",
-                "es": "Optimize activity detection to process all relevant entries in all cases",
-                "pl": "Wykrywanie aktywności w optymalizacji polega na przetwarzaniu wszystkich istotnych wpisów we wszystkich przypadkach",
-                "uk": "Оптимальне виявлення активності для обробки всіх відповідних записів у всіх випадках",
-                "zh-cn": "制止在所有情况下处理所有有关物品的活动"
-            },
-            "3.25.4": {
-                "en": "Optimize activity detection to process all relevant entries and not just the last one",
-                "de": "Optimieren Sie die Aktivitätserkennung, um alle relevanten Einträge zu bearbeiten und nicht nur die letzte",
-                "ru": "Оптимизация обнаружения активности для обработки всех соответствующих записей и не только последнего",
-                "pt": "Otimizar a detecção de atividades para processar todas as entradas relevantes e não apenas a última",
-                "nl": "Optimale activiteit detectie om alle relevante ingangen te verwerken en niet alleen de laatste",
-                "fr": "Optimiser la détection d'activité pour traiter toutes les entrées pertinentes et pas seulement la dernière",
-                "it": "Ottimizzare il rilevamento delle attività per elaborare tutte le voci pertinenti e non solo l'ultimo",
-                "es": "Optimize activity detection to process all relevant entries and not just the last one",
-                "pl": "Wykrywanie czynności optymalnych do przetwarzania wszystkich istotnych wpisów i nie tylko ostatni",
-                "uk": "Оптимізуйте виявлення активності для обробки всіх відповідних записів і не просто останнього",
-                "zh-cn": "停止活动,处理所有有关物品,而不是最后一个物品"
-            },
-            "3.25.3": {
-                "en": "Adjust History update to work with recent Amazon changes",
-                "de": "Anpassung der Geschichte-Updates an die neuesten Amazon-Änderungen",
-                "ru": "Отрегулируйте обновление истории для работы с недавними изменениями Amazon",
-                "pt": "Ajustar atualização de histórico para trabalhar com mudanças recentes da Amazônia",
-                "nl": "Verandering van geschiedenis aan het werk met de recente Amazone",
-                "fr": "Ajuster la mise à jour historique pour travailler avec les récents changements Amazon",
-                "it": "Regolare l'aggiornamento di storia per lavorare con le recenti modifiche Amazon",
-                "es": "Ajuste de la actualización de la historia para trabajar con cambios recientes de Amazon",
-                "pl": "Adjust History zaktualizował prace nad nowymi zmianami Amazona",
-                "uk": "Налаштування оновлення історії для роботи з останніми змінами Amazon",
-                "zh-cn": "A. 亚马逊最近变化的历史更新"
-            },
-            "3.25.2": {
-                "en": "Optimize reconnection handling for push connections",
-                "de": "Optimieren Sie die Umschaltung von Push-Verbindungen",
-                "ru": "Оптимизируйте переподключение обработки для push соединений",
-                "pt": "Otimizar o manuseio de reconexão para conexões push",
-                "nl": "Optimiliseer verbinding met de pers",
-                "fr": "Optimiser la manipulation de reconnection pour les connexions push",
-                "it": "Ottimizzare la gestione della riconnessione per le connessioni push",
-                "es": "Optimize reconnection handling for push connections",
-                "pl": "Optimize reconnection",
-                "uk": "Оптимальна обробка відключення для підключення штовхачів",
-                "zh-cn": "利用重新连接的渠道推动联系"
-            },
-            "3.25.1": {
-                "en": "IMPORTANT: Minimum required Node-js version is 16 now!\nUpdated the Push connection after Amazon technology changes\nAdded some more device types",
-                "de": "WICHTIG: Mindestanforderungen Node-js-Version ist jetzt 16!\nAktualisiert die Push-Verbindung nach Amazon-Technologie Änderungen\nEinige weitere Gerätetypen hinzugefügt",
-                "ru": "ВАЖНО: Минимальная необходимая версия Node-js теперь 16!\nОбновлено соединение Push после изменения технологии Amazon\nДобавлены еще некоторые типы устройств",
-                "pt": "IMPORTANTE: A versão mínima necessária do Node-js é 16 agora!\nAtualizou a conexão Push depois que a tecnologia Amazon muda\nAdicionado alguns mais tipos de dispositivo",
-                "nl": "Minimum vereist dat Node-Js versie 16 is!\nVerhoogde de Push connectie nadat Amazon technologie veranderde\nVoeg nog wat apparaten toe",
-                "fr": "IMPORTANT: La version minimum requise Node-js est 16 maintenant!\nMise à jour de la connexion Push après les changements de technologie Amazon\nAjout d'autres types de périphériques",
-                "it": "IMPORTANTE: La versione minima Node-js richiesta è 16 ora!\nAggiornato il collegamento Push dopo le modifiche della tecnologia Amazon\nAggiunto alcuni più tipi di dispositivo",
-                "es": "IMPORTANTE: La versión mínima requerida Node-js es 16 ahora!\nActualización de la conexión Push después de los cambios de la tecnología Amazon\nAñadido algunos tipos de dispositivo más",
-                "pl": "IMPORTANT: Minimum wymagało od wersji Node-js 16 now!\nUlepszenie połączenia Push po zmianie technologii Amazon zmienia się\nUdostępnić więcej typów urządzeń",
-                "uk": "ВАЖЛИВО: Мінімальна необхідна версія Node-js 16 тепер!\nОновлено підключення Push після зміни технології Amazon\nДодайте більше типів пристроїв",
-                "zh-cn": "IMPORTANT:最低要求的提名现在是16!\nA. 亚马逊技术变化之后的管道更新\n增加一些更类型的装置"
-            },
-            "3.24.1": {
-                "en": "Work around Amazon changes that affected all functions over the Push connection\nSome smaller fixes and adjustments",
-                "de": "Arbeiten um Amazon Änderungen, die alle Funktionen über die Push-Verbindung beeinflusst\nEinige kleinere Fixierungen und Anpassungen",
-                "ru": "Работа вокруг Amazon меняется, что повлияло на все функции по подключению Push\nНекоторые мелкие исправления и настройки",
-                "pt": "Trabalhe em torno de mudanças da Amazon que afetaram todas as funções sobre a conexão Push\nAlgumas correções e ajustes menores",
-                "nl": "Werk rond Amazon verandert alle functies over de Push connectie\nWat kleinere fixes en aanpassingen",
-                "fr": "Travail autour de Amazon changements qui ont affecté toutes les fonctions sur la connexion Push\nQuelques corrections et ajustements plus petits",
-                "it": "Lavorare intorno Amazon modifiche che hanno interessato tutte le funzioni sopra il collegamento Push\nAlcuni piccoli correzioni e regolazioni",
-                "es": "Trabajar alrededor de Amazon cambios que afectaron todas las funciones sobre la conexión Push\nAlgunas correcciones y ajustes más pequeños",
-                "pl": "Prace nad zmianami Amazona, które wpływały na wszystkie funkcje w związku Push\nNiektóre mniejsze rozwiązania i przystosowania",
-                "uk": "Робота по змінах Amazon, які впливають на всі функції над підключенням Push\nДеякі менші виправлення та налаштування",
-                "zh-cn": "三. 亚马逊的改变影响到普沙伊特的所有职能\n有些较小的配量和调整"
-            },
-            "3.23.2": {
-                "en": "Prioritize real devices higher than app devices when serialnumbers overlap",
-                "de": "Priorisieren Sie reale Geräte höher als App-Geräte, wenn sich Seriennummern überlappen",
-                "ru": "Приоритетные реальные устройства выше, чем устройства приложений, когда перекрываются серийные номера",
-                "pt": "Priorize dispositivos reais superiores aos dispositivos de aplicativos quando os números de série se sobrepõem",
-                "nl": "Vertaling:",
-                "fr": "Prioriser les dispositifs réels plus élevés que les appareils d'application lorsque les nombres de série se chevauchent",
-                "it": "Priorizzare dispositivi reali superiori ai dispositivi app quando i numeri di serie si sovrappongono",
-                "es": "Priorizar dispositivos reales superiores a los dispositivos de aplicación cuando superpone números de serie",
-                "pl": "Priorytetyzacja rzeczywistych urządzeń wyższa niż urządzenia aplikacji, gdy liczba odcinków się pokrywa",
-                "uk": "Передбачити реальні пристрої вище пристроїв додатків при перекриттях серійних чисел",
-                "zh-cn": "当序号重叠时,实际装置的优先顺序高于装置"
-            }
-        },
-        "keywords": [
-            "alexa",
-            "amazon",
-            "amazon echo",
-            "echo dot",
-            "echo show"
-        ],
-        "authors": [
-            "Apollon77 <iobroker@fischer-ka.de>"
-        ],
-        "mode": "daemon",
-        "icon": "alexa.png",
-        "materialize": true,
-        "extIcon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
-        "readme": "https://github.com/Apollon77/ioBroker.alexa2/blob/master/README.md",
-        "loglevel": "info",
-        "type": "iot-systems",
-        "enabled": true,
-        "messagebox": true,
-        "license": "MIT",
-        "localLink": "https://alexa.amazon.com",
-        "connectionType": "cloud",
-        "dataSource": "push",
-        "tier": 2,
-        "compact": true,
-        "dependencies": [
-            {
-                "js-controller": ">=2.0.0"
-            }
-        ],
-        "plugins": {
-            "sentry": {
-                "dsn": "https://e9ac55f23fe149e78b1eab9ed4bf26ad@sentry.iobroker.net/8",
-                "pathWhitelist": [
-                    "@apollon",
-                    "alexa-cookie2",
-                    "alexa-remote2"
-                ],
-                "errorBlacklist": [
-                    "SyntaxError"
-                ]
-            }
-        },
-        "messages": [
-            {
-                "condition": {
-                    "operand": "and",
-                    "rules": [
-                        "oldVersion<3.13.0",
-                        "newVersion>=3.13.0"
-                    ]
-                },
-                "title": {
-                    "en": "Important notice!",
-                    "de": "Wichtiger Hinweis!",
-                    "ru": "Важное замечание!",
-                    "pt": "Notícia importante!",
-                    "nl": "Belangrijke mededeling!",
-                    "fr": "Avis important!",
-                    "it": "Avviso IMPORTANTE!",
-                    "es": "Noticia importante!",
-                    "pl": "Ważna uwaga!",
-                    "zh-cn": "重要通知!",
-                    "uk": "Важливе повідомлення!"
-                },
-                "text": {
-                    "en": "The new version 1.2.x will potentially change the Names of List Objects when special characters (including \".\") are used! Please delete the old objects manually if needed.",
-                    "de": "Die neue Version 1.2.x wird die Namen der Listenobjekte möglicherweise ändern, wenn Sonderzeichen (einschließlich \".\") verwendet werden! Bitte löschen Sie die alten Objekte bei Bedarf manuell.",
-                    "ru": "Новая версия 1.2.x потенциально изменит имена объектов списка, когда используются специальные символы (включая \".\")! Пожалуйста, удалите старые объекты вручную, если это необходимо.",
-                    "pt": "A nova versão 1.2.x irá potencialmente alterar os nomes dos objetos de lista quando caracteres especiais (incluindo \".\") são usados! Por favor, exclua os objetos antigos manualmente, se necessário.",
-                    "nl": "De nieuwe versie 1.2.x zal mogelijk de Namen van List Objects veranderen als speciale personages (includeren) worden gebruikt. Verwijder de oude objecten handmatig als het nodig is.",
-                    "fr": "La nouvelle version 1.2.x modifiera potentiellement les Noms des objets de la liste lorsque des caractères spéciaux (y compris \"). Veuillez supprimer les anciens objets manuellement si nécessaire.",
-                    "it": "La nuova versione 1.2.x cambierà potenzialmente i nomi degli oggetti di elenco quando vengono utilizzati caratteri speciali (inclusi \".\")! Si prega di eliminare i vecchi oggetti manualmente se necessario.",
-                    "es": "La nueva versión 1.2.x potencialmente cambiará los Nombres de Objetos de Lista cuando se utilizan caracteres especiales (incluyendo \"). Por favor, borre los viejos objetos manualmente si es necesario.",
-                    "pl": "Nowa wersja 1.2.x będzie potencjalnie zmieniać nazwę nazw obiektów listowych, kiedy używa się specjalnych postaci (w tym „.”). Okazuje się, że stare obiekty ręcznie będą potrzebne.",
-                    "zh-cn": "新版本1.2.x将有可能改变名单所列物品的名称(包括“......”)。 请在必要时删除旧物体。.",
-                    "uk": "Нова версія 1.2.x потенційно змінить імена об’єктів списку, коли використовуються спеціальні символи (включаючи «.»)! За потреби видаліть старі об’єкти вручну."
-                },
-                "level": "warn",
-                "buttons": [
-                    "agree",
-                    "cancel"
-                ]
-            },
-            {
-                "condition": {
-                    "operand": "and",
-                    "rules": [
-                        "oldVersion<3.15.0",
-                        "newVersion>=3.15.0"
-                    ]
-                },
-                "title": {
-                    "en": "Format to create Reminder/Alarms changed!",
-                    "de": "Format zum Erstellen von Reminder/Alarms geändert!",
-                    "ru": "Формат для создания Reminder/Alarms изменился!",
-                    "pt": "Formato para criar lembrete / alarmes alterado!",
-                    "nl": "Format om Reminder/Alarms te creëren!",
-                    "fr": "Format pour créer Reminder/Alarms changé!",
-                    "it": "Formato per creare Reminder/Allarma cambiate!",
-                    "es": "Formato para crear Reminder/Alarms cambiado!",
-                    "pl": "W celu stworzenia zmian Reminder/Alarms!",
-                    "zh-cn": "创建Reminder/Alarms的格局改变了!",
-                    "uk": "Змінено формат створення нагадувань/будильників!"
-                },
-                "text": {
-                    "en": "The format used in the \"New\" states for Alarms or Reminders has changed and allows now to provide more Details. Please see the Readme for the details!",
-                    "de": "Das Format, das in den neuen Zuständen für Alarme oder Reminders verwendet wird, hat sich geändert und ermöglicht nun mehr Details. Die Readme enthält alle Details!",
-                    "ru": "Изменен формат, используемый в новых состояниях для тревоги или напоминаний и позволяет теперь предоставить более подробную информацию. Пожалуйста, посмотрите Readme для деталей!",
-                    "pt": "O formato usado nos Novos estados para Alarmes ou Lembretes mudou e agora permite fornecer mais detalhes. Por favor, veja o Readme para os detalhes!",
-                    "nl": "De formaat gebruikt in de Nieuwe staten voor Alarms of Reminders is veranderd en staat nu toe om meer Details te leveren. Zie de Readme voor de details!",
-                    "fr": "Le format utilisé dans les nouveaux états pour les armes ou les rappels a changé et permet maintenant de fournir plus de détails. Veuillez voir le Readme pour les détails!",
-                    "it": "Il formato utilizzato nei nuovi stati per gli allarmi o i ripetitori è cambiato e consente ora di fornire ulteriori dettagli. Si prega di vedere il Readme per i dettagli!",
-                    "es": "El formato utilizado en los Nuevos estados para Alarmas o Recordatorios ha cambiado y permite ahora proporcionar más detalles. Por favor, vea el Readme para los detalles!",
-                    "pl": "Format używany w nowych stanach dla Alarmsa lub Remindersa został zmieniony i pozwala obecnie na dostarczenie większej liczby dekatów. Wyglądaj na szczegóły!",
-                    "zh-cn": "新州用于申报或递解剂的格式已经改变,现在可以提供更多的细节。 请见详细!",
-                    "uk": "Формат, який використовується в станах «Новий» для будильників або нагадувань, змінився і тепер дозволяє надавати більше деталей. Будь ласка, перегляньте файл Readme, щоб дізнатися більше!"
-                },
-                "level": "warn",
-                "buttons": [
-                    "agree",
-                    "cancel"
-                ],
-                "link": "https://github.com/Apollon77/ioBroker.alexa2#alexa20echo-devicesserialnumberalarm",
-                "linkText": {
-                    "en": "Readme",
-                    "de": "Reader",
-                    "ru": "Читать",
-                    "pt": "Readme",
-                    "nl": "Lees",
-                    "fr": "Readme",
-                    "it": "Readme",
-                    "es": "Readme",
-                    "pl": "Ready",
-                    "zh-cn": "阅读摘要",
-                    "uk": "Readme"
-                }
-            },
-            {
-                "condition": {
-                    "operand": "and",
-                    "rules": [
-                        "oldVersion<3.18.0",
-                        "newVersion>=3.18.0"
-                    ]
-                },
-                "title": {
-                    "en": "Changes in Smart Home device syncing",
-                    "de": "Änderungen der Smart Home Gerätesynchronisation",
-                    "ru": "Изменения в синхронизации устройства Smart Home",
-                    "pt": "Alterações na sincronização de dispositivos Smart Home",
-                    "nl": "Veranderingen in Smart Home apparaat",
-                    "fr": "Changements dans la synchronisation de l'appareil Smart Home",
-                    "it": "Modifiche nella sincronizzazione dei dispositivi Smart Home",
-                    "es": "Cambios en la sincronización de dispositivos Smart Home",
-                    "pl": "Zmiany w Smart Home urządzenie synchronizujące",
-                    "zh-cn": "Smart家装置的合并变化",
-                    "uk": "Зміни в синхронізації пристрою Smart Home"
-                },
-                "text": {
-                    "en": "Starting with version 3.18.0 smart home device values are no longer synced by default. You need to enable the new state #includeInIntervalQuery existing for each syncable device in the objects in order for the device to be synchronized. Please enable only those that you really need to reduce the requests to Amazon and the Skills and prevent blocking or issues.",
-                    "de": "Ab Version 3.18.0 werden Smart Home-Gerät-Werte nicht mehr standardmäßig synchronisiert. Der neuen Zustand #includeInInterQuery, der für jedes synchronisierbare Gerät in den Objekten vorhanden ist, muss aktiviert werden um das Gerät zu synchronisieren. Bitte nur diejenigen Geräte aktivieren, die wirklich benötigt werden, um die Anfragen an Amazon und die Skills zu reduzieren und Blockierung oder Probleme zu verhindern.",
-                    "ru": "Начиная с версии 3.18.0 интеллектуальные ценности домашнего устройства больше не синхронизированы по умолчанию. Вам необходимо включить новое состояние #includeInIntervalQuery существующее для каждого синхронного устройства в объектах, чтобы устройство было синхронизировано. Пожалуйста, включите только те, что вам действительно нужно уменьшить запросы на Amazon и навыки и предотвратить блокировку или проблемы.",
-                    "pt": "Começando com a versão 3.18.0 os valores de dispositivo doméstico inteligente não são mais sincronizados por padrão. Você precisa ativar o novo estado #includeInIntervalQuery existente para cada dispositivo sincronizável nos objetos para que o dispositivo seja sincronizado. Por favor, ative apenas aqueles que você realmente precisa para reduzir os pedidos para Amazon e as habilidades e evitar bloqueio ou problemas.",
-                    "nl": "Beginnend met versie 3.18.0 slimme thuis apparatuur is niet meer gesynchroniseerd door defect. Je moet de nieuwe staat in staat stellen includeïntervalQuery die bestaat voor elk syncable apparaat in de objecten om het apparaat te synchroniseren. Betrek alleen degenen die je echt nodig hebt om de verzoeken naar Amazone en de Skills te verminderen en blokkeren of problemen te voorkomen.",
-                    "fr": "À partir de la version 3.18.0, les valeurs de périphérique à domicile intelligent ne sont plus synchronisées par défaut. Vous devez activer le nouvel état #includeInIntervalQuery existant pour chaque périphérique synchronisé dans les objets afin que le dispositif soit synchronisé. S'il vous plaît activer seulement ceux que vous avez vraiment besoin de réduire les demandes à Amazon et les Compétences et prévenir le blocage ou les problèmes.",
-                    "it": "A partire dalla versione 3.18.0 i valori dei dispositivi smart home non sono più sincronizzati per impostazione predefinita. È necessario abilitare il nuovo stato #includeInIntervalQuery esistente per ogni dispositivo sincronizzabile negli oggetti in modo che il dispositivo sia sincronizzato. Si prega di attivare solo quelli che è davvero necessario ridurre le richieste a Amazon e le competenze e prevenire il blocco o problemi.",
-                    "es": "Empezando con la versión 3.18.0, los valores de dispositivo hogar inteligente ya no se sincronizan por defecto. Necesita habilitar el nuevo estado #includeInIntervalQuery existente para cada dispositivo sincronizable en los objetos con el fin de sincronizar el dispositivo. Por favor, active sólo aquellos que realmente necesita para reducir las solicitudes a Amazon y las Habilidades y evitar el bloqueo o problemas.",
-                    "pl": "Począwszy od wersji 3.18.0, inteligentne urządzenia domowe nie są już zsynchronizowane. Musisz umożliwić nowy stan #include InIntervalQuery istniejące dla każdego urządzenia synchronizującego się w obiektach. Pozwólcie to tylko tym, że musisz zredukować żądania do Amazona i Umiejętności i zapobiegać blokowaniu lub problemom.",
-                    "zh-cn": "从第3.18.0版的家里装置价值开始,不再因违约而形成。 你们需要使新的国家能够为各物体的每个可核对装置建立新的国家行动目标。 仅请你真正需要减少对亚马逊和技能的要求,并防止阻断或问题。.",
-                    "uk": "Починаючи з версії 3.18.0, значення пристрою розумного дому більше не синхронізуються за умовчанням. Вам потрібно ввімкнути новий стан #includeInIntervalQuery, який існує для кожного синхронізованого пристрою в об’єктах, щоб пристрій міг синхронізуватися. Увімкніть лише ті, які вам дійсно потрібні, щоб зменшити кількість запитів до Amazon і Skills і запобігти блокуванню чи проблемам."
-                },
-                "level": "warn",
-                "buttons": [
-                    "agree",
-                    "cancel"
-                ],
-                "link": "https://github.com/Apollon77/ioBroker.alexa2#alexa20echo-devicesserialnumberalarm",
-                "linkText": {
-                    "en": "Readme",
-                    "de": "Reader",
-                    "ru": "Читать",
-                    "pt": "Readme",
-                    "nl": "Lees",
-                    "fr": "Readme",
-                    "it": "Readme",
-                    "es": "Readme",
-                    "pl": "Ready",
-                    "zh-cn": "阅读摘要",
-                    "uk": "Readme"
-                }
-            },
-            {
-                "condition": {
-                    "operand": "and",
-                    "rules": [
-                        "oldVersion<3.26.0",
-                        "newVersion>=3.26.0"
-                    ]
-                },
-                "title": {
-                    "en": "Changes in activity synchronisation",
-                    "de": "Änderungen der Aktivitätssynchronisation",
-                    "ru": "Изменения в синхронизации активности",
-                    "pt": "Alterações na sincronização de atividades",
-                    "nl": "Verandering in actuele synchronisatie",
-                    "fr": "Changements de synchronisation d'activité",
-                    "it": "Modifiche della sincronizzazione delle attività",
-                    "es": "Cambios en la sincronización de actividad",
-                    "pl": "Zmiany w synchronizacji aktywności",
-                    "uk": "Зміна синхронізації активності",
-                    "zh-cn": "B. 活动统一时间的变化"
-                },
-                "text": {
-                    "en": "Starting with Version 3.26.0 The activity/history is no longer queried automatically. If you need this automatic query please enable it in the settings - but only if you really need it! It generates load on the amazon systems and we should try to reduce this as much as possible please!",
-                    "de": "Beginnend mit Version 3.26.0 Die Aktivität/History wird nicht mehr automatisch abgefragt. Wenn Sie diese automatische Abfrage benötigen, aktivieren Sie es bitte in den Einstellungen - aber nur, wenn Sie es wirklich brauchen! Es erzeugt Belastung der Amazonsysteme und wir sollten versuchen, dies so viel wie möglich zu reduzieren, bitte!",
-                    "ru": "Начиная с версии 3.26.0 Деятельность/история больше не запрашивается автоматически. Если вам нужен этот автоматический запрос, пожалуйста, включите его в настройках - но только если вам это действительно нужно! Он генерирует нагрузку на амазоночные системы, и мы должны попытаться уменьшить это как можно больше, пожалуйста!",
-                    "pt": "Começando com a versão 3.26.0 A atividade/história não é mais consultada automaticamente. Se você precisar desta consulta automática, por favor ative-a nas configurações - mas só se você realmente precisar dele! Ele gera carga nos sistemas de amazon e devemos tentar reduzir isso tanto quanto possível, por favor!",
-                    "nl": "Begin met Version 3.26.0 De activiteit/hestory is niet meer automatisch. Als je deze automatische zoektocht nodig hebt, zet het dan in de settings, maar alleen als je het echt nodig hebt! Het genereert lading op de Amazone-systemen en we moeten proberen dit zoveel mogelijk te verminderen!",
-                    "fr": "À partir de la version 3.26.0 L'activité/l'histoire n'est plus demandée automatiquement. Si vous avez besoin de cette requête automatique, veuillez l'activer dans les paramètres - mais seulement si vous en avez vraiment besoin! Il génère de la charge sur les systèmes amazon et nous devrions essayer de réduire cela autant que possible s'il vous plaît!",
-                    "it": "A partire dalla versione 3.26.0 L'attività/storia non è più richiesta automaticamente. Se hai bisogno di questa query automatica, abilitalo nelle impostazioni - ma solo se ne hai davvero bisogno! Esso genera carico sui sistemi amazon e dovremmo cercare di ridurre questo il più possibile per favore!",
-                    "es": "Empezando con la versión 3.26.0 La actividad/historia ya no se pregunta automáticamente. Si necesita esta consulta automática, por favor, activela en la configuración - pero sólo si realmente lo necesita! Genera carga en los sistemas amazon y debemos tratar de reducir todo lo posible por favor!",
-                    "pl": "Od wersji 3.26.0 Aktywność/historia nie jest już automatycznie kwestionowana. Jeśli potrzebujesz automatycznego zapytania, co pozwalasz w ustawieniach - ale tylko wtedy, jeśli tak naprawdę potrzebujesz! Wykorzystuje on ładunek na systemach amazonek i powinniśmy starać się zredukować to, co jest możliwe!",
-                    "uk": "Починаючи з версії 3.26.0 Діяльність/історія не передається автоматично. Якщо вам потрібен цей автоматичний запит, будь ласка, ввімкніть його в налаштуваннях - але тільки якщо вам дійсно потрібно! Ми можемо самі зателефонувати одержувачу!",
-                    "zh-cn": "A. 导 言 活动/法令不再自动提出。 如果你需要这种自动问询,请在环境中这样做,但只有你真正需要! 它给马纳区系统带来了沉重的负担,我们应尽量减少这一点!"
-                },
-                "level": "warn",
-                "buttons": [
-                    "agree",
-                    "cancel"
-                ]
-            }
+        "errorBlacklist": [
+          "SyntaxError"
         ]
+      }
     },
-    "native": {
-        "cookie": "",
-        "csrf": "",
-        "cookieData": null,
-        "alexaServiceHost": "",
-        "email": "",
-        "password": "",
-        "userAgent": "",
-        "acceptLanguage": "",
-        "cookieLoginUrl": "",
-        "proxyOwnIp": "",
-        "proxyPort": 0,
-        "proxyListenBind": "",
-        "updateConfigurationInterval": 3600,
-        "updateStateInterval": 300,
-        "updateHistoryInterval": 300,
-        "usePushConnection": true,
-        "proxyOverrideIp": "",
-        "resetCookies": false,
-        "historyIgnoreEmptySummary": false,
-        "macDms": null,
-        "includeAppDevices": false,
-        "synchronizeLists": true,
-        "synchronizeSmartHomeDevices": false,
-        "autoQueryActivityOnTrigger": false
-    },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
+    "messages": [
+      {
+        "condition": {
+          "operand": "and",
+          "rules": [
+            "oldVersion<3.13.0",
+            "newVersion>=3.13.0"
+          ]
         },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "If communication with alexa works",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
+        "title": {
+          "en": "Important notice!",
+          "de": "Wichtiger Hinweis!",
+          "ru": "Важное замечание!",
+          "pt": "Notícia importante!",
+          "nl": "Belangrijke mededeling!",
+          "fr": "Avis important!",
+          "it": "Avviso IMPORTANTE!",
+          "es": "Noticia importante!",
+          "pl": "Ważna uwaga!",
+          "zh-cn": "重要通知!",
+          "uk": "Важливе повідомлення!"
         },
-        {
-            "_id": "info.cookie",
-            "type": "state",
-            "common": {
-                "role": "text",
-                "name": "Alexa Cookie",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "def": ""
-            },
-            "native": {}
+        "text": {
+          "en": "The new version 1.2.x will potentially change the Names of List Objects when special characters (including \".\") are used! Please delete the old objects manually if needed.",
+          "de": "Die neue Version 1.2.x wird die Namen der Listenobjekte möglicherweise ändern, wenn Sonderzeichen (einschließlich \".\") verwendet werden! Bitte löschen Sie die alten Objekte bei Bedarf manuell.",
+          "ru": "Новая версия 1.2.x потенциально изменит имена объектов списка, когда используются специальные символы (включая \".\")! Пожалуйста, удалите старые объекты вручную, если это необходимо.",
+          "pt": "A nova versão 1.2.x irá potencialmente alterar os nomes dos objetos de lista quando caracteres especiais (incluindo \".\") são usados! Por favor, exclua os objetos antigos manualmente, se necessário.",
+          "nl": "De nieuwe versie 1.2.x zal mogelijk de Namen van List Objects veranderen als speciale personages (includeren) worden gebruikt. Verwijder de oude objecten handmatig als het nodig is.",
+          "fr": "La nouvelle version 1.2.x modifiera potentiellement les Noms des objets de la liste lorsque des caractères spéciaux (y compris \"). Veuillez supprimer les anciens objets manuellement si nécessaire.",
+          "it": "La nuova versione 1.2.x cambierà potenzialmente i nomi degli oggetti di elenco quando vengono utilizzati caratteri speciali (inclusi \".\")! Si prega di eliminare i vecchi oggetti manualmente se necessario.",
+          "es": "La nueva versión 1.2.x potencialmente cambiará los Nombres de Objetos de Lista cuando se utilizan caracteres especiales (incluyendo \"). Por favor, borre los viejos objetos manualmente si es necesario.",
+          "pl": "Nowa wersja 1.2.x będzie potencjalnie zmieniać nazwę nazw obiektów listowych, kiedy używa się specjalnych postaci (w tym „.”). Okazuje się, że stare obiekty ręcznie będą potrzebne.",
+          "zh-cn": "新版本1.2.x将有可能改变名单所列物品的名称(包括“......”)。 请在必要时删除旧物体。.",
+          "uk": "Нова версія 1.2.x потенційно змінить імена об’єктів списку, коли використовуються спеціальні символи (включаючи «.»)! За потреби видаліть старі об’єкти вручну."
         },
-        {
-            "_id": "info.csrf",
-            "type": "state",
-            "common": {
-                "role": "text",
-                "name": "Alexa CSRF",
-                "type": "string",
-                "read": true,
-                "write": false,
-                "def": ""
-            },
-            "native": {}
+        "level": "warn",
+        "buttons": [
+          "agree",
+          "cancel"
+        ]
+      },
+      {
+        "condition": {
+          "operand": "and",
+          "rules": [
+            "oldVersion<3.15.0",
+            "newVersion>=3.15.0"
+          ]
+        },
+        "title": {
+          "en": "Format to create Reminder/Alarms changed!",
+          "de": "Format zum Erstellen von Reminder/Alarms geändert!",
+          "ru": "Формат для создания Reminder/Alarms изменился!",
+          "pt": "Formato para criar lembrete / alarmes alterado!",
+          "nl": "Format om Reminder/Alarms te creëren!",
+          "fr": "Format pour créer Reminder/Alarms changé!",
+          "it": "Formato per creare Reminder/Allarma cambiate!",
+          "es": "Formato para crear Reminder/Alarms cambiado!",
+          "pl": "W celu stworzenia zmian Reminder/Alarms!",
+          "zh-cn": "创建Reminder/Alarms的格局改变了!",
+          "uk": "Змінено формат створення нагадувань/будильників!"
+        },
+        "text": {
+          "en": "The format used in the \"New\" states for Alarms or Reminders has changed and allows now to provide more Details. Please see the Readme for the details!",
+          "de": "Das Format, das in den neuen Zuständen für Alarme oder Reminders verwendet wird, hat sich geändert und ermöglicht nun mehr Details. Die Readme enthält alle Details!",
+          "ru": "Изменен формат, используемый в новых состояниях для тревоги или напоминаний и позволяет теперь предоставить более подробную информацию. Пожалуйста, посмотрите Readme для деталей!",
+          "pt": "O formato usado nos Novos estados para Alarmes ou Lembretes mudou e agora permite fornecer mais detalhes. Por favor, veja o Readme para os detalhes!",
+          "nl": "De formaat gebruikt in de Nieuwe staten voor Alarms of Reminders is veranderd en staat nu toe om meer Details te leveren. Zie de Readme voor de details!",
+          "fr": "Le format utilisé dans les nouveaux états pour les armes ou les rappels a changé et permet maintenant de fournir plus de détails. Veuillez voir le Readme pour les détails!",
+          "it": "Il formato utilizzato nei nuovi stati per gli allarmi o i ripetitori è cambiato e consente ora di fornire ulteriori dettagli. Si prega di vedere il Readme per i dettagli!",
+          "es": "El formato utilizado en los Nuevos estados para Alarmas o Recordatorios ha cambiado y permite ahora proporcionar más detalles. Por favor, vea el Readme para los detalles!",
+          "pl": "Format używany w nowych stanach dla Alarmsa lub Remindersa został zmieniony i pozwala obecnie na dostarczenie większej liczby dekatów. Wyglądaj na szczegóły!",
+          "zh-cn": "新州用于申报或递解剂的格式已经改变,现在可以提供更多的细节。 请见详细!",
+          "uk": "Формат, який використовується в станах «Новий» для будильників або нагадувань, змінився і тепер дозволяє надавати більше деталей. Будь ласка, перегляньте файл Readme, щоб дізнатися більше!"
+        },
+        "level": "warn",
+        "buttons": [
+          "agree",
+          "cancel"
+        ],
+        "link": "https://github.com/Apollon77/ioBroker.alexa2#alexa20echo-devicesserialnumberalarm",
+        "linkText": {
+          "en": "Readme",
+          "de": "Reader",
+          "ru": "Читать",
+          "pt": "Readme",
+          "nl": "Lees",
+          "fr": "Readme",
+          "it": "Readme",
+          "es": "Readme",
+          "pl": "Ready",
+          "zh-cn": "阅读摘要",
+          "uk": "Readme"
         }
+      },
+      {
+        "condition": {
+          "operand": "and",
+          "rules": [
+            "oldVersion<3.18.0",
+            "newVersion>=3.18.0"
+          ]
+        },
+        "title": {
+          "en": "Changes in Smart Home device syncing",
+          "de": "Änderungen der Smart Home Gerätesynchronisation",
+          "ru": "Изменения в синхронизации устройства Smart Home",
+          "pt": "Alterações na sincronização de dispositivos Smart Home",
+          "nl": "Veranderingen in Smart Home apparaat",
+          "fr": "Changements dans la synchronisation de l'appareil Smart Home",
+          "it": "Modifiche nella sincronizzazione dei dispositivi Smart Home",
+          "es": "Cambios en la sincronización de dispositivos Smart Home",
+          "pl": "Zmiany w Smart Home urządzenie synchronizujące",
+          "zh-cn": "Smart家装置的合并变化",
+          "uk": "Зміни в синхронізації пристрою Smart Home"
+        },
+        "text": {
+          "en": "Starting with version 3.18.0 smart home device values are no longer synced by default. You need to enable the new state #includeInIntervalQuery existing for each syncable device in the objects in order for the device to be synchronized. Please enable only those that you really need to reduce the requests to Amazon and the Skills and prevent blocking or issues.",
+          "de": "Ab Version 3.18.0 werden Smart Home-Gerät-Werte nicht mehr standardmäßig synchronisiert. Der neuen Zustand #includeInInterQuery, der für jedes synchronisierbare Gerät in den Objekten vorhanden ist, muss aktiviert werden um das Gerät zu synchronisieren. Bitte nur diejenigen Geräte aktivieren, die wirklich benötigt werden, um die Anfragen an Amazon und die Skills zu reduzieren und Blockierung oder Probleme zu verhindern.",
+          "ru": "Начиная с версии 3.18.0 интеллектуальные ценности домашнего устройства больше не синхронизированы по умолчанию. Вам необходимо включить новое состояние #includeInIntervalQuery существующее для каждого синхронного устройства в объектах, чтобы устройство было синхронизировано. Пожалуйста, включите только те, что вам действительно нужно уменьшить запросы на Amazon и навыки и предотвратить блокировку или проблемы.",
+          "pt": "Começando com a versão 3.18.0 os valores de dispositivo doméstico inteligente não são mais sincronizados por padrão. Você precisa ativar o novo estado #includeInIntervalQuery existente para cada dispositivo sincronizável nos objetos para que o dispositivo seja sincronizado. Por favor, ative apenas aqueles que você realmente precisa para reduzir os pedidos para Amazon e as habilidades e evitar bloqueio ou problemas.",
+          "nl": "Beginnend met versie 3.18.0 slimme thuis apparatuur is niet meer gesynchroniseerd door defect. Je moet de nieuwe staat in staat stellen includeïntervalQuery die bestaat voor elk syncable apparaat in de objecten om het apparaat te synchroniseren. Betrek alleen degenen die je echt nodig hebt om de verzoeken naar Amazone en de Skills te verminderen en blokkeren of problemen te voorkomen.",
+          "fr": "À partir de la version 3.18.0, les valeurs de périphérique à domicile intelligent ne sont plus synchronisées par défaut. Vous devez activer le nouvel état #includeInIntervalQuery existant pour chaque périphérique synchronisé dans les objets afin que le dispositif soit synchronisé. S'il vous plaît activer seulement ceux que vous avez vraiment besoin de réduire les demandes à Amazon et les Compétences et prévenir le blocage ou les problèmes.",
+          "it": "A partire dalla versione 3.18.0 i valori dei dispositivi smart home non sono più sincronizzati per impostazione predefinita. È necessario abilitare il nuovo stato #includeInIntervalQuery esistente per ogni dispositivo sincronizzabile negli oggetti in modo che il dispositivo sia sincronizzato. Si prega di attivare solo quelli che è davvero necessario ridurre le richieste a Amazon e le competenze e prevenire il blocco o problemi.",
+          "es": "Empezando con la versión 3.18.0, los valores de dispositivo hogar inteligente ya no se sincronizan por defecto. Necesita habilitar el nuevo estado #includeInIntervalQuery existente para cada dispositivo sincronizable en los objetos con el fin de sincronizar el dispositivo. Por favor, active sólo aquellos que realmente necesita para reducir las solicitudes a Amazon y las Habilidades y evitar el bloqueo o problemas.",
+          "pl": "Począwszy od wersji 3.18.0, inteligentne urządzenia domowe nie są już zsynchronizowane. Musisz umożliwić nowy stan #include InIntervalQuery istniejące dla każdego urządzenia synchronizującego się w obiektach. Pozwólcie to tylko tym, że musisz zredukować żądania do Amazona i Umiejętności i zapobiegać blokowaniu lub problemom.",
+          "zh-cn": "从第3.18.0版的家里装置价值开始,不再因违约而形成。 你们需要使新的国家能够为各物体的每个可核对装置建立新的国家行动目标。 仅请你真正需要减少对亚马逊和技能的要求,并防止阻断或问题。.",
+          "uk": "Починаючи з версії 3.18.0, значення пристрою розумного дому більше не синхронізуються за умовчанням. Вам потрібно ввімкнути новий стан #includeInIntervalQuery, який існує для кожного синхронізованого пристрою в об’єктах, щоб пристрій міг синхронізуватися. Увімкніть лише ті, які вам дійсно потрібні, щоб зменшити кількість запитів до Amazon і Skills і запобігти блокуванню чи проблемам."
+        },
+        "level": "warn",
+        "buttons": [
+          "agree",
+          "cancel"
+        ],
+        "link": "https://github.com/Apollon77/ioBroker.alexa2#alexa20echo-devicesserialnumberalarm",
+        "linkText": {
+          "en": "Readme",
+          "de": "Reader",
+          "ru": "Читать",
+          "pt": "Readme",
+          "nl": "Lees",
+          "fr": "Readme",
+          "it": "Readme",
+          "es": "Readme",
+          "pl": "Ready",
+          "zh-cn": "阅读摘要",
+          "uk": "Readme"
+        }
+      },
+      {
+        "condition": {
+          "operand": "and",
+          "rules": [
+            "oldVersion<3.26.0",
+            "newVersion>=3.26.0"
+          ]
+        },
+        "title": {
+          "en": "Changes in activity synchronisation",
+          "de": "Änderungen der Aktivitätssynchronisation",
+          "ru": "Изменения в синхронизации активности",
+          "pt": "Alterações na sincronização de atividades",
+          "nl": "Verandering in actuele synchronisatie",
+          "fr": "Changements de synchronisation d'activité",
+          "it": "Modifiche della sincronizzazione delle attività",
+          "es": "Cambios en la sincronización de actividad",
+          "pl": "Zmiany w synchronizacji aktywności",
+          "uk": "Зміна синхронізації активності",
+          "zh-cn": "B. 活动统一时间的变化"
+        },
+        "text": {
+          "en": "Starting with Version 3.26.0 The activity/history is no longer queried automatically. If you need this automatic query please enable it in the settings - but only if you really need it! It generates load on the amazon systems and we should try to reduce this as much as possible please!",
+          "de": "Beginnend mit Version 3.26.0 Die Aktivität/History wird nicht mehr automatisch abgefragt. Wenn Sie diese automatische Abfrage benötigen, aktivieren Sie es bitte in den Einstellungen - aber nur, wenn Sie es wirklich brauchen! Es erzeugt Belastung der Amazonsysteme und wir sollten versuchen, dies so viel wie möglich zu reduzieren, bitte!",
+          "ru": "Начиная с версии 3.26.0 Деятельность/история больше не запрашивается автоматически. Если вам нужен этот автоматический запрос, пожалуйста, включите его в настройках - но только если вам это действительно нужно! Он генерирует нагрузку на амазоночные системы, и мы должны попытаться уменьшить это как можно больше, пожалуйста!",
+          "pt": "Começando com a versão 3.26.0 A atividade/história não é mais consultada automaticamente. Se você precisar desta consulta automática, por favor ative-a nas configurações - mas só se você realmente precisar dele! Ele gera carga nos sistemas de amazon e devemos tentar reduzir isso tanto quanto possível, por favor!",
+          "nl": "Begin met Version 3.26.0 De activiteit/hestory is niet meer automatisch. Als je deze automatische zoektocht nodig hebt, zet het dan in de settings, maar alleen als je het echt nodig hebt! Het genereert lading op de Amazone-systemen en we moeten proberen dit zoveel mogelijk te verminderen!",
+          "fr": "À partir de la version 3.26.0 L'activité/l'histoire n'est plus demandée automatiquement. Si vous avez besoin de cette requête automatique, veuillez l'activer dans les paramètres - mais seulement si vous en avez vraiment besoin! Il génère de la charge sur les systèmes amazon et nous devrions essayer de réduire cela autant que possible s'il vous plaît!",
+          "it": "A partire dalla versione 3.26.0 L'attività/storia non è più richiesta automaticamente. Se hai bisogno di questa query automatica, abilitalo nelle impostazioni - ma solo se ne hai davvero bisogno! Esso genera carico sui sistemi amazon e dovremmo cercare di ridurre questo il più possibile per favore!",
+          "es": "Empezando con la versión 3.26.0 La actividad/historia ya no se pregunta automáticamente. Si necesita esta consulta automática, por favor, activela en la configuración - pero sólo si realmente lo necesita! Genera carga en los sistemas amazon y debemos tratar de reducir todo lo posible por favor!",
+          "pl": "Od wersji 3.26.0 Aktywność/historia nie jest już automatycznie kwestionowana. Jeśli potrzebujesz automatycznego zapytania, co pozwalasz w ustawieniach - ale tylko wtedy, jeśli tak naprawdę potrzebujesz! Wykorzystuje on ładunek na systemach amazonek i powinniśmy starać się zredukować to, co jest możliwe!",
+          "uk": "Починаючи з версії 3.26.0 Діяльність/історія не передається автоматично. Якщо вам потрібен цей автоматичний запит, будь ласка, ввімкніть його в налаштуваннях - але тільки якщо вам дійсно потрібно! Ми можемо самі зателефонувати одержувачу!",
+          "zh-cn": "A. 导 言 活动/法令不再自动提出。 如果你需要这种自动问询,请在环境中这样做,但只有你真正需要! 它给马纳区系统带来了沉重的负担,我们应尽量减少这一点!"
+        },
+        "level": "warn",
+        "buttons": [
+          "agree",
+          "cancel"
+        ]
+      }
     ]
+  },
+  "native": {
+    "cookie": "",
+    "csrf": "",
+    "cookieData": null,
+    "alexaServiceHost": "",
+    "email": "",
+    "password": "",
+    "userAgent": "",
+    "acceptLanguage": "",
+    "cookieLoginUrl": "",
+    "proxyOwnIp": "",
+    "proxyPort": 0,
+    "proxyListenBind": "",
+    "updateConfigurationInterval": 3600,
+    "updateStateInterval": 300,
+    "updateHistoryInterval": 300,
+    "usePushConnection": true,
+    "proxyOverrideIp": "",
+    "resetCookies": false,
+    "historyIgnoreEmptySummary": false,
+    "macDms": null,
+    "includeAppDevices": false,
+    "synchronizeLists": true,
+    "synchronizeSmartHomeDevices": false,
+    "autoQueryActivityOnTrigger": false
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "If communication with alexa works",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.cookie",
+      "type": "state",
+      "common": {
+        "role": "text",
+        "name": "Alexa Cookie",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "def": ""
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.csrf",
+      "type": "state",
+      "common": {
+        "role": "text",
+        "name": "Alexa CSRF",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "def": ""
+      },
+      "native": {}
+    }
+  ]
 }
