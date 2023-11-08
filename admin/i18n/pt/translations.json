@@ -53,5 +53,7 @@
     "updateStateInterval": "Intervalo de atualização de dados (informações do player ...)",
     "updateStateInterval_info": "O intervalo geral de atualização de dados do dispositivo define com que frequência os dados devem ser atualizados a partir dos servidores da Amazon. O mínimo é 300s ou definido para 0 para desativar a atualização. Não coloque isso muito baixo porque a Amazon pode bloquear você! Quando o Push-Connection é estabelecido o intervalo de atualização é definido para 60 minutos quando ativado.",
     "usePushConnection": "Use conexão push",
-    "userAgent": "Custom User-Agent"
+    "userAgent": "Custom User-Agent",
+    "autoQueryActivityOnTrigger": "Consultar automaticamente a atividade na interação do dispositivo",
+    "autoQueryActivityOnTrigger_info": "Ative apenas se você realmente precisar de informações de atividades automaticamente!"
 }

@@ -53,5 +53,7 @@
     "updateStateInterval": "Gegevensbijwerkingsinterval (Player-Info ...)",
     "updateStateInterval_info": "De algemene apparatuur update bepaalt hoe vaak de gegevens moeten worden geüpload van de Amazone servers. Het minimum is 300 of klaar om de update uit te schakelen. Zet dit niet te laag, want anders blokkeert Amazone je. Als de Push-Connectie is vastgesteld dat de update interval is gestart tot 60 minuten wanneer het in staat is.",
     "usePushConnection": "Gebruik een push-verbinding",
-    "userAgent": "Aangepaste User-Agent"
+    "userAgent": "Aangepaste User-Agent",
+    "autoQueryActivityOnTrigger": "Automatisch opvragen van activiteit bij apparaatinteractie",
+    "autoQueryActivityOnTrigger_info": "Schakel dit alleen in als u activiteitsinformatie echt automatisch nodig heeft!"
 }

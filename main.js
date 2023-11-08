@@ -2370,7 +2370,7 @@ function updateHistory(callback) {
         updateHistoryTimer = null;
     }
     if (stopped) return;
-    alexa.getCustomerHistoryRecords({maxRecordSize: 3, filter: true}, (err, res) => {
+    alexa.getCustomerHistoryRecords({maxRecordSize: 3, filter: true, startTime: Date.now() - 60000}, (err, res) => {
         if (stopped) return;
         if (err || !res || !Array.isArray(res)) {
             if (adapter.config.updateHistoryInterval > 0) {
@@ -4779,8 +4779,9 @@ function main() {
         usePushConnection: false,
         //deviceAppName: 'Amazon Alexa',
         formerDataStorePath: path.join(__dirname, `formerDataStore${adapter.namespace}.json`),
-        apiUserAgentPostfix: `ioBroAlexa2/${require(path.join(__dirname, 'package.json')).version}`,
+        apiUserAgentPostfix: `iBrokAlxa2/${require(path.join(__dirname, 'package.json')).version}`,
         usePushConnectType: 2,
+        autoQueryActivityOnTrigger: adapter.config.autoQueryActivityOnTrigger,
     };
     adapter.config.updateHistoryInterval = parseInt(adapter.config.updateHistoryInterval, 10);
     if (!adapter.config.updateHistoryInterval || isNaN(adapter.config.updateHistoryInterval) || adapter.config.updateHistoryInterval < 0) {

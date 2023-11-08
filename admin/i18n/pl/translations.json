@@ -53,5 +53,7 @@
     "updateStateInterval": "Interwał aktualizacji danych (Player-Info ...)",
     "updateStateInterval_info": "Ogólna aktualizacja danych definiuje, jak często dane powinny być aktualizowane z serwerów Amazon. Minimalna liczba wynosi 300 lub jest ustawiona do 0, aby złagodzić aktualizację. Nie ustalono tego zbyt niskiego, ponieważ inna Amazonka może blokować Ciebie. Po ustanowieniu przez Push-Connection przedziału aktualizacji następuje do 60 minut.",
     "usePushConnection": "Użyj połączenia push",
-    "userAgent": "Niestandardowy User-Agent"
+    "userAgent": "Niestandardowy User-Agent",
+    "autoQueryActivityOnTrigger": "Automatycznie sprawdzaj aktywność związaną z interakcją urządzenia",
+    "autoQueryActivityOnTrigger_info": "Włącz tylko wtedy, gdy naprawdę potrzebujesz automatycznie informacji o aktywności!"
 }
