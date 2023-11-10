@@ -433,8 +433,16 @@ A structure like the following is possible:
 
 ## Troubleshooting
 
-### Problem with Cookie determination with SMS based 2 FA flow
-If you still use the SMS based 2FA flow then this might now work. Please update the 2fa method in the amazon settings to the current process.
+### Problem with Cookie determination with SMS based 2FA flow
+If you still use the SMS/E-Mail based 2FA flow then this might not work. Please update the 2FA/OTP method in the amazon settings to the current process! Not working could also mean that a Error 404/Page not found is shown. ALso then check and upgrade OTP settings!
+
+### The Alexa App opens when I try to login
+If you open the Proxy URL from a mobile device where also the Alexa App is installed on it might be that it do not work because Amazon might open the Alexa App. So please use a device or PC where the Alexa App is not installed!
+
+### I get a page shown with a QR code telling me to scan it
+If you see a page that tells you that "alexa.amazon.xx is deprecated" and you should use the alexa app and with a QR code on it when you enter the Proxy URL" then this means that you call the proxy URL ith a different IP/Domainname then you entered in the "proxy own IP" settings or you adjusted the IP shown in the Adapter configuration.
+
+The "own IP" setting **needs to** match the IP/Domainname you use to call the proxy URL!
 
 ### Problems with Cookie determination via E-Mail/Password
 Sometimes Amazon has weired checks in place when they detect unexpected traffic on Login.
@@ -460,14 +468,6 @@ As example using "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, lik
 
 You can override all those parameters in the adapter configuration.
 
-### How to determine Cookie by my own?
-If the automatic Cookie determination don't work or you do not trust the Adapter to give the Email/Password then you can determine the cookie by your own. There are several infos on the web how to do it. Here some links:
-
-* https://www.gehrig.info/alexa/Alexa.html
-* or use the shellscript from https://blog.loetzimmer.de/2017/10/amazon-alexa-hort-auf-die-shell-echo.html to get it on shell ...
-
-But be aware: The Cookie will time out after several time and then the adapter will stop working and disable itself. You then need to manually get a new cookie!
-
 ### Push Connections do not connect
 Sometimes it could happen that because of too many connection tries aAmazon blocks the push connection endpoint for a specific IP and "device".
 
@@ -487,6 +487,10 @@ Link: https://www.amazon.de/hz/mycd/digital-console/devicedetails?deviceFamily=A
 After deleting unused device please restart the adapter to remove them there too.
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Remove infos how to get cookies manually because no longer available
+
 ### 3.26.1 (2023-11-08)
 * (Apollon77) Fix missing text in Admin Config
 
