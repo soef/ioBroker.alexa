@@ -273,19 +273,19 @@ Is this Alexa device online and connected to the Amazon cloud ?
 
 ### alexa2.0.History
 
-| State name | meaning | value |
-| - | - | - |
-| #trigger | Button to get new History (more current then timestamp in creationTime), only needed when not using the push connection | Button |
-| cardContent | Additional information as shown in Alexa-App/Echo Show | Information |
-| cardJson | Additional information as shown in Alexa-App/Echo Show in JSON format | Information |
-| creationTime | date of this history entry, new history entries are only considered when later as this timestamp | Information |
-| domainApplicationId | Additional information like Skill-ID or such, optional | Information |
-| domainApplicationName | Additional information like Skill name or such, optional | Information |
-| json | Json of last command data to be able to process all infos e.g. in own JavaScripts| JSON |
-| name | Name of the device that got the last request | Information |
-| serialNumber | serialnumber of the device that got the last request | Information |
-| status | Status of last command to Alexa | SUCCESS / FAULT / DISCARDED_NON_DEVICE_DIRECTED_INTENT; last one is generated when activating the device by saying the wake word, or when the device discarded input as "not for me" |
-| summary | text/summary/action received by the device | Information |
+| State name | meaning                                                                                                                                                            | value |
+| - |--------------------------------------------------------------------------------------------------------------------------------------------------------------------| - |
+| #trigger | Button to get new History (more current then timestamp in creationTime), only needed when not using the push connection or when the automatic querying is disabled | Button |
+| cardContent | Additional information as shown in Alexa-App/Echo Show                                                                                                             | Information |
+| cardJson | Additional information as shown in Alexa-App/Echo Show in JSON format                                                                                              | Information |
+| creationTime | date of this history entry, new history entries are only considered when later as this timestamp                                                                   | Information |
+| domainApplicationId | Additional information like Skill-ID or such, optional                                                                                                             | Information |
+| domainApplicationName | Additional information like Skill name or such, optional                                                                                                           | Information |
+| json | Json of last command data to be able to process all infos e.g. in own JavaScripts                                                                                  | JSON |
+| name | Name of the device that got the last request                                                                                                                       | Information |
+| serialNumber | serialnumber of the device that got the last request                                                                                                               | Information |
+| status | Status of last command to Alexa                                                                                                                                    | SUCCESS / FAULT / DISCARDED_NON_DEVICE_DIRECTED_INTENT; last one is generated when activating the device by saying the wake word, or when the device discarded input as "not for me" |
+| summary | text/summary/action received by the device                                                                                                                         | Information |
 
 ### alexa.0.Smart-Home-Devices
 Includes all smart home devices Alexa knows from your skills. States as follows, for all known devices:
