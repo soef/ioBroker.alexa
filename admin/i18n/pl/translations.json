@@ -18,7 +18,7 @@
     "cookie": "Cookie",
     "cookieAlt": "Ręczne wprowadzanie pliku cookie",
     "cookieAlt_info": "Plik cookie można również wprowadzić bezpośrednio. Email i hasło nie są wtedy wymagane",
-    "cookieAlt_info2": "Zobacz np. <a href=\"https://www.gehrig.info/alexa/Alexa.html\" target=\"_blank\">tutaj</a>, jak uzyskać ciasteczko ręcznie lub wypróbować tryb proxy adaptera! Zobacz komunikat o błędzie w dzienniku dla adresu URL proxy",
+    "cookieAlt_info2": "",
     "cookieLoginUrl": "Niestandardowy plik cookie-Amazon-URL",
     "device_settings": "Ustawienia urządzenia",
     "device_settings_info": "Ustawienia urządzeń pobieranych z Amazon",

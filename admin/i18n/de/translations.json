@@ -18,7 +18,7 @@
     "cookie": "Cookie",
     "cookieAlt": "Manuelle Eingabe des Cookies",
     "cookieAlt_info": "Der Cookie kann auch manuell ermittelt und eingetragen werden. Email & Passwort werden dann nicht benötigt",
-    "cookieAlt_info2": "Siehe z.B. <a href=\"https://www.gehrig.info/alexa/Alexa.html\" target=\"_blank\">hier</a> wie ein Cookie manuell ermittelt werden kann, oder den Proxy-Modus des Adapters nutzen. Die Proxy-URL wird in der Fehlermeldung angezeigt.",
+    "cookieAlt_info2": "",
     "cookieLoginUrl": "Eigene Cookie-Amazon-URL",
     "device_settings": "Geräteeinstellungen",
     "device_settings_info": "Einstellungen für die Geräte, die von Amazon abgerufen werden",

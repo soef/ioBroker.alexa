@@ -18,7 +18,7 @@
     "cookie": "Cookie",
     "cookieAlt": "Handmatige invoer van de cookie",
     "cookieAlt_info": "De cookie kan ook rechtstreeks worden ingevoerd. E-mail en wachtwoord zijn dan niet vereist",
-    "cookieAlt_info2": "Zie b.v. <a href=\"https://www.gehrig.info/alexa/Alexa.html\" target=\"_blank\">hier</a> hoe u een cookie handmatig kunt krijgen of probeer de proxy-modus van de adapter! Zie Foutbericht in logboek voor proxy-URL",
+    "cookieAlt_info2": "",
     "cookieLoginUrl": "Aangepaste Cookie-Amazon-URL",
     "device_settings": "Apparaat instellingen",
     "device_settings_info": "Instellingen voor de apparaten die van Amazon worden opgehaald",

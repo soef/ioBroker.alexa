@@ -18,7 +18,7 @@
     "cookie": "Cookie",
     "cookieAlt": "Manual input of the cookie",
     "cookieAlt_info": "The cookie can also be entered directly. E-Mail & password are then not required",
-    "cookieAlt_info2": "See e.g. <a href=\"https://www.gehrig.info/alexa/Alexa.html\" target=\"_blank\">here</a> how to get a cookie manually or try the proxy mode of the adapter! See Error message in log for proxy URL.",
+    "cookieAlt_info2": "",
     "cookieLoginUrl": "Custom Cookie-Amazon-URL",
     "device_settings": "Device Settings",
     "device_settings_info": "Settings for the devices that are fetched from Amazon",

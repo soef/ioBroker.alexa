@@ -18,7 +18,7 @@
     "cookie": "Cookie",
     "cookieAlt": "Ручной ввод файла cookie",
     "cookieAlt_info": "Файл cookie также можно ввести напрямую. Электронная почта и пароль не требуются.",
-    "cookieAlt_info2": "См. <a href=\"https://www.gehrig.info/alexa/Alexa.html\" target=\"_blank\">здесь</a>, как получить файл cookie вручную или попробовать прокси-режим адаптера! См. Сообщение об ошибке в журнале для URL-адреса прокси-сервера",
+    "cookieAlt_info2": "",
     "cookieLoginUrl": "Пользовательский URL-адрес Cookie-Amazon",
     "device_settings": "Настройки устройства",
     "device_settings_info": "Настройки для устройств, которые извлекаются из Amazon",
