@@ -487,6 +487,9 @@ Link: https://www.amazon.de/hz/mycd/digital-console/devicedetails?deviceFamily=A
 After deleting unused device please restart the adapter to remove them there too.
 
 ## Changelog
+### __WORK IN PROGRESS__
+* (Apollon77) Fixed the proxy login process
+
 ### 3.26.2 (2023-11-24)
 * (Apollon77) Removed infos how to get cookies manually because no longer available
 * (Apollon77) Optimized Admin configuration order of settings for history

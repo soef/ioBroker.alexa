@@ -5210,9 +5210,9 @@ function main() {
                 adapter.log.error('Error: no csrf found. Check configuration of cookie');
                 restartAdapter = false;
             }
-            let lines = err.message.split('You can try to get the cookie');
+            let lines = err.message.split('Please open ');
             if (lines[1]) {
-                lines[1] = `You can try to get the cookie${lines[1]}`;
+                lines[1] = `Please open ${lines[1]}`;
                 proxyUrl = lines[1].substring(lines[1].indexOf('http://'), lines[1].lastIndexOf('/') + 1);
                 restartAdapter = false;
             } else {
