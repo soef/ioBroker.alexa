@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.26.2",
+    "version": "3.26.3",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -40,6 +40,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.26.3": {
+        "en": "Fixed the proxy login process",
+        "de": "Behoben des Proxy-Anmeldevorgangs",
+        "ru": "Исправлен процесс авторизации прокси",
+        "pt": "Corrigido o processo de login proxy",
+        "nl": "Het proxy loginproces",
+        "fr": "Correction du processus de connexion proxy",
+        "it": "Risolto il processo di login proxy",
+        "es": "Arreglado el proceso de inicio de sesión proxy",
+        "pl": "Fixed proxy login process",
+        "uk": "Виправлено процес проксі",
+        "zh-cn": "A. 确定代伐木过程"
+      },
       "3.26.2": {
         "en": "Removed infos how to get cookies manually because no longer available\nOptimized Admin configuration order of settings for history\nFixed some crash cases reported by Sentry\nAdded some more device types",
         "de": "Entfernte Informationen, wie man Cookies manuell erhält, weil nicht mehr verfügbar\nOptimierte Admin-Konfigurationsreihenfolge von Einstellungen für die Geschichte\nBehoben einige Unfallfälle von Sentry gemeldet\nEinige weitere Gerätetypen hinzugefügt",
@@ -117,19 +130,6 @@
         "pl": "Adjust History zaktualizował prace nad nowymi zmianami Amazona",
         "uk": "Налаштування оновлення історії для роботи з останніми змінами Amazon",
         "zh-cn": "A. 亚马逊最近变化的历史更新"
-      },
-      "3.25.2": {
-        "en": "Optimize reconnection handling for push connections",
-        "de": "Optimieren Sie die Umschaltung von Push-Verbindungen",
-        "ru": "Оптимизируйте переподключение обработки для push соединений",
-        "pt": "Otimizar o manuseio de reconexão para conexões push",
-        "nl": "Optimiliseer verbinding met de pers",
-        "fr": "Optimiser la manipulation de reconnection pour les connexions push",
-        "it": "Ottimizzare la gestione della riconnessione per le connessioni push",
-        "es": "Optimize reconnection handling for push connections",
-        "pl": "Optimize reconnection",
-        "uk": "Оптимальна обробка відключення для підключення штовхачів",
-        "zh-cn": "利用重新连接的渠道推动联系"
       }
     },
     "keywords": [
