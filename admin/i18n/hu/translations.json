@@ -1,1 +1,17 @@
-{}
+{
+    "Password": "Jelszó",
+    "Settings": "Beállítások",
+    "StatusInfo": "Az Alexa-sütik naprakészek, utolsó frissítés időpontja: %s",
+    "alexaLogin": "Alexa belépési adatok",
+    "alexaServiceHost": "Alexa alap-url",
+    "acceptLanguage": "Egyedi Accept-Language fejléc",
+    "auth": "Bejelentkezési adatok az Amazon Account-hoz, ahol az Alexa eszköz regisztrálva lett",
+    "auth_info": "Az azonosító adatok az ioBroker egységén titkosítva tárolódnak. Üresen hagyhatóak, de az Amazon-sütiket egyedileg kell megszerezni, vagy proxy-t kell használni a bejelentkezéshez és a sütik megszerzéséhez.",
+    "Email": "E-Mail",
+    "cookie": "Süti",
+    "cookieAlt": "Süti kézi beszerzése",
+    "cookieAlt_info": "A süti egyedileg is megadható. Email és jelszó ebben az esetben nem szükséges",
+    "history": "Beállítási napló",
+    "Please wait while loading Adapter-Status ...": "Kérem várjon, míg az Adapter-állapota betöltődik…",
+    "ProxyInfo": "Kattintson a <a href=\"%s\" target=\"_blank\"> címre az Amazon Account belépéshez </a> és az Amazon eszközének aktíválásához."
+}
