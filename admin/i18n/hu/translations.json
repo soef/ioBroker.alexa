@@ -13,5 +13,7 @@
     "cookieAlt_info": "A süti egyedileg is megadható. Email és jelszó ebben az esetben nem szükséges",
     "history": "Beállítási napló",
     "Please wait while loading Adapter-Status ...": "Kérem várjon, míg az Adapter-állapota betöltődik…",
-    "ProxyInfo": "Kattintson a <a href=\"%s\" target=\"_blank\"> címre az Amazon Account belépéshez </a> és az Amazon eszközének aktíválásához."
+    "ProxyInfo": "Kattintson a <a href=\"%s\" target=\"_blank\"> címre az Amazon Account belépéshez </a> és az Amazon eszközének aktíválásához.",
+    "cookieLoginUrl": "Egyedi Amazon-Süti-URL",
+    "interval": "Adatfrissítési periódus"
 }
