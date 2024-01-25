@@ -152,7 +152,6 @@
     "enabled": true,
     "messagebox": true,
     "license": "MIT",
-    "localLink": "https://alexa.amazon.com",
     "connectionType": "cloud",
     "dataSource": "push",
     "tier": 2,
