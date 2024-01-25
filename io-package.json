@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "alexa2",
-    "version": "3.26.3",
+    "version": "3.26.4",
     "blockedVersions": [
       "~3.14.0",
       "~3.15.0",
@@ -40,6 +40,19 @@
     },
     "platform": "Javascript/Node.js",
     "news": {
+      "3.26.4": {
+        "en": "Removed Weblink\nAdjust History query to recent Amazon changes",
+        "de": "Entfernen von Weblink\nBegleichen Sie die Geschichte Anfrage an aktuelle Amazon-Änderungen",
+        "ru": "Удаленная веб-ссылка\nНастройте исторический запрос на недавние изменения в Amazon",
+        "pt": "Weblink removido\nAjustar a consulta de história às mudanças recentes da Amazônia",
+        "nl": "Weblink verwijderd\nHistorische zoekopdracht aanpassen aan recente Amazon-wijzigingen",
+        "fr": "Supprimé le lien Web\nRégler la requête d'historique aux changements récents d'Amazon",
+        "it": "Rimozione di Weblink\nRegolare la query di storia alle recenti modifiche Amazon",
+        "es": "Redlink eliminado\nAdjust Historia consulta a cambios recientes de Amazon",
+        "pl": "Usunięto mrugnięcie\nDostosuj zapytanie Historia do ostatnich zmian Amazon",
+        "uk": "Видалити Weblink\nНалаштування історичного запиту на останні зміни Amazon",
+        "zh-cn": "删除了网络链接\n调整历史查询以适应最近的亚马逊更改"
+      },
       "3.26.3": {
         "en": "Fixed the proxy login process",
         "de": "Behoben des Proxy-Anmeldevorgangs",
@@ -117,19 +130,6 @@
         "pl": "Wykrywanie czynności optymalnych do przetwarzania wszystkich istotnych wpisów i nie tylko ostatni",
         "uk": "Оптимізуйте виявлення активності для обробки всіх відповідних записів і не просто останнього",
         "zh-cn": "停止活动,处理所有有关物品,而不是最后一个物品"
-      },
-      "3.25.3": {
-        "en": "Adjust History update to work with recent Amazon changes",
-        "de": "Anpassung der Geschichte-Updates an die neuesten Amazon-Änderungen",
-        "ru": "Отрегулируйте обновление истории для работы с недавними изменениями Amazon",
-        "pt": "Ajustar atualização de histórico para trabalhar com mudanças recentes da Amazônia",
-        "nl": "Verandering van geschiedenis aan het werk met de recente Amazone",
-        "fr": "Ajuster la mise à jour historique pour travailler avec les récents changements Amazon",
-        "it": "Regolare l'aggiornamento di storia per lavorare con le recenti modifiche Amazon",
-        "es": "Ajuste de la actualización de la historia para trabajar con cambios recientes de Amazon",
-        "pl": "Adjust History zaktualizował prace nad nowymi zmianami Amazona",
-        "uk": "Налаштування оновлення історії для роботи з останніми змінами Amazon",
-        "zh-cn": "A. 亚马逊最近变化的历史更新"
       }
     },
     "keywords": [

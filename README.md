@@ -487,8 +487,7 @@ Link: https://www.amazon.de/hz/mycd/digital-console/devicedetails?deviceFamily=A
 After deleting an unused device, please restart the adapter to remove them there too.
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 3.26.4 (2024-01-25)
 * (Apollon77) Removed Weblink
 * (Apollon77) Adjust History query to recent Amazon changes
 
