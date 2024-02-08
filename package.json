@@ -1,18 +1,22 @@
 {
-  "name": "iobroker.alexa",
-  "version": "0.0.36",
+  "name": "iobroker.alexa2",
+  "version": "3.26.4",
   "description": "Remote control for Alexa (Amazon Echo)",
   "author": {
-    "name": "soef",
-    "email": "soef@gmx.net"
+    "name": "Apollon77",
+    "email": "ingo@fischer-ka.de"
   },
   "contributors": [
     {
       "name": "soef",
       "email": "soef@gmx.net"
+    },
+    {
+      "name": "Apollon77",
+      "email": "iobroker@fischer-ka.de"
     }
   ],
-  "homepage": "https://github.com/soef/iobroker.alexa",
+  "homepage": "https://github.com/Apollon77/ioBroker.alexa2",
   "license": "MIT",
   "keywords": [
     "sync",
@@ -25,27 +29,40 @@
     "ide"
   ],
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=16.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/soef/iobroker.alexa"
+    "url": "https://github.com/Apollon77/ioBroker.alexa2"
   },
   "dependencies": {
-    "alexa-remote": "^0.0.24",
+    "alexa-remote2": "^7.0.3",
     "https": "^1.0.0",
-    "soef": "^0.4.15"
+    "nearest-color": "^0.4.4",
+    "@iobroker/adapter-core": "^3.0.4",
+    "@sentry/node": "^7.95.0",
+    "@sentry/integrations": "^7.95.0",
+    "source-map-support": "^0.5.21",
+    "rrule": "^2.8.1"
   },
   "devDependencies": {
-    "mocha": "^2.3.4",
-    "chai": "^3.4.1"
+    "@alcalzone/release-script": "^3.7.0",
+    "@alcalzone/release-script-plugin-iobroker": "^3.7.0",
+    "@alcalzone/release-script-plugin-license": "^3.7.0",
+    "@iobroker/dev-server": "^0.7.1",
+    "@iobroker/adapter-dev": "^1.2.0",
+    "eslint": "^8.56.0",
+    "mocha": "^10.2.0",
+    "chai": "^4.3.10"
   },
-  "main": "alexa.js",
+  "main": "main.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha"
+    "test": "node node_modules/mocha/bin/mocha --exit",
+    "release": "release-script",
+    "translate": "translate-adapter"
   },
   "bugs": {
-    "url": "https://github.com/soef/iobroker.alexa/issues"
+    "url": "https://github.com/Apollon77/ioBroker.alexa2/issues"
   },
   "readmeFilename": "README.md"
 }

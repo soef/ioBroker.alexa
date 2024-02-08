@@ -77,15 +77,15 @@ describe('Test ' + adapterShortName + ' adapter', function() {
     before('Test ' + adapterShortName + ' adapter: Start js-controller', function (_done) {
         this.timeout(600000); // because of first install from npm
 
-        setup.setupController(function () {
-            var config = setup.getAdapterConfig();
+        setup.setupController(async function () {
+            var config = await setup.getAdapterConfig();
             // enable adapter
             config.common.enabled  = true;
             config.common.loglevel = 'debug';
 
             //config.native.dbtype   = 'sqlite';
 
-            setup.setAdapterConfig(config.common, config.native);
+            await setup.setAdapterConfig(config.common, config.native);
 
             setup.startController(true, function(id, obj) {}, function (id, state) {
                     if (onStateChanged) onStateChanged(id, state);
@@ -118,16 +118,11 @@ describe('Test ' + adapterShortName + ' adapter', function() {
                 });
         });
     });
-/**/
 
-/*
-    PUT YOUR OWN TESTS HERE USING
-    it('Testname', function ( done) {
-        ...
+    it('Test ' + adapterShortName + ' adapter: wait a bit', function (done) {
+        this.timeout(60000);
+        setTimeout(done, 50000);
     });
-
-    You can also use "sendTo" method to send messages to the started adapter
-*/
 
     after('Test ' + adapterShortName + ' adapter: Stop js-controller', function (done) {
         this.timeout(10000);
